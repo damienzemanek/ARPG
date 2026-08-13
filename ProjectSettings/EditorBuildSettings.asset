@@ -6,7 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Gamefiles/Scenes/MainMenu.unity
+    guid: 20bd58506989653499ffc3a772f820b7
+  - enabled: 1
+    path: Assets/Gamefiles/Scenes/LoadingScene.unity
+    guid: a134154d9f1807541b5eef7f19ae3952
+  - enabled: 1
+    path: Assets/Gamefiles/Scenes/TheGraveyard - Region1.unity
+    guid: 5a1647a404cbd4c4fae9594b05dd14a0
+  - enabled: 1
+    path: Assets/Gamefiles/Scenes/Battle.unity
+    guid: bf332e937587c2d468214802f74efd99
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

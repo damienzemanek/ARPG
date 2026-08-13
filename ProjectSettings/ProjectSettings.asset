@@ -527,7 +527,10 @@ PlayerSettings:
       m_Height: 720
       m_Kind: 1
       m_SubKind: 
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 0
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
@@ -829,7 +832,25 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 1
   webEnableSubmoduleStrippingCompatibility: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Android: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    EmbeddedLinux: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    GameCoreScarlett: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    GameCoreXboxOne: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    Kepler: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    LinuxHeadlessSimulation: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    Nintendo Switch: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    Nintendo Switch 2: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    PS4: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    PS5: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    QNX: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    Standalone: ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3;ODIN_VALIDATOR;ODIN_VALIDATOR_3_1;ODIN_VALIDATOR_3_2;ODIN_VALIDATOR_3_3;DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    VisionOS: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    WebGL: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    Windows Store Apps: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    XboxOne: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    iPhone: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
+    tvOS: DOTWEEN;DOTWEEN_DEAUDIO;DOTWEEN_DEUNITYEXTENDED;DOTWEEN_TEXTMESHPRO
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -841,7 +862,7 @@ PlayerSettings:
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   useDeterministicCompilation: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
@@ -852,7 +873,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: ARPG3
-  metroPackageVersion: 
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -860,7 +881,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: ARPG3
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: ARPG3
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -929,11 +950,11 @@ PlayerSettings:
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 
+  cloudProjectId: 7c875bf2-f6ef-4965-925b-0764aa21930a
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: ARPG3
+  organizationId: starnight-studios
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
