@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f18e7ad92b4304bec2dba7f748b3a1, type: 3}
+  m_Name: EnemyConfig1
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
+  occupantName: Enemy Guy
+  icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
+  prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
+  maxHP: 5
+  maxAP: 5
+  maxArmor: 1
+  damage: 1
+  _maxEquippableActions: 2
+  equippedActions:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
+  AllAvaliableActions: []
+  ForcedActions: []
+  ActionIntentionsCount: 2
+  VisableActionCount: 1

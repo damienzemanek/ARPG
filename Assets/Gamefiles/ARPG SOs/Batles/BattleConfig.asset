@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d3dbf272ed547439ce7227b29391ac, type: 3}
+  m_Name: BattleConfig
+  m_EditorClassIdentifier: Assembly-CSharp::BattleConfig
+  rows:
+  - colPositions:
+    - col: 0
+      row: 0
+      occupant: {fileID: 11400000, guid: f1a27083f0cbed04799c8c6e0051ef70, type: 2}
+    - col: 1
+      row: 0
+      occupant: {fileID: 0}
+    - col: 2
+      row: 0
+      occupant: {fileID: 0}
+    - col: 3
+      row: 0
+      occupant: {fileID: 0}
+    - col: 4
+      row: 0
+      occupant: {fileID: 11400000, guid: 0fa671fc81565384daea31daf1879751, type: 2}
+    - col: 5
+      row: 0
+      occupant: {fileID: 0}
+    - col: 6
+      row: 0
+      occupant: {fileID: 0}
+    rowNum: 0
+  - colPositions:
+    - col: 0
+      row: 1
+      occupant: {fileID: 0}
+    - col: 1
+      row: 1
+      occupant: {fileID: 11400000, guid: e87a1760c12e56444812bd90e3472fca, type: 2}
+    - col: 2
+      row: 1
+      occupant: {fileID: 0}
+    - col: 3
+      row: 1
+      occupant: {fileID: 0}
+    - col: 4
+      row: 1
+      occupant: {fileID: 0}
+    - col: 5
+      row: 1
+      occupant: {fileID: 11400000, guid: 0fa671fc81565384daea31daf1879751, type: 2}
+    - col: 6
+      row: 1
+      occupant: {fileID: 0}
+    rowNum: 1
+  - colPositions:
+    - col: 0
+      row: 2
+      occupant: {fileID: 0}
+    - col: 1
+      row: 2
+      occupant: {fileID: 11400000, guid: 3e02d539a7785d141b6b841b572735cc, type: 2}
+    - col: 2
+      row: 2
+      occupant: {fileID: 0}
+    - col: 3
+      row: 2
+      occupant: {fileID: 0}
+    - col: 4
+      row: 2
+      occupant: {fileID: 11400000, guid: 0fa671fc81565384daea31daf1879751, type: 2}
+    - col: 5
+      row: 2
+      occupant: {fileID: 0}
+    - col: 6
+      row: 2
+      occupant: {fileID: 0}
+    rowNum: 2
