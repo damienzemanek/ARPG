@@ -5,6 +5,7 @@ using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BattlemodeActionsDisplay : MonoBehaviour
@@ -15,19 +16,27 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     
     [Required] public GameObject actionDisplayPrefab;
     [Required] public Transform actionDisplayParent;
+
+    public RectTransform combatDisplayRect;
+    
+    [BoxGroup("Status Effects")] [Required] public GameObject statusEffectCurrentDisplayPrefab;
+    [BoxGroup("Status Effects")] [Required] public Transform statusEffectCurrentDisplayParentTransform;
+    [BoxGroup("Status Effects")] [ReadOnly, ShowInInspector] Pooled<BattlemodeEffect> statusEffectCurrentDisplayPool;
+    
+    [BoxGroup("Status Effects")] [Required] public GameObject statusEffectHPBarDisplayPrefab;
+    [BoxGroup("Status Effects")] [Required] public Transform statusEffectHPBarDisplayParent;
+    [BoxGroup("Status Effects")] [ReadOnly, ShowInInspector] Pooled<BattlemodeStatusEffectHPBar> statusEffectHPBarDisplayPool;
     
     [BoxGroup("Status Effects")] [Required] public GameObject effectDisplayPrefab;
     [BoxGroup("Status Effects")] [Required] public Transform effectDisplayParent;
-    [BoxGroup("Status Effects")] [Required] public RectTransform effectContentRectTransform;
     [BoxGroup("Status Effects")] [ReadOnly, ShowInInspector] Pooled<BattlemodeEffect> effectDisplayPool;
     
     [BoxGroup("Special Effects")] [Required] public GameObject specialEffectDisplayPrefab;
     [BoxGroup("Special Effects")] [Required] public Transform specialEffectDisplayParent;
-    [BoxGroup("Special Effects")] [Required] public RectTransform specialEffectContentRectTransform;
     [BoxGroup("Special Effects")] [ReadOnly, ShowInInspector] Pooled<BattlemodeSpecialEffect> specialEffectDisplayPool;
 
-    [ReadOnly] public BattleTile currentlySelectedTile = null;
-    [ReadOnly] public BattlemodeActionCtx? currentlySelectedAction = null;
+    [ReadOnly, ShowInInspector] public BattleTile currentlySelectedTile = null;
+    [ReadOnly, ShowInInspector] public BattlemodeActionCtx? currentlySelectedAction = null;
 
     [SerializeField, HideInInspector] int _maxAmountOfTotalActionsAvaliable;
     [ShowInInspector] public int maxAmountOfTotalActionsAvaliable 
@@ -39,11 +48,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             Array.Resize(ref actionSlots, value);
         }
     }
-
-    [BoxGroup("BattleInfo")] [Required] public RectTransform combatDisplayRectTransform;
-    [BoxGroup("BattleInfo")] [Required] public GameObject display_Enemy;
-    [BoxGroup("BattleInfo")] [Required] public GameObject display_Player;
-
+    
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterName;
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterLevel;
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterHpNum;
@@ -55,39 +60,35 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterMaxArmorNum;
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterDmgNum;
     
-    
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerActionName;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerActionDescription;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionName;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionDescription;
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerAPnum;
     // Future: Button For Disabling Attacks
-    
-    [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionName;
-    [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionDescription;
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionIntentionsNum;
-    [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyVisableActionIntentionsNum;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyPredictedsNum;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsVLG;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsNumGO;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_PredictedNumGO;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public EnemyIntentions enemyIntentions;
     
     [ReadOnly] public BattlemodeAction[] actionSlots = Array.Empty<BattlemodeAction>();
 
     void Awake()
     {
         // Status Effects Setup
-        effectDisplayPool = new(
-            () =>
-            {
+        effectDisplayPool = new(() => {
                 var ret = Instantiate(effectDisplayPrefab, effectDisplayParent).Get<BattlemodeEffect>();
                 ret.gameObject.SetActive(false);
                 return ret;
             },
             (effect) => effect.gameObject.SetActive(true),
             effectDisplay => effectDisplay.Hide(),
-            12
-        );
+            12);
         effectDisplayPool.Prewarm(5);
         effectDisplayPool.ReleaseAll();
 
         // Special Effects Setup
-        specialEffectDisplayPool = new(() =>
-            {
+        specialEffectDisplayPool = new(() => {
                 var ret = Instantiate(specialEffectDisplayPrefab, specialEffectDisplayParent)
                     .Get<BattlemodeSpecialEffect>();
                 ret.gameObject.SetActive(false);
@@ -95,10 +96,33 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             },
             (effect) => effect.gameObject.SetActive(true),
             specialEffectDisplay => specialEffectDisplay.Hide(),
-            3
-            );
+            3);
         specialEffectDisplayPool.Prewarm(3);
         specialEffectDisplayPool.ReleaseAll();
+        
+        // Status Effect HP Bar Setup
+        statusEffectHPBarDisplayPool = new(() => {
+            var ret = Instantiate(statusEffectHPBarDisplayPrefab, statusEffectHPBarDisplayParent).Get<BattlemodeStatusEffectHPBar>();
+            ret.gameObject.SetActive(false);
+            return ret; 
+            },
+            (effect) => effect.gameObject.SetActive(true),
+            statusEffectHPBarDisplay => statusEffectHPBarDisplay.Hide(),
+            8);
+        statusEffectHPBarDisplayPool.Prewarm(3);
+        statusEffectHPBarDisplayPool.ReleaseAll();
+        
+        // Status Effect Current Display Setup
+        statusEffectCurrentDisplayPool = new(() => {
+            var ret = Instantiate(statusEffectCurrentDisplayPrefab, statusEffectCurrentDisplayParentTransform).Get<BattlemodeEffect>();
+            ret.gameObject.SetActive(false);
+            return ret; 
+            },
+            (effect) => effect.gameObject.SetActive(true),
+            statusEffectCurrentDisplay => statusEffectCurrentDisplay.Hide(),
+            8);
+        statusEffectCurrentDisplayPool.Prewarm(5);
+        statusEffectCurrentDisplayPool.ReleaseAll();
         
         
         GUI.SetActive(false);
@@ -124,6 +148,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         effectDisplayPool.ReleaseAll(); // Reset Effect Display
         specialEffectDisplayPool.ReleaseAll();
         GUI.SetActive(true); // Show GUI
+        bool foundFirstAction = false;
+        BattlemodeAction firstAction = null;
         
         // Action Slot Enabling
         for (int i = 0; i < maxAmountOfTotalActionsAvaliable; i++)
@@ -136,15 +162,19 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             var action = battlerConfig.equippedActions[i];
             if (action == null) continue;
 
-            if(tile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
+            if(tile.occupantCtx is not BattlerOccupantCtx battlerOccupantCtx) continue;
             
             var actionCtx = action.GenerateActionCtx(
                 BattlemodeActionCtx.Status.Acting,
-                characterOccupantCtx,
+                battlerOccupantCtx,
                 null);
-            
+
             actionSlots[i].gameObject.SetActive(true);
             actionSlots[i].InitAction(actionCtx);
+
+            if (foundFirstAction) continue;
+            foundFirstAction = true;
+            firstAction = actionSlots[i];
         }
         
         
@@ -163,7 +193,29 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterMaxHpNum.text = "/" + characterCtx.maxHp.ToString();
             ShowSpecialEffects(characterCtx);
             characterCtx.PreResolveActingEffects(actionSlots);
-
+            ShowCurrentStatusEffectsFromOccupantCtx(characterCtx);
+            
+            displ_IntentionsVLG.SetActive(false);
+            displ_IntentionsNumGO.SetActive(false);
+            displ_PredictedNumGO.SetActive(false);
+        }
+        else if (tile.occupantCtx is EnemyOccupantCtx enemyOccupantCtx)
+        {
+            apValues.gameObject.SetActive(false);
+            txt_CharacterArmorNum.text = enemyOccupantCtx.currentArmor.ToString();
+            txt_CharacterMaxArmorNum.text = "/" + enemyOccupantCtx.maxArmor.ToString();
+            txt_CharacterHpNum.text = enemyOccupantCtx.currentHp.ToString();
+            txt_CharacterMaxHpNum.text = "/" + enemyOccupantCtx.maxHp.ToString();
+            ShowSpecialEffects(enemyOccupantCtx);
+            enemyOccupantCtx.PreResolveActingEffects(actionSlots);
+            ShowCurrentStatusEffectsFromOccupantCtx(enemyOccupantCtx);
+            
+            enemyIntentions.EnableActions(enemyOccupantCtx.currentIntentions, enemyOccupantCtx.currentPredicteds);
+            txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.currentIntentions.ToString();
+            txt_EnemyPredictedsNum.text = enemyOccupantCtx.currentPredicteds.ToString();
+            displ_IntentionsVLG.SetActive(true);
+            displ_IntentionsNumGO.SetActive(true);
+            displ_PredictedNumGO.SetActive(true);
         }
         else if (tile.occupantCtx is BattlerOccupantCtx battlerCtx)
         {
@@ -174,62 +226,47 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterMaxHpNum.text = "/" + battlerCtx.maxHp.ToString();
             ShowSpecialEffects(battlerCtx);
             battlerCtx.PreResolveActingEffects(actionSlots);
+            ShowCurrentStatusEffectsFromOccupantCtx(battlerCtx);
         }
         
         // Recently Selected Action Setup
-        ShowAction(tile, actionSlots.FirstOrDefault()!.actionCtx);
-        LayoutRebuilder.MarkLayoutForRebuild(combatDisplayRectTransform);
+        ShowAction(tile, firstAction.actionCtx);
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     public void ShowAction(BattleTile tile, BattlemodeActionCtx actionCtx)
     {
-        if (actionCtx == null) return;
+        if (actionCtx == null)
+        {
+            Debug.Log("No action context provided");
+            return;
+        }
+        bool isEnemy = tile.IsEnemy();
         
         // Populate Action Display Info
-        if(tile.IsEnemy())
-        {
-            display_Enemy.SetActive(true);
-            display_Player.SetActive(false);
-            if (tile.occupantCtx.cfg is not EnemyConfig ec) {
-                Debug.LogError("Trying to display enemy action info on non-enemy occupant : " + tile.occupantCtx.cfg.occupantName);
-                return; }
-            UpdateEnemyActionInfo(actionCtx, ec);
-        }
-        else
-        {
-            display_Enemy.SetActive(false);
-            display_Player.SetActive(true);
-            if (tile.occupantCtx.cfg is not CharacterConfig cc) {
-                Debug.LogError("Trying to display player action info on non-player occupant : " + tile.occupantCtx.cfg.occupantName);
-                return; }
-            UpdatePlayerActionInfo(actionCtx, cc);
-            Debug.Log("Updated Player Action Info.");
-        }
+        if(isEnemy && tile.occupantCtx.cfg is EnemyConfig ec)           UpdateEnemyActionInfo(actionCtx, ec, tile.occupantCtx);
+        else if(!isEnemy && tile.occupantCtx.cfg is CharacterConfig cc) UpdatePlayerActionInfo(actionCtx, cc, tile.occupantCtx);
+
+        txt_ActionName.text = actionCtx.cfg.actionName;
+        txt_ActionDescription.text = actionCtx.cfg.description;
         
         ShowEffects(actionCtx?.cfg);
-        tile.occupantCtx.mostRecentSelectedAction = actionSlots.FirstOrDefault(a => a.actionCtx?.cfg == actionCtx?.cfg);
-        currentlySelectedAction = tile.occupantCtx.mostRecentSelectedAction?.actionCtx;
-        LayoutRebuilder.MarkLayoutForRebuild(combatDisplayRectTransform);
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+        currentlySelectedAction = actionCtx;
     }
 
 
-    public void UpdateEnemyActionInfo(BattlemodeActionCtx actionCtx, EnemyConfig enemyConfig)
+    public void UpdateEnemyActionInfo(BattlemodeActionCtx actionCtx, EnemyConfig enemyConfig, OccupantCtx occupantCtx)
     {
-        txt_EnemyActionName.text = actionCtx.cfg.actionName;
-        txt_EnemyActionDescription.text = actionCtx.cfg.description;
-        txt_EnemyActionIntentionsNum.text = enemyConfig.actionIntentionsCount.ToString();
-        txt_EnemyVisableActionIntentionsNum.text = enemyConfig.visableActionCount.ToString();
+        txt_EnemyActionIntentionsNum.text = enemyConfig.intentions.ToString();
+        txt_EnemyPredictedsNum.text = enemyConfig.defaultPredicted.ToString();
     }
     
     
-    public void UpdatePlayerActionInfo(BattlemodeActionCtx actionCtx, CharacterConfig characterConfig)
+    public void UpdatePlayerActionInfo(BattlemodeActionCtx actionCtx, CharacterConfig characterConfig, OccupantCtx occupantCtx)
     {
         var resolvedApCost = actionCtx.cfg.apCost + actionCtx.apDelta;
-        
-        txt_PlayerActionName.text = actionCtx.cfg.actionName;
-        txt_PlayerActionDescription.text = actionCtx.cfg.description;
         txt_PlayerAPnum.text = resolvedApCost.ToString();
-        Debug.Log($"Updated Player Action Info: {actionCtx.cfg.actionName}, AP Cost: {resolvedApCost}");
     }
     
     
@@ -243,7 +280,29 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // effect ctx holds state (stacks amount), could separate later. although locality of info is desired
         for (int i = 0; i < actionConfig.effectsToApplyToTarget.Count; i++)
             effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToTarget[i].GenerateEffectCtx());
-        LayoutRebuilder.MarkLayoutForRebuild(effectContentRectTransform);
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+
+    }
+
+    public void ShowCurrentStatusEffectsFromOccupantCtx(BattlerOccupantCtx battlerOccupantCtx)
+    {
+        statusEffectHPBarDisplayPool.ReleaseAll();
+        statusEffectCurrentDisplayPool.ReleaseAll();
+        if (battlerOccupantCtx.currentEffects.Count == 0)
+        {
+            combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+            return;
+        }
+        
+        // Hp bar
+        foreach (var statusEffect in battlerOccupantCtx.currentEffects)
+            statusEffectHPBarDisplayPool.Get().PopulateEffect(statusEffect);
+        
+        // Current Effects
+        foreach (var statusEffect in battlerOccupantCtx.currentEffects)
+            statusEffectCurrentDisplayPool.Get().PopulateEffect(statusEffect);
+        
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     public void ShowSpecialEffects(BattlerOccupantCtx battlerOccupantCtx)
@@ -251,7 +310,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         specialEffectDisplayPool.ReleaseAll();
         foreach (var effect in battlerOccupantCtx.specialEffects)
             specialEffectDisplayPool.Get().PopulateEffect(effect);
-        LayoutRebuilder.MarkLayoutForRebuild(specialEffectContentRectTransform);
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     
@@ -265,11 +324,16 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
     public void UseAction()
     {
+        if (currentlySelectedTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx)
+        {
+            Debug.Log("[BattlemodeActionDisplay] Cannot use action on non-character occupant");
+            return;
+        }
+        
         if (currentlySelectedAction != null) 
-            BattleTracker.Instance.UseAndQueueAction(
-                currentlySelectedTile, 
-                (BattlemodeActionCtx)currentlySelectedAction
-            );
+            BattleTracker.Instance.UseAndQueueAction(currentlySelectedTile, currentlySelectedAction);
+        else
+            Debug.LogError("[BattlemodeActionDisplay] Using a null currentlySelectedAction");
     }
 
     public int GetCurrentlySelectedAPCost()

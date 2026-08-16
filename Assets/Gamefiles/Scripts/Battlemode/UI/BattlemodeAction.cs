@@ -27,6 +27,9 @@ public class BattlemodeAction : MonoBehaviour
             actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, actionCtx);
     }
 
-    public void UseAction() 
-        => actionsDisplay.Value.UseAction();
+    public void UseAction()
+    {
+        Debug.Log("Using Action: " + actionCtx.cfg.name + "");
+        actionsDisplay.Value.UseAction();
+    }
 }

@@ -15,15 +15,17 @@ MonoBehaviour:
   occupantName: Enemy Guy
   icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
   prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
+  currentLevel: 1
   maxHP: 5
-  maxAP: 5
   maxArmor: 1
   damage: 1
   _maxEquippableActions: 2
   equippedActions:
   - {fileID: 0}
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  AllAvaliableActions: []
+  AllAvaliableActions:
+  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
   ForcedActions: []
-  ActionIntentionsCount: 2
-  VisableActionCount: 1
+  specialEffects: []
+  intentions: 1
+  defaultPredicted: 1

@@ -8,8 +8,6 @@
     {
         public GameObject obj;
         public abstract BattlePositionOccupantConfig cfg { get; set; }
-        [ShowInInspector] public BattlemodeAction mostRecentSelectedAction;
-        public virtual void Removed() { obj = null; cfg = null; mostRecentSelectedAction = null; }
     }
 
     public class BattlerOccupantCtx : OccupantCtx
@@ -221,12 +219,12 @@
     
     public class EnemyOccupantCtx : BattlerOccupantCtx
     {
-        public int maxActionIntentions;
-        public int visibleActionCount;
+        public int currentIntentions;
+        public int currentPredicteds;
         
         public EnemyOccupantCtx(EnemyConfig config) : base(config)
         {
-            maxActionIntentions = config.actionIntentionsCount;
-            visibleActionCount = config.visableActionCount;
+            currentIntentions = config.intentions;
+            currentPredicteds = config.defaultPredicted;
         }
     }
