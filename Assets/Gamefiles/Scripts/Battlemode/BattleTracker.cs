@@ -77,7 +77,7 @@ public class BattleTracker : Singleton<BattleTracker>
             }
             else // Select Target Tile
             {
-                SelectTargetTile(tile, queuedPlayerAction.lookingForTarget);
+                UseActionOnTargetTile(tile, queuedPlayerAction.lookingForTarget);
             }
             return;
         }
@@ -90,7 +90,7 @@ public class BattleTracker : Singleton<BattleTracker>
         player.ZoomIntoTile(currentlySelectedTile, DisplayActionsUI);
     }
 
-    public void SelectTargetTile(BattleTile tile, BattlemodeActionConfig.Role targetRole)
+    public void UseActionOnTargetTile(BattleTile tile, BattlemodeActionConfig.Role targetRole)
     {
         RoleTarget selectedTarget = null;
         switch (targetRole)
@@ -144,7 +144,7 @@ public class BattleTracker : Singleton<BattleTracker>
     }
     
 
-    public void UseAndQueueAction(BattleTile tile, BattlemodeActionCtx actionCtx)
+    public void QueueAction(BattleTile tile, BattlemodeActionCtx actionCtx)
     {
         if (tile.occupantCtx is CharacterOccupantCtx actingCharacterCtx)
             if (actingCharacterCtx.currentAP < (actionCtx.ap + actionCtx.apDelta))
@@ -157,13 +157,24 @@ public class BattleTracker : Singleton<BattleTracker>
         queuedPlayerAction.lookingForTarget = actionCtx.cfg.roleTarget;
         
         // Target Selection
-        gridWorld.HideNotContaining(
+        gridWorld.HideUnoccupiedTiles_GetAvaliableTargetTiles(
             battleConfig: currentBattleConfig,
             actionTarget: queuedPlayerAction.lookingForTarget,
-            queuedOccupant: queuedPlayerAction.targetTile.occupantCtx.cfg);
+            queuedOccupant: queuedPlayerAction.targetTile.occupantCtx.cfg,
+            out var avaliableTargetsTiles);
         
         player.ZoomOutToSelectQueuedAction();
         actionsDisplay.HideDisplay();
+        GridWorld.InRangeCheckCtx inRangeCheckCtx = new()
+        {
+            upRange = actionCtx.cfg.upRange,
+            fwdRange = actionCtx.cfg.fwdRange,
+            downRange = actionCtx.cfg.downRange,
+            myRow = tile.row,
+            myCol = tile.col,
+        };
+        gridWorld.ShowInRangeTiles(inRangeCheckCtx, avaliableTargetsTiles);
+
     }
 
 
@@ -187,7 +198,7 @@ public class BattleTracker : Singleton<BattleTracker>
     {
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
-        gridWorld.GetTiles(out var opponentTiles, out var playerTiles);
+        gridWorld.GetBattlerTiles(out var opponentTiles, out var playerTiles);
         opponentAI.AttackAll(opponentTiles, playerTiles, gridWorld);
     }
 

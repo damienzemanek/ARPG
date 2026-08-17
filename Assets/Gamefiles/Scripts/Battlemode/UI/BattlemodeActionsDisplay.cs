@@ -334,7 +334,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         }
         
         if (currentlySelectedAction != null) 
-            BattleTracker.Instance.UseAndQueueAction(currentlySelectedTile, currentlySelectedAction);
+            BattleTracker.Instance.QueueAction(currentlySelectedTile, currentlySelectedAction);
         else
             Debug.LogError("[BattlemodeActionDisplay] Using a null currentlySelectedAction");
     }

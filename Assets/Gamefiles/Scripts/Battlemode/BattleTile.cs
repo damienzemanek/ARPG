@@ -4,6 +4,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class BattleTile : MonoBehaviour
@@ -13,8 +14,9 @@ public class BattleTile : MonoBehaviour
     [ShowInInspector, BoxGroup("OccupantCtx")]
     public OccupantCtx occupantCtx;
 
-    public bool hiddenCompletly = false;
+    [FormerlySerializedAs("hiddenCompletly")] public bool unselectable = false;
     bool alreadySelected = false;
+    bool isInRange = false;
     [ReadOnly] public int col, row;
     public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
     public float maxHPBarScale = 3.5f;
@@ -30,6 +32,7 @@ public class BattleTile : MonoBehaviour
     [Required] public GameObject @default;
     [Required] public GameObject hover;
     [Required] public GameObject selected;
+    [Required] public GameObject inRange;
 
 
     public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
@@ -58,43 +61,76 @@ public class BattleTile : MonoBehaviour
         display_AP.SetActive(occupantCfg is CharacterConfig);
     }
 
-
-    public void Unhide()
-    {
-        Clear();
-        @default.SetActive(true);
-        hiddenCompletly = false;
-    }
-
     public void Clear()
     {
         UnHover();
         selected.SetActive(false);
+        isInRange = false;
+        inRange.SetActive(false);
         mouseClickDetector.detections.Clear();
         alreadySelected = false;
     }
+    
 
-    public void UnHover() => hover.SetActive(false);
+    public void HideAndMakeUnSelectable()
+    {
+        Clear();
+        @default.SetActive(false);
+        unselectable = true;
+    }
+    
+    public void Unhide()
+    {
+        Clear();
+        @default.SetActive(true);
+        unselectable = false;
+    }
 
     public void Hover()
     {
         if (!occupied) return;
-        if (hiddenCompletly) return;
+        if (unselectable) return;
         if (selected.activeInHierarchy) return;
         hover.SetActive(true);
+        inRange.SetActive(false);
     }
+    
 
+    public void UnHover()
+    {
+        hover.SetActive(false);
+        if (isInRange)
+        {
+            inRange.SetActive(true);
+            @default.SetActive(false);
+        }
+    }
+    
     public void Select()
     {
         if (alreadySelected) return;
         if (!occupied) return;
-        if (hiddenCompletly) return;
+        if (unselectable) return;
         BattleTracker.Instance.SelectTile(this);
         hover.SetActive(false);
         selected.SetActive(true);
         alreadySelected = true;
     }
 
+    public void InRange()
+    {
+        Clear();
+        @default.SetActive(false);
+        isInRange = true;
+        inRange.SetActive(true);
+    }
+
+    public void NotInRange()
+    {
+        if (unselectable) return; // if already unselectable just return
+        HideAndMakeUnSelectable();
+    }
+    
     public void UpdateTransientStats()
     {
         if (!occupied) return;
@@ -155,20 +191,12 @@ public class BattleTile : MonoBehaviour
             (useTarget == BattlemodeActionConfig.Role.Self && IsSelf(user)) ||
             (useTarget == BattlemodeActionConfig.Role.Ally && IsAlly(user));
 
-        if (!shouldShow) HideCompletely();
+        if (!shouldShow) HideAndMakeUnSelectable();
     }
 
     public bool IsEnemy() => occupantCtx.cfg is EnemyConfig;
     public bool IsSelf(OccupantCfg selfConfig) => occupantCtx.cfg == selfConfig;
     public bool IsAlly(OccupantCfg selfConfig) => occupantCtx.cfg is CharacterConfig && !IsSelf(selfConfig);
-
-    public void HideCompletely()
-    {
-        Clear();
-        @default.SetActive(false);
-        hiddenCompletly = true;
-    }
-
 
     [Button]
     public void TestKill()

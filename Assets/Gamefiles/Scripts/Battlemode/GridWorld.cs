@@ -114,8 +114,12 @@ public class GridWorld : MonoBehaviour
     }
 
 
-    public void HideNotContaining(BattleConfig battleConfig, BattlemodeActionConfig.Role actionTarget, OccupantCfg queuedOccupant)
+    public void HideUnoccupiedTiles_GetAvaliableTargetTiles(BattleConfig battleConfig,
+        BattlemodeActionConfig.Role actionTarget,
+        OccupantCfg queuedOccupant,
+        out List<BattleTile> avaliableTargetsTiles)
     {
+        avaliableTargetsTiles = new List<BattleTile>();
         for(int c = 0; c < battleConfig.rows.Length; c++)
         {
             for(int r = 0; r < battleConfig.rows[c].colPositions.Count; r++)
@@ -125,16 +129,17 @@ public class GridWorld : MonoBehaviour
                 var tile = gridRows[c].tiles[r];
                 if (cfgOccupiedPos == null || tile.occupantCtx == null)
                 {
-                    tile.HideCompletely();
+                    tile.HideAndMakeUnSelectable();
                     continue;
                 }
                     
+                avaliableTargetsTiles.Add(tile);
                 tile.ShowOnly(actionTarget, queuedOccupant);
             }
         }
     }
 
-    public void GetTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
+    public void GetBattlerTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
     {
         opponentTiles = new List<BattleTile>();
         playerTiles = new List<BattleTile>();
@@ -154,9 +159,94 @@ public class GridWorld : MonoBehaviour
     public void UnSelectAll()
     {
         foreach (var t in gridRows.SelectMany(r => r.tiles))
-        {
-            t.Clear();
             t.Unhide();
+    }
+
+    public struct InRangeCheckCtx
+    {
+        public int myCol;
+        public int myRow;
+        
+        public int upRange;
+        public int downRange;
+        public int fwdRange;
+    }
+    
+    public void ShowInRangeTiles(InRangeCheckCtx ctx, List<BattleTile> avaliableTargetsTiles)
+    {
+        List<BattleTile> tilesInRange = new();
+
+        foreach (var targetTile in avaliableTargetsTiles)
+        {
+            // targ on the same row
+            if (ctx.myRow == targetTile.row && ctx.fwdRange > 0)
+            {
+                for (int sameRowCheckCol = ctx.myCol + 1;
+                     sameRowCheckCol < gridRows[ctx.myRow].tiles.Count;
+                     sameRowCheckCol++)
+                {
+                    Debug.Log("Checking: " + sameRowCheckCol);
+                    
+                    var distDifference = Mathf.Abs(sameRowCheckCol - ctx.myCol);
+
+                    if (distDifference > ctx.fwdRange)
+                    {
+                        gridRows[ctx.myRow].tiles[sameRowCheckCol].NotInRange();
+                        continue;
+                    }
+                    
+                    tilesInRange.Add(gridRows[ctx.myRow].tiles[sameRowCheckCol]);
+                }
+            }
+            
+            //up 1 row
+            // is not at the top
+            if (ctx.myRow > 0 && ctx.upRange > 0)
+            {
+                // targ on the row above
+                if (ctx.myRow - 1 == targetTile.row - 1)
+                {
+                    for (int upRowCheckCol = ctx.myCol;
+                         upRowCheckCol < gridRows[ctx.myRow - 1].tiles.Count;
+                         upRowCheckCol++)
+                    {
+                        var distDifference = Mathf.Abs(upRowCheckCol - ctx.myCol);
+                        if (distDifference >= ctx.upRange)
+                        {
+                            gridRows[ctx.myRow - 1].tiles[upRowCheckCol].NotInRange();
+                            continue;
+                        }
+                        tilesInRange.Add(gridRows[ctx.myRow - 1].tiles[upRowCheckCol]);
+                    }
+                }
+            }
+                
+            //down 1 row
+            // is not at the bottom
+            if (ctx.myRow < gridRows.Count - 1 && ctx.downRange > 0)
+            {
+                // targ on the row bellow
+                if (ctx.myRow + 1 == targetTile.row + 1)
+                {
+                    for (int downRowCheckCol = ctx.myCol;
+                         downRowCheckCol < gridRows[ctx.myRow + 1].tiles.Count;
+                         downRowCheckCol++)
+                    {
+                        var distDifference = Mathf.Abs(downRowCheckCol - ctx.myCol);
+                        if (distDifference >= ctx.downRange)
+                        {
+                            gridRows[ctx.myRow + 1].tiles[downRowCheckCol].NotInRange();
+                            continue;
+                        }
+                        tilesInRange.Add(gridRows[ctx.myRow + 1].tiles[downRowCheckCol]);
+                    }
+                }
+                
+            }
         }
+        
+        
+        foreach (var t in tilesInRange)
+            t.InRange();
     }
 }
