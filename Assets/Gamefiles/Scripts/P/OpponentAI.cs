@@ -71,7 +71,7 @@ public class OpponentAI : MonoBehaviour
         queuedAction.queuedActionCtx = actionCtx;
         
         // Choose a target
-        BattleTracker.RoleTarget target = null;
+        RoleTarget target = null;
         
         switch (targetRole)
         {
