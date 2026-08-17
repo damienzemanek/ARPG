@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class BattlePositionOccupantConfig : ScriptableObject
+public abstract class OccupantCfg : ScriptableObject
 {
     [Required] public string occupantName;
     [Required] public Sprite icon;

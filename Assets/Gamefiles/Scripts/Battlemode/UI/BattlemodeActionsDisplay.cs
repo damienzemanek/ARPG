@@ -318,6 +318,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     {
         currentlySelectedTile = null;
         effectDisplayPool.ReleaseAll();
+        effectDisplayPool.ReleaseAll();
+        specialEffectDisplayPool.ReleaseAll();
+        statusEffectHPBarDisplayPool.ReleaseAll();
         foreach (var slot in actionSlots) slot.Hide();
         GUI.SetActive(false);
     }

@@ -88,16 +88,23 @@ public class GridWorld : MonoBehaviour
 
     public void PopulateGrid(BattleConfig battleConfig)
     {
+        int populationCount = 0;
+        
         for (int c = 0; c < battleConfig.rows.Length; c++)
         {
             for (int r = 0; r < battleConfig.rows[c].colPositions.Count; r++)
             {
                 var occupant = battleConfig.rows[c].colPositions[r].occupant;
                 if (occupant == null) continue;
+                populationCount++;
+                Debug.Log("[BattleConfig] Occupant found at: " + c + ", " + r + " = " + occupant + ", Populating...");
                 gridRows[c].tiles[r].Init(c, r, occupant);
                 gridRows[c].tiles[r].Unhide();
+                Debug.Log("[BattleConfig] Population complete");
             }
         }
+        
+        Debug.Log("[BattleConfig] Population complete, " + populationCount + " tiles populated");
     }
 
     public void UpdateGrid()
@@ -107,23 +114,41 @@ public class GridWorld : MonoBehaviour
     }
 
 
-    public void HideNotContaining(BattleConfig battleConfig, BattlemodeActionConfig.Role actionTarget, BattlePositionOccupantConfig queuedOccupant)
+    public void HideNotContaining(BattleConfig battleConfig, BattlemodeActionConfig.Role actionTarget, OccupantCfg queuedOccupant)
     {
         for(int c = 0; c < battleConfig.rows.Length; c++)
         {
             for(int r = 0; r < battleConfig.rows[c].colPositions.Count; r++)
             {
                 var battlePosData = battleConfig.rows[c].colPositions[r];
-                var occupant = battlePosData.occupant;
+                var cfgOccupiedPos = battlePosData.occupant;
                 var tile = gridRows[c].tiles[r];
-                if (occupant == null)
+                if (cfgOccupiedPos == null || tile.occupantCtx == null)
                 {
                     tile.HideCompletely();
                     continue;
                 }
+                    
                 tile.ShowOnly(actionTarget, queuedOccupant);
             }
         }
+    }
+
+    public void GetTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
+    {
+        opponentTiles = new List<BattleTile>();
+        playerTiles = new List<BattleTile>();
+        
+        foreach (var t in gridRows.SelectMany(r => r.tiles))
+            switch (t.occupantCtx)
+            {
+                case null: continue;
+                case EnemyOccupantCtx: opponentTiles.Add(t); break;
+                case CharacterOccupantCtx: playerTiles.Add(t); break;
+            }
+        
+        if(opponentTiles.Count == 0) Debug.LogError("No opponent tiles found");
+        if(playerTiles.Count == 0) Debug.LogError("No player tiles found");
     }
     
     public void UnSelectAll()

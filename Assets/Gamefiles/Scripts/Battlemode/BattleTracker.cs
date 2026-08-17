@@ -17,19 +17,20 @@ public class BattleTracker : Singleton<BattleTracker>
     [Required] public GridWorld gridWorld;
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
+    [Required] public OpponentAI opponentAI;
     [ReadOnly] public Turn currentTurn;
 
     [ReadOnly, ShowIf("_hasQueuedAction"), ShowInInspector]
-    public QueuedPlayerAction queuedPlayerAction = new();
+    public QueuedAction queuedPlayerAction = new();
     [ReadOnly, ShowInInspector] BattleConfig currentBattleConfig 
         => SessionData.HasInstance && SessionData.Instance.currentBattleConfig != null 
         ? SessionData.Instance.currentBattleConfig 
         : null;
     
-    public class QueuedPlayerAction
+    public class QueuedAction
     {
         public bool hasQueuedAction;
-        public BattlemodeActionCtx? queuedActionCtx;
+        public BattlemodeActionCtx queuedActionCtx;
         public BattlerOccupantCtx actingOccupantCtx;
         public BattleTile targetTile;
         public BattlemodeActionConfig.Role lookingForTarget;  
@@ -76,7 +77,7 @@ public class BattleTracker : Singleton<BattleTracker>
             }
             else // Select Target Tile
             {
-                SelectTargetTile(tile);
+                SelectTargetTile(tile, queuedPlayerAction.lookingForTarget);
             }
             return;
         }
@@ -89,11 +90,10 @@ public class BattleTracker : Singleton<BattleTracker>
         player.ZoomIntoTile(currentlySelectedTile, DisplayActionsUI);
     }
 
-    public void SelectTargetTile(BattleTile tile)
+    public void SelectTargetTile(BattleTile tile, BattlemodeActionConfig.Role targetRole)
     {
         RoleTarget selectedTarget = null;
-        var queuedActionsTarget = queuedPlayerAction.lookingForTarget;
-        switch (queuedActionsTarget)
+        switch (targetRole)
         {
             case BattlemodeActionConfig.Role.Self:
                 queuedPlayerAction.targSelf.tile = tile; 
@@ -127,10 +127,9 @@ public class BattleTracker : Singleton<BattleTracker>
         CoroutineRunner.Instance.RunMethodDelayed(() =>
         {
             queuedPlayerAction.hasQueuedAction = false;
-            queuedPlayerAction.actingOccupantCtx.PostResolveActingEffects(actionsDisplay.actionSlots);
+            queuedPlayerAction.actingOccupantCtx.PostResolveActingEffects(queuedPlayerAction.queuedActionCtx);
             UnSelectAll();
             gridWorld.UpdateGrid(); // Updates AP and HP through transient stats
-            
         }, 0.1f);
     }
     
@@ -181,9 +180,15 @@ public class BattleTracker : Singleton<BattleTracker>
     {
         actionsDisplay.ShowDisplay(currentlySelectedTile);
     }
-    public void HideActionsUI()
+    
+    public void HideActionsUI() => actionsDisplay.HideDisplay();
+
+    public void EndPlayerTurn()
     {
+        currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
+        gridWorld.GetTiles(out var opponentTiles, out var playerTiles);
+        opponentAI.AttackAll(opponentTiles, playerTiles, gridWorld);
     }
 
 
@@ -191,27 +196,27 @@ public class BattleTracker : Singleton<BattleTracker>
     {
         public abstract BattlemodeActionConfig.Role role { get; }
         public abstract void ClearTarget();
-        public abstract void ActUponTarget(QueuedPlayerAction queuedActionCtx);
-        public void ActUponTargetImpl(QueuedPlayerAction queuedAction, BattleTile tile)
+        public abstract void ActUponTarget(QueuedAction queuedActionCtx);
+        public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile tile)
         {
             if (tile == null) { Debug.LogError("No target selected for self role target."); return; }
             Debug.Log($"Acting upon target at tile: {tile}");
 
             if (tile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) return;
             
-            queuedAction.queuedActionCtx?.SetHealViaTargetMaxHealth(targetBattlerCtx);
+            queuedAction.queuedActionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
 
             if (queuedAction.queuedActionCtx == null) { Debug.LogError("No action context generated."); return; }
             
-            queuedAction.queuedActionCtx = ResolveBeforeActorEffects(queuedAction, (BattlemodeActionCtx)queuedAction.queuedActionCtx);
+            queuedAction.queuedActionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.queuedActionCtx);
             
             // Acting on Target
-            targetBattlerCtx.ActedUponByAction(queuedAction, (BattlemodeActionCtx)queuedAction.queuedActionCtx);
+            targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.queuedActionCtx);
             
-            ResolveAfterActorEffects(queuedAction, (BattlemodeActionCtx)queuedAction.queuedActionCtx);
+            ResolveAfterActorEffects(queuedAction, queuedAction.queuedActionCtx);
         }
 
-        BattlemodeActionCtx ResolveBeforeActorEffects(QueuedPlayerAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+        BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
         {
             if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return actingActionCtx;
             foreach (var effect in battlerCtx.currentEffects)
@@ -223,7 +228,7 @@ public class BattleTracker : Singleton<BattleTracker>
             return actingActionCtx;
         }
 
-        void ResolveAfterActorEffects(QueuedPlayerAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+        void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
         {
             if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
             foreach (var effect in battlerCtx.currentEffects)
@@ -240,7 +245,7 @@ public class BattleTracker : Singleton<BattleTracker>
         public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Self;
         public BattleTile tile;
         public override void ClearTarget() => tile = null;
-        public override void ActUponTarget(QueuedPlayerAction queuedActionCtx) 
+        public override void ActUponTarget(QueuedAction queuedActionCtx) 
             => ActUponTargetImpl(queuedActionCtx, tile);
     }
     
@@ -249,7 +254,7 @@ public class BattleTracker : Singleton<BattleTracker>
         public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Ally;
         public BattleTile tile;
         public override void ClearTarget() => tile = null;
-        public override void ActUponTarget(QueuedPlayerAction queuedActionCtx)
+        public override void ActUponTarget(QueuedAction queuedActionCtx)
             => ActUponTargetImpl(queuedActionCtx, tile);
     }
     
@@ -258,7 +263,7 @@ public class BattleTracker : Singleton<BattleTracker>
         public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Enemy;
         public BattleTile tile;
         public override void ClearTarget() => tile = null;
-        public override void ActUponTarget(QueuedPlayerAction queuedActionCtx) 
+        public override void ActUponTarget(QueuedAction queuedActionCtx) 
             => ActUponTargetImpl(queuedActionCtx, tile);
     }
 
@@ -268,7 +273,7 @@ public class BattleTracker : Singleton<BattleTracker>
         public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
         public List<BattleTile> tiles = new();
         public override void ClearTarget() => tiles.Clear();
-        public override void ActUponTarget(QueuedPlayerAction queuedActionCtx)
+        public override void ActUponTarget(QueuedAction queuedActionCtx)
         {
             foreach (var tile in tiles)
                 ActUponTargetImpl(queuedActionCtx, tile);
@@ -281,7 +286,7 @@ public class BattleTracker : Singleton<BattleTracker>
         public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
         public List<BattleTile> tiles = new();
         public override void ClearTarget() => tiles.Clear();
-        public override void ActUponTarget(QueuedPlayerAction queuedActionCtx)
+        public override void ActUponTarget(QueuedAction queuedActionCtx)
         {
             foreach (var tile in tiles)
                 ActUponTargetImpl(queuedActionCtx, tile);

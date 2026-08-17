@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f18e7ad92b4304bec2dba7f748b3a1, type: 3}
-  m_Name: EnemyConfig1
+  m_Name: EnemyConfig 3
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  occupantName: Enemy Guy
+  occupantName: 'Slow Enemy '
   icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
   prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
   currentLevel: 1
-  maxHP: 5
-  maxArmor: 1
+  maxHP: 6
+  maxArmor: 2
   damage: 1
   _maxEquippableActions: 2
   equippedActions:
@@ -27,5 +27,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
   ForcedActions: []
   specialEffects: []
+  attackOrder: 4
   intentions: 1
   defaultPredicted: 1

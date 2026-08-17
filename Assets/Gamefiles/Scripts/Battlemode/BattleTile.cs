@@ -9,7 +9,9 @@ using UnityEngine;
 public class BattleTile : MonoBehaviour
 {
     public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
-    [ShowInInspector, BoxGroup("OccupantCtx")] public OccupantCtx occupantCtx;
+
+    [ShowInInspector, BoxGroup("OccupantCtx")]
+    public OccupantCtx occupantCtx;
 
     public bool hiddenCompletly = false;
     bool alreadySelected = false;
@@ -23,33 +25,39 @@ public class BattleTile : MonoBehaviour
     [Required] public TextMeshPro txt_AP;
     [Required] public TextMeshPro txt_remainingHP;
 
-    
+
     [Required] public DetectorMouseClick mouseClickDetector;
     [Required] public GameObject @default;
     [Required] public GameObject hover;
     [Required] public GameObject selected;
-    
 
-    public void Init(int _col, int _row, BattlePositionOccupantConfig occupantConfig = null)
+
+    public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
     {
         this.col = _col;
         this.row = _row;
         UnHover();
-        
-        if (occupantConfig == null) return;
-        
-        switch (occupantConfig)
+
+        if (occupantCfg == null)
+        {
+            Debug.Log("(EARLY RET) No occupent config given for BattleTile Init() at [" + col + ", " + row + "]");
+            return;
+        }
+
+        switch (occupantCfg)
         {
             case CharacterConfig cc: occupantCtx = new CharacterOccupantCtx(cc); break;
             case EnemyConfig ec: occupantCtx = new EnemyOccupantCtx(ec); break;
-            default: occupantCtx = new BattlerOccupantCtx(occupantConfig as BattlerConfig); break;
+            default: occupantCtx = new BattlerOccupantCtx(occupantCfg as BattlerConfig); break;
         }
-        
-        if (!occupied) return;
-        Spawn(occupantConfig);
-        display_AP.SetActive(occupantConfig is CharacterConfig);
+
+        if (occupantCtx.cfg == null)
+            Debug.LogError($"Created Occupant Ctx wrongly has null config [{occupantCtx.cfg}]");
+
+        Spawn(occupantCfg);
+        display_AP.SetActive(occupantCfg is CharacterConfig);
     }
-    
+
 
     public void Unhide()
     {
@@ -57,7 +65,7 @@ public class BattleTile : MonoBehaviour
         @default.SetActive(true);
         hiddenCompletly = false;
     }
-    
+
     public void Clear()
     {
         UnHover();
@@ -72,7 +80,7 @@ public class BattleTile : MonoBehaviour
     {
         if (!occupied) return;
         if (hiddenCompletly) return;
-        if(selected.activeInHierarchy) return;
+        if (selected.activeInHierarchy) return;
         hover.SetActive(true);
     }
 
@@ -89,12 +97,12 @@ public class BattleTile : MonoBehaviour
 
     public void UpdateTransientStats()
     {
-        if(!occupied) return;
+        if (!occupied) return;
         if (occupantCtx is not BattlerOccupantCtx battlerCtx) return;
         SetHealth(battlerCtx.currentHp, battlerCtx.maxHp);
         if (occupantCtx is not CharacterOccupantCtx characterCtx) return;
         SetAP(characterCtx.currentAP);
-        
+
     }
 
     public void SetHealth(int current, float max)
@@ -116,64 +124,64 @@ public class BattleTile : MonoBehaviour
         if (occupantCtx is not CharacterOccupantCtx characterCtx) return;
         txt_AP.text = current.ToString();
     }
-    
-    
-    
+
+
+
 
     [Button]
-    void Spawn(BattlePositionOccupantConfig config)
+    void Spawn(OccupantCfg config)
     {
         if (config is not BattlerConfig battlerConfig)
         {
             Debug.LogError("Trying to spawn a non-battler occupant");
             return;
         }
-        
+
         occupantCtx.obj = Instantiate(
-            config.prefab, 
+            config.prefab,
             transform.position + occupantSpawnOffset,
             Quaternion.identity);
+        occupantCtx.obj.name = config.name;
         SetHealth(battlerConfig.maxHP, battlerConfig.maxHP);
         display.SetActive(true);
+
+        Debug.Log("Spawned " + config.name + " at [" + col + ", " + row + "]");
     }
 
-    public void ShowOnly(BattlemodeActionConfig.Role useTarget, BattlePositionOccupantConfig user)
+    public void ShowOnly(BattlemodeActionConfig.Role useTarget, OccupantCfg user)
     {
         bool shouldShow =
             (useTarget == BattlemodeActionConfig.Role.Enemy && IsEnemy()) ||
-            (useTarget == BattlemodeActionConfig.Role.Self  && IsSelf(user)) ||
-            (useTarget == BattlemodeActionConfig.Role.Ally  && IsAlly(user));
+            (useTarget == BattlemodeActionConfig.Role.Self && IsSelf(user)) ||
+            (useTarget == BattlemodeActionConfig.Role.Ally && IsAlly(user));
 
         if (!shouldShow) HideCompletely();
     }
-    
+
     public bool IsEnemy() => occupantCtx.cfg is EnemyConfig;
-    public bool IsSelf(BattlePositionOccupantConfig selfConfig) => occupantCtx.cfg == selfConfig;
-    public bool IsAlly(BattlePositionOccupantConfig selfConfig) => occupantCtx.cfg is CharacterConfig && !IsSelf(selfConfig);
+    public bool IsSelf(OccupantCfg selfConfig) => occupantCtx.cfg == selfConfig;
+    public bool IsAlly(OccupantCfg selfConfig) => occupantCtx.cfg is CharacterConfig && !IsSelf(selfConfig);
+
     public void HideCompletely()
     {
         Clear();
         @default.SetActive(false);
         hiddenCompletly = true;
     }
-    
+
 
     [Button]
     public void TestKill()
     {
         display.SetActive(false);
-        occupantCtx.cfg = null;
         if (occupantCtx.obj != null)
         {
-#if UNITY_EDITOR
-            DestroyImmediate(occupantCtx.obj);
-            return;
-#endif
-            Destroy(occupantCtx.obj);
+            if (Application.isPlaying)
+                Destroy(occupantCtx.obj);
+            else
+                DestroyImmediate(occupantCtx.obj);
         }
-        occupantCtx.obj = null;
         occupantCtx = null;
+        Debug.Assert(occupantCtx == null, "OccupantCtx should be null after destroying");
     }
-    
-    
 }

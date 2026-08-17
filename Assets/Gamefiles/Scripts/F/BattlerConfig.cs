@@ -5,7 +5,7 @@ using Sirenix.Utilities;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BattlerConfig", menuName = "ARPG/SO/BattlerConfig")]
-public class BattlerConfig : BattlePositionOccupantConfig
+public class BattlerConfig : OccupantCfg
 {
     public int currentLevel = 1;
     public int maxHP;

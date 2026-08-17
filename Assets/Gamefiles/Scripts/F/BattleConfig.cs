@@ -42,7 +42,7 @@ public class BattleConfig : ScriptableObject
     {
         public int col, row;
         [PreviewField(nameof(Icon), 50)]
-        [HideLabel] public BattlePositionOccupantConfig occupant;
+        [HideLabel] public OccupantCfg occupant;
         
         Sprite Icon => occupant != null ? occupant.icon : null;
 
