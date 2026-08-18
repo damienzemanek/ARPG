@@ -28,5 +28,15 @@ MonoBehaviour:
   ForcedActions: []
   specialEffects: []
   attackOrder: 1
+  primaryAttackPriorityWeight: 2
+  secondaryAttackPriorityWeight: 1
+  PrimaryAttackPriority: 1
+  SecondaryAttackPriority: 1
+  intentUsageCfg:
+    phases:
+    - hpThreshold: 0
+      linearDefaultTraversal: 1
+      leadingZero: 0
+      actionOrder: 0
   intentions: 1
   defaultPredicted: 1

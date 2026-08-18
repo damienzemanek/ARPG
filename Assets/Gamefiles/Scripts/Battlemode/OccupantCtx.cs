@@ -18,6 +18,7 @@
         public int maxArmor;
         public int currentArmor;
         public int currentDMG;
+        public int currentConstitution => currentHp + currentArmor;
         [SerializeReference] public List<BattlemodeEffectCtx> currentEffects = new();
         [SerializeReference] public List<BattlemodeEffectCtx> specialEffects = new();
 
@@ -229,6 +230,7 @@
     
     public class EnemyOccupantCtx : BattlerOccupantCtx
     {
+        public int intentions;
         public int currentIntentions;
         public int currentPredicteds;
         public RandomBag<EnemyConfig.AttackPriority> attackPriority;
@@ -239,6 +241,7 @@
         
         public EnemyOccupantCtx(EnemyConfig config) : base(config)
         {
+            intentions = config.intentions;
             currentIntentions = config.intentions;
             currentPredicteds = config.defaultPredicted;
             

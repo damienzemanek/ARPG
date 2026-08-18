@@ -42,6 +42,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
             savedBattlefieldZoomPos = transform.position;
         
         zoomState = ZoomState.ZoomedIntoTile;
+        tileToZoomInto.SelectImplementation();
 
         if (Application.isPlaying)
         {

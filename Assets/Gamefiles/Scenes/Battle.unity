@@ -1857,7 +1857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 1
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -6543,7 +6544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 5
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -8048,7 +8050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 1
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -9085,7 +9088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 0
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -12707,7 +12711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 1
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -14362,7 +14367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 4
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -15945,7 +15951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 5
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -17895,7 +17902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 6
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -18314,7 +18322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 4
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -19609,7 +19618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 6
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -19797,7 +19807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 3
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -20052,7 +20063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 5
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -21364,7 +21376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 2
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -22801,7 +22814,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 4
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -26136,7 +26150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 3
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -27149,7 +27164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 2
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -27718,7 +27734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 6
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -29394,7 +29411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 3
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -33309,7 +33327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 2
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -37023,7 +37042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 0
   row: 1
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -37361,7 +37381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b3940779c2bb84f8122abdabb92cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  hiddenCompletly: 0
+  unselectable: 0
+  alreadySelected: 0
   col: 0
   row: 2
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}

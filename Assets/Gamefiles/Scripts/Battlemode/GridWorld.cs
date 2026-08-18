@@ -155,6 +155,23 @@ public class GridWorld : MonoBehaviour
         if(opponentTiles.Count == 0) Debug.LogError("No opponent tiles found");
         if(playerTiles.Count == 0) Debug.LogError("No player tiles found");
     }
+
+    public void RefreshAllApsAndIntentions()
+    {
+        GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        foreach (var t in opponentTiles)
+        {
+            var enemyOccupantCtx = t.occupantCtx as EnemyOccupantCtx;
+            if(enemyOccupantCtx != null)
+                enemyOccupantCtx.currentIntentions = enemyOccupantCtx.intentions;
+        }
+        foreach (var t in playerTiles)
+        {
+            var characterOccupantCtx = t.occupantCtx as CharacterOccupantCtx;
+            if(characterOccupantCtx != null)
+                characterOccupantCtx.currentAP = characterOccupantCtx.maxAP;
+        }
+    }
     
     public void UnSelectAll()
     {
@@ -185,23 +202,19 @@ public class GridWorld : MonoBehaviour
                      sameRowCheckCol < gridRows[ctx.myRow].tiles.Count;
                      sameRowCheckCol++)
                 {
-                    Debug.Log("Checking: " + sameRowCheckCol);
-                    
                     var distDifference = Mathf.Abs(sameRowCheckCol - ctx.myCol);
 
                     if (distDifference > ctx.fwdRange)
-                    {
                         gridRows[ctx.myRow].tiles[sameRowCheckCol].NotInRange();
-                        continue;
-                    }
-                    
-                    tilesInRange.Add(gridRows[ctx.myRow].tiles[sameRowCheckCol]);
+                    else if(ctx.fwdRange > 0)
+                        tilesInRange.Add(gridRows[ctx.myRow].tiles[sameRowCheckCol]);
+
                 }
             }
             
             //up 1 row
             // is not at the top
-            if (ctx.myRow > 0 && ctx.upRange > 0)
+            if (ctx.myRow > 0)
             {
                 // targ on the row above
                 if (ctx.myRow - 1 == targetTile.row - 1)
@@ -212,18 +225,16 @@ public class GridWorld : MonoBehaviour
                     {
                         var distDifference = Mathf.Abs(upRowCheckCol - ctx.myCol);
                         if (distDifference >= ctx.upRange)
-                        {
                             gridRows[ctx.myRow - 1].tiles[upRowCheckCol].NotInRange();
-                            continue;
-                        }
-                        tilesInRange.Add(gridRows[ctx.myRow - 1].tiles[upRowCheckCol]);
+                        else if(ctx.upRange > 0)
+                            tilesInRange.Add(gridRows[ctx.myRow - 1].tiles[upRowCheckCol]);
                     }
                 }
             }
                 
             //down 1 row
             // is not at the bottom
-            if (ctx.myRow < gridRows.Count - 1 && ctx.downRange > 0)
+            if (ctx.myRow < gridRows.Count - 1)
             {
                 // targ on the row bellow
                 if (ctx.myRow + 1 == targetTile.row + 1)
@@ -234,11 +245,9 @@ public class GridWorld : MonoBehaviour
                     {
                         var distDifference = Mathf.Abs(downRowCheckCol - ctx.myCol);
                         if (distDifference >= ctx.downRange)
-                        {
                             gridRows[ctx.myRow + 1].tiles[downRowCheckCol].NotInRange();
-                            continue;
-                        }
-                        tilesInRange.Add(gridRows[ctx.myRow + 1].tiles[downRowCheckCol]);
+                        else if(ctx.downRange > 0)
+                            tilesInRange.Add(gridRows[ctx.myRow + 1].tiles[downRowCheckCol]);
                     }
                 }
                 

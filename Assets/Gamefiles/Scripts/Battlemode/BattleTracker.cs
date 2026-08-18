@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DesignPatterns.CreationalPatterns;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class BattleTracker : Singleton<BattleTracker>
+public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleTracker>
 {
     bool _hasQueuedAction => queuedPlayerAction.hasQueuedAction;
     
@@ -35,19 +35,19 @@ public class BattleTracker : Singleton<BattleTracker>
         public BattleTile targetTile;
         public BattlemodeActionConfig.Role lookingForTarget;  
         
-        public SelfRoleTarget targSelf;
-        public AllyRoleTarget targAlly;
-        public EnemyRoleTarget targEnemy;
-        public AllyTeamTarget targAllyTeam;
-        public EnemyTeamTarget targEnemyTeam;
+        public SelfRoleTarget targSelfSlot;
+        public AllyRoleTarget targAllySlot;
+        public EnemyRoleTarget targEnemySlot;
+        public AllyTeamTarget targAllyTeamSlot;
+        public EnemyTeamTarget targEnemyTeamSlot;
         
         public void Init()
         {
-            targSelf = new();
-            targAlly = new();
-            targEnemy = new();
-            targAllyTeam = new();
-            targEnemyTeam = new();
+            targSelfSlot = new();
+            targAllySlot = new();
+            targEnemySlot = new();
+            targAllyTeamSlot = new();
+            targEnemyTeamSlot = new();
         }
     }
     
@@ -58,9 +58,10 @@ public class BattleTracker : Singleton<BattleTracker>
     void InitializeBattle()
     {
         gridWorld.PopulateGrid(currentBattleConfig);
-        currentTurn = Turn.Player;
         queuedPlayerAction.Init();
+        StartPlayerTurn();
     }
+    
 
     public void SelectTile(BattleTile tile, bool backSelect = false)
     {
@@ -96,24 +97,24 @@ public class BattleTracker : Singleton<BattleTracker>
         switch (targetRole)
         {
             case BattlemodeActionConfig.Role.Self:
-                queuedPlayerAction.targSelf.tile = tile; 
-                selectedTarget = queuedPlayerAction.targSelf;
+                queuedPlayerAction.targSelfSlot.tile = tile; 
+                selectedTarget = queuedPlayerAction.targSelfSlot;
                 break;
             case BattlemodeActionConfig.Role.Ally:
-                queuedPlayerAction.targAlly.tile = tile; 
-                selectedTarget = queuedPlayerAction.targAlly;
+                queuedPlayerAction.targAllySlot.tile = tile; 
+                selectedTarget = queuedPlayerAction.targAllySlot;
                 break;
             case BattlemodeActionConfig.Role.Enemy:
-                queuedPlayerAction.targEnemy.tile = tile; 
-                selectedTarget = queuedPlayerAction.targEnemy;
+                queuedPlayerAction.targEnemySlot.tile = tile; 
+                selectedTarget = queuedPlayerAction.targEnemySlot;
                 break;
             case BattlemodeActionConfig.Role.Team:
-                queuedPlayerAction.targAllyTeam.tiles.Add(tile); 
-                selectedTarget = queuedPlayerAction.targAllyTeam;
+                queuedPlayerAction.targAllyTeamSlot.tiles.Add(tile); 
+                selectedTarget = queuedPlayerAction.targAllyTeamSlot;
                 break;
             case BattlemodeActionConfig.Role.EnemyTeam:
-                queuedPlayerAction.targEnemyTeam.tiles.Add(tile); 
-                selectedTarget = queuedPlayerAction.targEnemyTeam;
+                queuedPlayerAction.targEnemyTeamSlot.tiles.Add(tile); 
+                selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
                 break;
         }
 
@@ -180,11 +181,11 @@ public class BattleTracker : Singleton<BattleTracker>
 
     public void ClearRoleTargets()
     {
-        queuedPlayerAction.targSelf.ClearTarget();
-        queuedPlayerAction.targAlly.ClearTarget();
-        queuedPlayerAction.targEnemy.ClearTarget();
-        queuedPlayerAction.targAllyTeam.ClearTarget();
-        queuedPlayerAction.targEnemyTeam.ClearTarget();
+        queuedPlayerAction.targSelfSlot.ClearTarget();
+        queuedPlayerAction.targAllySlot.ClearTarget();
+        queuedPlayerAction.targEnemySlot.ClearTarget();
+        queuedPlayerAction.targAllyTeamSlot.ClearTarget();
+        queuedPlayerAction.targEnemyTeamSlot.ClearTarget();
     }
 
     public void DisplayActionsUI()
@@ -194,12 +195,19 @@ public class BattleTracker : Singleton<BattleTracker>
     
     public void HideActionsUI() => actionsDisplay.HideDisplay();
 
+    public void StartPlayerTurn()
+    {
+        currentTurn = Turn.Player;
+        gridWorld.GetBattlerTiles(out var opponentTiles, out _);
+        opponentAI.QueueActions(opponentTiles);
+    }
+
     public void EndPlayerTurn()
     {
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
-        gridWorld.GetBattlerTiles(out var opponentTiles, out var playerTiles);
-        opponentAI.AttackAll(opponentTiles, playerTiles, gridWorld);
+        gridWorld.GetBattlerTiles(out _, out var playerTiles);
+        opponentAI.AttackAll(playerTiles, gridWorld);
     }
     
 }

@@ -15,7 +15,7 @@ public class BattleTile : MonoBehaviour
     public OccupantCtx occupantCtx;
 
     [FormerlySerializedAs("hiddenCompletly")] public bool unselectable = false;
-    bool alreadySelected = false;
+    public bool alreadySelected = false;
     bool isInRange = false;
     [ReadOnly] public int col, row;
     public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
@@ -106,12 +106,18 @@ public class BattleTile : MonoBehaviour
         }
     }
     
+    // Called from the event
     public void Select()
     {
         if (alreadySelected) return;
         if (!occupied) return;
         if (unselectable) return;
         BattleTracker.Instance.SelectTile(this);
+    }
+
+    // Eventually called via BattlerTracker.Instance.SelectTile(this)
+    public void SelectImplementation()
+    {
         hover.SetActive(false);
         selected.SetActive(true);
         alreadySelected = true;

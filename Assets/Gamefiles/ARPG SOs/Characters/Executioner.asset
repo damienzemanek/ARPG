@@ -15,10 +15,10 @@ MonoBehaviour:
   occupantName: Executioner
   icon: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
   prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
-  maxHP: 5
-  maxAP: 5
-  maxArmor: 1
-  damage: 1
+  currentLevel: 1
+  maxHP: 18
+  maxArmor: 7
+  damage: 3
   _maxEquippableActions: 3
   equippedActions:
   - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
@@ -28,5 +28,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
   ForcedActions: []
+  specialEffects: []
+  maxAP: 4
+  maxHandSize: 6
   characterSprite: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
   characterPortrait: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
