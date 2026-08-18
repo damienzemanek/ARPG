@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class OpponentAI : MonoBehaviour
@@ -10,24 +11,25 @@ public class OpponentAI : MonoBehaviour
     {
         public EnemyOccupantCtx myEnemyOccupantCtx;
         public BattleTile tile;
-        public BattleTracker.QueuedAction queuedAction;
     }
 
-    [ShowInInspector] public List<OrderCtx> attackOrder = new();
+    [ShowInInspector] public List<OrderCtx> battlerAttackOrder = new();
     
     public float proto_delayBetweenAttacks = 0.5f;
+    public float proto_delayBetweenAttackers = 1f;
+    public float proto_delayBetweenAttackFinishing = 0.15f;
     
 
     public void QueueActions(List<BattleTile> opponentTiles)
     {
-        attackOrder.Clear();
+        battlerAttackOrder.Clear();
         
         // Opponent's Attack Order
         foreach (var tile in opponentTiles)
-            attackOrder.Add(new OrderCtx(){ tile = tile, queuedAction = null});
+            battlerAttackOrder.Add(new OrderCtx(){ tile = tile});
 
         // Sort the Order
-        attackOrder.Sort((a, b) =>
+        battlerAttackOrder.Sort((a, b) =>
         {
             EnemyConfig aConfig = (EnemyConfig)a.tile.occupantCtx.cfg;
             EnemyConfig bConfig = (EnemyConfig)b.tile.occupantCtx.cfg;
@@ -36,54 +38,65 @@ public class OpponentAI : MonoBehaviour
         });
         
         // Queue Actions
-        foreach (var orderCtx in attackOrder)
+        foreach (var orderCtx in battlerAttackOrder)
         {
-            // Choose an ability
             if (orderCtx.tile.occupantCtx is not EnemyOccupantCtx eoc) return;
-            float hpPerc01 = eoc.currentHp / eoc.maxHp;
-            var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
-            var actionIndex = newIntentUsage.intentIndex;
-            var action = GetAnEquippedActionCfg(eoc, actionIndex);
-            if(action == null)
+
+            var intentions = eoc.intentions;
+            orderCtx.tile.SetIntentionsAmount(intentions);
+            orderCtx.tile.intentionsGrid.gameObject.SetActive(true);
+
+            for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentions; intentionsIndex++)
             {
-                int maxAttempts = eoc.enemyCfg.equippedActions.Length;
-
-                for (int i = 0; i < maxAttempts; i++)
+                // Choose an ability
+                float hpPerc01 = eoc.currentHp / eoc.maxHp;
+                var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
+                var actionIndex = newIntentUsage.intentIndex;
+                var action = GetAnEquippedActionCfg(eoc, actionIndex);
+                if(action == null)
                 {
-                    int index = (actionIndex + i) % maxAttempts;
-                    action = eoc.enemyCfg.equippedActions.GetValue(index) as BattlemodeActionConfig;
+                    int maxAttempts = eoc.enemyCfg.equippedActions.Length;
 
-                    if (action != null)
-                        break;
+                    for (int i = 0; i < maxAttempts; i++)
+                    {
+                        int index = (actionIndex + i) % maxAttempts;
+                        action = eoc.enemyCfg.equippedActions.GetValue(index) as BattlemodeActionConfig;
+
+                        if (action != null)
+                            break;
+                    }
                 }
-            }
-        
-            // Generate Action Context
-            var actionCtx = action.GenerateActionCtx(
-                BattlemodeActionCtx.Status.Acting,
-                orderCtx.tile.occupantCtx as BattlerOccupantCtx,
-                null); //this null is a slot only for teamates and healing them
-        
-            // Immedietly Queue the action
-            BattleTracker.QueuedAction queuedAction = new BattleTracker.QueuedAction();
-            queuedAction.Init();
-            queuedAction.actingOccupantCtx = eoc;
-            queuedAction.queuedActionCtx = actionCtx;
-            queuedAction.lookingForTarget = action.roleTarget;
             
-            // Assign to order's queued action
-            orderCtx.queuedAction = queuedAction;
-            orderCtx.myEnemyOccupantCtx = eoc;
+                // Generate Action Context
+                var actionCtx = action.GenerateActionCtx(
+                    BattlemodeActionCtx.Status.Acting,
+                    orderCtx.tile.occupantCtx as BattlerOccupantCtx,
+                    null); //this null is a slot only for teamates and healing them
+            
+                // Immedietly Queue the action
+                BattleTracker.QueuedAction newQueuedAction = new BattleTracker.QueuedAction();
+                newQueuedAction.Init();
+                newQueuedAction.actingOccupantCtx = eoc;
+                newQueuedAction.actionCtx = actionCtx;
+                newQueuedAction.lookingForTarget = action.roleTarget;
+                
+                // Display Queued Actions in Tile UI
+                orderCtx.tile.SetIntention(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
+                
+                // Assign to order's queued action
+                eoc.queuedActions.Add(newQueuedAction);
+                orderCtx.myEnemyOccupantCtx = eoc;
+            }
         }
         
     }
     
     public void AttackAll(List<BattleTile> playerTiles, GridWorld grid)
     {
-        if(attackOrder == null || attackOrder.Count == 0)
+        if(battlerAttackOrder == null || battlerAttackOrder.Count == 0)
             Debug.LogError("Opponent Attack Order is empty");
         else
-            StartCoroutine(C_Proto_AttackAll(attackOrder, playerTiles, grid));
+            StartCoroutine(C_Proto_AttackAll(battlerAttackOrder, playerTiles, grid));
     }
     
     IEnumerator C_Proto_AttackAll(List<OrderCtx> attackOrder, List<BattleTile> playerTiles, GridWorld grid)
@@ -91,53 +104,61 @@ public class OpponentAI : MonoBehaviour
         foreach (var orderCtx in attackOrder)
         {
             playerTiles.RemoveAll(playerTile => playerTile.occupantCtx == null); // Remove dead tiles
-            Attack(orderCtx, playerTiles, grid);
+            StartCoroutine(C_Proto_Attack(orderCtx, playerTiles, grid));
             grid.RefreshAllApsAndIntentions();
-            yield return new WaitForSeconds(proto_delayBetweenAttacks);
+            yield return new WaitForSeconds(proto_delayBetweenAttackers);
         }
         grid.UpdateGrid();
     }
     
-    public void Attack(OrderCtx orderCtx, List<BattleTile> playerTiles, GridWorld grid)
+    public IEnumerator C_Proto_Attack(OrderCtx orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
         // Choose a target
         RoleTarget target = null;
-        
-        switch (orderCtx.queuedAction.lookingForTarget)
+
+        foreach (var queuedAction in orderCtx.myEnemyOccupantCtx.queuedActions)
         {
-            case BattlemodeActionConfig.Role.Self:
-                // orderCtx.queuedAction.targSelf.tile = actorTile; 
-                // target = queuedAction.targSelf;
-                break;
-            case BattlemodeActionConfig.Role.Ally:
-                // queuedAction.targAlly.tile = actorTile; 
-                // target = queuedAction.targAlly;
-                break;
-            case BattlemodeActionConfig.Role.Enemy:
-                orderCtx.queuedAction.targEnemySlot.tile = FindTargetViaAttackPriority(); 
-                orderCtx.queuedAction.targetTile = orderCtx.queuedAction.targEnemySlot.tile;
-                target = orderCtx.queuedAction.targEnemySlot;
-                break;
-            case BattlemodeActionConfig.Role.Team:
-                // queuedAction.targAllyTeam.tiles.Add(actorTile); 
-                // target = queuedAction.targAllyTeam;
-                break;
-            case BattlemodeActionConfig.Role.EnemyTeam:
-                // queuedAction.targEnemyTeam.tiles.Add(actorTile); 
-                // target = queuedAction.targEnemyTeam;
-                break;
+            switch (queuedAction.lookingForTarget)
+            {
+                case BattlemodeActionConfig.Role.Self:
+                    // orderCtx.queuedAction.targSelf.tile = actorTile; 
+                    // target = queuedAction.targSelf;
+                    break;
+                case BattlemodeActionConfig.Role.Ally:
+                    // queuedAction.targAlly.tile = actorTile; 
+                    // target = queuedAction.targAlly;
+                    break;
+                case BattlemodeActionConfig.Role.Enemy:
+                    queuedAction.targEnemySlot.tile = FindTargetViaAttackPriority(); 
+                    queuedAction.targetTile = queuedAction.targEnemySlot.tile;
+                    target = queuedAction.targEnemySlot;
+                    break;
+                case BattlemodeActionConfig.Role.Team:
+                    // queuedAction.targAllyTeam.tiles.Add(actorTile); 
+                    // target = queuedAction.targAllyTeam;
+                    break;
+                case BattlemodeActionConfig.Role.EnemyTeam:
+                    // queuedAction.targEnemyTeam.tiles.Add(actorTile); 
+                    // target = queuedAction.targEnemyTeam;
+                    break;
+            }
+
+            // Idempotent Attacks
+            if (target == null) Debug.LogWarning("No Target Found"); 
+            else target.ActUponTarget(queuedAction);
+
+            // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
+            CoroutineRunner.Instance.RunMethodDelayed(() =>
+            {
+                queuedAction.actingOccupantCtx.PostResolveActingEffects(queuedAction.actionCtx);
+                grid.UpdateGrid(); // Updates AP and HP through transient stats
+                
+            }, proto_delayBetweenAttackFinishing);
+
+            yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
         }
-
-        // Idempotent Attacks
-        if (target == null) Debug.LogWarning("No Target Found"); 
-        else target.ActUponTarget(orderCtx.queuedAction);
-
-        // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
-        CoroutineRunner.Instance.RunMethodDelayed(() =>
-        {
-            orderCtx.queuedAction.actingOccupantCtx.PostResolveActingEffects(orderCtx.queuedAction.queuedActionCtx);
-            grid.UpdateGrid(); // Updates AP and HP through transient stats
-        }, 0.1f);
+        
+        
         
         
         BattleTile FindTargetViaAttackPriority()
@@ -172,7 +193,7 @@ public class OpponentAI : MonoBehaviour
 
         if (action == null)
         {
-            int maxAttempts = eoc.enemyCfg.equippedActions.Length;
+            int maxAttempts = eoc.enemyCfg.equippedActions.Length * 2;
 
             for (int i = 0; i < maxAttempts; i++)
             {
@@ -184,6 +205,7 @@ public class OpponentAI : MonoBehaviour
         }
 
         if (action == null) Debug.LogError($"No equipped actions found for {eoc.enemyCfg.name}.");
+        Debug.Log("Action Retrieved from ActionCfg for OpponentAI : " + action.name);
         return action;
     }
     

@@ -14,6 +14,15 @@ public class BattlemodeActionConfig : ScriptableObject
         Team,
         EnemyTeam,
     }
+
+    public enum ActionIdentifier
+    {
+        Attack,
+        AttackDebuff,
+        AttackBuff,
+        Debuff,
+        Buff,
+    }
     
     
 
@@ -28,6 +37,7 @@ public class BattlemodeActionConfig : ScriptableObject
     public int downRange;
     public int aoe = 0;
     public int apCost = 1;
+    public ActionIdentifier actionIdentifier;
     [FormerlySerializedAs("useTarget")] public Role roleTarget;
     [FormerlySerializedAs("effects")] public List<BattlemodeEffectConfig> effectsToApplyToTarget = new();
     public List<BattlemodeEffectConfig> effectsToApplyToSelf = new();

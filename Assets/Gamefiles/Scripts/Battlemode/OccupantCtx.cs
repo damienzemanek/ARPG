@@ -47,8 +47,8 @@
             List<BattlemodeEffectCtx> effectsToAddBeforeResolve = null;
             List<BattlemodeEffectCtx> effectsToAddAfterResolve = null;
             
-            if(queuedActorAction.queuedActionCtx == null) Debug.LogError("[TARGET] No action context to be targeted with.");
-            foreach (var effectToApply in queuedActorAction.queuedActionCtx?.cfg.effectsToApplyToTarget)
+            if(queuedActorAction.actionCtx == null) Debug.LogError("[TARGET] No action context to be targeted with.");
+            foreach (var effectToApply in queuedActorAction.actionCtx?.cfg.effectsToApplyToTarget)
             {
                 var newEffectCtx = effectToApply.GenerateEffectCtx();
 
@@ -235,6 +235,7 @@
         public int currentPredicteds;
         public RandomBag<EnemyConfig.AttackPriority> attackPriority;
         public IntentUsage.IntentUsageCtx currentIntentUsageCtx;
+        public List<BattleTracker.QueuedAction> queuedActions = new();
         
         public override OccupantCfg cfg { get => enemyCfg; set => enemyCfg = value as EnemyConfig;}
         public EnemyConfig enemyCfg;

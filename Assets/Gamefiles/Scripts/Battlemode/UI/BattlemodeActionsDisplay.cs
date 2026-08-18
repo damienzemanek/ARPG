@@ -210,7 +210,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             enemyOccupantCtx.PreResolveActingEffects(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(enemyOccupantCtx);
             
-            enemyIntentions.EnableActions(enemyOccupantCtx.intentions, enemyOccupantCtx.currentPredicteds);
+            enemyIntentions.DisplayIntentions(enemyOccupantCtx.queuedActions);
+            enemyIntentions.HideUnpredictedIntentions(enemyOccupantCtx.intentions, enemyOccupantCtx.currentPredicteds);
             txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.intentions.ToString();
             txt_EnemyPredictedsNum.text = enemyOccupantCtx.currentPredicteds.ToString();
             displ_IntentionsVLG.SetActive(true);

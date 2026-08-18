@@ -32,7 +32,7 @@ MonoBehaviour:
   secondaryAttackPriorityWeight: 1
   PrimaryAttackPriority: 0
   SecondaryAttackPriority: 0
-  intentUsage:
+  intentUsageCfg:
     phases:
     - hpThreshold: 0
       linearDefaultTraversal: 1

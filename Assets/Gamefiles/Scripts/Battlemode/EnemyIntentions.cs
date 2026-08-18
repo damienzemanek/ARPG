@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -12,8 +13,22 @@ public class EnemyIntentions : MonoBehaviour
     public TextMeshProUGUI txt_action1Intention;
     public TextMeshProUGUI txt_action2Intention;
     public TextMeshProUGUI txt_action3Intention;
-    
-    public void EnableActions(int intentions, int predicted)
+
+    public void DisplayIntentions(List<BattleTracker.QueuedAction> queuedActions)
+    {
+        var currentIndex = 0;
+        foreach (var queuedAction in queuedActions)
+        {
+            switch (currentIndex)
+            {
+                case 0: txt_action1Intention.text = queuedAction.actionCtx.cfg.name; break;
+                case 1: txt_action2Intention.text = queuedAction.actionCtx.cfg.name; break;
+                case 2: txt_action3Intention.text = queuedAction.actionCtx.cfg.name; break;
+            }
+            currentIndex++;
+        }
+    }
+    public void HideUnpredictedIntentions(int intentions, int predicted)
     {
         if (intentions < 0 || intentions > 3)
         {

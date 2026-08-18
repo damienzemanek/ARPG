@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class BattleTile : MonoBehaviour
 {
     public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
 
+    
     [ShowInInspector, BoxGroup("OccupantCtx")]
     public OccupantCtx occupantCtx;
 
@@ -28,12 +30,19 @@ public class BattleTile : MonoBehaviour
     [Required] public TextMeshPro txt_remainingHP;
 
 
+    [Required] public Grid3D intentionsGrid;
     [Required] public DetectorMouseClick mouseClickDetector;
     [Required] public GameObject @default;
     [Required] public GameObject hover;
     [Required] public GameObject selected;
     [Required] public GameObject inRange;
 
+
+    [Required] public Sprite actionIdentifier_Attack;
+    [Required] public Sprite actionIdentifier_AttackDebuff;
+    [Required] public Sprite actionIdentifier_AttackBuff;
+    [Required] public Sprite actionIdentifier_Debuff;
+    [Required] public Sprite actionIdentifier_Buff;
 
     public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
     {
@@ -165,6 +174,26 @@ public class BattleTile : MonoBehaviour
     {
         if (occupantCtx is not CharacterOccupantCtx characterCtx) return;
         txt_AP.text = current.ToString();
+    }
+
+    public void SetIntentionsAmount(int intentions)
+    {
+        intentionsGrid.x = intentions;
+        Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
+    }
+    public void SetIntention(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
+    {
+        Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
+        var spriteRenderer = intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>();
+        spriteRenderer.sprite = actionIdentifier switch
+        {
+            BattlemodeActionConfig.ActionIdentifier.Attack => actionIdentifier_Attack,
+            BattlemodeActionConfig.ActionIdentifier.AttackBuff => actionIdentifier_AttackBuff,
+            BattlemodeActionConfig.ActionIdentifier.AttackDebuff => actionIdentifier_AttackDebuff,
+            BattlemodeActionConfig.ActionIdentifier.Buff => actionIdentifier_Buff,
+            BattlemodeActionConfig.ActionIdentifier.Debuff => actionIdentifier_AttackDebuff,
+            _ => intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>().sprite
+        };
     }
 
 

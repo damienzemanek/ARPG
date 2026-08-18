@@ -14,16 +14,16 @@ public abstract class RoleTarget
 
         if (tile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) return;
         
-        queuedAction.queuedActionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
+        queuedAction.actionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
 
-        if (queuedAction.queuedActionCtx == null) { Debug.LogError("No action context generated."); return; }
+        if (queuedAction.actionCtx == null) { Debug.LogError("No action context generated."); return; }
         
-        queuedAction.queuedActionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.queuedActionCtx);
+        queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
         
         // Acting on Target
-        targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.queuedActionCtx);
+        targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.actionCtx);
         
-        ResolveAfterActorEffects(queuedAction, queuedAction.queuedActionCtx);
+        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
     }
 
     BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)

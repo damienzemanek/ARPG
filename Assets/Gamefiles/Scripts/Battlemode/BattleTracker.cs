@@ -30,7 +30,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public class QueuedAction
     {
         public bool hasQueuedAction;
-        public BattlemodeActionCtx queuedActionCtx;
+        public BattlemodeActionCtx actionCtx;
         public BattlerOccupantCtx actingOccupantCtx;
         public BattleTile targetTile;
         public BattlemodeActionConfig.Role lookingForTarget;  
@@ -74,7 +74,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
                 ClearRoleTargets();
                 player.ZoomIntoTile(tile, DisplayActionsUI);
                 queuedPlayerAction.hasQueuedAction = false;
-                queuedPlayerAction.queuedActionCtx = null;
+                queuedPlayerAction.actionCtx = null;
             }
             else // Select Target Tile
             {
@@ -128,7 +128,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         CoroutineRunner.Instance.RunMethodDelayed(() =>
         {
             queuedPlayerAction.hasQueuedAction = false;
-            queuedPlayerAction.actingOccupantCtx.PostResolveActingEffects(queuedPlayerAction.queuedActionCtx);
+            queuedPlayerAction.actingOccupantCtx.PostResolveActingEffects(queuedPlayerAction.actionCtx);
             UnSelectAll();
             gridWorld.UpdateGrid(); // Updates AP and HP through transient stats
         }, 0.1f);
@@ -153,7 +153,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
         ClearRoleTargets();
         queuedPlayerAction.hasQueuedAction = true;
-        queuedPlayerAction.queuedActionCtx = actionCtx;
+        queuedPlayerAction.actionCtx = actionCtx;
         queuedPlayerAction.targetTile = tile;
         queuedPlayerAction.lookingForTarget = actionCtx.cfg.roleTarget;
         
