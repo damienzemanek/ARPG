@@ -90,54 +90,58 @@ public class GridWorld : MonoBehaviour
     {
         int populationCount = 0;
         
-        for (int c = 0; c < battleConfig.rows.Length; c++)
+        for (int row = 0; row < battleConfig.rows.Length; row++)
         {
-            for (int r = 0; r < battleConfig.rows[c].colPositions.Count; r++)
+            for (int col = 0; col < battleConfig.rows[row].colPositions.Count; col++)
             {
-                var occupant = battleConfig.rows[c].colPositions[r].occupant;
+                var occupant = battleConfig.rows[row].colPositions[col].occupant;
                 if (occupant == null) continue;
                 populationCount++;
-                Debug.Log("[BattleConfig] Occupant found at: " + c + ", " + r + " = " + occupant + ", Populating...");
-                gridRows[c].tiles[r].Init(c, r, occupant);
-                gridRows[c].tiles[r].Unhide();
+                Debug.Log("[BattleConfig] Occupant found at: " + row + ", " + col + " = " + occupant + ", Populating...");
+                gridRows[row].tiles[col].Init(col, row, occupant);
+                gridRows[row].tiles[col].Unhide();
                 Debug.Log("[BattleConfig] Population complete");
             }
         }
         
         Debug.Log("[BattleConfig] Population complete, " + populationCount + " tiles populated");
     }
+    
+    public List<BattleTile> GetAllTiles() => gridRows.SelectMany(r => r.tiles).ToList();
 
-    public void UpdateGrid()
-    {
-        foreach (var t in gridRows.SelectMany(r => r.tiles))
-            t.UpdateTransientStats();
-    }
+    public void UpdateGrid() => GetAllTiles().ForEach(t => t.UpdateTransientStats());
+    
 
-
-    public void HideUnoccupiedTiles_GetAvaliableTargetTiles(BattleConfig battleConfig,
+    public List<BattleTile> GetAvaliableTargetTiles(BattleConfig battleConfig,
         BattlemodeActionConfig.Role actionTarget,
-        OccupantCfg queuedOccupant,
-        out List<BattleTile> avaliableTargetsTiles)
+        List<BattleTile> inRangeTiles)
     {
-        avaliableTargetsTiles = new List<BattleTile>();
-        for(int c = 0; c < battleConfig.rows.Length; c++)
+        var ret = new List<BattleTile>(inRangeTiles);
+        foreach (var tile in inRangeTiles)
         {
-            for(int r = 0; r < battleConfig.rows[c].colPositions.Count; r++)
+            switch (actionTarget)
             {
-                var battlePosData = battleConfig.rows[c].colPositions[r];
-                var cfgOccupiedPos = battlePosData.occupant;
-                var tile = gridRows[c].tiles[r];
-                if (cfgOccupiedPos == null || tile.occupantCtx == null)
-                {
-                    tile.HideAndMakeUnSelectable();
-                    continue;
-                }
-                    
-                avaliableTargetsTiles.Add(tile);
-                tile.ShowOnly(actionTarget, queuedOccupant);
+                case BattlemodeActionConfig.Role.Enemy: 
+                    if (!tile.IsEnemy())
+                    {
+                        ret.Remove(tile);
+                    }
+                    break;
+                case BattlemodeActionConfig.Role.EmptyTile: 
+                    if (!tile.IsEmptyTile())
+                    {
+                        tile.HideAndMakeUnSelectable();
+                        ret.Remove(tile);
+                    }
+                    break;
             }
         }
+        return ret;
     }
+    
+    
+    
+    
 
     public void GetBattlerTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
     {
@@ -189,73 +193,49 @@ public class GridWorld : MonoBehaviour
         public int fwdRange;
     }
     
-    public void ShowInRangeTiles(InRangeCheckCtx ctx, List<BattleTile> avaliableTargetsTiles)
+    public List<BattleTile> GetInRangeTiles(InRangeCheckCtx ctx, BattlemodeActionConfig.Role actionTarget)
     {
         List<BattleTile> tilesInRange = new();
 
-        foreach (var targetTile in avaliableTargetsTiles)
+        // Same row
+        if (ctx.fwdRange > 0)
         {
-            // targ on the same row
-            if (ctx.myRow == targetTile.row && ctx.fwdRange > 0)
+            var row = gridRows[ctx.myRow].tiles;
+            for (int col = 0; col < row.Count; col++)
             {
-                for (int sameRowCheckCol = ctx.myCol + 1;
-                     sameRowCheckCol < gridRows[ctx.myRow].tiles.Count;
-                     sameRowCheckCol++)
-                {
-                    var distDifference = Mathf.Abs(sameRowCheckCol - ctx.myCol);
+                int diff = Mathf.Abs(col - ctx.myCol);
 
-                    if (distDifference > ctx.fwdRange)
-                        gridRows[ctx.myRow].tiles[sameRowCheckCol].NotInRange();
-                    else if(ctx.fwdRange > 0)
-                        tilesInRange.Add(gridRows[ctx.myRow].tiles[sameRowCheckCol]);
-
-                }
-            }
-            
-            //up 1 row
-            // is not at the top
-            if (ctx.myRow > 0)
-            {
-                // targ on the row above
-                if (ctx.myRow - 1 == targetTile.row - 1)
-                {
-                    for (int upRowCheckCol = ctx.myCol;
-                         upRowCheckCol < gridRows[ctx.myRow - 1].tiles.Count;
-                         upRowCheckCol++)
-                    {
-                        var distDifference = Mathf.Abs(upRowCheckCol - ctx.myCol);
-                        if (distDifference >= ctx.upRange)
-                            gridRows[ctx.myRow - 1].tiles[upRowCheckCol].NotInRange();
-                        else if(ctx.upRange > 0)
-                            tilesInRange.Add(gridRows[ctx.myRow - 1].tiles[upRowCheckCol]);
-                    }
-                }
-            }
-                
-            //down 1 row
-            // is not at the bottom
-            if (ctx.myRow < gridRows.Count - 1)
-            {
-                // targ on the row bellow
-                if (ctx.myRow + 1 == targetTile.row + 1)
-                {
-                    for (int downRowCheckCol = ctx.myCol;
-                         downRowCheckCol < gridRows[ctx.myRow + 1].tiles.Count;
-                         downRowCheckCol++)
-                    {
-                        var distDifference = Mathf.Abs(downRowCheckCol - ctx.myCol);
-                        if (distDifference >= ctx.downRange)
-                            gridRows[ctx.myRow + 1].tiles[downRowCheckCol].NotInRange();
-                        else if(ctx.downRange > 0)
-                            tilesInRange.Add(gridRows[ctx.myRow + 1].tiles[downRowCheckCol]);
-                    }
-                }
-                
+                if (diff <= ctx.fwdRange) tilesInRange.Add(row[col]);
+                else row[col].NotInRange();
             }
         }
-        
-        
-        foreach (var t in tilesInRange)
-            t.InRange();
+
+        // Row above
+        if (ctx.myRow > 0 && ctx.upRange > 0)
+        {
+            var row = gridRows[ctx.myRow - 1].tiles;
+            for (int col = 0; col < row.Count; col++)
+            {
+                int diff = Mathf.Abs(col - ctx.myCol);
+
+                if (diff < ctx.upRange) tilesInRange.Add(row[col]);
+                else row[col].NotInRange();
+            }
+        }
+
+        // Row below
+        if (ctx.myRow < gridRows.Count - 1 && ctx.downRange > 0)
+        {
+            var row = gridRows[ctx.myRow + 1].tiles;
+            for (int col = 0; col < row.Count; col++)
+            {
+                int diff = Mathf.Abs(col - ctx.myCol);
+
+                if (diff < ctx.downRange) tilesInRange.Add(row[col]);
+                else row[col].NotInRange();
+            }
+        }
+
+        return tilesInRange;
     }
 }

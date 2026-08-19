@@ -129,8 +129,8 @@ public class OpponentAI : MonoBehaviour
                     // target = queuedAction.targAlly;
                     break;
                 case BattlemodeActionConfig.Role.Enemy:
-                    queuedAction.targEnemySlot.tile = FindTargetViaAttackPriority(); 
-                    queuedAction.targetTile = queuedAction.targEnemySlot.tile;
+                    queuedAction.targEnemySlot.enemyTile = FindTargetViaAttackPriority(); 
+                    queuedAction.targetTile = queuedAction.targEnemySlot.enemyTile;
                     target = queuedAction.targEnemySlot;
                     break;
                 case BattlemodeActionConfig.Role.Team:

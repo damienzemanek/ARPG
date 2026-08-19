@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "BattlemodeActionConfig", menuName = "ARPG/SO/BattlemodeActionConfig")]
 public class BattlemodeActionConfig : ScriptableObject
 {
+    bool isEmptyRoleTarget => roleTarget == Role.EmptyTile;
     public enum Role
     {
         None,
@@ -13,17 +15,18 @@ public class BattlemodeActionConfig : ScriptableObject
         Ally,
         Team,
         EnemyTeam,
+        EmptyTile
     }
 
     public enum ActionIdentifier
     {
+        None,
         Attack,
         AttackDebuff,
         AttackBuff,
         Debuff,
         Buff,
     }
-    
     
 
     public string actionName;
@@ -38,6 +41,7 @@ public class BattlemodeActionConfig : ScriptableObject
     public int aoe = 0;
     public int apCost = 1;
     public ActionIdentifier actionIdentifier;
+    [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
     [FormerlySerializedAs("useTarget")] public Role roleTarget;
     [FormerlySerializedAs("effects")] public List<BattlemodeEffectConfig> effectsToApplyToTarget = new();
     public List<BattlemodeEffectConfig> effectsToApplyToSelf = new();
@@ -51,7 +55,7 @@ public class BattlemodeActionConfig : ScriptableObject
         {
             hitCount = this.hitCount,
             hitCountDelta = 0,
-            dmg = actingBatlerCtx.currentDMG,
+            dmg = actingBatlerCtx?.currentDMG ?? 0,
             heal = targetBatlerCtx?.maxHp ?? 0,
             deltaDmgMultiplier = this.dmgMultiplier,
             deltaHealMultiplier = this.healMultiplier,

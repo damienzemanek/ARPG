@@ -7,24 +7,50 @@ public abstract class RoleTarget
     public abstract BattlemodeActionConfig.Role role { get; }
     public abstract void ClearTarget();
     public abstract void ActUponTarget(QueuedAction queuedActionCtx);
-    public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile tile)
+    
+    /// <summary>
+    /// This may seem complex, Order is:
+    /// 1. Resolve BeforeActor Effects by itself if there no occupant to adjust health target max
+    /// 1.1 Otherwise Resolve BeforeActor Effects with the health target if there is one to go off of
+    /// 2. If there is an occupant, act upon it
+    /// 2.2 Otherwise we do a movement consideration check to move into an empty tile
+    /// 3. Finaly, Resolve AfterActor Effects
+    ///
+    /// Note: BeforeActor effects happen to the ACTOR (the one doing the action)
+    ///       AfterActor effects happen to the ACTOR (the one doing the action)
+    /// </summary>
+    /// <param name="queuedAction"></param>
+    /// <param name="targetTile"></param>
+    public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile targetTile)
     {
-        if (tile == null) { Debug.LogError("No target selected for self role target."); return; }
-        Debug.Log($"Acting upon target at tile: {tile}");
-
-        if (tile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) return;
-        
-        queuedAction.actionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
-
+        if (targetTile == null) { Debug.LogError("No target selected for self role target."); return; }
         if (queuedAction.actionCtx == null) { Debug.LogError("No action context generated."); return; }
+
+        Debug.Log($"Acting upon target at tile: {targetTile}");
+        BattlerOccupantCtx _targetBattlerCtx = null;
+
+        if(targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx)
+            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
+        else 
+        {
+            _targetBattlerCtx = targetBattlerCtx;
+            queuedAction.actionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
+            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
+        }
         
-        queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
-        
-        // Acting on Target
-        targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.actionCtx);
-        
+        if(_targetBattlerCtx != null)
+            _targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.actionCtx); // Acting on Target
+        else if(queuedAction.lookingForTarget == BattlemodeActionConfig.Role.EmptyTile 
+        && targetTile.IsEmptyTile() 
+        && queuedAction.actionCtx.cfg.moveToSelectedEmptyTile)
+            targetTile.TransferInOccupant(queuedAction.targetTile, BattleTracker.Instance.gridWorld);
+    
         ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
     }
+
+
+    
+
 
     BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
     {
@@ -53,39 +79,39 @@ public abstract class RoleTarget
 public sealed class SelfRoleTarget : RoleTarget
 {
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Self;
-    public BattleTile tile;
-    public override void ClearTarget() => tile = null;
+    public BattleTile selfTile;
+    public override void ClearTarget() => selfTile = null;
     public override void ActUponTarget(QueuedAction queuedActionCtx) 
-        => ActUponTargetImpl(queuedActionCtx, tile);
+        => ActUponTargetImpl(queuedActionCtx, selfTile);
 }
 
 public sealed class AllyRoleTarget : RoleTarget
 {
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Ally;
-    public BattleTile tile;
-    public override void ClearTarget() => tile = null;
+    public BattleTile allyTile;
+    public override void ClearTarget() => allyTile = null;
     public override void ActUponTarget(QueuedAction queuedActionCtx)
-        => ActUponTargetImpl(queuedActionCtx, tile);
+        => ActUponTargetImpl(queuedActionCtx, allyTile);
 }
 
 public sealed class EnemyRoleTarget : RoleTarget
 {
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Enemy;
-    public BattleTile tile;
-    public override void ClearTarget() => tile = null;
+    public BattleTile enemyTile;
+    public override void ClearTarget() => enemyTile = null;
     public override void ActUponTarget(QueuedAction queuedActionCtx) 
-        => ActUponTargetImpl(queuedActionCtx, tile);
+        => ActUponTargetImpl(queuedActionCtx, enemyTile);
 }
 
 // For now this is per target for every target, not for every target, mabye change later
 public sealed class AllyTeamTarget : RoleTarget
 {
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
-    public List<BattleTile> tiles = new();
-    public override void ClearTarget() => tiles.Clear();
+    public List<BattleTile> allyTiles = new();
+    public override void ClearTarget() => allyTiles.Clear();
     public override void ActUponTarget(QueuedAction queuedActionCtx)
     {
-        foreach (var tile in tiles)
+        foreach (var tile in allyTiles)
             ActUponTargetImpl(queuedActionCtx, tile);
     }
 }
@@ -94,11 +120,20 @@ public sealed class AllyTeamTarget : RoleTarget
 public sealed class EnemyTeamTarget : RoleTarget
 {
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
-    public List<BattleTile> tiles = new();
-    public override void ClearTarget() => tiles.Clear();
+    public List<BattleTile> enemyTiles = new();
+    public override void ClearTarget() => enemyTiles.Clear();
     public override void ActUponTarget(QueuedAction queuedActionCtx)
     {
-        foreach (var tile in tiles)
+        foreach (var tile in enemyTiles)
             ActUponTargetImpl(queuedActionCtx, tile);
     }
+}
+
+public sealed class EmptyTileTarget : RoleTarget
+{
+    public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.EmptyTile;
+    public BattleTile emptyTile;
+    public override void ClearTarget() => emptyTile = null;
+    public override void ActUponTarget(QueuedAction queuedActionCtx) 
+        => ActUponTargetImpl(queuedActionCtx, emptyTile);
 }

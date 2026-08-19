@@ -72,6 +72,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("BattleInfo: Enemy")] [Required] public EnemyIntentions enemyIntentions;
     
     [ReadOnly] public BattlemodeAction[] actionSlots = Array.Empty<BattlemodeAction>();
+    [Required, SerializeField] BattlemodeAction moveAction;
+    [Required, SerializeField] BattlemodeActionConfig moveActionConfig;
 
     void Awake()
     {
@@ -136,6 +138,13 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             actionSlots[i] = Instantiate(actionDisplayPrefab, actionDisplayParent).Get<BattlemodeAction>();
             actionSlots[i].actionsDisplay.Inject(this);
         }
+
+        moveAction.actionsDisplay.Inject(this);
+        var moveActionCtx = moveActionConfig.GenerateActionCtx(
+            BattlemodeActionCtx.Status.Acting,
+            null,
+            null);
+        moveAction.InitAction(moveActionCtx);
     }
     
 
@@ -198,6 +207,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             displ_IntentionsVLG.SetActive(false);
             displ_IntentionsNumGO.SetActive(false);
             displ_PredictedNumGO.SetActive(false);
+            moveAction.gameObject.SetActive(true);
         }
         else if (tile.occupantCtx is EnemyOccupantCtx enemyOccupantCtx)
         {
@@ -217,6 +227,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             displ_IntentionsVLG.SetActive(true);
             displ_IntentionsNumGO.SetActive(true);
             displ_PredictedNumGO.SetActive(true);
+            moveAction.gameObject.SetActive(false);
         }
         else if (tile.occupantCtx is BattlerOccupantCtx battlerCtx)
         {
@@ -228,6 +239,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             ShowSpecialEffects(battlerCtx);
             battlerCtx.PreResolveActingEffects(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(battlerCtx);
+            moveAction.gameObject.SetActive(false);
         }
         
         // Recently Selected Action Setup
@@ -325,19 +337,17 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         foreach (var slot in actionSlots) slot.Hide();
         GUI.SetActive(false);
     }
-
-    public void UseAction()
+    
+    public void QueueAction()
     {
-        if (currentlySelectedTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx)
-        {
+        Debug.Log("[BattlemodeActionDisplay] Queueing action");
+        if (currentlySelectedTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) {
             Debug.Log("[BattlemodeActionDisplay] Cannot use action on non-character occupant");
-            return;
-        }
+            return; }
         
         if (currentlySelectedAction != null) 
             BattleTracker.Instance.QueueAction(currentlySelectedTile, currentlySelectedAction);
-        else
-            Debug.LogError("[BattlemodeActionDisplay] Using a null currentlySelectedAction");
+        else Debug.LogError("[BattlemodeActionDisplay] Using a null currentlySelectedAction");
     }
 
     public int GetCurrentlySelectedAPCost()

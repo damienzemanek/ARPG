@@ -1,5 +1,6 @@
  // Future pass this to other tiles to move into those tiles, then clear self
 
+ using System;
  using System.Collections.Generic;
  using System.Linq;
  using Sirenix.OdinInspector;
@@ -174,7 +175,7 @@
                 if (currentEffects[index].markedForRemoval)
                     currentEffects.RemoveAt(index);
         }
-
+        
         void MutateValues(BattlemodeActionCtx ctx)
         {
             Debug.Log("[HIT] Mutating values");

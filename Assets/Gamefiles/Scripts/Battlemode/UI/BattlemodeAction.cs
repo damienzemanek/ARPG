@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class BattlemodeAction : MonoBehaviour
 {
     [ShowInInspector] public BattlemodeActionCtx actionCtx;
-    [Required] public Image img;
+    public bool useImage = true;
+    [ShowIf("useImage")] public Image img;
     [ReadOnly, ShowInInspector] public InjectableClass<BattlemodeActionsDisplay> actionsDisplay = new();
 
     public void Hide()
@@ -18,7 +19,7 @@ public class BattlemodeAction : MonoBehaviour
     public void InitAction(BattlemodeActionCtx actionCtx)
     {
         this.actionCtx = actionCtx;
-        img.sprite = actionCtx.cfg.icon;
+        if(useImage) img.sprite = actionCtx.cfg.icon;
     }
 
     public void HoverAction()
@@ -30,6 +31,6 @@ public class BattlemodeAction : MonoBehaviour
     public void UseAction()
     {
         Debug.Log("Using Action: " + actionCtx.cfg.name + "");
-        actionsDisplay.Value.UseAction();
+        actionsDisplay.Value.QueueAction();
     }
 }

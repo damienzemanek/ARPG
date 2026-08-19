@@ -40,6 +40,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public EnemyRoleTarget targEnemySlot;
         public AllyTeamTarget targAllyTeamSlot;
         public EnemyTeamTarget targEnemyTeamSlot;
+        public EmptyTileTarget targEmptyTileSlot;
         
         public void Init()
         {
@@ -48,6 +49,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             targEnemySlot = new();
             targAllyTeamSlot = new();
             targEnemyTeamSlot = new();
+            targEmptyTileSlot = new();
         }
     }
     
@@ -65,6 +67,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void SelectTile(BattleTile tile, bool backSelect = false)
     {
+        Debug.Log("Selecting tile 1");
         if (queuedPlayerAction.hasQueuedAction)
         {
             if (backSelect) // Back Select
@@ -82,6 +85,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             }
             return;
         }
+        Debug.Log("Selecting tile 2");
         gridWorld.UnSelectAll();
         currentlySelectedTile = tile;
         queuedPlayerAction.actingOccupantCtx = null;
@@ -97,29 +101,33 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         switch (targetRole)
         {
             case BattlemodeActionConfig.Role.Self:
-                queuedPlayerAction.targSelfSlot.tile = tile; 
+                queuedPlayerAction.targSelfSlot.selfTile = tile; 
                 selectedTarget = queuedPlayerAction.targSelfSlot;
                 break;
             case BattlemodeActionConfig.Role.Ally:
-                queuedPlayerAction.targAllySlot.tile = tile; 
+                queuedPlayerAction.targAllySlot.allyTile = tile; 
                 selectedTarget = queuedPlayerAction.targAllySlot;
                 break;
             case BattlemodeActionConfig.Role.Enemy:
-                queuedPlayerAction.targEnemySlot.tile = tile; 
+                queuedPlayerAction.targEnemySlot.enemyTile = tile; 
                 selectedTarget = queuedPlayerAction.targEnemySlot;
                 break;
             case BattlemodeActionConfig.Role.Team:
-                queuedPlayerAction.targAllyTeamSlot.tiles.Add(tile); 
+                queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(tile); 
                 selectedTarget = queuedPlayerAction.targAllyTeamSlot;
                 break;
             case BattlemodeActionConfig.Role.EnemyTeam:
-                queuedPlayerAction.targEnemyTeamSlot.tiles.Add(tile); 
+                queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(tile); 
                 selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
+                break;
+            case BattlemodeActionConfig.Role.EmptyTile:
+                queuedPlayerAction.targEmptyTileSlot.emptyTile = tile; 
+                selectedTarget = queuedPlayerAction.targEmptyTileSlot;
                 break;
         }
 
         // Should always be the case
-        if (queuedPlayerAction.actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
+        if (queuedPlayerAction.actingOccupantCtx != null && queuedPlayerAction.actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
             actingCharacterCtx.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
@@ -144,9 +152,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         ClearRoleTargets();
     }
     
-
     public void QueueAction(BattleTile tile, BattlemodeActionCtx actionCtx)
     {
+        Debug.Log("[BattleTracker] Queueing action");
         if (tile.occupantCtx is CharacterOccupantCtx actingCharacterCtx)
             if (actingCharacterCtx.currentAP < (actionCtx.ap + actionCtx.apDelta))
                 return;
@@ -156,16 +164,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         queuedPlayerAction.actionCtx = actionCtx;
         queuedPlayerAction.targetTile = tile;
         queuedPlayerAction.lookingForTarget = actionCtx.cfg.roleTarget;
+        Debug.Log("Queued action: " + actionCtx.cfg.name + " on tile: [" + tile.row + ", " + tile.col + "]");
         
         // Target Selection
-        gridWorld.HideUnoccupiedTiles_GetAvaliableTargetTiles(
-            battleConfig: currentBattleConfig,
-            actionTarget: queuedPlayerAction.lookingForTarget,
-            queuedOccupant: queuedPlayerAction.targetTile.occupantCtx.cfg,
-            out var avaliableTargetsTiles);
-        
-        player.ZoomOutToSelectQueuedAction();
-        actionsDisplay.HideDisplay();
         GridWorld.InRangeCheckCtx inRangeCheckCtx = new()
         {
             upRange = actionCtx.cfg.upRange,
@@ -174,7 +175,24 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             myRow = tile.row,
             myCol = tile.col,
         };
-        gridWorld.ShowInRangeTiles(inRangeCheckCtx, avaliableTargetsTiles);
+
+        
+        var inRangeTiles = gridWorld.GetInRangeTiles(inRangeCheckCtx, queuedPlayerAction.lookingForTarget);
+        inRangeTiles.ForEach(t => t.InRange());
+        
+        var targetTiles = gridWorld.GetAvaliableTargetTiles(
+            battleConfig: currentBattleConfig,
+            actionTarget: queuedPlayerAction.lookingForTarget,
+            inRangeTiles);
+        
+        player.ZoomOutToSelectQueuedAction();
+        actionsDisplay.HideDisplay();
+
+        foreach (var t in targetTiles)
+        {
+            t.ResetSpecialTargetConsiderations();
+            t.SpecialTargetConsiderations(queuedPlayerAction.lookingForTarget);
+        }
 
     }
 
@@ -186,6 +204,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         queuedPlayerAction.targEnemySlot.ClearTarget();
         queuedPlayerAction.targAllyTeamSlot.ClearTarget();
         queuedPlayerAction.targEnemyTeamSlot.ClearTarget();
+        queuedPlayerAction.targEmptyTileSlot.ClearTarget();
+        Debug.Log("Cleared role targets");
     }
 
     public void DisplayActionsUI()

@@ -19,6 +19,7 @@ public class BattleTile : MonoBehaviour
     [FormerlySerializedAs("hiddenCompletly")] public bool unselectable = false;
     public bool alreadySelected = false;
     bool isInRange = false;
+    public bool tileCanBeSelectedOveride = false;
     [ReadOnly] public int col, row;
     public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
     public float maxHPBarScale = 3.5f;
@@ -73,11 +74,13 @@ public class BattleTile : MonoBehaviour
     public void Clear()
     {
         UnHover();
+        unselectable = false;
         selected.SetActive(false);
         isInRange = false;
         inRange.SetActive(false);
         mouseClickDetector.detections.Clear();
         alreadySelected = false;
+        tileCanBeSelectedOveride = false;
     }
     
 
@@ -92,12 +95,11 @@ public class BattleTile : MonoBehaviour
     {
         Clear();
         @default.SetActive(true);
-        unselectable = false;
     }
 
     public void Hover()
     {
-        if (!occupied) return;
+        if (!occupied && !tileCanBeSelectedOveride) return;
         if (unselectable) return;
         if (selected.activeInHierarchy) return;
         hover.SetActive(true);
@@ -119,7 +121,7 @@ public class BattleTile : MonoBehaviour
     public void Select()
     {
         if (alreadySelected) return;
-        if (!occupied) return;
+        if (!occupied && !tileCanBeSelectedOveride) return;
         if (unselectable) return;
         BattleTracker.Instance.SelectTile(this);
     }
@@ -218,33 +220,53 @@ public class BattleTile : MonoBehaviour
 
         Debug.Log("Spawned " + config.name + " at [" + col + ", " + row + "]");
     }
+    
 
-    public void ShowOnly(BattlemodeActionConfig.Role useTarget, OccupantCfg user)
+    public void ResetSpecialTargetConsiderations()
     {
-        bool shouldShow =
-            (useTarget == BattlemodeActionConfig.Role.Enemy && IsEnemy()) ||
-            (useTarget == BattlemodeActionConfig.Role.Self && IsSelf(user)) ||
-            (useTarget == BattlemodeActionConfig.Role.Ally && IsAlly(user));
-
-        if (!shouldShow) HideAndMakeUnSelectable();
+        tileCanBeSelectedOveride = false;
     }
 
-    public bool IsEnemy() => occupantCtx.cfg is EnemyConfig;
-    public bool IsSelf(OccupantCfg selfConfig) => occupantCtx.cfg == selfConfig;
-    public bool IsAlly(OccupantCfg selfConfig) => occupantCtx.cfg is CharacterConfig && !IsSelf(selfConfig);
+    public void SpecialTargetConsiderations(BattlemodeActionConfig.Role useTarget)
+    {
+        if (useTarget == BattlemodeActionConfig.Role.EmptyTile && IsEmptyTile())
+        {
+            unselectable = false;
+            tileCanBeSelectedOveride = true;
+        }
+    }
+
+    public bool IsEnemy() => occupantCtx?.cfg is EnemyConfig;
+    public bool IsSelf(OccupantCfg selfConfig) => occupantCtx?.cfg == selfConfig;
+    public bool IsAlly(OccupantCfg selfConfig) => occupantCtx?.cfg is CharacterConfig && !IsSelf(selfConfig);
+    public bool IsEmptyTile() => occupantCtx == null;
 
     [Button]
     public void TestKill()
     {
+        ResetTileOccupancy(true);
+    }
+
+    public void ResetTileOccupancy(bool destroy)
+    {
         display.SetActive(false);
         if (occupantCtx.obj != null)
         {
-            if (Application.isPlaying)
-                Destroy(occupantCtx.obj);
-            else
-                DestroyImmediate(occupantCtx.obj);
+            if (destroy && Application.isPlaying) Destroy(occupantCtx.obj);
+            else if (destroy) DestroyImmediate(occupantCtx.obj);
         }
         occupantCtx = null;
         Debug.Assert(occupantCtx == null, "OccupantCtx should be null after destroying");
+    }
+
+    public void TransferInOccupant(BattleTile previousTile, GridWorld grid)
+    {
+        if (occupantCtx != null) return;
+        occupantCtx = previousTile.occupantCtx;
+        previousTile.occupantCtx.obj.transform.position = transform.position + occupantSpawnOffset;
+        Clear();
+        display.SetActive(true);
+        previousTile.ResetTileOccupancy(false);
+        grid.UpdateGrid();
     }
 }
