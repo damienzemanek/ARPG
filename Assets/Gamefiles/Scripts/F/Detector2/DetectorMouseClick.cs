@@ -1,23 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DetectorMouseClick : Detector
 {
+    public bool eventSystemPointerOverGameObject = true;
     public override DetectorType type => DetectorType.MouseOver;
     
     void OnMouseDown()
     {
+        if (eventSystemPointerOverGameObject
+        && EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Enter)) return;
         Detect(gameObject);
     }
     
     void OnMouseUp()
     {
+        if (eventSystemPointerOverGameObject && 
+        EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Exit)) return;
         LoseDetect(gameObject);
     }
 
     public void OnMouseDrag()
     {
+        if (eventSystemPointerOverGameObject && 
+        EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Stay)) return;
         Detect(gameObject);
     }

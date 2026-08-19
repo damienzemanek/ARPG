@@ -211,7 +211,8 @@ public class GridWorld : MonoBehaviour
         }
 
         // Row above
-        if (ctx.myRow > 0 && ctx.upRange > 0)
+        bool bellowTopRow = ctx.upRange > 0;
+        if (ctx.myRow > 0 && bellowTopRow)
         {
             var row = gridRows[ctx.myRow - 1].tiles;
             for (int col = 0; col < row.Count; col++)
@@ -223,8 +224,10 @@ public class GridWorld : MonoBehaviour
             }
         }
 
+
         // Row below
-        if (ctx.myRow < gridRows.Count - 1 && ctx.downRange > 0)
+        bool abouveBottomRow = ctx.downRange > 0;
+        if (ctx.myRow < gridRows.Count - 1 && abouveBottomRow)
         {
             var row = gridRows[ctx.myRow + 1].tiles;
             for (int col = 0; col < row.Count; col++)
@@ -234,6 +237,18 @@ public class GridWorld : MonoBehaviour
                 if (diff < ctx.downRange) tilesInRange.Add(row[col]);
                 else row[col].NotInRange();
             }
+        }
+
+        if (ctx.myRow == 0)
+        {
+            var bottomRow = gridRows[gridRows.Count - 1].tiles;
+            foreach (var tile in bottomRow) tile.NotInRange();
+        }
+
+        if (ctx.myRow == gridRows.Count - 1)
+        {
+            var topRow = gridRows[0].tiles;
+            foreach (var tile in topRow) tile.NotInRange();
         }
 
         return tilesInRange;

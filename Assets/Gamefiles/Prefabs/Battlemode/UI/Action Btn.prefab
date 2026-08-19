@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5938dfa2c14e9468a0975f057f395f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeAction
-  config: {fileID: 0}
+  useImage: 1
   img: {fileID: 1223839248329380547}
 --- !u!114 &3010732168355103192
 MonoBehaviour:

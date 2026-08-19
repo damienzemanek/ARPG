@@ -19,7 +19,8 @@ public class BattlemodeAction : MonoBehaviour
     public void InitAction(BattlemodeActionCtx actionCtx)
     {
         this.actionCtx = actionCtx;
-        if(useImage) img.sprite = actionCtx.cfg.icon;
+        if(!useImage) return;
+        img.sprite = actionCtx.cfg.icon;
     }
 
     public void HoverAction()
