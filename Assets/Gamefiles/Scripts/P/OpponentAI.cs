@@ -22,16 +22,17 @@ public class OpponentAI : MonoBehaviour
     public float proto_delayBetweenAttackFinishing = 0.15f;
 
     [Required] public BattlemodeActionConfig moveActionCfg;
+    [Required] public BattlemodeActionConfig armorActionCfg;
+
     BattlemodeActionCtx moveActionCtx;
-
-
-
-
+    BattlemodeActionCtx defendActionCtx;
+    
     public void QueueActions(List<BattleTile> opponentTiles)
     {
         battlerAttackOrder.Clear();
 
         moveActionCtx ??= moveActionCfg.GenerateActionCtx(BattlemodeActionCtx.Status.Acting, null, null, 1);
+        defendActionCtx ??= armorActionCfg.GenerateActionCtx(BattlemodeActionCtx.Status.Acting, null, null, 1);
         
         // Opponent's Attack Order
         foreach (var tile in opponentTiles)
@@ -176,6 +177,28 @@ public class OpponentAI : MonoBehaviour
                             out var horizDist,
                             out var vertDist))
                     {
+                        TryToMoveTo(out var moveTile);
+                        if (moveTile != null)
+                        {
+                            queuedAction.targEmptyTileSlot.emptyTile = queuedAction.targetTile;
+
+                            Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
+                                      + $"to [{queuedAction.targetTile.col},{queuedAction.targetTile.row}]");
+                            return queuedAction.targEmptyTileSlot;
+                        }
+                        else
+                        {
+                            Defend();
+                            queuedAction.targSelfSlot.selfTile = queuedAction.targetTile;
+                            return queuedAction.targSelfSlot;
+                        }
+                    }
+
+                    Debug.Log($"In Range: [horiz: {horizDist} vert: {vertDist}] " + "Queuing Normal Action");
+                    isInRange = true;
+                    
+                    void TryToMoveTo(out BattleTile moveTile)
+                    {
                         Debug.Log("Not In Range, Queuing Move Action");
 
                         var savedTargetTile = queuedAction.targetTile;
@@ -194,19 +217,27 @@ public class OpponentAI : MonoBehaviour
                             savedTargetTile, 
                             inRangeCheckCtx,
                             true);
-
-                        queuedAction.targEmptyTileSlot.emptyTile = queuedAction.targetTile;
-
-                        Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
-                                  + $"to [{queuedAction.targetTile.col},{queuedAction.targetTile.row}]");
-                        return queuedAction.targEmptyTileSlot;
+                        moveTile = queuedAction.targetTile;
                     }
-
-                    Debug.Log($"In Range: [horiz: {horizDist} vert: {vertDist}] " + "Queuing Normal Action");
-                    isInRange = true;
+                    
+                    void Defend()
+                    {
+                        Debug.Log("Not In Range, Queuing Defend Action");
+                        
+                        queuedAction.Init();
+                        queuedAction.actingOccupantCtx = orderCtx.myEnemyOccupantCtx;
+                        queuedAction.actionCtx = defendActionCtx;
+                        queuedAction.lookingForTarget = BattlemodeActionConfig.Role.Self;
+                        actionDecided = true;
+                        queuedAction.targetTile = orderCtx.myTile;
+                    }
+                    
                 }
                 return target;
+                
             }
+            
+            
         }
     }
     

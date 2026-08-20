@@ -30,13 +30,16 @@ public class BattlemodeActionConfig : ScriptableObject
         Move,
     }
     
-
+    
     public string actionName;
     public string description;
     public Sprite icon;
     public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
     [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
-    [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healMultiplier = 0;
+    [FormerlySerializedAs("healMultiplier")] 
+    [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
+    [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
+
     [BoxGroup("Ranges")] [InfoBox("FWD: 0 always unincluded, start at 1")]
     [BoxGroup("Ranges")] public Vector2 fwdRange = new Vector2(1, 1);
     [BoxGroup("Ranges")] [InfoBox("UP & DOWN: 0 is directly up and down, it is included")]
@@ -46,6 +49,7 @@ public class BattlemodeActionConfig : ScriptableObject
     public int apCost = 1;
     public ActionIdentifier actionIdentifier;
     [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
+    public bool capArmorIncrease;
     [FormerlySerializedAs("useTarget")] public Role roleTarget;
     [FormerlySerializedAs("effects")] public List<BattlemodeEffectConfig> effectsToApplyToTarget = new();
     public List<BattlemodeEffectConfig> effectsToApplyToSelf = new();
@@ -62,8 +66,10 @@ public class BattlemodeActionConfig : ScriptableObject
             hitCountDelta = 0,
             dmg = actingBatlerCtx?.currentDMG ?? 0,
             heal = targetBatlerCtx?.maxHp ?? 0,
+            armor = actingBatlerCtx?.maxArmor ?? 0,
             deltaDmgMultiplier = this.dmgMultiplier,
-            deltaHealMultiplier = this.healMultiplier,
+            deltaHealMultiplier = this.healPercentage,
+            deltaArmorMultiplier = this.armorIncreasePercentage,
             status = _status,
             cfg = this,
         };
@@ -96,12 +102,14 @@ public class BattlemodeActionCtx
     public int hitCount;
     public int dmg;
     public int heal;
+    public int armor;
     public int ap;
     
     public int hitCountDelta;
     public int apDelta;
     public float deltaDmgMultiplier;
     public float deltaHealMultiplier;
+    public float deltaArmorMultiplier;
     
     public BattlemodeActionConfig cfg;
 

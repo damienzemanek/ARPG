@@ -47,16 +47,11 @@ public class BattlemodeEffectConfig
         AfterHitByAction,
         BeforeActing,
         AfterActing,
-        AfterMyTeamTurnStarts,
-        AfterMyTeamTurnEnds,
-        AfterOpponentTeamTurnStarts,
-        AfterOpponentTeamTurnEnds,
+        AfterTurnEnds,
         StartOfBattle
     }
 
     public AddOccurance addOccurance;
-    public RemovalOccurrence removealOccurance;
-    [FormerlySerializedAs("occurance")] public ResolveOccurance resolveOccurance;
     public EffectTime time;
     public int stacks;
     
@@ -109,30 +104,30 @@ public class BattlemodeEffectCtx
             actionCtx,
             stacks);
 
-        if (cfg.removealOccurance == BattlemodeEffectConfig.RemovalOccurrence.None
+        if (effectStrategy.removealOccurance == BattlemodeEffectConfig.RemovalOccurrence.None
             || instanceEffectTime == BattlemodeEffectConfig.EffectTime.Permanent)
             return newActionCtx;
 
         switch (actionCtx.status)
         {
             case BattlemodeActionCtx.Status.BeingHit:
-                if (cfg.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnHit))
+                if (effectStrategy.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnHit))
                     stacks--; break;
 
             case BattlemodeActionCtx.Status.Acting:
-                if (cfg.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnPostAttack))
+                if (effectStrategy.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnPostAttack))
                     stacks--; break;
 
             case BattlemodeActionCtx.Status.TurnEnd:
-                if (cfg.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnTurnEnd))
+                if (effectStrategy.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnTurnEnd))
                     stacks--; break;
 
             case BattlemodeActionCtx.Status.BattleEnd:
-                if (cfg.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnBattleEnd))
+                if (effectStrategy.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnBattleEnd))
                     stacks--; break;
 
             case BattlemodeActionCtx.Status.ExpeditionEnd:
-                if (cfg.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnExpeditionEnd))
+                if (effectStrategy.removealOccurance.HasFlag(BattlemodeEffectConfig.RemovalOccurrence.OnExpeditionEnd))
                     stacks--; break;
         }
 
@@ -145,6 +140,10 @@ public class BattlemodeEffectCtx
 [Serializable]
 public abstract class BattlemodeEffectStrategy
 {
+    public abstract BattlemodeEffectConfig.RemovalOccurrence removealOccurance { get; }
+    public abstract BattlemodeEffectConfig.ResolveOccurance resolveOccurance { get; }
+
+    
     // Mutates Directly
     public abstract BattlemodeActionCtx ResolveEffect(
         OccupantCtx occupantCtx,
@@ -156,6 +155,9 @@ public abstract class BattlemodeEffectStrategy
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrategy
 {
+    public override BattlemodeEffectConfig.RemovalOccurrence removealOccurance => BattlemodeEffectConfig.RemovalOccurrence.OnTurnEnd;
+    public override BattlemodeEffectConfig.ResolveOccurance resolveOccurance => BattlemodeEffectConfig.ResolveOccurance.BeforeHitByAction;
+
     public override BattlemodeActionCtx ResolveEffect(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx,
@@ -164,6 +166,4 @@ public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrate
         actionCtx.dmg *= 2;
         return actionCtx;
     }
-    
-    
 }

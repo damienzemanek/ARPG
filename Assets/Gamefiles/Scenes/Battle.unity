@@ -5975,7 +5975,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 0, y: 70}
+  m_SizeDelta: {x: 53.1, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -9915,6 +9915,7 @@ MonoBehaviour:
   proto_delayBetweenAttackers: 1
   proto_delayBetweenAttackFinishing: 0.15
   moveActionCfg: {fileID: 11400000, guid: 49edeb5dafdeb854b91d92d8cc21ee12, type: 2}
+  armorActionCfg: {fileID: 11400000, guid: 742ae502be76925439554b7b0418e791, type: 2}
 --- !u!1 &507482233
 GameObject:
   m_ObjectHideFlags: 0

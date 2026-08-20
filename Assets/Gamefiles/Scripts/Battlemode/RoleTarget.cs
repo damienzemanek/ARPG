@@ -63,10 +63,10 @@ public abstract class RoleTarget
     {
         if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return actingActionCtx;
         foreach (var effect in battlerCtx.currentEffects)
-            if (effect.cfg.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
+            if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
         foreach (var effect in battlerCtx.specialEffects)
-            if (effect.cfg.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
+            if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
         return actingActionCtx;
     }
@@ -75,10 +75,10 @@ public abstract class RoleTarget
     {
         if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
         foreach (var effect in battlerCtx.currentEffects)
-            if (effect.cfg.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
+            if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
         foreach (var effect in battlerCtx.specialEffects)
-            if (effect.cfg.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
+            if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
     }
 }

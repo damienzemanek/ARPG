@@ -66,9 +66,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     {
         gridWorld.PopulateGrid(currentBattleConfig);
         queuedPlayerAction.Init();
-        StartPlayerTurn();
+        StartPlayerTurn(true);
     }
     
+
 
     public void SelectTile(BattleTile tile, bool backSelect = false)
     {
@@ -223,24 +224,58 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     
     public void HideActionsUI() => actionsDisplay.HideDisplay();
 
-    public void StartPlayerTurn()
+    public void StartPlayerTurn(bool firstTurn = false)
     {
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
-        gridWorld.GetBattlerTiles(out var opponentTiles, out _);
-        if(opponentTiles.Count > 0)
-            opponentAI.QueueActions(opponentTiles);
+        gridWorld.GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        
+        if(opponentTiles.Count > 0) opponentAI.QueueActions(opponentTiles);
         else
+        {
             Debug.Log("All Enemies are dead or out of battle.");
+            return;
+        }
+
+        if (!firstTurn) //----------------- Regular Turns
+        {
+            // Resolve end of turn effects for opponents
+            foreach (var opponentTile in opponentTiles)
+            {
+                if (opponentTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
+                enemyOccupantCtx.ResolveStartOfBattleOpponentEffects(enemyOccupantCtx.queuedActions);
+            }
+            
+            // Resolve End of Turn effects for player
+            foreach (var playerTile in playerTiles)
+            {
+                if (playerTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
+                characterOccupantCtx.ResolveEndOfTurnPlayerEffects(actionsDisplay.actionSlots);
+            }
+        }
+        else  //-------------------------- Start of Battle
+        {
+            foreach (var opponentTile in opponentTiles)
+            {
+                if (opponentTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
+                enemyOccupantCtx.ResolveStartOfBattleOpponentEffects(enemyOccupantCtx.queuedActions);
+            }
+            
+            foreach (var playerTile in playerTiles)
+            {
+                if (playerTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
+                characterOccupantCtx.ResolveStartOfBattlePlayerEffects(actionsDisplay.actionSlots);
+            }
+        }
     }
 
     public void EndPlayerTurn()
     {
         Debug.Log("Ending player turn, Starting Opponent Turn");
+        gridWorld.GetBattlerTiles(out _, out var playerTiles);
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
-        gridWorld.GetBattlerTiles(out _, out var playerTiles);
-        opponentAI.AttackAll(playerTiles, gridWorld, StartPlayerTurn);
+        opponentAI.AttackAll(playerTiles, gridWorld, () => StartPlayerTurn(false));
     }
     
 }

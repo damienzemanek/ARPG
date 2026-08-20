@@ -5,6 +5,9 @@ using UnityEngine;
 [Serializable]
 public sealed class SE_Deadeye : BattlemodeEffectStrategy
 {
+    public override BattlemodeEffectConfig.RemovalOccurrence removealOccurance => BattlemodeEffectConfig.RemovalOccurrence.None;
+    public override BattlemodeEffectConfig.ResolveOccurance resolveOccurance => BattlemodeEffectConfig.ResolveOccurance.BeforeActing;
+
     public override BattlemodeActionCtx ResolveEffect(
         OccupantCtx occupantCtx, 
         BattlemodeActionCtx actionCtx,
