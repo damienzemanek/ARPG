@@ -18,9 +18,9 @@ MonoBehaviour:
   hitCount: 1
   dmgMultiplier: 300
   healMultiplier: 0
-  fwdRange: 3
-  upRange: 0
-  downRange: 0
+  fwdRange: {x: 3, y: 4}
+  upRange: {x: 4, y: 5}
+  downRange: {x: 4, y: 5}
   aoe: 0
   apCost: 3
   actionIdentifier: 1

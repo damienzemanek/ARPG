@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Attack2
+  m_Name: Vulnrable Strike
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Vulnrable Strike
   description: Influcts Vulnrable
@@ -18,9 +18,9 @@ MonoBehaviour:
   hitCount: 1
   dmgMultiplier: 50
   healMultiplier: 0
-  fwdRange: 2
-  upRange: 4
-  downRange: 1
+  fwdRange: {x: 0, y: 3}
+  upRange: {x: 0, y: 2}
+  downRange: {x: 0, y: 2}
   aoe: 0
   apCost: 3
   actionIdentifier: 1

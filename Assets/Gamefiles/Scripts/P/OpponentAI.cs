@@ -163,16 +163,16 @@ public class OpponentAI : MonoBehaviour
 
                 while (!isInRange && !actionDecided)
                 {
-                    var inRangeCheckCtx = new GridWorld.InRangeCheckCtx()
+                    var inRangeCheckCtx = new GridWorld.InRangeCheckCtx
                     {
                         upRange = queuedAction.actionCtx.cfg.upRange,
                         fwdRange = queuedAction.actionCtx.cfg.fwdRange,
                         downRange = queuedAction.actionCtx.cfg.downRange,
                         myRow = orderCtx.myTile.row,
-                        myCol = orderCtx.myTile.col,
+                        myCol = orderCtx.myTile.col
                     };
 
-                    if ( !grid.IsInRange(inRangeCheckCtx, queuedAction.targetTile,
+                    if (!grid.IsInRange(inRangeCheckCtx, queuedAction.targetTile, true,
                             out var horizDist,
                             out var vertDist))
                     {
@@ -189,7 +189,11 @@ public class OpponentAI : MonoBehaviour
                         orderCtx.myEnemyOccupantCtx.SaveCurrentIntention();
 
                         // Find the FIRST tile of the shortest path.
-                        queuedAction.targetTile = grid.GetNextMoveTile(orderCtx.myTile, savedTargetTile, inRangeCheckCtx);
+                        queuedAction.targetTile = grid.GetNextMoveTile(
+                            orderCtx.myTile,
+                            savedTargetTile, 
+                            inRangeCheckCtx,
+                            true);
 
                         queuedAction.targEmptyTileSlot.emptyTile = queuedAction.targetTile;
 

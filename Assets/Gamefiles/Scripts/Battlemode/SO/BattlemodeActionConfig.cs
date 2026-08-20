@@ -7,15 +7,16 @@ using UnityEngine.Serialization;
 public class BattlemodeActionConfig : ScriptableObject
 {
     bool isEmptyRoleTarget => roleTarget == Role.EmptyTile;
+    
     public enum Role
     {
         None,
-        Self,
+        Self, // GOAL
         Enemy,
-        Ally,
-        Team,
-        EnemyTeam,
-        EmptyTile
+        Ally, // GOAL
+        Team, // GOAL
+        EnemyTeam, // GOAL
+        EmptyTile 
     }
 
     public enum ActionIdentifier
@@ -33,13 +34,15 @@ public class BattlemodeActionConfig : ScriptableObject
     public string actionName;
     public string description;
     public Sprite icon;
-    public int hitCount = 1;
+    public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
     public int dmgMultiplier = 100;
     public int healMultiplier = 0;
-    public int fwdRange = 1;
-    public int upRange;
-    public int downRange;
-    public int aoe = 0;
+    [BoxGroup("Ranges")] [InfoBox("FWD: 0 always unincluded, start at 1")]
+    [BoxGroup("Ranges")] public Vector2 fwdRange = new Vector2(1, 1);
+    [BoxGroup("Ranges")] [InfoBox("UP & DOWN: 0 is directly up and down, it is included")]
+    [BoxGroup("Ranges")] public Vector2 upRange = Vector2.zero;
+    [BoxGroup("Ranges")] public Vector2 downRange = Vector2.zero;
+    public int aoe = 0; // STRETCH GOAL
     public int apCost = 1;
     public ActionIdentifier actionIdentifier;
     [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
