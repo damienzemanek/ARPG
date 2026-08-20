@@ -189,8 +189,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         inRangeTiles.ForEach(t => t.InRange());
         
         var targetTiles = gridWorld.GetAvaliableTargetTiles(
-            actionTarget: queuedPlayerAction.lookingForTarget,
-            inRangeTiles);
+            myTarget: queuedPlayerAction.lookingForTarget,
+            inRangeTiles,
+            myTile: tile);
         
         player.ZoomOutToSelectQueuedAction();
         actionsDisplay.HideDisplay();

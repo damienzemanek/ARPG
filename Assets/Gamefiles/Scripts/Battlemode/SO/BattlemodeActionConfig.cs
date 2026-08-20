@@ -35,8 +35,8 @@ public class BattlemodeActionConfig : ScriptableObject
     public string description;
     public Sprite icon;
     public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
-    public int dmgMultiplier = 100;
-    public int healMultiplier = 0;
+    [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
+    [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healMultiplier = 0;
     [BoxGroup("Ranges")] [InfoBox("FWD: 0 always unincluded, start at 1")]
     [BoxGroup("Ranges")] public Vector2 fwdRange = new Vector2(1, 1);
     [BoxGroup("Ranges")] [InfoBox("UP & DOWN: 0 is directly up and down, it is included")]

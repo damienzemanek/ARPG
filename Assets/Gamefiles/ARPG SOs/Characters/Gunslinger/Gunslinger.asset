@@ -23,10 +23,11 @@ MonoBehaviour:
   equippedActions:
   - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
   - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
+  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
   ForcedActions: []
   specialEffects:
   - addOccurance: 0

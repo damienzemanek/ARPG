@@ -113,18 +113,34 @@ public class GridWorld : MonoBehaviour
     
 
     public List<BattleTile> GetAvaliableTargetTiles(
-        BattlemodeActionConfig.Role actionTarget,
-        List<BattleTile> inRangeTiles)
+        BattlemodeActionConfig.Role myTarget,
+        List<BattleTile> inRangeTiles,
+        BattleTile myTile)
     {
         var ret = new List<BattleTile>(inRangeTiles);
         foreach (var tile in inRangeTiles)
         {
-            switch (actionTarget)
+            switch (myTarget)
             {
                 case BattlemodeActionConfig.Role.Enemy: 
                     if (!tile.IsEnemy())
                     {
+                        tile.SetUnselectable(true);
                         ret.Remove(tile);
+                    }
+                    break;
+                case BattlemodeActionConfig.Role.Self:
+                    if (!tile.IsSelf(myTile.occupantCtx.cfg))
+                    {
+                        tile.SetUnselectable(true);
+                        ret.Remove(tile);
+                    }
+                    break;
+                case BattlemodeActionConfig.Role.Ally:
+                    if (!tile.IsAlly(myTile.occupantCtx.cfg))
+                    {
+                        ret.Remove(tile);
+                        tile.SetUnselectable(true);
                     }
                     break;
                 case BattlemodeActionConfig.Role.EmptyTile: 
@@ -136,6 +152,7 @@ public class GridWorld : MonoBehaviour
                     break;
             }
         }
+        
         return ret;
     }
 
@@ -439,7 +456,11 @@ public class GridWorld : MonoBehaviour
             for (int col = start; col != end; col += step)
             {
                 int distance = Mathf.Abs(col - myCol);
-                if (excludeOrigin && distance == 0) { tiles[col].NotInRange(); continue; }
+                if (excludeOrigin && distance == 0 && actionTarget != BattlemodeActionConfig.Role.Self)
+                {
+                    tiles[col].NotInRange(); 
+                    continue;
+                }
                 
                 bool inRange = upOrDown 
                     ? (distance >= min && distance < max) 

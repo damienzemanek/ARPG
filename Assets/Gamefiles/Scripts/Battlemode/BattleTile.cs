@@ -92,6 +92,8 @@ public class BattleTile : MonoBehaviour
         unselectable = true;
     }
     
+    public void SetUnselectable(bool v) => unselectable = v;
+    
     public void Unhide()
     {
         Clear();
@@ -240,7 +242,13 @@ public class BattleTile : MonoBehaviour
 
     public bool IsEnemy() => occupantCtx?.cfg is EnemyConfig;
     public bool IsSelf(OccupantCfg selfConfig) => occupantCtx?.cfg == selfConfig;
-    public bool IsAlly(OccupantCfg selfConfig) => occupantCtx?.cfg is CharacterConfig && !IsSelf(selfConfig);
+
+    public bool IsAlly(OccupantCfg selfConfig)
+    {
+        bool ret = occupantCtx?.cfg is CharacterConfig && !IsSelf(selfConfig);
+        Debug.Log("[ALLY CHECK] " + ret);
+        return ret;
+    }
     public bool IsEmptyTile() => occupantCtx == null;
 
     public bool IsSameRoleTarget(BattlemodeActionConfig.Role roleTarget, OccupantCfg compareCfg)
