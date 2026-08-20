@@ -25,6 +25,7 @@ public class EnemyIntentions : MonoBehaviour
                 case 1: txt_action2Intention.text = queuedAction.actionCtx.cfg.name; break;
                 case 2: txt_action3Intention.text = queuedAction.actionCtx.cfg.name; break;
             }
+            Debug.Log("Displaying Action: [" + queuedAction.actionCtx.cfg.actionName + "] Assetname: [" + queuedAction.actionCtx.cfg.name + "]");
             currentIndex++;
         }
     }

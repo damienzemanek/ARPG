@@ -50,6 +50,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             targAllyTeamSlot = new();
             targEnemyTeamSlot = new();
             targEmptyTileSlot = new();
+            hasQueuedAction = false;
+            actionCtx = null;
+            actingOccupantCtx = null;
+            targetTile = null;
+            lookingForTarget = BattlemodeActionConfig.Role.None;
         }
     }
     
@@ -132,7 +137,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
-        selectedTarget?.ActUponTarget(queuedPlayerAction);
+        selectedTarget?.ActUponTarget(queuedPlayerAction, currentlySelectedTile);
         CoroutineRunner.Instance.RunMethodDelayed(() =>
         {
             queuedPlayerAction.hasQueuedAction = false;
@@ -156,8 +161,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     {
         Debug.Log("[BattleTracker] Queueing action");
         if (tile.occupantCtx is CharacterOccupantCtx actingCharacterCtx)
+        {
+            Debug.Log("[BattleTracker] Checking AP : " + actingCharacterCtx.currentAP + " vs " + (actionCtx.ap + actionCtx.apDelta) + "");
             if (actingCharacterCtx.currentAP < (actionCtx.ap + actionCtx.apDelta))
                 return;
+        }
         
         ClearRoleTargets();
         queuedPlayerAction.hasQueuedAction = true;
@@ -177,11 +185,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         };
 
         
-        var inRangeTiles = gridWorld.GetInRangeTiles(inRangeCheckCtx, queuedPlayerAction.lookingForTarget);
+        var inRangeTiles = gridWorld.GetInRangeTiles(inRangeCheckCtx, queuedPlayerAction.lookingForTarget, false);
         inRangeTiles.ForEach(t => t.InRange());
         
         var targetTiles = gridWorld.GetAvaliableTargetTiles(
-            battleConfig: currentBattleConfig,
             actionTarget: queuedPlayerAction.lookingForTarget,
             inRangeTiles);
         
@@ -217,17 +224,22 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void StartPlayerTurn()
     {
+        Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
         gridWorld.GetBattlerTiles(out var opponentTiles, out _);
-        opponentAI.QueueActions(opponentTiles);
+        if(opponentTiles.Count > 0)
+            opponentAI.QueueActions(opponentTiles);
+        else
+            Debug.Log("All Enemies are dead or out of battle.");
     }
 
     public void EndPlayerTurn()
     {
+        Debug.Log("Ending player turn, Starting Opponent Turn");
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
         gridWorld.GetBattlerTiles(out _, out var playerTiles);
-        opponentAI.AttackAll(playerTiles, gridWorld);
+        opponentAI.AttackAll(playerTiles, gridWorld, StartPlayerTurn);
     }
     
 }

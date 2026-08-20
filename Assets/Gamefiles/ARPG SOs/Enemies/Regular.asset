@@ -10,23 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f18e7ad92b4304bec2dba7f748b3a1, type: 3}
-  m_Name: EnemyConfig 3
+  m_Name: Regular
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  occupantName: 'Slow Enemy '
+  occupantName: Regular Speed Enemy
   icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
   prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
   currentLevel: 1
-  maxHP: 6
-  maxArmor: 2
+  maxHP: 3
+  maxArmor: 1
   damage: 1
   _maxEquippableActions: 2
   equippedActions:
   - {fileID: 0}
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
+  - {fileID: 11400000, guid: 0ad0000841223b345ac211e551da483e, type: 2}
   AllAvaliableActions:
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
+  - {fileID: 11400000, guid: 0ad0000841223b345ac211e551da483e, type: 2}
   ForcedActions: []
   specialEffects: []
-  attackOrder: 4
+  attackOrder: 1
+  primaryAttackPriorityWeight: 2
+  secondaryAttackPriorityWeight: 1
+  PrimaryAttackPriority: 1
+  SecondaryAttackPriority: 1
+  intentUsageCfg:
+    phases:
+    - hpThreshold: 0
+      linearDefaultTraversal: 1
+      leadingZero: 0
+      actionOrder: 0
   intentions: 1
   defaultPredicted: 1

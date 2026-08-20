@@ -23,7 +23,7 @@ MonoBehaviour:
   downRange: 1
   aoe: 0
   apCost: 1
-  actionIdentifier: 0
+  actionIdentifier: 6
   moveToSelectedEmptyTile: 1
   roleTarget: 6
   effectsToApplyToTarget: []

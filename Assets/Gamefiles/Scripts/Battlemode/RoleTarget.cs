@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static BattleTracker;
 
+
+
 public abstract class RoleTarget
 {
     public abstract BattlemodeActionConfig.Role role { get; }
     public abstract void ClearTarget();
-    public abstract void ActUponTarget(QueuedAction queuedActionCtx);
+    public abstract void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile);
     
     /// <summary>
     /// This may seem complex, Order is:
@@ -21,12 +23,17 @@ public abstract class RoleTarget
     /// </summary>
     /// <param name="queuedAction"></param>
     /// <param name="targetTile"></param>
-    public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile targetTile)
+    public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile targetTile, BattleTile fromTile)
     {
         if (targetTile == null) { Debug.LogError("No target selected for self role target."); return; }
         if (queuedAction.actionCtx == null) { Debug.LogError("No action context generated."); return; }
 
-        Debug.Log($"Acting upon target at tile: {targetTile}");
+        string targName = targetTile.occupantCtx?.cfg.occupantName ?? "Empty Tile";
+        Debug.Log($"{queuedAction.actingOccupantCtx.cfg.occupantName}" +
+                  $" is Acting upon target {targName} " +
+                  $"at tile: [" + targetTile.col + ", " + targetTile.row + "]" +
+                  "with action: " + queuedAction.actionCtx.cfg.name + "");
+        
         BattlerOccupantCtx _targetBattlerCtx = null;
 
         if(targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx)
@@ -43,7 +50,7 @@ public abstract class RoleTarget
         else if(queuedAction.lookingForTarget == BattlemodeActionConfig.Role.EmptyTile 
         && targetTile.IsEmptyTile() 
         && queuedAction.actionCtx.cfg.moveToSelectedEmptyTile)
-            targetTile.TransferInOccupant(queuedAction.targetTile, BattleTracker.Instance.gridWorld);
+            targetTile.TransferInOccupant(fromTile, BattleTracker.Instance.gridWorld);
     
         ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
     }
@@ -81,8 +88,8 @@ public sealed class SelfRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Self;
     public BattleTile selfTile;
     public override void ClearTarget() => selfTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx) 
-        => ActUponTargetImpl(queuedActionCtx, selfTile);
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActUponTargetImpl(queuedActionCtx, selfTile, fromTile);
 }
 
 public sealed class AllyRoleTarget : RoleTarget
@@ -90,8 +97,8 @@ public sealed class AllyRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Ally;
     public BattleTile allyTile;
     public override void ClearTarget() => allyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx)
-        => ActUponTargetImpl(queuedActionCtx, allyTile);
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActUponTargetImpl(queuedActionCtx, allyTile, fromTile);
 }
 
 public sealed class EnemyRoleTarget : RoleTarget
@@ -99,8 +106,8 @@ public sealed class EnemyRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Enemy;
     public BattleTile enemyTile;
     public override void ClearTarget() => enemyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx) 
-        => ActUponTargetImpl(queuedActionCtx, enemyTile);
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActUponTargetImpl(queuedActionCtx, enemyTile, fromTile);
 }
 
 // For now this is per target for every target, not for every target, mabye change later
@@ -109,10 +116,10 @@ public sealed class AllyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> allyTiles = new();
     public override void ClearTarget() => allyTiles.Clear();
-    public override void ActUponTarget(QueuedAction queuedActionCtx)
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile)
     {
         foreach (var tile in allyTiles)
-            ActUponTargetImpl(queuedActionCtx, tile);
+            ActUponTargetImpl(queuedActionCtx, tile, fromTile);
     }
 }
 
@@ -122,10 +129,10 @@ public sealed class EnemyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> enemyTiles = new();
     public override void ClearTarget() => enemyTiles.Clear();
-    public override void ActUponTarget(QueuedAction queuedActionCtx)
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile)
     {
         foreach (var tile in enemyTiles)
-            ActUponTargetImpl(queuedActionCtx, tile);
+            ActUponTargetImpl(queuedActionCtx, tile, fromTile);
     }
 }
 
@@ -134,6 +141,6 @@ public sealed class EmptyTileTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.EmptyTile;
     public BattleTile emptyTile;
     public override void ClearTarget() => emptyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx) 
-        => ActUponTargetImpl(queuedActionCtx, emptyTile);
+    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActUponTargetImpl(queuedActionCtx, emptyTile, fromTile);
 }

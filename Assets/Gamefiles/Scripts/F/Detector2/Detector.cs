@@ -59,7 +59,7 @@ public abstract class Detector : MonoBehaviour, IDetectionResponsive
 
     void Start()
     {
-        if(gate == null) Debug.Log("Detector " + name + " has no gate");
+        //if(gate == null) Debug.Log("Detector " + name + " has no gate");
     }
 
     [Serializable]

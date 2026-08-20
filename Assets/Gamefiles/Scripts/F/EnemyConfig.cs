@@ -50,12 +50,7 @@ public class EnemyConfig : BattlerConfig
             if (phase == null) continue;
 
             if (!phase.ValidateActionOrder(availableActions))
-            {
-                Debug.LogError(
-                    $"Invalid Intent Phase {i} on EnemyConfig '{name}'.",
-                    this
-                );
-            }
+                Debug.LogError($"Invalid Intent Phase {i} on EnemyConfig '{name}'.", this);
         }
     }
 }
@@ -64,13 +59,21 @@ public class EnemyConfig : BattlerConfig
 public class IntentUsage
 {
     [Serializable]
-    public struct IntentUsageCtx
+    public class IntentUsageCtx
     {
+        public int savedIntentIndex;
         public int intentIndex;
         public int phaseIndex;
+
+        public IntentUsageCtx()
+        {
+            savedIntentIndex = -1;
+            intentIndex = 0;
+            phaseIndex = 0;
+        }
     }
-    
-    
+
+
     [MinValue(1)]
     int _phaseCount = 1;
 
@@ -100,20 +103,20 @@ public class IntentUsage
 
     public IntentUsageCtx GetIntent(float healthPercentage01, IntentUsageCtx currentIntentUsageCtx)
     {
-        if (phases == null || phases.Length == 0) return currentIntentUsageCtx;
+        if (phases == null || phases.Length == 0) {
+            Debug.LogError("No phases found in IntentUsage.");
+            return currentIntentUsageCtx; }
+        
 
         healthPercentage01 = Mathf.Clamp01(healthPercentage01);
-
         int phaseIndex = 0;
 
         // Find the active phase.
         for (int i = 0; i < phases.Length; i++)
         {
-            if (phases[i] != null && healthPercentage01 <= phases[i].hpThreshold)
-            {
-                phaseIndex = i;
-                break;
-            }
+            if (phases[i] == null || !(healthPercentage01 <= phases[i].hpThreshold)) continue;
+            phaseIndex = i;
+            break;
         }
 
         // If the phase changed, restart its intent traversal.
@@ -121,10 +124,16 @@ public class IntentUsage
         {
             currentIntentUsageCtx.phaseIndex = phaseIndex;
             currentIntentUsageCtx.intentIndex = 0;
+            currentIntentUsageCtx.savedIntentIndex = -1;
         }
-        else currentIntentUsageCtx.intentIndex++;
-
-
+        else // if no phase change, increment the intent index.
+        // if theres a saved intent index, use it, else increment the intent index.
+        // note: saved intent indexes do not save across phases.
+        {
+            if(currentIntentUsageCtx.savedIntentIndex == -1) currentIntentUsageCtx.intentIndex++;
+            else currentIntentUsageCtx.intentIndex = currentIntentUsageCtx.savedIntentIndex;
+        }
+        
         return currentIntentUsageCtx;
     }
 }

@@ -44,6 +44,7 @@ public class BattleTile : MonoBehaviour
     [Required] public Sprite actionIdentifier_AttackBuff;
     [Required] public Sprite actionIdentifier_Debuff;
     [Required] public Sprite actionIdentifier_Buff;
+    [Required] public Sprite actionIdentifier_Move;
 
     public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
     {
@@ -194,6 +195,7 @@ public class BattleTile : MonoBehaviour
             BattlemodeActionConfig.ActionIdentifier.AttackDebuff => actionIdentifier_AttackDebuff,
             BattlemodeActionConfig.ActionIdentifier.Buff => actionIdentifier_Buff,
             BattlemodeActionConfig.ActionIdentifier.Debuff => actionIdentifier_AttackDebuff,
+            BattlemodeActionConfig.ActionIdentifier.Move => actionIdentifier_Move,
             _ => intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>().sprite
         };
     }
@@ -241,6 +243,18 @@ public class BattleTile : MonoBehaviour
     public bool IsAlly(OccupantCfg selfConfig) => occupantCtx?.cfg is CharacterConfig && !IsSelf(selfConfig);
     public bool IsEmptyTile() => occupantCtx == null;
 
+    public bool IsSameRoleTarget(BattlemodeActionConfig.Role roleTarget, OccupantCfg compareCfg)
+    {
+        switch (roleTarget)
+        {
+            case BattlemodeActionConfig.Role.Enemy: return IsEnemy();
+            case BattlemodeActionConfig.Role.Self: return IsSelf(compareCfg);
+            case BattlemodeActionConfig.Role.Ally: return IsAlly(compareCfg);
+            case BattlemodeActionConfig.Role.EmptyTile: return IsEmptyTile();
+            default: return false;
+        }
+    }
+
     [Button]
     public void TestKill()
     {
@@ -268,5 +282,6 @@ public class BattleTile : MonoBehaviour
         display.SetActive(true);
         previousTile.ResetTileOccupancy(false);
         grid.UpdateGrid();
+        Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
     }
 }

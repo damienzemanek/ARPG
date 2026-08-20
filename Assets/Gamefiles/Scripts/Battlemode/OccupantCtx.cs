@@ -178,7 +178,7 @@
         
         void MutateValues(BattlemodeActionCtx ctx)
         {
-            Debug.Log("[HIT] Mutating values");
+            Debug.Log("[HIT] Mutating values on tile: " + cfg?.name);
             Debug.Log("[HIT] Old HP: " + currentHp + " Old Armor: " + currentArmor);
 
             var dmgMult = ctx.deltaDmgMultiplier / 100f;
@@ -246,6 +246,7 @@
             intentions = config.intentions;
             currentIntentions = config.intentions;
             currentPredicteds = config.defaultPredicted;
+            currentIntentUsageCtx = new IntentUsage.IntentUsageCtx();
             
             List<EnemyConfig.AttackPriority> _attackPriority = new List<EnemyConfig.AttackPriority>();
             for(int i = 0; i < config.primaryAttackPriorityWeight; i++)
@@ -253,5 +254,14 @@
             for(int i = 0; i < config.secondaryAttackPriorityWeight; i++)
                 _attackPriority.Add(config.SecondaryAttackPriority);
             attackPriority = new RandomBag<EnemyConfig.AttackPriority>(_attackPriority);
+        }
+        
+        public void ResetSavedIntention() => currentIntentUsageCtx.savedIntentIndex = -1;
+        public void SaveCurrentIntention() => currentIntentUsageCtx.savedIntentIndex = currentIntentUsageCtx.intentIndex;
+
+        public bool HasSavedIntention(out int index)
+        {
+            index = currentIntentUsageCtx.savedIntentIndex;
+            return (index != -1);
         }
     }

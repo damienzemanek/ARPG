@@ -59,15 +59,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638502069835526399}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.76, y: 1.86, z: -5.095}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.7600002, y: 1.8600001, z: -5.095}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6825044943212697410}
   - {fileID: 3058484877047815194}
   - {fileID: 3499962578883178723}
-  m_Father: {fileID: 6403632526066286089}
+  m_Father: {fileID: 3043271159745843301}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7259913703566096659
 MonoBehaviour:
@@ -141,7 +141,6 @@ Transform:
   - {fileID: 42218572515829151}
   - {fileID: 8076227467373817960}
   - {fileID: 3043271159745843301}
-  - {fileID: 8726536771932246837}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5198769991463763634
@@ -262,6 +261,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     vTableEntries: []
+  eventSystemPointerOverGameObject: 1
   references:
     version: 2
     RefIds: []
@@ -279,6 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   unselectable: 0
   alreadySelected: 0
+  tileCanBeSelectedOveride: 0
   col: 0
   row: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
@@ -299,6 +300,7 @@ MonoBehaviour:
   actionIdentifier_AttackBuff: {fileID: 21300000, guid: 55325133e385f5041943c14bf02e41e1, type: 3}
   actionIdentifier_Debuff: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
   actionIdentifier_Buff: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
+  actionIdentifier_Move: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
 --- !u!1 &997776135097482517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,6 +1183,7 @@ Transform:
   m_Children:
   - {fileID: 2744005112175477251}
   - {fileID: 5457260805164678415}
+  - {fileID: 8726536771932246837}
   m_Father: {fileID: 6403632526066286089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6690317283003894873

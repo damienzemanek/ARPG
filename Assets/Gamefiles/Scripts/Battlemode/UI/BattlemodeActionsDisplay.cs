@@ -143,7 +143,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         var moveActionCtx = moveActionConfig.GenerateActionCtx(
             BattlemodeActionCtx.Status.Acting,
             null,
-            null);
+            null,
+            1);
         moveAction.InitAction(moveActionCtx);
     }
     

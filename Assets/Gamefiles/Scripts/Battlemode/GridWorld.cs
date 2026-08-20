@@ -112,7 +112,7 @@ public class GridWorld : MonoBehaviour
     public void UpdateGrid() => GetAllTiles().ForEach(t => t.UpdateTransientStats());
     
 
-    public List<BattleTile> GetAvaliableTargetTiles(BattleConfig battleConfig,
+    public List<BattleTile> GetAvaliableTargetTiles(
         BattlemodeActionConfig.Role actionTarget,
         List<BattleTile> inRangeTiles)
     {
@@ -138,8 +138,124 @@ public class GridWorld : MonoBehaviour
         }
         return ret;
     }
-    
-    
+
+
+    public BattleTile GetNextMoveTile(
+        BattleTile start,
+        BattleTile end,
+        InRangeCheckCtx rangeCtx)
+    {
+        if (start == null) { Debug.LogWarning("[BFS] Start is null."); return null; } 
+        if (end == null) { Debug.LogWarning("[BFS] End is null."); return null; }
+        if (start == end) { Debug.Log("[BFS] Start and end are the same tile. No movement required."); return null; }
+
+        var queue = new Queue<BattleTile>();
+        var visited = new HashSet<BattleTile>();
+        var firstMove = new Dictionary<BattleTile, BattleTile>();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+
+            // We aren't trying to reach the target anymore.
+            // We are trying to find the closest tile from which
+            // the target can be attacked.
+            if (IsTargetInRange(current, end))
+            {
+                var result = current == start
+                    ? null
+                    : firstMove[current];
+
+                Debug.Log(
+                    $"[BFS] Found attack position [{current.col},{current.row}] " +
+                    $"for target [{end.col},{end.row}]. " +
+                    $"Next move = [{result?.col},{result?.row}]");
+
+                return result;
+            }
+
+            foreach (var neighbor in GetNeighbors(current))
+            {
+                if (visited.Contains(neighbor))
+                    continue;
+
+                // Every occupied tile is an obstacle.
+                // We are looking for an attack position, not the target itself.
+                if (neighbor.occupied)
+                    continue;
+
+                visited.Add(neighbor);
+
+                firstMove[neighbor] =
+                    current == start
+                        ? neighbor
+                        : firstMove[current];
+
+                queue.Enqueue(neighbor);
+            }
+        }
+
+        Debug.LogWarning(
+            $"[BFS] No attack position found from [{start.col},{start.row}] " +
+            $"against [{end.col},{end.row}].");
+
+        return null;
+
+
+        bool IsTargetInRange(BattleTile attackerTile, BattleTile targetTile)
+        {
+            int rowDifference = targetTile.row - attackerTile.row;
+            int colDifference = attackerTile.col - targetTile.col;
+
+            // Target is behind us.
+            // Enemy AI attacks from right -> left, so the target
+            // must be on the same column or to our left.
+            if (colDifference < 0)
+                return false;
+
+            switch (rowDifference)
+            {
+                // Same row
+                case 0:
+                    return colDifference <= rangeCtx.fwdRange;
+
+                // Target is one row above.
+                // In your grid, row - 1 is up.
+                case -1:
+                    return colDifference < rangeCtx.upRange;
+
+                // Target is one row below.
+                case 1:
+                    return colDifference < rangeCtx.downRange;
+
+                default:
+                    return false;
+            }
+        }
+
+
+        IEnumerable<BattleTile> GetNeighbors(BattleTile tile)
+        {
+            // Left = forward for enemies.
+            if (tile.col > 0)
+                yield return gridRows[tile.row].tiles[tile.col - 1];
+
+            // Right = backwards for enemies.
+            if (tile.col < gridRows[tile.row].tiles.Count - 1)
+                yield return gridRows[tile.row].tiles[tile.col + 1];
+
+            // Up
+            if (tile.row > 0)
+                yield return gridRows[tile.row - 1].tiles[tile.col];
+
+            // Down
+            if (tile.row < gridRows.Count - 1)
+                yield return gridRows[tile.row + 1].tiles[tile.col];
+        }
+    }
     
     
 
@@ -156,8 +272,8 @@ public class GridWorld : MonoBehaviour
                 case CharacterOccupantCtx: playerTiles.Add(t); break;
             }
         
-        if(opponentTiles.Count == 0) Debug.LogError("No opponent tiles found");
-        if(playerTiles.Count == 0) Debug.LogError("No player tiles found");
+        if(opponentTiles.Count == 0) Debug.LogWarning("No opponent tiles found");
+        if(playerTiles.Count == 0) Debug.LogWarning("No player tiles found");
     }
 
     public void RefreshAllApsAndIntentions()
@@ -192,65 +308,102 @@ public class GridWorld : MonoBehaviour
         public int downRange;
         public int fwdRange;
     }
+
+    public bool IsInRange(InRangeCheckCtx ctx, BattleTile tile, out int horizDist, out int vertDist)
+    {
+        Debug.Log("[Row Check] " + tile.row + " - " + ctx.myRow);
+        Debug.Log("[Col Check] " + tile.col + " - " + ctx.myCol);
+        vertDist = tile.row - ctx.myRow;
+        horizDist = Mathf.Abs(tile.col - ctx.myCol);
+        var ret = false;
+        switch (vertDist)
+        {
+            case 0: ret = horizDist <= ctx.fwdRange; break; // Same row
+            case 1: ret = horizDist < ctx.upRange; break; // Up
+            case -1: ret = horizDist < ctx.downRange; break;// Down
+        }
+        vertDist = Mathf.Abs(vertDist);
+        return ret;
+    }
+
+    public BattleTile GetClosestTargetTile(InRangeCheckCtx ctx, BattlemodeActionConfig.Role actionTarget, OccupantCfg compareCfg)
+    {
+        var tiles = GetAllTiles();
+
+        BattleTile closest = null;
+        int closestDistance = int.MaxValue;
+
+        foreach (var tile in tiles)
+        {
+            if (tile.occupied) continue;
+
+            int distance =
+                Mathf.Abs(tile.col - ctx.myCol) +
+                Mathf.Abs(tile.row - ctx.myRow);
+
+            if (distance >= closestDistance) continue;
+            if (!tile.IsSameRoleTarget(actionTarget, compareCfg)) continue;
+            closestDistance = distance;
+            closest = tile;
+        }
+
+        return closest;
+    }
     
-    public List<BattleTile> GetInRangeTiles(InRangeCheckCtx ctx, BattlemodeActionConfig.Role actionTarget)
+    public List<BattleTile> GetInRangeTiles(InRangeCheckCtx ctx, BattlemodeActionConfig.Role actionTarget, bool reverse)
     {
         List<BattleTile> tilesInRange = new();
 
-        // Same row
-        if (ctx.fwdRange > 0)
+        for (int row = 0; row < gridRows.Count; row++)
         {
-            var row = gridRows[ctx.myRow].tiles;
-            for (int col = 0; col < row.Count; col++)
+            if (row == ctx.myRow)
+                ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.fwdRange, 
+                                    true, 
+                                  reverse, tilesInRange);
+
+            // Row above
+            if (ctx.myRow > 0)
             {
-                int diff = Mathf.Abs(col - ctx.myCol);
+                if (row == ctx.myRow - 1) 
+                    ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.upRange,
+                                        false,
+                                         reverse, tilesInRange);
 
-                if (diff <= ctx.fwdRange) tilesInRange.Add(row[col]);
-                else row[col].NotInRange();
+                for (int i = ctx.myRow - 2; i >= 0; i--)
+                    gridRows[i].tiles.ForEach(t => t.NotInRange());
             }
-        }
 
-        // Row above
-        bool bellowTopRow = ctx.upRange > 0;
-        if (ctx.myRow > 0 && bellowTopRow)
-        {
-            var row = gridRows[ctx.myRow - 1].tiles;
-            for (int col = 0; col < row.Count; col++)
+            // Row below
+            if (ctx.myRow < gridRows.Count - 1)
             {
-                int diff = Mathf.Abs(col - ctx.myCol);
+                if (row == ctx.myRow + 1)
+                    ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.downRange,
+                                            false,
+                                            reverse, tilesInRange);
 
-                if (diff < ctx.upRange) tilesInRange.Add(row[col]);
-                else row[col].NotInRange();
+                for (int i = ctx.myRow + 2; i < gridRows.Count; i++)
+                    gridRows[i].tiles.ForEach(t => t.NotInRange());
             }
-        }
-
-
-        // Row below
-        bool abouveBottomRow = ctx.downRange > 0;
-        if (ctx.myRow < gridRows.Count - 1 && abouveBottomRow)
-        {
-            var row = gridRows[ctx.myRow + 1].tiles;
-            for (int col = 0; col < row.Count; col++)
-            {
-                int diff = Mathf.Abs(col - ctx.myCol);
-
-                if (diff < ctx.downRange) tilesInRange.Add(row[col]);
-                else row[col].NotInRange();
-            }
-        }
-
-        if (ctx.myRow == 0)
-        {
-            var bottomRow = gridRows[gridRows.Count - 1].tiles;
-            foreach (var tile in bottomRow) tile.NotInRange();
-        }
-
-        if (ctx.myRow == gridRows.Count - 1)
-        {
-            var topRow = gridRows[0].tiles;
-            foreach (var tile in topRow) tile.NotInRange();
         }
 
         return tilesInRange;
+        
+        void ProcessRow(List<BattleTile> tiles, int myCol, int range, bool inclusive, bool reverse, List<BattleTile> tilesInRange)
+        {
+            if (range <= 0) { tiles.ForEach(t => t.NotInRange()); return; }
+
+            int start = reverse ? (tiles.Count - 1) : (0);
+            int end = reverse   ? (-1)              : (tiles.Count);
+            int step = reverse  ? (-1)              : (1);
+
+            for (int col = start; col != end; col += step)
+            {
+                int diff = Mathf.Abs(col - myCol);
+                bool inRange = inclusive ? (diff <= range) : (diff < range);
+
+                if (inRange) tilesInRange.Add(tiles[col]);
+                else tiles[col].NotInRange();
+            }
+        }
     }
 }

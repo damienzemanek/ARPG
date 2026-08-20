@@ -26,6 +26,7 @@ public class BattlemodeActionConfig : ScriptableObject
         AttackBuff,
         Debuff,
         Buff,
+        Move,
     }
     
 
@@ -49,7 +50,8 @@ public class BattlemodeActionConfig : ScriptableObject
     public BattlemodeActionCtx GenerateActionCtx(
         BattlemodeActionCtx.Status _status,
         BattlerOccupantCtx actingBatlerCtx,
-        BattlerOccupantCtx targetBatlerCtx = null)
+        BattlerOccupantCtx targetBatlerCtx = null,
+        int overideApCost = -1)
     {
         var ctx = new BattlemodeActionCtx
         {
@@ -64,11 +66,13 @@ public class BattlemodeActionConfig : ScriptableObject
         };
 
         if (actingBatlerCtx is CharacterOccupantCtx)
-        {
             ctx.ap = apCost;
-            ctx.apDelta = 0;
-        }
         
+        if(overideApCost != -1)
+            ctx.ap = overideApCost;
+        
+        ctx.apDelta = 0;
+
         return ctx;
     }
 }
