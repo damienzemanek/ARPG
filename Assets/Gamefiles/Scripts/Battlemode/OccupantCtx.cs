@@ -10,6 +10,7 @@
     {
         public GameObject obj;
         public abstract OccupantCfg cfg { get; set; }
+        public BattleTile newTilePosition = null;
     }
 
     public class BattlerOccupantCtx : OccupantCtx
@@ -49,7 +50,7 @@
             List<BattlemodeEffectCtx> effectsToAddAfterResolve = null;
             
             if(queuedActorAction.actionCtx == null) Debug.LogError("[TARGET] No action context to be targeted with.");
-            foreach (var effectToApply in queuedActorAction.actionCtx?.cfg.effectsToApplyToTarget)
+            foreach (var effectToApply in queuedActorAction.actionCtx.cfg.effectsToApplyToTarget)
             {
                 var newEffectCtx = effectToApply.GenerateEffectCtx();
 
@@ -65,9 +66,11 @@
                 }
             }
             
+            
             attackersActionCtx = PreResolveTargetEffects(attackersActionCtx, effectsToAddBeforeResolve);
             MutateValues(attackersActionCtx);
             PostResolveTargetEffects(attackersActionCtx, effectsToAddAfterResolve);
+            
         }
         
         public void ResolveStartOfBattleOpponentEffects(List<BattleTracker.QueuedAction> opponentPreResolvedActions)
@@ -332,8 +335,6 @@
     
     public class EnemyOccupantCtx : BattlerOccupantCtx
     {
-        public int intentions;
-        public int currentIntentions;
         public int currentPredicteds;
         public RandomBag<EnemyConfig.AttackPriority> attackPriority;
         public IntentUsage.IntentUsageCtx currentIntentUsageCtx;
@@ -344,10 +345,8 @@
         
         public EnemyOccupantCtx(EnemyConfig config) : base(config)
         {
-            intentions = config.intentions;
-            currentIntentions = config.intentions;
             currentPredicteds = config.defaultPredicted;
-            currentIntentUsageCtx = new IntentUsage.IntentUsageCtx();
+            currentIntentUsageCtx = new IntentUsage.IntentUsageCtx(config.intentions);
             
             List<EnemyConfig.AttackPriority> _attackPriority = new List<EnemyConfig.AttackPriority>();
             for(int i = 0; i < config.primaryAttackPriorityWeight; i++)

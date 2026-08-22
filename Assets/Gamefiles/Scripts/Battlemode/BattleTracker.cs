@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
@@ -10,13 +11,15 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public enum Turn
     {
         Player,
-        Enemy
+        Enemy,
+        Transitioning
     }
     
     [ReadOnly] public BattleTile currentlySelectedTile;
     [Required] public GridWorld gridWorld;
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
+    [Required] public TurnDisplay turnDisplay;
     [Required] public OpponentAI opponentAI;
     [ReadOnly] public Turn currentTurn;
 
@@ -66,7 +69,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     {
         gridWorld.PopulateGrid(currentBattleConfig);
         queuedPlayerAction.Init();
-        StartPlayerTurn(true);
+        actionsDisplay.ShowEndTurnBtn(false);
+        EndEnemyTurnOrStartBattle(true);
     }
     
 
@@ -221,16 +225,21 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     {
         actionsDisplay.ShowDisplay(currentlySelectedTile);
     }
-    
-    public void HideActionsUI() => actionsDisplay.HideDisplay();
 
-    public void StartPlayerTurn(bool firstTurn = false)
+    public void HideActionsUI()
+    {
+        actionsDisplay.HideDisplay();
+        actionsDisplay.ShowEndTurnBtn(true);
+    }
+
+    public void StartPlayerTurn(bool firstTurn = false) 
     {
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
         gridWorld.GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        actionsDisplay.ShowEndTurnBtn(true);
         
-        if(opponentTiles.Count > 0) opponentAI.QueueActions(opponentTiles);
+        if(opponentTiles.Count > 0) opponentAI.QueueActionsAtTurnStart(opponentTiles);
         else
         {
             Debug.Log("All Enemies are dead or out of battle.");
@@ -271,11 +280,28 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void EndPlayerTurn()
     {
-        Debug.Log("Ending player turn, Starting Opponent Turn");
+        if (currentTurn == Turn.Transitioning) return;
+        actionsDisplay.ShowEndTurnBtn(false);
+        turnDisplay.StartTurn(Turn.Enemy, EndPlayerTurnImplementation);
+    }
+
+    public void EndEnemyTurnOrStartBattle(bool firstStart)
+    {
+        Debug.Log("A");
+        if (currentTurn == Turn.Transitioning) return;
+        Debug.Log("B");
+        turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(firstStart));
+    }
+    
+    void EndPlayerTurnImplementation()
+    {
+        Debug.Log("Ended player turn, Starting Opponent Turn");
         gridWorld.GetBattlerTiles(out _, out var playerTiles);
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
-        opponentAI.AttackAll(playerTiles, gridWorld, () => StartPlayerTurn(false));
+        actionsDisplay.ShowEndTurnBtn(false);
+        opponentAI.AttackAll(playerTiles, gridWorld, () => EndEnemyTurnOrStartBattle(false));
     }
+    
     
 }

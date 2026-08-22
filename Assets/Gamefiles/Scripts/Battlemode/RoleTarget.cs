@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static BattleTracker;
 
@@ -35,16 +36,52 @@ public abstract class RoleTarget
                   "with action: " + queuedAction.actionCtx.cfg.name + "");
         
         BattlerOccupantCtx _targetBattlerCtx = null;
+        
+        List<BattlemodeEffectCtx> effectsToAddToActorBeforeActing = null;
+        List<BattlemodeEffectCtx> specialEffectsToAddToActorBeforeActing = null;
+        
+        List<BattlemodeEffectCtx> effectsToAddToActorAfterActing = null;
+        List<BattlemodeEffectCtx> specialEffectsToAddToActorAfterActing = null;
 
-        if(targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx)
-            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
-        else 
-        {
+        if(targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) // Empty Tile 
+            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx, 
+                out effectsToAddToActorBeforeActing,
+                out specialEffectsToAddToActorBeforeActing);
+        else // Tile with Occupant
+        {   
             _targetBattlerCtx = targetBattlerCtx;
             queuedAction.actionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
-            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx);
+            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx,
+                out effectsToAddToActorBeforeActing,
+                out specialEffectsToAddToActorBeforeActing);
         }
+
+
+        if (effectsToAddToActorBeforeActing != null)
+            foreach (var addEffect in effectsToAddToActorBeforeActing)
+            {
+                if (queuedAction.actingOccupantCtx.currentEffects
+                    .Any(e => e.effectStrategy.GetType() == addEffect.effectStrategy.GetType()))
+                {
+                    queuedAction.actingOccupantCtx.currentEffects.Find(e => e.effectStrategy.GetType() == addEffect.effectStrategy.GetType()).stacks += addEffect.stacks;
+                    continue;
+                }
+                queuedAction.actingOccupantCtx.currentEffects.Add(addEffect);
+            }
+
+        if (specialEffectsToAddToActorBeforeActing != null)
+            foreach (var addSpEffect in specialEffectsToAddToActorBeforeActing)
+            {
+                if (queuedAction.actingOccupantCtx.specialEffects
+                    .Any(e => e.effectStrategy.GetType() == addSpEffect.effectStrategy.GetType()))
+                {
+                    queuedAction.actingOccupantCtx.specialEffects.Find(e => e.effectStrategy.GetType() == addSpEffect.effectStrategy.GetType()).stacks += addSpEffect.stacks;
+                    continue;
+                }
+                queuedAction.actingOccupantCtx.specialEffects.Add(addSpEffect);
+            }
         
+        // ACTING
         if(_targetBattlerCtx != null)
             _targetBattlerCtx.ActedUponByAction(queuedAction, queuedAction.actionCtx); // Acting on Target
         else if(queuedAction.lookingForTarget == BattlemodeActionConfig.Role.EmptyTile 
@@ -52,15 +89,49 @@ public abstract class RoleTarget
         && queuedAction.actionCtx.cfg.moveToSelectedEmptyTile)
             targetTile.TransferInOccupant(fromTile, BattleTracker.Instance.gridWorld);
     
-        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
+        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx, 
+            out effectsToAddToActorAfterActing, 
+            out specialEffectsToAddToActorAfterActing);
+
+        if (effectsToAddToActorAfterActing != null)
+            foreach (var addEffect in effectsToAddToActorAfterActing)
+            {
+                if (queuedAction.actingOccupantCtx.currentEffects
+                    .Any(e => e.effectStrategy.GetType() == addEffect.effectStrategy.GetType()))
+                {
+                    queuedAction.actingOccupantCtx.currentEffects.Find(e => e.effectStrategy.GetType() == addEffect.effectStrategy.GetType()).stacks += addEffect.stacks;
+                    continue;
+                }
+                queuedAction.actingOccupantCtx.currentEffects.Add(addEffect);
+            }
+
+        if (specialEffectsToAddToActorAfterActing != null)
+        {
+            foreach (var spEffect in specialEffectsToAddToActorAfterActing)
+            {
+                if (queuedAction.actingOccupantCtx.specialEffects
+                    .Any(sp => sp.effectStrategy.GetType() == spEffect.effectStrategy.GetType()))
+                {
+                    queuedAction.actingOccupantCtx.specialEffects.Find(sp => sp.effectStrategy.GetType() == spEffect.effectStrategy.GetType()).stacks += spEffect.stacks;
+                    continue;
+                }
+                queuedAction.actingOccupantCtx.specialEffects.Add(spEffect);
+            }
+        }
     }
 
 
     
+    
 
 
-    BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+    BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx, 
+        out List<BattlemodeEffectCtx> effectsToAddToActorBeforeActing,
+        out List<BattlemodeEffectCtx> specialEffectsToAddToActorBeforeActing)
     {
+        effectsToAddToActorBeforeActing = null;
+        specialEffectsToAddToActorBeforeActing = null;
+        
         if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return actingActionCtx;
         foreach (var effect in battlerCtx.currentEffects)
             if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
@@ -68,11 +139,34 @@ public abstract class RoleTarget
         foreach (var effect in battlerCtx.specialEffects)
             if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
+        
+        effectsToAddToActorBeforeActing = new List<BattlemodeEffectCtx>();
+        foreach(var effect in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
+            if (effect.addOccurance == BattlemodeEffectConfig.AddOccurance.BeforeAction)
+            {
+                var effectCtx = effect.GenerateEffectCtx();
+                if (effectCtx.effectStrategy.isSpecial)
+                {
+                    specialEffectsToAddToActorBeforeActing ??= new List<BattlemodeEffectCtx>();
+                    specialEffectsToAddToActorBeforeActing.Add(effectCtx);
+                }
+                else
+                {
+                    effectsToAddToActorBeforeActing ??= new List<BattlemodeEffectCtx>();
+                    effectsToAddToActorBeforeActing.Add(effect.GenerateEffectCtx());
+                }
+
+            }
         return actingActionCtx;
     }
 
-    void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+    void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx,
+        out List<BattlemodeEffectCtx> effectsToAddToActorAfterActing,
+        out List<BattlemodeEffectCtx> specialEffectsToAddToActorAfterActing)
     {
+        effectsToAddToActorAfterActing = null;
+        specialEffectsToAddToActorAfterActing = null;
+        
         if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
         foreach (var effect in battlerCtx.currentEffects)
             if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
@@ -80,6 +174,24 @@ public abstract class RoleTarget
         foreach (var effect in battlerCtx.specialEffects)
             if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
                 actingActionCtx = effect.ResolveEffect(battlerCtx, actingActionCtx);
+        
+        effectsToAddToActorAfterActing = new List<BattlemodeEffectCtx>();
+        foreach(var effect in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
+            if (effect.addOccurance == BattlemodeEffectConfig.AddOccurance.AfterAction)
+            {
+                var effectCtx = effect.GenerateEffectCtx();
+                if (effectCtx.effectStrategy.isSpecial)
+                {
+                    specialEffectsToAddToActorAfterActing ??= new List<BattlemodeEffectCtx>();
+                    specialEffectsToAddToActorAfterActing.Add(effectCtx);
+                }
+                else
+                {
+                    effectsToAddToActorAfterActing ??= new List<BattlemodeEffectCtx>();
+                    effectsToAddToActorAfterActing.Add(effect.GenerateEffectCtx());
+                }
+
+            }
     }
 }
 

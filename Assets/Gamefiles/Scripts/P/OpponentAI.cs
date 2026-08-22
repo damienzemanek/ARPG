@@ -27,7 +27,7 @@ public class OpponentAI : MonoBehaviour
     BattlemodeActionCtx moveActionCtx;
     BattlemodeActionCtx defendActionCtx;
     
-    public void QueueActions(List<BattleTile> opponentTiles)
+    public void QueueActionsAtTurnStart(List<BattleTile> opponentTiles)
     {
         battlerAttackOrder.Clear();
 
@@ -36,7 +36,7 @@ public class OpponentAI : MonoBehaviour
         
         // Opponent's Attack Order
         foreach (var tile in opponentTiles)
-            battlerAttackOrder.Add(new OrderCtx(){ myTile = tile});
+            battlerAttackOrder.Add(new OrderCtx(){ myTile = tile, myEnemyOccupantCtx = tile.occupantCtx as EnemyOccupantCtx});
 
         // Sort the Order
         battlerAttackOrder.Sort((a, b) =>
@@ -51,67 +51,76 @@ public class OpponentAI : MonoBehaviour
         // For each battler
         foreach (var orderCtx in battlerAttackOrder)
         {
-            if (orderCtx.myTile.occupantCtx is not EnemyOccupantCtx eoc) return;
-
-            var intentions = eoc.intentions;
+            var eoc = orderCtx.myEnemyOccupantCtx;
+            var intentions = eoc.currentIntentUsageCtx.intentionsAmount;
+            orderCtx.myEnemyOccupantCtx = eoc;
             orderCtx.myTile.SetIntentionsAmount(intentions);
             orderCtx.myTile.intentionsGrid.gameObject.SetActive(true);
-
             
             // For each intention
-            for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentions; intentionsIndex++)
+            for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
-                // Choose an ability
-                float hpPerc01 = eoc.currentHp / eoc.maxHp;
-                var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
-                
-                // Acounting for saved intentions, saves will allways be an actual action
-                bool useSaved = (newIntentUsage.savedIntentIndex != -1);
-                var actionIndex = (useSaved) ? (newIntentUsage.savedIntentIndex) : (newIntentUsage.intentIndex);
-                if (useSaved)
-                {
-                    eoc.ResetSavedIntention();
-                    Debug.Log("[Intentions] Used Saved Intention");
-                }
-                
-                // Get the action via the intention index
-                // if null keep looping for a bit
-                var action = GetAnEquippedActionCfg(eoc, actionIndex);
-                if(action == null)
-                {
-                    int maxAttempts = eoc.enemyCfg.equippedActions.Length;
-                    for (int i = 0; i < maxAttempts; i++)
-                    {
-                        int index = (actionIndex + i) % maxAttempts;
-                        action = eoc.enemyCfg.equippedActions.GetValue(index) as BattlemodeActionConfig;
-                        if (action != null) break;
-                    }
-                }
-            
-                // Generate Action Context
-                var actionCtx = action.GenerateActionCtx(
-                    BattlemodeActionCtx.Status.Acting,
-                    orderCtx.myTile.occupantCtx as BattlerOccupantCtx,
-                    null); //this null is a slot only for teamates and healing them
-                
-                
-                // Create the action for queuing
-                BattleTracker.QueuedAction newQueuedAction = new BattleTracker.QueuedAction();
-                newQueuedAction.Init();
-                newQueuedAction.actingOccupantCtx = eoc;
-                newQueuedAction.actionCtx = actionCtx;
-                newQueuedAction.lookingForTarget = action.roleTarget;
-                
-                
-                // Display Queued Actions in Tile UI
-                orderCtx.myTile.SetIntention(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
-                
-                // Assign to order's queued action
+                var newQueuedAction = GenerateQueuedAction(intentionsIndex, orderCtx);
                 eoc.queuedActions.Add(newQueuedAction);
-                orderCtx.myEnemyOccupantCtx = eoc;
+                orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
             }
         }
+    }
+
+    public BattleTracker.QueuedAction GenerateQueuedAction(int intentionsIndex, OrderCtx orderCtx)
+    {
+        if(orderCtx.myEnemyOccupantCtx == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
+        if (orderCtx.myEnemyOccupantCtx is not EnemyOccupantCtx eoc)
+            { Debug.LogError("No Enemy Occupant Context found when queing action"); return null; }
         
+        // Generate Action Context
+        var actionCfg = GetActionCfg(eoc);
+        var actionCtx = GetActionCfg(eoc).GenerateActionCtx(
+            BattlemodeActionCtx.Status.Acting,
+            orderCtx.myEnemyOccupantCtx,
+            null); //this null is a slot only for teamates and healing them
+                
+        // Create the action for queuing
+        BattleTracker.QueuedAction newQueuedAction = new BattleTracker.QueuedAction();
+        newQueuedAction.Init();
+        newQueuedAction.actingOccupantCtx = eoc;
+        newQueuedAction.actionCtx = actionCtx;
+        newQueuedAction.lookingForTarget = actionCfg.roleTarget;
+        
+                
+        // Assign to order's queued action
+        return newQueuedAction;
+    }
+    
+    
+    public BattlemodeActionConfig GetActionCfg(EnemyOccupantCtx eoc)
+    {
+        float hpPerc01 = eoc.currentHp / eoc.maxHp;
+        var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
+                
+        // Acounting for saved intentions, saves will allways be an actual action
+        bool useSaved = (newIntentUsage.savedIntentIndex != -1);
+        var actionIndex = (useSaved) ? (newIntentUsage.savedIntentIndex) : (newIntentUsage.intentIndex);
+        if (useSaved)
+        {
+            eoc.ResetSavedIntention();
+            Debug.Log("[Intentions] Used Saved Intention");
+        }
+                
+        // Get the action via the intention index
+        // if null keep looping for a bit
+        var actionCfg = GetAnEquippedActionCfg(eoc, actionIndex);
+        if(actionCfg == null)
+        {
+            int maxAttempts = eoc.enemyCfg.equippedActions.Length;
+            for (int i = 0; i < maxAttempts; i++)
+            {
+                int index = (actionIndex + i) % maxAttempts;
+                actionCfg = eoc.enemyCfg.equippedActions.GetValue(index) as BattlemodeActionConfig;
+                if (actionCfg != null) break;
+            }
+        }
+        return actionCfg;
     }
     
     public void AttackAll(List<BattleTile> playerTiles, GridWorld grid, Action onAttackComplete)
@@ -135,17 +144,58 @@ public class OpponentAI : MonoBehaviour
         onAttacksComplete?.Invoke();
     }
     
-    public IEnumerator C_Proto_Attack(OrderCtx orderCtx, List<BattleTile> playerTiles, GridWorld grid)
+    RoleTarget UsedSavedIntention(
+        int intentionIndex, 
+        BattleTracker.QueuedAction currentQueuedActionToBeReplaced,
+        OrderCtx orderCtx,
+        List<BattleTile> playerTiles)
     {
-        foreach (var queuedAction in orderCtx.myEnemyOccupantCtx.queuedActions)
+        currentQueuedActionToBeReplaced = GenerateQueuedAction(intentionIndex, orderCtx);
+        Debug.Log($"[Intentions] Used Saved Intention: {intentionIndex} " + currentQueuedActionToBeReplaced);
+        Debug.Log("[Intentions] Which is " + currentQueuedActionToBeReplaced.actionCtx.cfg.actionName);
+        var ret = TryGetTarget(orderCtx, currentQueuedActionToBeReplaced, playerTiles);
+        orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
+        return ret;
+    }
+    
+    public IEnumerator C_Proto_Attack(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
+    {
+        foreach (var _queuedAction in _orderCtx.myEnemyOccupantCtx.queuedActions)
         {
-            RoleTarget targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles, grid);
+            bool usedSaved = _orderCtx.myEnemyOccupantCtx.HasSavedIntention(out int savedIntention);
+            OrderCtx orderCtx = _orderCtx;
+            RoleTarget targetRole = null;
+            BattleTracker.QueuedAction queuedAction = _queuedAction;
+            if (usedSaved)
+            {
+                queuedAction = GenerateQueuedAction(savedIntention, orderCtx);
 
+                Debug.Log($"[Intentions] Used Saved Intention: {savedIntention} " + queuedAction);
+                Debug.Log("[Intentions] Which is " + queuedAction.actionCtx.cfg.actionName);
+
+                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles);
+
+                orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
+            }
+            else
+            {
+                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles);
+            }
+            
+            // Refresh my tile if i moved
+            
+            var currentTile = orderCtx.myEnemyOccupantCtx.newTilePosition != null
+                ? orderCtx.myEnemyOccupantCtx.newTilePosition
+                : orderCtx.myTile;
+            orderCtx.myEnemyOccupantCtx.newTilePosition = null;
+            orderCtx.myTile = currentTile;
+            
             targetRole = RangeCheck(targetRole); // This can change if the target is not in range
             
             // Idempotent Attacks
-            if (targetRole == null) Debug.LogWarning("No Target Found"); 
+            if (targetRole == null) Debug.LogWarning("No Target Found");
             else targetRole.ActUponTarget(queuedAction, orderCtx.myTile);
+
 
             // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
             CoroutineRunner.Instance.RunMethodDelayed(() =>
@@ -173,7 +223,7 @@ public class OpponentAI : MonoBehaviour
                         myCol = orderCtx.myTile.col
                     };
 
-                    if (!grid.IsInRange(inRangeCheckCtx, queuedAction.targetTile, true,
+                    if (!grid.OpponentRangeCheck(inRangeCheckCtx, queuedAction.targetTile, true,
                             out var horizDist,
                             out var vertDist))
                     {
@@ -255,8 +305,7 @@ public class OpponentAI : MonoBehaviour
 
     RoleTarget TryGetTarget(OrderCtx orderCtx,
         BattleTracker.QueuedAction queuedAction,
-        List<BattleTile> playerTiles,
-        GridWorld grid)
+        List<BattleTile> playerTiles)
     {
         
         RoleTarget target = null;
@@ -272,8 +321,11 @@ public class OpponentAI : MonoBehaviour
                 // target = queuedAction.targAlly;
                 break;
             case BattlemodeActionConfig.Role.Enemy:
-                queuedAction.targEnemySlot.enemyTile = FindTargetViaAttackPriority(); 
-                queuedAction.targetTile = queuedAction.targEnemySlot.enemyTile;
+                var newTargetTile = FindTargetViaAttackPriority();
+                queuedAction.targEnemySlot.enemyTile = newTargetTile;
+                Debug.Log("Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " +
+                          "position " + queuedAction.targEnemySlot.enemyTile.col + " , " +  queuedAction.targEnemySlot.enemyTile.row);
+                queuedAction.targetTile = newTargetTile;
                 target = queuedAction.targEnemySlot;
                 break;
             case BattlemodeActionConfig.Role.Team:
@@ -294,7 +346,6 @@ public class OpponentAI : MonoBehaviour
         
         BattleTile FindTargetViaAttackPriority()
         {
-            Debug.Break();
             var atkPriority = orderCtx.myEnemyOccupantCtx.attackPriority.RandBagPull();
             
             switch (atkPriority)
@@ -309,6 +360,8 @@ public class OpponentAI : MonoBehaviour
             }
         }
     }
+
+
     
 
     

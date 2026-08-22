@@ -18,6 +18,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [Required] public Transform actionDisplayParent;
 
     public RectTransform combatDisplayRect;
+
+    [BoxGroup("Special Effects")] [Required] public GameObject endTurnBtn;
     
     [BoxGroup("Status Effects")] [Required] public GameObject statusEffectCurrentDisplayPrefab;
     [BoxGroup("Status Effects")] [Required] public Transform statusEffectCurrentDisplayParentTransform;
@@ -158,6 +160,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         effectDisplayPool.ReleaseAll(); // Reset Effect Display
         specialEffectDisplayPool.ReleaseAll();
         GUI.SetActive(true); // Show GUI
+        endTurnBtn.SetActive(false);
         bool foundFirstAction = false;
         BattlemodeAction firstAction = null;
         
@@ -222,8 +225,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             ShowCurrentStatusEffectsFromOccupantCtx(enemyOccupantCtx);
             
             enemyIntentions.DisplayIntentions(enemyOccupantCtx.queuedActions);
-            enemyIntentions.HideUnpredictedIntentions(enemyOccupantCtx.intentions, enemyOccupantCtx.currentPredicteds);
-            txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.intentions.ToString();
+            enemyIntentions.HideUnpredictedIntentions(enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount, enemyOccupantCtx.currentPredicteds);
+            txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount.ToString();
             txt_EnemyPredictedsNum.text = enemyOccupantCtx.currentPredicteds.ToString();
             displ_IntentionsVLG.SetActive(true);
             displ_IntentionsNumGO.SetActive(true);
@@ -356,4 +359,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         if (currentlySelectedAction == null) return 0;
         return currentlySelectedAction.cfg.apCost + currentlySelectedAction.apDelta;
     }
+    
+    public void ShowEndTurnBtn(bool v) => endTurnBtn.SetActive(v);
 }

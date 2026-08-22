@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EMILtools.Design_Patterns.Creational_Patterns.CreationalPatterns;
 using UnityEngine;
     
+[DefaultExecutionOrder(-99)]
 public class CoroutineRunner : PersistantReplacerSingleton<CoroutineRunner>
 {
     public void RunMethodDelayed(Action action, float delay) 

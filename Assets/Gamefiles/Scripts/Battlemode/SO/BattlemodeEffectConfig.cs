@@ -140,6 +140,7 @@ public class BattlemodeEffectCtx
 [Serializable]
 public abstract class BattlemodeEffectStrategy
 {
+    public abstract bool isSpecial { get; }
     public abstract BattlemodeEffectConfig.RemovalOccurrence removealOccurance { get; }
     public abstract BattlemodeEffectConfig.ResolveOccurance resolveOccurance { get; }
 
@@ -155,6 +156,7 @@ public abstract class BattlemodeEffectStrategy
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrategy
 {
+    public override bool isSpecial => false;
     public override BattlemodeEffectConfig.RemovalOccurrence removealOccurance => BattlemodeEffectConfig.RemovalOccurrence.OnTurnEnd;
     public override BattlemodeEffectConfig.ResolveOccurance resolveOccurance => BattlemodeEffectConfig.ResolveOccurance.BeforeHitByAction;
 

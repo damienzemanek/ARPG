@@ -316,7 +316,7 @@ public class GridWorld : MonoBehaviour
         {
             var enemyOccupantCtx = t.occupantCtx as EnemyOccupantCtx;
             if(enemyOccupantCtx != null)
-                enemyOccupantCtx.currentIntentions = enemyOccupantCtx.intentions;
+                enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount = enemyOccupantCtx.enemyCfg.intentions;
         }
         foreach (var t in playerTiles)
         {
@@ -342,10 +342,11 @@ public class GridWorld : MonoBehaviour
         public Vector2 fwdRange;
     }
 
-    public bool IsInRange(InRangeCheckCtx ctx, BattleTile tile, bool reverse,
+    public bool OpponentRangeCheck(InRangeCheckCtx ctx, BattleTile tile, bool reverse,
         out int horizDist,
         out int vertDist)
     {
+        if(tile == null) Debug.LogError("Tile is Null for OpponentRangeCheck");
         Debug.Log("[Row Check] " + tile.row + " - " + ctx.myRow);
         Debug.Log("[Col Check] " + tile.col + " - " + ctx.myCol);
 

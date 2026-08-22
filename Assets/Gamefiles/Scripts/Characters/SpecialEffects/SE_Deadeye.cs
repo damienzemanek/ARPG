@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public sealed class SE_Deadeye : BattlemodeEffectStrategy
 {
+    public override bool isSpecial => true;
     public override BattlemodeEffectConfig.RemovalOccurrence removealOccurance => BattlemodeEffectConfig.RemovalOccurrence.None;
     public override BattlemodeEffectConfig.ResolveOccurance resolveOccurance => BattlemodeEffectConfig.ResolveOccurance.BeforeActing;
 
@@ -19,8 +20,8 @@ public sealed class SE_Deadeye : BattlemodeEffectStrategy
             Debug.LogError("Trying to apply Deadeye effect to non-battler occupant");
             return actionCtx;
         }
-        if (actionCtx.cfg.name != "Deadeye") return actionCtx;
-        if(stacks <= 0) return actionCtx;
+        if (actionCtx.cfg.actionName != "Deadeye") return actionCtx;
+        if (stacks <= 0) return actionCtx;
         actionCtx.deltaDmgMultiplier += (100 * stacks);
         if(stacks > 1)
             actionCtx.apDelta += stacks - 1;

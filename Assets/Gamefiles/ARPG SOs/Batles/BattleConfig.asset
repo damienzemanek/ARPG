@@ -19,7 +19,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 1
       row: 0
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: f1a27083f0cbed04799c8c6e0051ef70, type: 2}
     - col: 2
       row: 0
       occupant: {fileID: 0}

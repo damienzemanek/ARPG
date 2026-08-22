@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73691242fdda48dd982ef7d0b608a338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectorMouseClick
-  state: 1
+  state: 3
   isRequired: 1
   detections: []
   OnDetectINSP:

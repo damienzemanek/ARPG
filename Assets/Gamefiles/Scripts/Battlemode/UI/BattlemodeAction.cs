@@ -25,12 +25,14 @@ public class BattlemodeAction : MonoBehaviour
 
     public void HoverAction()
     {
+        if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
         if (actionCtx != null)
             actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, actionCtx);
     }
 
     public void UseAction()
     {
+        if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
         Debug.Log("Using Action: " + actionCtx.cfg.name + "");
         actionsDisplay.Value.QueueAction();
     }

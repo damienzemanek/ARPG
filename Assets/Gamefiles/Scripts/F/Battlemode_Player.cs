@@ -57,6 +57,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
                 .OnComplete(() => onCompleteZoomIn?.Invoke());
         }
         else transform.position = tileToZoomInto.transform.position + zoomInOffsetPose.position;
+        BattleTracker.Instance.actionsDisplay.ShowEndTurnBtn(false);
     }
 
     public void ZoomOutToSelectQueuedAction()

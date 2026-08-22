@@ -11,7 +11,6 @@ using UnityEngine.Serialization;
 public class BattleTile : MonoBehaviour
 {
     public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
-
     
     [ShowInInspector, BoxGroup("OccupantCtx")]
     public OccupantCtx occupantCtx;
@@ -102,11 +101,13 @@ public class BattleTile : MonoBehaviour
 
     public void Hover()
     {
+        if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
         if (!occupied && !tileCanBeSelectedOveride) return;
         if (unselectable) return;
         if (selected.activeInHierarchy) return;
         hover.SetActive(true);
         inRange.SetActive(false);
+        Debug.Log("Hovering tile");
     }
     
 
@@ -120,13 +121,17 @@ public class BattleTile : MonoBehaviour
         }
     }
     
-    // Called from the event
+    // Called from the event 
     public void Select()
     {
+        Debug.Log("Selecting tile");
+        if (BattleTracker.Instance.currentTurn == BattleTracker.Turn.Enemy) return;
+        if (BattleTracker.Instance.currentTurn == BattleTracker.Turn.Transitioning) return;
         if (alreadySelected) return;
         if (!occupied && !tileCanBeSelectedOveride) return;
         if (unselectable) return;
         BattleTracker.Instance.SelectTile(this);
+        Debug.Log("Selecting tile Successfull");
     }
 
     // Eventually called via BattlerTracker.Instance.SelectTile(this)
@@ -186,7 +191,7 @@ public class BattleTile : MonoBehaviour
         intentionsGrid.x = intentions;
         Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
     }
-    public void SetIntention(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
+    public void DisplayIntentionToBattleTile(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
     {
         Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
         var spriteRenderer = intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>();
@@ -283,8 +288,14 @@ public class BattleTile : MonoBehaviour
 
     public void TransferInOccupant(BattleTile previousTile, GridWorld grid)
     {
-        if (occupantCtx != null) return;
+        if (occupantCtx != null)
+            { Debug.LogError("Trying to transfer occupant to a tile that already has an occupant"); return; }
+        if (previousTile == null)
+            { Debug.LogError("Previous tile is null"); return; }
+        if(previousTile.occupantCtx == null)
+            { Debug.LogError($"Previous tile [{previousTile.col} , {previousTile.row}] does not have an occupant"); return; }
         occupantCtx = previousTile.occupantCtx;
+        occupantCtx.newTilePosition = this;
         previousTile.occupantCtx.obj.transform.position = transform.position + occupantSpawnOffset;
         Clear();
         display.SetActive(true);

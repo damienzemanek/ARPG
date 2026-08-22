@@ -61,12 +61,14 @@ public class IntentUsage
     [Serializable]
     public class IntentUsageCtx
     {
+        public int intentionsAmount;
         public int savedIntentIndex;
         public int intentIndex;
         public int phaseIndex;
 
-        public IntentUsageCtx()
+        public IntentUsageCtx(int intentions)
         {
+            intentionsAmount = intentions;
             savedIntentIndex = -1;
             intentIndex = 0;
             phaseIndex = 0;
@@ -130,7 +132,13 @@ public class IntentUsage
         // if theres a saved intent index, use it, else increment the intent index.
         // note: saved intent indexes do not save across phases.
         {
-            if(currentIntentUsageCtx.savedIntentIndex == -1) currentIntentUsageCtx.intentIndex++;
+            if (currentIntentUsageCtx.savedIntentIndex == -1)
+            {
+                Debug.Log("Incrementing Intent Index from " + currentIntentUsageCtx.intentIndex + " to " + currentIntentUsageCtx.intentIndex + 1);
+                currentIntentUsageCtx.intentIndex++;
+                if(currentIntentUsageCtx.intentIndex > currentIntentUsageCtx.intentionsAmount)
+                    currentIntentUsageCtx.intentIndex = 0;
+            }
             else currentIntentUsageCtx.intentIndex = currentIntentUsageCtx.savedIntentIndex;
         }
         
