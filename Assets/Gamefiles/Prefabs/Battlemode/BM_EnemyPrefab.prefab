@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8363303202367030907}
   - component: {fileID: 3795529854810612249}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Triangle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5590074632125227538}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BM_EnemyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4100452539628009289}
   - component: {fileID: 1926571327112025872}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5714368496502085526}
   - component: {fileID: 7328874692014300719}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

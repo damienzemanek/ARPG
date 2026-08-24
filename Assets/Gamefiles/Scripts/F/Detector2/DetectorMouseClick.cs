@@ -16,7 +16,7 @@ public class DetectorMouseClick : Detector
     
     void OnMouseUp()
     {
-        if (eventSystemPointerOverGameObject && 
+        if (eventSystemPointerOverGameObject &&
         EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Exit)) return;
         LoseDetect(gameObject);
@@ -24,8 +24,8 @@ public class DetectorMouseClick : Detector
 
     public void OnMouseDrag()
     {
-        if (eventSystemPointerOverGameObject && 
-        EventSystem.current.IsPointerOverGameObject()) return;
+        if (eventSystemPointerOverGameObject
+        && EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Stay)) return;
         Detect(gameObject);
     }
