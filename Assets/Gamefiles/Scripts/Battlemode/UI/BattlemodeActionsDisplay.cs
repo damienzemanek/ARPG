@@ -154,6 +154,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     // Future: Reset most recetly selected action on battle complete
     public void ShowDisplay(BattleTile tile)
     {
+        Debug.Log("Showing display");
         if (tile.occupantCtx.cfg is not BattlerConfig battlerConfig) return;
 
         currentlySelectedTile = tile; // Grab
@@ -163,6 +164,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         endTurnBtn.SetActive(false);
         bool foundFirstAction = false;
         BattlemodeAction firstAction = null;
+        
+        Debug.Log("A");
         
         // Action Slot Enabling
         for (int i = 0; i < maxAmountOfTotalActionsAvaliable; i++)
@@ -190,13 +193,16 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             firstAction = actionSlots[i];
         }
         
-        
+        Debug.Log("B");
+
         // Info
         txt_CharacterName.text = battlerConfig.occupantName;
         txt_CharacterLevel.text = string.Format(k_LevelFormat, battlerConfig.currentLevel);
         txt_CharacterDmgNum.text = battlerConfig.damage.ToString();
         if (tile.occupantCtx is CharacterOccupantCtx characterCtx)
         {
+            Debug.Log("B1");
+
             apValues.gameObject.SetActive(true);
             txt_CharacterAPNum.text = characterCtx.currentAP.ToString();
             txt_CharacterMaxAPNum.text = "/" + characterCtx.maxAP.ToString();
@@ -205,13 +211,15 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = characterCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + characterCtx.maxHp.ToString();
             ShowSpecialEffects(characterCtx);
-            characterCtx.PreResolveActingEffects(actionSlots);
+            characterCtx.ResolveBeforeActingEffects(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(characterCtx);
             
             displ_IntentionsVLG.SetActive(false);
             displ_IntentionsNumGO.SetActive(false);
             displ_PredictedNumGO.SetActive(false);
             moveAction.gameObject.SetActive(true);
+            Debug.Log("B2");
+
         }
         else if (tile.occupantCtx is EnemyOccupantCtx enemyOccupantCtx)
         {
@@ -221,7 +229,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = enemyOccupantCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + enemyOccupantCtx.maxHp.ToString();
             ShowSpecialEffects(enemyOccupantCtx);
-            enemyOccupantCtx.PreResolveActingEffects(actionSlots);
+            enemyOccupantCtx.ResolveBeforeActingEffects(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(enemyOccupantCtx);
             
             enemyIntentions.DisplayIntentions(enemyOccupantCtx.queuedActions);
@@ -241,11 +249,12 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = battlerCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + battlerCtx.maxHp.ToString();
             ShowSpecialEffects(battlerCtx);
-            battlerCtx.PreResolveActingEffects(actionSlots);
+            battlerCtx.ResolveBeforeActingEffects(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(battlerCtx);
             moveAction.gameObject.SetActive(false);
         }
         
+        Debug.Log("Display 1");
         // Recently Selected Action Setup
         ShowAction(tile, firstAction.actionCtx);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
@@ -253,16 +262,18 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
     public void ShowAction(BattleTile tile, BattlemodeActionCtx actionCtx)
     {
+        Debug.Log("Trying to show an action");
         if (actionCtx == null)
         {
             Debug.Log("No action context provided");
             return;
         }
-        bool isEnemy = tile.IsEnemy();
-        
+        Debug.Log("Showing action: " + actionCtx.cfg.actionName);
         // Populate Action Display Info
-        if(isEnemy && tile.occupantCtx.cfg is EnemyConfig ec)           UpdateEnemyActionInfo(actionCtx, ec, tile.occupantCtx);
-        else if(!isEnemy && tile.occupantCtx.cfg is CharacterConfig cc) UpdatePlayerActionInfo(actionCtx, cc, tile.occupantCtx);
+        if(tile.occupantCtx.cfg is EnemyConfig ec)          
+            UpdateEnemyActionInfo(actionCtx, ec, tile.occupantCtx);
+        else if(tile.occupantCtx.cfg is CharacterConfig cc) 
+            UpdatePlayerActionInfo(actionCtx, cc, tile.occupantCtx);
 
         txt_ActionName.text = actionCtx.cfg.actionName;
         txt_ActionDescription.text = actionCtx.cfg.description;
@@ -282,7 +293,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     
     public void UpdatePlayerActionInfo(BattlemodeActionCtx actionCtx, CharacterConfig characterConfig, OccupantCtx occupantCtx)
     {
-        var resolvedApCost = actionCtx.cfg.apCost + actionCtx.apDelta;
+        var resolvedApCost = actionCtx.ap + actionCtx.apDelta;
         txt_PlayerAPnum.text = resolvedApCost.ToString();
     }
     
@@ -296,9 +307,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // effect ctx is a class so this churns gc. fine for now.
         // effect ctx holds state (stacks amount), could separate later. although locality of info is desired
         for (int i = 0; i < actionConfig.effectsToApplyToTarget.Count; i++)
-            effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToTarget[i].GenerateEffectCtx());
+            effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToTarget[i].CreateNewEffectInstance());
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
-
     }
 
     public void ShowCurrentStatusEffectsFromOccupantCtx(BattlerOccupantCtx battlerOccupantCtx)

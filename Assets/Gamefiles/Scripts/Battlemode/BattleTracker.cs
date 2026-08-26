@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
+using static GridWorld;
 
 public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleTracker>
 {
@@ -16,7 +18,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     }
     
     [ReadOnly] public BattleTile currentlySelectedTile;
-    [Required] public GridWorld gridWorld;
+    [FormerlySerializedAs("gridWorld")] [Required] public GridWorld grid;
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
     [Required] public TurnDisplay turnDisplay;
@@ -67,7 +69,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     void InitializeBattle()
     {
-        gridWorld.PopulateGrid(currentBattleConfig);
+        grid.PopulateGrid(currentBattleConfig);
+        grid.DesignateTileRanks();
         queuedPlayerAction.Init();
         actionsDisplay.ShowEndTurnBtn(false);
         EndEnemyTurnOrStartBattle(true);
@@ -83,7 +86,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             if (backSelect) // Back Select
             {
                 // Reselect Previous Tile (Queued State -> Zoom State)
-                gridWorld.UnSelectAll();
+                grid.UnSelectAll();
                 ClearRoleTargets();
                 player.ZoomIntoTile(tile, DisplayActionsUI);
                 queuedPlayerAction.hasQueuedAction = false;
@@ -96,7 +99,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             return;
         }
         Debug.Log("Selecting tile 2");
-        gridWorld.UnSelectAll();
+        grid.UnSelectAll();
         currentlySelectedTile = tile;
         queuedPlayerAction.actingOccupantCtx = null;
         if(currentlySelectedTile.occupantCtx is BattlerOccupantCtx battlerOccupantCtx)
@@ -146,9 +149,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         CoroutineRunner.Instance.RunMethodDelayed(() =>
         {
             queuedPlayerAction.hasQueuedAction = false;
-            queuedPlayerAction.actingOccupantCtx.PostResolveActingEffects(queuedPlayerAction.actionCtx);
+            queuedPlayerAction.actingOccupantCtx.ResolveAfterActingEffects(queuedPlayerAction.actionCtx);
             UnSelectAll();
-            gridWorld.UpdateGrid(); // Updates AP and HP through transient stats
+            grid.UpdateGrid(); // Updates AP and HP through transient stats
         }, 0.1f);
     }
     
@@ -157,7 +160,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Debug.Log("Unselecting all tiles and clearing role targets.");
         currentlySelectedTile = null;
         queuedPlayerAction.actingOccupantCtx = null;
-        gridWorld.UnSelectAll();
+        grid.UnSelectAll();
         HideActionsUI();
         ClearRoleTargets();
     }
@@ -180,33 +183,40 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Debug.Log("Queued action: " + actionCtx.cfg.name + " on tile: [" + tile.row + ", " + tile.col + "]");
         
         // Target Selection
-        GridWorld.InRangeCheckCtx inRangeCheckCtx = new()
+        InRangeCheckCtx inRangeCheckCtx = new()
         {
-            upRange = actionCtx.cfg.upRange,
-            fwdRange = actionCtx.cfg.fwdRange,
-            downRange = actionCtx.cfg.downRange,
+            targetingCfg = actionCtx.cfg.targetingCfg,
             myRow = tile.row,
             myCol = tile.col,
         };
 
+        var inRangeTiles = grid.GetInRangeTiles(inRangeCheckCtx, tile);
         
-        var inRangeTiles = gridWorld.GetInRangeTiles(inRangeCheckCtx, queuedPlayerAction.lookingForTarget, false);
-        inRangeTiles.ForEach(t => t.InRange());
+        if (actionCtx.cfg.moveToSelectedEmptyTile)
+            inRangeTiles = grid.ExcludeSection(BattlefieldSection.Right, inRangeTiles);
+
+        foreach (var t in inRangeTiles)
+        {
+            Debug.Log("InRangeTile: [" + t.row + ", " + t.col + "]");
+            t.InRange();
+        }
         
-        var targetTiles = gridWorld.GetAvaliableTargetTiles(
+        var targetTiles = grid.GetAvaliableTargetTiles(
             myTarget: queuedPlayerAction.lookingForTarget,
             inRangeTiles,
             myTile: tile);
+        
+        
         
         player.ZoomOutToSelectQueuedAction();
         actionsDisplay.HideDisplay();
 
         foreach (var t in targetTiles)
         {
+            t.SetUnselectable(false);
             t.ResetSpecialTargetConsiderations();
             t.SpecialTargetConsiderations(queuedPlayerAction.lookingForTarget);
         }
-
     }
 
 
@@ -236,7 +246,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     {
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
-        gridWorld.GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
         actionsDisplay.ShowEndTurnBtn(true);
         
         if(opponentTiles.Count > 0) opponentAI.QueueActionsAtTurnStart(opponentTiles);
@@ -252,14 +262,16 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             foreach (var opponentTile in opponentTiles)
             {
                 if (opponentTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
-                enemyOccupantCtx.ResolveStartOfBattleOpponentEffects(enemyOccupantCtx.queuedActions);
+                enemyOccupantCtx.ResolveAfterTurnEndsEnemyEffects(enemyOccupantCtx.queuedActions);
             }
             
+            Debug.Log("Starting to Resolve End of Turn effects for players.");
             // Resolve End of Turn effects for player
             foreach (var playerTile in playerTiles)
             {
                 if (playerTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
-                characterOccupantCtx.ResolveEndOfTurnPlayerEffects(actionsDisplay.actionSlots);
+                Debug.Log("Resolve End of Turn Effect for player occupant:" + characterOccupantCtx.cfg.name);
+                characterOccupantCtx.ResolveAfterTurnEndsPlayerEffects(actionsDisplay.actionSlots);
             }
         }
         else  //-------------------------- Start of Battle
@@ -296,11 +308,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     void EndPlayerTurnImplementation()
     {
         Debug.Log("Ended player turn, Starting Opponent Turn");
-        gridWorld.GetBattlerTiles(out _, out var playerTiles);
+        grid.GetBattlerTiles(out _, out var playerTiles);
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
         actionsDisplay.ShowEndTurnBtn(false);
-        opponentAI.AttackAll(playerTiles, gridWorld, () => EndEnemyTurnOrStartBattle(false));
+        opponentAI.AttackAll(playerTiles, grid, () => EndEnemyTurnOrStartBattle(false));
     }
     
     

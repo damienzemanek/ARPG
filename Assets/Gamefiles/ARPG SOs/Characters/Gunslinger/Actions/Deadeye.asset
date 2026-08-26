@@ -19,9 +19,14 @@ MonoBehaviour:
   dmgMultiplier: 50
   healPercentage: 0
   armorIncreasePercentage: 0
-  fwdRange: {x: 4, y: 5}
-  upRange: {x: 3, y: 6}
-  downRange: {x: 3, y: 6}
+  targetingCfg:
+    targetingPatternAdditive: 0
+    usableInRowRanks: 0
+    targetRowRanks: 0
+    targetCurrentRow: 0
+    usableInColRanks: 7
+    targetColRanks: 120
+    targetCurrentCol: 0
   aoe: 0
   apCost: 1
   actionIdentifier: 0
@@ -32,10 +37,17 @@ MonoBehaviour:
   effectsToApplyToSelf:
   - addOccurance: 2
     time: 1
-    stacks: 1
-    effectStrategy:
-      _type:
-        m_Name: SE_Deadeye
-        m_AssemblyQualifiedName: SE_Deadeye, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        m_AssemblyName: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    defaultEffectStrategyValues:
+      rid: 3738701859942301838
+  references:
+    version: 2
+    RefIds:
+    - rid: 3738701859942301838
+      type: {class: SE_Deadeye, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          markedForRemoval: 0
+          markForReResolve: 0
+          stackCtxs:
+          - instanceEffectTime: 1
+            stacks: 1

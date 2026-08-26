@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -29,6 +30,26 @@ public class BattlemodeActionConfig : ScriptableObject
         Buff,
         Move,
     }
+
+    public enum TargetingPattern
+    {
+        None,
+        Cross,
+        Box,
+    }
+
+    [Serializable]
+    public struct TargetingCfg
+    {
+        public TargetingPattern targetingPatternAdditive = TargetingPattern.None;
+        [BoxGroup("Row Targeting")] public BattleTile.RowRank usableInRowRanks = BattleTile.RowRank.None;
+        [BoxGroup("Row Targeting")] public BattleTile.RowRank targetRowRanks = BattleTile.RowRank.None;
+        [BoxGroup("Row Targeting")] public bool targetCurrentRow = false;
+        [BoxGroup("Col Targeting")] public BattleTile.ColRank usableInColRanks = BattleTile.ColRank.None;
+        [BoxGroup("Col Targeting")] public BattleTile.ColRank targetColRanks = BattleTile.ColRank.None;
+        [BoxGroup("Col Targeting")] public bool targetCurrentCol = false;
+        public TargetingCfg() { }
+    }
     
     
     public string actionName;
@@ -39,20 +60,17 @@ public class BattlemodeActionConfig : ScriptableObject
     [FormerlySerializedAs("healMultiplier")] 
     [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
     [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
+    public TargetingCfg targetingCfg;
 
-    [BoxGroup("Ranges")] [InfoBox("FWD: 0 always unincluded, start at 1")]
-    [BoxGroup("Ranges")] public Vector2 fwdRange = new Vector2(1, 1);
-    [BoxGroup("Ranges")] [InfoBox("UP & DOWN: 0 is directly up and down, it is included")]
-    [BoxGroup("Ranges")] public Vector2 upRange = Vector2.zero;
-    [BoxGroup("Ranges")] public Vector2 downRange = Vector2.zero;
+    
     public int aoe = 0; // STRETCH GOAL
     public int apCost = 1;
     public ActionIdentifier actionIdentifier;
     [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
     public bool capArmorIncrease;
     [FormerlySerializedAs("useTarget")] public Role roleTarget;
-    [FormerlySerializedAs("effects")] public List<BattlemodeEffectConfig> effectsToApplyToTarget = new();
-    public List<BattlemodeEffectConfig> effectsToApplyToSelf = new();
+    public List<BattlemodeEffectConfigInstance> effectsToApplyToTarget = new();
+    public List<BattlemodeEffectConfigInstance> effectsToApplyToSelf = new();
 
     public BattlemodeActionCtx GenerateActionCtx(
         BattlemodeActionCtx.Status _status,

@@ -17,14 +17,21 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
   dmgMultiplier: 100
-  healMultiplier: 0
-  fwdRange: {x: 0, y: 1}
-  upRange: {x: 0, y: 1}
-  downRange: {x: 0, y: 1}
+  healPercentage: 0
+  armorIncreasePercentage: 0
+  targetingCfg:
+    targetingPatternAdditive: 0
+    usableInRowRanks: 0
+    targetRowRanks: 0
+    targetCurrentRow: 1
+    usableInColRanks: 0
+    targetColRanks: 0
+    targetCurrentCol: 0
   aoe: 0
   apCost: 1
   actionIdentifier: 1
   moveToSelectedEmptyTile: 0
+  capArmorIncrease: 0
   roleTarget: 2
   effectsToApplyToTarget: []
   effectsToApplyToSelf: []

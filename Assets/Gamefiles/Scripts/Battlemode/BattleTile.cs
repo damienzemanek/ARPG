@@ -10,40 +10,66 @@ using UnityEngine.Serialization;
 
 public class BattleTile : MonoBehaviour
 {
+    [Flags]
+    public enum ColRank
+    {
+        None = 0,
+        Left3 = 1 << 0,
+        Left2 = 1 << 1,
+        Left1 = 1 << 2,
+        Center = 1 << 3,
+        Right1 = 1 << 4,
+        Right2 = 1 << 5,
+        Right3 = 1 << 6,
+    }
+    
+    [Flags]
+    public enum RowRank
+    {
+        None = 0,
+        Top = 1 << 0,
+        Middle = 1 << 1,
+        Bottom = 1 << 2,
+    }
+    
     public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
     
-    [ShowInInspector, BoxGroup("OccupantCtx")]
-    public OccupantCtx occupantCtx;
+    [BoxGroup("Position")] [ReadOnly] public ColRank colRank;
+    [BoxGroup("Position")] [ReadOnly] public RowRank rowRank;
+    [BoxGroup("Position")] [ReadOnly] public int col, row;
+    [BoxGroup("Position")] [ReadOnly] public GridWorld.BattlefieldSection section;
+    
+    [BoxGroup("Transient State")] [ReadOnly] public bool unselectable = false;
+    [BoxGroup("Transient State")] [ReadOnly] public bool alreadySelected = false;
+    [BoxGroup("Transient State")] [ReadOnly] bool isInRange = false;
+    [BoxGroup("Transient State")] [ReadOnly] public bool tileCanBeSelectedOveride = false;
+    [BoxGroup("Transient State")] [ShowInInspector] public OccupantCtx occupantCtx;
+    
+    [BoxGroup("Settings")] public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
+    [BoxGroup("Settings")] public float maxHPBarScale = 3.5f;
 
-    [FormerlySerializedAs("hiddenCompletly")] public bool unselectable = false;
-    public bool alreadySelected = false;
-    bool isInRange = false;
-    public bool tileCanBeSelectedOveride = false;
-    [ReadOnly] public int col, row;
-    public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
-    public float maxHPBarScale = 3.5f;
-
-    [Required] public GameObject display;
-    [Required] public GameObject hpBar;
-    [Required] public GameObject display_AP;
-    [Required] public TextMeshPro txt_AP;
-    [Required] public TextMeshPro txt_remainingHP;
-
-
-    [Required] public Grid3D intentionsGrid;
-    [Required] public DetectorMouseClick mouseClickDetector;
-    [Required] public GameObject @default;
-    [Required] public GameObject hover;
-    [Required] public GameObject selected;
-    [Required] public GameObject inRange;
+    [BoxGroup("References")] [Required] public GameObject display;
+    [BoxGroup("References")] [Required] public GameObject hpBar;
+    [BoxGroup("References")] [Required] public GameObject display_AP;
+    [BoxGroup("References")] [Required] public TextMeshPro txt_AP;
+    [BoxGroup("References")] [Required] public TextMeshPro txt_remainingHP;
 
 
-    [Required] public Sprite actionIdentifier_Attack;
-    [Required] public Sprite actionIdentifier_AttackDebuff;
-    [Required] public Sprite actionIdentifier_AttackBuff;
-    [Required] public Sprite actionIdentifier_Debuff;
-    [Required] public Sprite actionIdentifier_Buff;
-    [Required] public Sprite actionIdentifier_Move;
+    [BoxGroup("References")] [Required] public Grid3D intentionsGrid;
+    [BoxGroup("References")] [Required] public DetectorMouseClick mouseClickDetector;
+    [BoxGroup("References")] [Required] public GameObject @default;
+    [BoxGroup("References")] [Required] public GameObject contested;
+    [BoxGroup("References")] [Required] public GameObject hover;
+    [BoxGroup("References")] [Required] public GameObject selected;
+    [BoxGroup("References")] [Required] public GameObject inRange;
+
+
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Attack;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackDebuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackBuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Debuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Buff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Move;
 
     public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
     {
@@ -87,16 +113,31 @@ public class BattleTile : MonoBehaviour
     public void HideAndMakeUnSelectable()
     {
         Clear();
-        @default.SetActive(false);
+        DefaultOrContestedSetActive(false);
+        contested.SetActive(false);
         unselectable = true;
     }
     
     public void SetUnselectable(bool v) => unselectable = v;
+
+    public void DefaultOrContestedSetActive(bool v)
+    {
+        if (section != GridWorld.BattlefieldSection.Contested)
+        {
+            @default.SetActive(v);
+            contested.SetActive(false);
+        }
+        else
+        {
+            @default.SetActive(false);
+            contested.SetActive(v);
+        }
+    }
     
     public void Unhide()
     {
         Clear();
-        @default.SetActive(true);
+        DefaultOrContestedSetActive(true);
     }
 
     public void Hover()
@@ -117,7 +158,7 @@ public class BattleTile : MonoBehaviour
         if (isInRange)
         {
             inRange.SetActive(true);
-            @default.SetActive(false);
+            DefaultOrContestedSetActive(false);
         }
     }
     
@@ -145,7 +186,7 @@ public class BattleTile : MonoBehaviour
     public void InRange()
     {
         Clear();
-        @default.SetActive(false);
+        DefaultOrContestedSetActive(false);
         isInRange = true;
         inRange.SetActive(true);
     }

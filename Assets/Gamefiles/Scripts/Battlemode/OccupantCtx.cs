@@ -21,8 +21,8 @@
         public int currentArmor;
         public int currentDMG;
         public int currentConstitution => currentHp + currentArmor;
-        [SerializeReference] public List<BattlemodeEffectCtx> currentEffects = new();
-        [SerializeReference] public List<BattlemodeEffectCtx> specialEffects = new();
+        [SerializeReference] public List<BattlemodeEffectStrategyInstance> currentEffects = new();
+        [SerializeReference] public List<BattlemodeEffectStrategyInstance> specialEffects = new();
 
         public override OccupantCfg cfg { get => battlerCfg; set => battlerCfg = value as BattlerConfig;}
         public BattlerConfig battlerCfg;
@@ -39,40 +39,42 @@
             currentDMG = config.damage;
 
             foreach (var cfgSpecialEffect in config.specialEffects)
-                specialEffects.Add(cfgSpecialEffect.GenerateEffectCtx());
+                specialEffects.Add(cfgSpecialEffect.CreateNewEffectInstance());
         }
 
         public void ActedUponByAction(BattleTracker.QueuedAction queuedActorAction, BattlemodeActionCtx attackersActionCtx)
         {
             attackersActionCtx.status = BattlemodeActionCtx.Status.BeingHit;
             
-            List<BattlemodeEffectCtx> effectsToAddBeforeResolve = null;
-            List<BattlemodeEffectCtx> effectsToAddAfterResolve = null;
+            List<BattlemodeEffectStrategyInstance> effectsToAddBeforeResolve = null;
+            List<BattlemodeEffectStrategyInstance> effectsToAddAfterResolve = null;
             
             if(queuedActorAction.actionCtx == null) Debug.LogError("[TARGET] No action context to be targeted with.");
             foreach (var effectToApply in queuedActorAction.actionCtx.cfg.effectsToApplyToTarget)
             {
-                var newEffectCtx = effectToApply.GenerateEffectCtx();
+                var newEffectCtx = effectToApply.CreateNewEffectInstance();
 
-                if (effectToApply.addOccurance == BattlemodeEffectConfig.AddOccurance.BeforeAction)
+                if (effectToApply.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.BeforeAction)
                 {
-                    effectsToAddBeforeResolve ??= new List<BattlemodeEffectCtx>();
+                    effectsToAddBeforeResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddBeforeResolve.Add(newEffectCtx);
                 }
                 else
                 {
-                    effectsToAddAfterResolve ??= new List<BattlemodeEffectCtx>();
+                    effectsToAddAfterResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddAfterResolve.Add(newEffectCtx);
                 }
             }
             
             
-            attackersActionCtx = PreResolveTargetEffects(attackersActionCtx, effectsToAddBeforeResolve);
+            attackersActionCtx = ResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
             MutateValues(attackersActionCtx);
-            PostResolveTargetEffects(attackersActionCtx, effectsToAddAfterResolve);
+            ResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
             
         }
-        
+
+        #region Start Of Battle
+
         public void ResolveStartOfBattleOpponentEffects(List<BattleTracker.QueuedAction> opponentPreResolvedActions)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
@@ -80,18 +82,10 @@
             foreach (var queuedAction in opponentPreResolvedActions)
             {
                 foreach (var effect in battlerOccupantCtx.currentEffects)
-                {
-                    if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.StartOfBattle
-                        && (queuedAction.actionCtx != null))
-                        queuedAction.actionCtx = effect.ResolveEffect(battlerOccupantCtx, queuedAction.actionCtx);
-                }
-
+                    effect.ResolveEffecStartOfBattle(battlerOccupantCtx, queuedAction.actionCtx);
+                
                 foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                {
-                    if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.StartOfBattle
-                       && (queuedAction.actionCtx != null))
-                        spEffect.ResolveEffect(battlerOccupantCtx, queuedAction.actionCtx);
-                }
+                    spEffect.ResolveEffecStartOfBattle(battlerOccupantCtx, queuedAction.actionCtx);
             }
         }
 
@@ -101,92 +95,76 @@
 
             foreach (var action in playerPreResolvedActions)
             {
+                if(action == null) continue;
+                if(action.actionCtx == null) continue;
+                
                 foreach (var effect in battlerOccupantCtx.currentEffects)
-                {
-                    if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.StartOfBattle
-                        && (action.actionCtx != null))
-                        action.actionCtx = effect.ResolveEffect(battlerOccupantCtx, action.actionCtx);
-                }
+                    effect.ResolveEffecStartOfBattle(battlerOccupantCtx, action.actionCtx);
+
 
                 foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                {
-                    if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.StartOfBattle
-                       && (action.actionCtx != null))
-                        spEffect.ResolveEffect(battlerOccupantCtx, action.actionCtx);
-                }
+                    spEffect.ResolveEffecStartOfBattle(battlerOccupantCtx, action.actionCtx);
+
             }
         }
-        
-        
 
-        public void ResolveEndOfTurnEnemyEffects(List<BattleTracker.QueuedAction> preResolvedActions)
+        #endregion
+
+        #region After Turn Ends
+
+        public void ResolveAfterTurnEndsEnemyEffects(List<BattleTracker.QueuedAction> preResolvedActions)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
             foreach (var queuedAction in preResolvedActions)
             {
                 foreach (var effect in battlerOccupantCtx.currentEffects)
-                {
-                    if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterTurnEnds
-                        && (queuedAction.actionCtx != null))
-                        queuedAction.actionCtx = effect.ResolveEffect(battlerOccupantCtx, queuedAction.actionCtx);
-                }
-
+                    effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+                
                 foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                {
-                    if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterTurnEnds
-                       && (queuedAction.actionCtx != null))
-                        spEffect.ResolveEffect(battlerOccupantCtx, queuedAction.actionCtx);
-                }
+                    spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
             }
         }
         
-        public void ResolveEndOfTurnPlayerEffects(BattlemodeAction[] preResolvedActions)
+        public void ResolveAfterTurnEndsPlayerEffects(BattlemodeAction[] preResolvedActions)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
-
+            
             foreach (var action in preResolvedActions)
             {
                 foreach (var effect in battlerOccupantCtx.currentEffects)
-                {
-                    if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterTurnEnds
-                        && (action.actionCtx != null))
-                        action.actionCtx = effect.ResolveEffect(battlerOccupantCtx, action.actionCtx);
-                }
-
+                    effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+                
                 foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                {
-                    if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterTurnEnds
-                       && (action.actionCtx != null))
-                        spEffect.ResolveEffect(battlerOccupantCtx, action.actionCtx);
-                }
+                    spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
             }
         }
 
-        public void PreResolveActingEffects(BattlemodeAction[] preResolvedActions)
+
+        #endregion
+
+        #region Before / After Acting (Each Works for both player and opponent)
+
+                
+        public void ResolveBeforeActingEffects(BattlemodeAction[] preResolvedActions)
         {
             if (this is not BattlerOccupantCtx occupantCtx) return;
             
             // Resolve Effects that resolve before mutation
             foreach (var action in preResolvedActions)
             {
+                if(action == null) continue;
+                if(action.actionCtx == null) continue;
+                
                 foreach (var effect in occupantCtx.currentEffects)
-                {
-                    if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing
-                        && (action.actionCtx != null))
-                    action.actionCtx = effect.ResolveEffect(occupantCtx, action.actionCtx);
-                }
-
+                    effect.ResolveEffectBeforeActing(occupantCtx, action.actionCtx);
+                
                 foreach (var spEffect in occupantCtx.specialEffects)
-                {
-                    if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeActing
-                        && (action.actionCtx != null))
-                    spEffect.ResolveEffect(occupantCtx, action.actionCtx);
-                }
+                    spEffect.ResolveEffectBeforeActing(occupantCtx, action.actionCtx);
             }
         }
         
-        public void PostResolveActingEffects(BattlemodeActionCtx actionCtx)
+        public void ResolveAfterActingEffects(BattlemodeActionCtx actionCtx)
         {
             if (this is not BattlerOccupantCtx battlerOccupantCtx) return;
             if (actionCtx == null)
@@ -196,21 +174,17 @@
             }
             
             foreach (var effect in battlerOccupantCtx.currentEffects)
-            {
-                if (effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
-                    actionCtx = effect.ResolveEffect(battlerOccupantCtx, actionCtx);
-            }
-
+                effect.ResolveEffectAfterActing(battlerOccupantCtx, actionCtx);
+            
             foreach (var spEffect in battlerOccupantCtx.specialEffects)
-            {
-                if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterActing)
-                    actionCtx = spEffect.ResolveEffect(battlerOccupantCtx, actionCtx);
-            }
+                spEffect.ResolveEffectAfterActing(battlerOccupantCtx, actionCtx);
         }
+
+        #endregion
+
         
-        BattlemodeActionCtx PreResolveTargetEffects(
-            BattlemodeActionCtx battleActionCtx, 
-            List<BattlemodeEffectCtx> effectsToAddBeforeResolve)
+        BattlemodeActionCtx ResolveBeforeHitEffects(BattlemodeActionCtx battleActionCtx, 
+            List<BattlemodeEffectStrategyInstance> effectsToAddBeforeResolve)
         {
             var occupantCtx = this;
 
@@ -218,54 +192,51 @@
             if (effectsToAddBeforeResolve != null)
                 foreach (var effectToAdd in effectsToAddBeforeResolve)
                 {
-                    if (occupantCtx.currentEffects.Any(e => e.effectStrategy.GetType() == effectToAdd.effectStrategy.GetType()))
-                        occupantCtx.currentEffects.Find(e => e.effectStrategy.GetType() == effectToAdd.effectStrategy.GetType()).stacks += effectToAdd.stacks;
+                    if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                        occupantCtx.AddStacksToAlreadyExistingEffect(effectToAdd);
                     else 
                         occupantCtx.currentEffects.Add(effectToAdd);
                 }
             
             // Resolve Effects that resolve before mutation
             foreach (var effect in currentEffects)
-                if(effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeHitByAction)
-                    battleActionCtx = effect.ResolveEffect(occupantCtx, battleActionCtx);
+                effect.ResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
             
             // Resolve SP Effects that resolve before mutation
             foreach (var spEffect in specialEffects)
-                if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.BeforeHitByAction)
-                    battleActionCtx = spEffect.ResolveEffect(occupantCtx, battleActionCtx);
+                spEffect.ResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
             
             return battleActionCtx;
         }
 
-        void PostResolveTargetEffects(
+        void ResolveAfterHitEffects(
             BattlemodeActionCtx battleActionCtx, 
-            List<BattlemodeEffectCtx> effectsToAddAfterResolve)
+            List<BattlemodeEffectStrategyInstance> effectsToAddAfterResolve)
         {
             var occupantCtx = this;
             
             // Resolve SP Effects that resolve after mutation
             foreach (var spEffect in specialEffects)
-                if(spEffect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterHitByAction)
-                    spEffect.ResolveEffect(occupantCtx, battleActionCtx);
+                spEffect.ResolveEffectAfterHitByAction(occupantCtx, battleActionCtx);
             
             // Resolve Effects that resolve after mutation
             foreach (var effect in currentEffects)
-                if(effect.effectStrategy.resolveOccurance == BattlemodeEffectConfig.ResolveOccurance.AfterHitByAction)
-                    effect.ResolveEffect(occupantCtx, battleActionCtx);
+                effect.ResolveEffectAfterHitByAction(occupantCtx, battleActionCtx);
+
             
             // Adding effects after resolve
             if (effectsToAddAfterResolve != null)
                 foreach (var effectToAdd in effectsToAddAfterResolve)
                 {
-                    if (occupantCtx.currentEffects.Any(e => e.effectStrategy.GetType() == effectToAdd.effectStrategy.GetType()))
-                        occupantCtx.currentEffects.Find(e => e.effectStrategy.GetType() == effectToAdd.effectStrategy.GetType()).stacks += effectToAdd.stacks;
+                    if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                        occupantCtx.AddStacksToAlreadyExistingEffect(effectToAdd);
                     else 
                         occupantCtx.currentEffects.Add(effectToAdd);
                 }
             
             // Removing marked for removal, Only removes status effects, not special effects
             for (var index = currentEffects.Count - 1; index >= 0; index--)
-                if (currentEffects[index].markedForRemoval)
+                if (currentEffects[index].ctx.markedForRemoval)
                     currentEffects.RemoveAt(index);
         }
         
@@ -314,6 +285,30 @@
             
             Debug.Log("[HIT] New HP: " + currentHp + " New Armor: " + currentArmor);
         }
+
+
+        public void AddStacksToAlreadyExistingEffect(BattlemodeEffectStrategyInstance effectToAdd)
+        {
+            var ctx = effectToAdd.ctx;
+
+            foreach (var stackCtx in ctx.stackCtxs)
+            {
+                if(stackCtx.stacks <= 0) continue;
+                
+                foreach (var effect in currentEffects)
+                {
+                    if (effect.GetType() != effectToAdd.GetType()) continue;
+                    effect.GetStackCtx(stackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(stackCtx.instanceEffectTime).stacks;
+                }
+
+                foreach (var spEffect in specialEffects)
+                {
+                    if (spEffect.GetType() != effectToAdd.GetType()) continue;
+                    spEffect.GetStackCtx(stackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(stackCtx.instanceEffectTime).stacks;
+                }
+            }
+        }
+        
     }
 
     public class CharacterOccupantCtx : BattlerOccupantCtx

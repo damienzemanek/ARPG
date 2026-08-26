@@ -5,6 +5,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GridWorld;
 using Random = UnityEngine.Random;
 
 public class OpponentAI : MonoBehaviour
@@ -178,9 +179,8 @@ public class OpponentAI : MonoBehaviour
                 orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
             }
             else
-            {
                 targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles);
-            }
+
             
             // Refresh my tile if i moved
             
@@ -200,7 +200,7 @@ public class OpponentAI : MonoBehaviour
             // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
             CoroutineRunner.Instance.RunMethodDelayed(() =>
             {
-                queuedAction.actingOccupantCtx.PostResolveActingEffects(queuedAction.actionCtx);
+                queuedAction.actingOccupantCtx.ResolveAfterActingEffects(queuedAction.actionCtx);
                 grid.UpdateGrid(); // Updates AP and HP through transient stats
                 
             }, proto_delayBetweenAttackFinishing);
@@ -214,18 +214,14 @@ public class OpponentAI : MonoBehaviour
 
                 while (!isInRange && !actionDecided)
                 {
-                    var inRangeCheckCtx = new GridWorld.InRangeCheckCtx
+                    var inRangeCheckCtx = new InRangeCheckCtx
                     {
-                        upRange = queuedAction.actionCtx.cfg.upRange,
-                        fwdRange = queuedAction.actionCtx.cfg.fwdRange,
-                        downRange = queuedAction.actionCtx.cfg.downRange,
+                        targetingCfg = queuedAction.actionCtx.cfg.targetingCfg,
                         myRow = orderCtx.myTile.row,
                         myCol = orderCtx.myTile.col
                     };
 
-                    if (!grid.OpponentRangeCheck(inRangeCheckCtx, queuedAction.targetTile, true,
-                            out var horizDist,
-                            out var vertDist))
+                    if (!grid.IsTargetInRange(inRangeCheckCtx, orderCtx.myTile, queuedAction.targetTile))
                     {
                         TryToMoveTo(out var moveTile);
                         if (moveTile != null)
@@ -244,7 +240,6 @@ public class OpponentAI : MonoBehaviour
                         }
                     }
 
-                    Debug.Log($"In Range: [horiz: {horizDist} vert: {vertDist}] " + "Queuing Normal Action");
                     isInRange = true;
                     
                     void TryToMoveTo(out BattleTile moveTile)

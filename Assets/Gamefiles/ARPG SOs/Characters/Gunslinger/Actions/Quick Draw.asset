@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: OutOfRangeTestAtk
+  m_Name: Quick Draw
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Vulnrable Strike
-  description: Influcts Vulnrable
+  actionName: Quick Draw
+  description: Quick Draw Description
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
-  dmgMultiplier: 300
+  dmgMultiplier: 100
   healPercentage: 0
   armorIncreasePercentage: 0
   targetingCfg:
@@ -24,17 +24,29 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 0
-    targetColRanks: 0
+    usableInColRanks: 7
+    targetColRanks: 112
     targetCurrentCol: 0
   aoe: 0
   apCost: 3
-  actionIdentifier: 1
+  actionIdentifier: 3
   moveToSelectedEmptyTile: 0
   capArmorIncrease: 0
   roleTarget: 2
   effectsToApplyToTarget: []
-  effectsToApplyToSelf: []
+  effectsToApplyToSelf:
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: 3738701859942301857
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3738701859942301857
+      type: {class: BattlemodeEffectStrategy_Swift, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          markedForRemoval: 0
+          markForReResolve: 0
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 3

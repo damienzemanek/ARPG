@@ -28,7 +28,7 @@ public class BattlerConfig : OccupantCfg
     public List<BattlemodeActionConfig> AllAvaliableActions = new();
     public List<BattlemodeActionConfig> ForcedActions = new();
     
-    public List<BattlemodeEffectConfig> specialEffects = new();
+    public List<BattlemodeEffectConfigInstance> specialEffects = new();
     
     [Button]
     public void EquipAction(int slotIndex, BattlemodeActionConfig action)

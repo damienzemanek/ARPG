@@ -23,25 +23,29 @@ MonoBehaviour:
   equippedActions:
   - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
   - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
+  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
   AllAvaliableActions:
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
   - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
+  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
+  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
   ForcedActions: []
   specialEffects:
   - addOccurance: 0
-    removealOccurance: 0
-    resolveOccurance: 2
-    time: 3
-    stacks: 0
-    effectStrategy:
-      _type:
-        m_Name: SE_Deadeye
-        m_AssemblyQualifiedName: SE_Deadeye, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        m_AssemblyName: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    defaultEffectStrategyValues:
+      rid: 3738701859942301841
   maxAP: 6
   maxHandSize: 6
   characterSprite: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
   characterPortrait: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3738701859942301841
+      type: {class: SE_Deadeye, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          markedForRemoval: 0
+          markForReResolve: 0
+          stackCtxs:
+          - instanceEffectTime: 1
+            stacks: 0

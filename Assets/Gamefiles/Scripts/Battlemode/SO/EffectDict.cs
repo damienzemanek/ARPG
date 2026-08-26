@@ -30,7 +30,7 @@ public class EffectDict : ScriptableObject
             .Where(type =>
                 type.IsClass &&
                 !type.IsAbstract &&
-                typeof(BattlemodeEffectStrategy).IsAssignableFrom(type));
+                typeof(BattlemodeEffectStrategyInstance).IsAssignableFrom(type));
 
         foreach (Type type in effectTypes)
         {

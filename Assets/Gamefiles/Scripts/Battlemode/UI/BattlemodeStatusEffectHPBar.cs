@@ -14,9 +14,9 @@ public class BattlemodeStatusEffectHPBar : BattlemodeEffectBase
         gameObject.SetActive(false);
     }
     
-    public override void PopulateEffect(BattlemodeEffectCtx effectCtx)
+    public override void PopulateEffect(BattlemodeEffectStrategyInstance effect)
     {
-        img.sprite = effectCtx.cfg.icon;
-        txt_stacksNum.text = effectCtx.stacks.ToString();
+        img.sprite = effect.cfg.icon;
+        txt_stacksNum.text = effect.stacksTotal.ToString();
     }
 }

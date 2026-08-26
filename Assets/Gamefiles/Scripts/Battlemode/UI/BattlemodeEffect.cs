@@ -3,12 +3,12 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static BattlemodeEffectConfig;
+using static BattlemodeEffectConfigInstance;
 
 public abstract class BattlemodeEffectBase : MonoBehaviour
 {
     public abstract void Hide();
-    public abstract void PopulateEffect(BattlemodeEffectCtx effectCtx);
+    public abstract void PopulateEffect(BattlemodeEffectStrategyInstance effect);
 }
 
 public class BattlemodeEffect : BattlemodeEffectBase
@@ -16,7 +16,7 @@ public class BattlemodeEffect : BattlemodeEffectBase
     const string k_StackCountFormat = "{0} stack(s)";
 
     
-    [ReadOnly] public BattlemodeEffectCtx effectCtx;
+    [ReadOnly] public BattlemodeEffectStrategyInstance effectCtx;
     [Required] public TextMeshProUGUI txt_name;
     [Required] public TextMeshProUGUI txt_description;
     [Required] public Image img;
@@ -36,24 +36,23 @@ public class BattlemodeEffect : BattlemodeEffectBase
         gameObject.SetActive(false);
     }
     
-    public override void PopulateEffect(BattlemodeEffectCtx effectCtx)
+    public override void PopulateEffect(BattlemodeEffectStrategyInstance effect)
     {
         turnEffect.Setup();
         battleEffect.Setup();
         expeditionEffect.Setup();
         
-        this.effectCtx = effectCtx;
-        txt_name.text = effectCtx.cfg.effectName;
-        txt_description.text = effectCtx.cfg.description;
-        img.sprite = effectCtx.cfg.icon;
-        switch (effectCtx.cfg.time)
-        {
-            case EffectTime.Turn: turnEffect.UpdateStackCount(effectCtx.stacks); break;
-            case EffectTime.Battle: battleEffect.UpdateStackCount(effectCtx.stacks); break;
-            case EffectTime.Expedition: expeditionEffect.UpdateStackCount(effectCtx.stacks); break;
-            default: throw new NotImplementedException();
-        }
-        txt_stackTotalNum.text = string.Format(k_StackCountFormat, effectCtx.stacks);
+        this.effectCtx = effect;
+        txt_name.text = effect.cfg.effectName;
+        txt_description.text = effect.cfg.description;
+        img.sprite = effect.cfg.icon;
+        int turnStacks = effect.GetStackCtx(EffectTime.Turn).stacks;
+        int battleStacks = effect.GetStackCtx(EffectTime.Battle).stacks;
+        int expeditionStacks = effect.GetStackCtx(EffectTime.Expedition).stacks;
+        turnEffect.UpdateStackCount(turnStacks);
+        battleEffect.UpdateStackCount(battleStacks);
+        expeditionEffect.UpdateStackCount(expeditionStacks);
+        txt_stackTotalNum.text = string.Format(k_StackCountFormat, effect.stacksTotal);
     }
 
     [Serializable]

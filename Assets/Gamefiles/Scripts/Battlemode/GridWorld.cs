@@ -5,6 +5,7 @@ using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static BattlemodeActionConfig;
 
 public class GridWorld : MonoBehaviour
 {
@@ -106,6 +107,40 @@ public class GridWorld : MonoBehaviour
         
         Debug.Log("[BattleConfig] Population complete, " + populationCount + " tiles populated");
     }
+
+    public void DesignateTileRanks()
+    {
+        var tiles = GetAllTiles();
+        foreach (var t in tiles)
+        {
+            switch (t.col)
+            {
+                case 0: t.colRank = BattleTile.ColRank.Left3; break;
+                case 1: t.colRank = BattleTile.ColRank.Left2; break;
+                case 2: t.colRank = BattleTile.ColRank.Left1; break;
+                case 3: t.colRank = BattleTile.ColRank.Center; break;
+                case 4: t.colRank = BattleTile.ColRank.Right1; break;
+                case 5: t.colRank = BattleTile.ColRank.Right2; break;
+                case 6: t.colRank = BattleTile.ColRank.Right3; break;
+            }
+
+            if (t.colRank == BattleTile.ColRank.Center)
+                t.section = BattlefieldSection.Contested;
+            else if (t.colRank == BattleTile.ColRank.Left1 || t.colRank == BattleTile.ColRank.Left2 || t.colRank == BattleTile.ColRank.Left3)
+                t.section = BattlefieldSection.Left;
+            else if (t.colRank == BattleTile.ColRank.Right1 || t.colRank == BattleTile.ColRank.Right2 || t.colRank == BattleTile.ColRank.Right3)
+
+            switch (t.row)
+            {
+                case 0: t.rowRank = BattleTile.RowRank.Top; break;
+                case 1: t.rowRank = BattleTile.RowRank.Middle; break;
+                case 2: t.rowRank = BattleTile.RowRank.Bottom; break;
+            }
+            
+            t.@DefaultOrContestedSetActive(true);
+        }
+        
+    }
     
     public List<BattleTile> GetAllTiles() => gridRows.SelectMany(r => r.tiles).ToList();
 
@@ -113,7 +148,7 @@ public class GridWorld : MonoBehaviour
     
 
     public List<BattleTile> GetAvaliableTargetTiles(
-        BattlemodeActionConfig.Role myTarget,
+        Role myTarget,
         List<BattleTile> inRangeTiles,
         BattleTile myTile)
     {
@@ -122,28 +157,28 @@ public class GridWorld : MonoBehaviour
         {
             switch (myTarget)
             {
-                case BattlemodeActionConfig.Role.Enemy: 
+                case Role.Enemy: 
                     if (!tile.IsEnemy())
                     {
                         tile.SetUnselectable(true);
                         ret.Remove(tile);
                     }
                     break;
-                case BattlemodeActionConfig.Role.Self:
+                case Role.Self:
                     if (!tile.IsSelf(myTile.occupantCtx.cfg))
                     {
                         tile.SetUnselectable(true);
                         ret.Remove(tile);
                     }
                     break;
-                case BattlemodeActionConfig.Role.Ally:
+                case Role.Ally:
                     if (!tile.IsAlly(myTile.occupantCtx.cfg))
                     {
                         ret.Remove(tile);
                         tile.SetUnselectable(true);
                     }
                     break;
-                case BattlemodeActionConfig.Role.EmptyTile: 
+                case Role.EmptyTile: 
                     if (!tile.IsEmptyTile())
                     {
                         tile.HideAndMakeUnSelectable();
@@ -152,7 +187,6 @@ public class GridWorld : MonoBehaviour
                     break;
             }
         }
-        
         return ret;
     }
 
@@ -193,7 +227,7 @@ public class GridWorld : MonoBehaviour
             var current = queue.Dequeue();
 
             // Find the closest tile from which the target can be attacked.
-            if (IsTargetInRange(current, end))
+            if (IsTargetInRange(rangeCtx, current, end))
             {
                 var result = current == start
                     ? null
@@ -233,43 +267,7 @@ public class GridWorld : MonoBehaviour
 
         return null;
 
-
-        bool IsTargetInRange(BattleTile attackerTile, BattleTile targetTile)
-        {
-            int rowDifference = targetTile.row - attackerTile.row;
-
-            // Calculate distance in the attacker's forward direction.
-            int horizDist = reverse
-                ? attackerTile.col - targetTile.col
-                : targetTile.col - attackerTile.col;
-
-            // Target is behind the attacker.
-            if (horizDist < 0) return false;
-
-            Vector2 range;
-
-            switch (rowDifference)
-            {
-                case 0:
-                    range = rangeCtx.fwdRange;
-                    break;
-
-                case -1:
-                    range = rangeCtx.upRange;
-                    break;
-
-                case 1:
-                    range = rangeCtx.downRange;
-                    break;
-
-                default:
-                    return false;
-            }
-
-            return horizDist >= range.x && horizDist <= range.y;
-        }
-
-
+        
         IEnumerable<BattleTile> GetNeighbors(BattleTile tile)
         {
             // Left
@@ -290,8 +288,154 @@ public class GridWorld : MonoBehaviour
         }
     }
     
+    // Target to Actor
+    public bool IsTargetInRange(InRangeCheckCtx rangeCtx, BattleTile actingTile, BattleTile targetTile)
+    {
+        bool colUsable = rangeCtx.targetingCfg.usableInColRanks.HasFlag(actingTile.colRank) || rangeCtx.targetingCfg.targetCurrentCol;
+        bool colTargeted = rangeCtx.targetingCfg.targetColRanks.HasFlag(targetTile.colRank);
+        bool rowUsable = rangeCtx.targetingCfg.usableInRowRanks.HasFlag(actingTile.rowRank) || rangeCtx.targetingCfg.targetCurrentRow;
+        bool rowTargeted = rangeCtx.targetingCfg.targetRowRanks.HasFlag(targetTile.rowRank);
+        return (colUsable && colTargeted) || (rowUsable && rowTargeted);
+    }
     
+    // Actor to Target
+    public List<BattleTile> GetInRangeTiles(InRangeCheckCtx rangeCtx, BattleTile actingTile)
+    {
+        var inRangeTiles = new List<BattleTile>();
+        var allTiles = GetAllTiles();
 
+        foreach (var t in allTiles)
+            t.HideAndMakeUnSelectable();
+        
+                
+        if (rangeCtx.targetingCfg.usableInColRanks.HasFlag(actingTile.colRank))
+        {
+            var targetRanks = rangeCtx.targetingCfg.targetColRanks;
+
+            inRangeTiles.AddRange(
+                allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
+        }
+    
+        if (rangeCtx.targetingCfg.targetCurrentCol)
+            inRangeTiles.AddRange(allTiles.Where(potentialCurrentColTile => potentialCurrentColTile.col == actingTile.col));
+        
+        if (rangeCtx.targetingCfg.targetCurrentRow)
+            inRangeTiles.AddRange(allTiles.Where(potentialCurrentRowTile => potentialCurrentRowTile.row == actingTile.row));
+        
+        foreach (var t in inRangeTiles)
+            Debug.Log("Found: [" + t.row + ", " + t.col + "]");
+
+        
+        int row = actingTile.row;
+        int col = actingTile.col;
+        // Movement Patterns
+        switch (rangeCtx.targetingCfg.targetingPatternAdditive)
+        {
+            case TargetingPattern.None: break;
+            case TargetingPattern.Cross:
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Left, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Right, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Up, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Down, row, col));
+                break;
+            case TargetingPattern.Box:
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Left, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Right, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Up, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.Down, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.DiagUpLeft, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.DiagUpRight, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.DiagDownLeft, row, col));
+                    inRangeTiles.Add(GetTileToThe(TileDirection.DiagDownRight, row, col));
+                break;
+        }
+        
+        // Null / Duplicate Handling
+        inRangeTiles = inRangeTiles
+            .Where(t => t != null)
+            .Distinct()
+            .ToList();
+        
+        foreach (var t in inRangeTiles)
+            t.InRange();
+
+        
+        return inRangeTiles;
+    }
+
+    public enum BattlefieldSection
+    {
+        Left, 
+        Contested,
+        Right,
+        OutOfBounds,
+    }
+
+    public List<BattleTile> ExcludeSection(BattlefieldSection section, List<BattleTile> inRangeTiles)
+    {
+        var ret = new List<BattleTile>(inRangeTiles);
+        if (ret == null) throw new ArgumentNullException(nameof(ret));
+        
+
+        if (section == BattlefieldSection.Left)
+        {
+            foreach (var tile in inRangeTiles)
+            {
+                if(tile.colRank == BattleTile.ColRank.Left1 || 
+                   tile.colRank == BattleTile.ColRank.Left2 || 
+                   tile.colRank == BattleTile.ColRank.Left3)
+                    ret.Remove(tile);
+                if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+            }
+            
+            return ret;
+        }
+
+        if (section == BattlefieldSection.Contested)
+        {
+            foreach (var tile in inRangeTiles)
+            {
+                if(tile.colRank == BattleTile.ColRank.Center) ret.Remove(tile);
+                if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+            }
+
+            return ret;
+        }
+
+        if (section == BattlefieldSection.Right)
+        {
+            foreach (var tile in inRangeTiles)
+            {
+                if(tile.colRank == BattleTile.ColRank.Right1 || 
+                   tile.colRank == BattleTile.ColRank.Right2 || 
+                   tile.colRank == BattleTile.ColRank.Right3)
+                    ret.Remove(tile);
+                if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+            }
+            return ret;
+        }
+        
+        return ret;
+    }
+    
+    public enum TileDirection { Left, Right, Up, Down, DiagUpLeft, DiagUpRight, DiagDownLeft, DiagDownRight }
+
+    public BattleTile GetTileToThe(TileDirection dir, int row, int col)
+    {
+        switch (dir)
+        {
+            case TileDirection.Left: if(col > 0) return gridRows[row].tiles[col - 1]; break;
+            case TileDirection.Right: if(col < gridRows[row].tiles.Count - 1) return gridRows[row].tiles[col + 1]; break;
+            case TileDirection.Up: if(row > 0) return gridRows[row - 1].tiles[col]; break;
+            case TileDirection.Down: if(row < gridRows.Count - 1) return gridRows[row + 1].tiles[col]; break;
+            case TileDirection.DiagUpLeft: if(col > 0 && row > 0) return gridRows[row - 1].tiles[col - 1]; break;
+            case TileDirection.DiagUpRight: if(col < gridRows[row].tiles.Count - 1 && row > 0) return gridRows[row - 1].tiles[col + 1]; break;
+            case TileDirection.DiagDownLeft: if(col > 0 && row < gridRows.Count - 1) return gridRows[row + 1].tiles[col - 1]; break;
+            case TileDirection.DiagDownRight: if(col < gridRows[row].tiles.Count - 1 && row < gridRows.Count - 1) return gridRows[row + 1].tiles[col + 1]; break;
+        }
+        return null;
+    }
+    
     public void GetBattlerTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
     {
         opponentTiles = new List<BattleTile>();
@@ -328,71 +472,17 @@ public class GridWorld : MonoBehaviour
     
     public void UnSelectAll()
     {
-        foreach (var t in gridRows.SelectMany(r => r.tiles))
-            t.Unhide();
+        foreach (var t in gridRows.SelectMany(r => r.tiles)) t.Unhide();
     }
 
     public struct InRangeCheckCtx
     {
         public int myCol;
         public int myRow;
-        
-        public Vector2 upRange;
-        public Vector2 downRange;
-        public Vector2 fwdRange;
+        public TargetingCfg targetingCfg;
     }
 
-    public bool OpponentRangeCheck(InRangeCheckCtx ctx, BattleTile tile, bool reverse,
-        out int horizDist,
-        out int vertDist)
-    {
-        if(tile == null) Debug.LogError("Tile is Null for OpponentRangeCheck");
-        Debug.Log("[Row Check] " + tile.row + " - " + ctx.myRow);
-        Debug.Log("[Col Check] " + tile.col + " - " + ctx.myCol);
-
-        int rowDifference = tile.row - ctx.myRow;
-
-        horizDist = Mathf.Abs(tile.col - ctx.myCol);
-        vertDist = Mathf.Abs(rowDifference);
-
-        // Determine whether the tile is in front of us.
-        int colDifference = tile.col - ctx.myCol;
-
-        // reverse = facing left, otherwise facing right.
-        bool isForward = reverse
-            ? colDifference < 0
-            : colDifference > 0;
-
-        if (!isForward)
-            return false;
-
-        Vector2 range;
-
-        switch (rowDifference)
-        {
-            // Same row.
-            case 0:
-                range = ctx.fwdRange;
-                break;
-
-            // Row above.
-            case -1:
-                range = ctx.upRange;
-                break;
-
-            // Row below.
-            case 1:
-                range = ctx.downRange;
-                break;
-
-            default:
-                return false;
-        }
-
-        return horizDist >= range.x && horizDist <= range.y;
-    }
-
-    public BattleTile GetClosestTargetTile(InRangeCheckCtx ctx, BattlemodeActionConfig.Role actionTarget, OccupantCfg compareCfg)
+    public BattleTile GetClosestTargetTile(InRangeCheckCtx ctx, Role actionTarget, OccupantCfg compareCfg)
     {
         var tiles = GetAllTiles();
 
@@ -414,64 +504,5 @@ public class GridWorld : MonoBehaviour
         }
 
         return closest;
-    }
-    
-    public List<BattleTile> GetInRangeTiles(
-        InRangeCheckCtx ctx,
-        BattlemodeActionConfig.Role actionTarget,
-        bool reverse)
-    {
-        List<BattleTile> tilesInRange = new();
-
-        for (int row = 0; row < gridRows.Count; row++)
-        {
-            if (row == ctx.myRow)
-                ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.fwdRange, reverse, tilesInRange, excludeOrigin: true);
-            else if (row == ctx.myRow - 1)
-                ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.upRange, reverse, tilesInRange, upOrDown: true);
-            else if (row == ctx.myRow + 1)
-                ProcessRow(gridRows[row].tiles, ctx.myCol, ctx.downRange, reverse, tilesInRange, upOrDown: true);
-            else
-                gridRows[row].tiles.ForEach(t => t.NotInRange());
-
-        }
-
-        return tilesInRange;
-
-        void ProcessRow(
-            List<BattleTile> tiles,
-            int myCol,
-            Vector2 range,
-            bool reverse,
-            List<BattleTile> result,
-            bool excludeOrigin = false,
-            bool upOrDown = false)
-        {
-            int min = Mathf.RoundToInt(range.x);
-            int max = Mathf.RoundToInt(range.y);
-
-            int start = reverse ? tiles.Count - 1 : 0;
-            int end = reverse ? -1 : tiles.Count;
-            int step = reverse ? -1 : 1;
-
-            for (int col = start; col != end; col += step)
-            {
-                int distance = Mathf.Abs(col - myCol);
-                if (excludeOrigin && distance == 0 && actionTarget != BattlemodeActionConfig.Role.Self)
-                {
-                    tiles[col].NotInRange(); 
-                    continue;
-                }
-                
-                bool inRange = upOrDown 
-                    ? (distance >= min && distance < max) 
-                    : (distance >= min && distance <= max);
-
-                if (inRange)
-                    result.Add(tiles[col]);
-                else
-                    tiles[col].NotInRange();
-            }
-        }
     }
 }
