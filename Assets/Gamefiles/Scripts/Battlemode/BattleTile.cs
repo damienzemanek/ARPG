@@ -107,6 +107,7 @@ public class BattleTile : MonoBehaviour
         mouseClickDetector.detections.Clear();
         alreadySelected = false;
         tileCanBeSelectedOveride = false;
+        display.SetActive(occupantCtx != null);
     }
     
 
@@ -343,5 +344,30 @@ public class BattleTile : MonoBehaviour
         previousTile.ResetTileOccupancy(false);
         grid.UpdateGrid();
         Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
+    }
+    
+    public void SwapOccupants(BattleTile previousTile, GridWorld grid)
+    {
+        if (previousTile == null) { Debug.LogError("Trying to swap occupants with a null tile"); return; }
+        if (occupantCtx == null) { Debug.LogError($"Tile [{col}, {row}] does not have an occupant to swap"); return; }
+        if (previousTile.occupantCtx == null) { Debug.LogError($"Tile [{previousTile.col}, {previousTile.row}] does not have an occupant to swap"); return; }
+
+        var previousOccupant = occupantCtx;
+        var otherOccupant = previousTile.occupantCtx;
+
+        occupantCtx = otherOccupant;
+        previousTile.occupantCtx = previousOccupant;
+
+        occupantCtx.newTilePosition = this;
+        previousTile.occupantCtx.newTilePosition = previousTile;
+
+        occupantCtx.obj.transform.position = transform.position + occupantSpawnOffset;
+        previousTile.occupantCtx.obj.transform.position = previousTile.transform.position + previousTile.occupantSpawnOffset;
+        
+        Clear();
+        previousTile.Clear();
+        grid.UpdateGrid();
+
+        Debug.Log($"Swapped occupants between [{col}, {row}] and [{previousTile.col}, {previousTile.row}]");
     }
 }

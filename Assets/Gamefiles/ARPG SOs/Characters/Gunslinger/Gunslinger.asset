@@ -33,7 +33,7 @@ MonoBehaviour:
   - addOccurance: 0
     defaultEffectStrategyValues:
       rid: 3738701859942301841
-  maxAP: 6
+  maxAP: 444
   maxHandSize: 6
   characterSprite: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
   characterPortrait: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}

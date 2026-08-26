@@ -38,7 +38,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("Special Effects")] [ReadOnly, ShowInInspector] Pooled<BattlemodeSpecialEffect> specialEffectDisplayPool;
 
     [ReadOnly, ShowInInspector] public BattleTile currentlySelectedTile = null;
-    [ReadOnly, ShowInInspector] public BattlemodeActionCtx? currentlySelectedAction = null;
+    [ReadOnly, ShowInInspector] public BattlemodeActionCtx currentlySelectedAction = null;
 
     [SerializeField, HideInInspector] int _maxAmountOfTotalActionsAvaliable;
     [ShowInInspector] public int maxAmountOfTotalActionsAvaliable 
@@ -367,7 +367,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     public int GetCurrentlySelectedAPCost()
     {
         if (currentlySelectedAction == null) return 0;
-        return currentlySelectedAction.cfg.apCost + currentlySelectedAction.apDelta;
+        return currentlySelectedAction.ap + currentlySelectedAction.apDelta;
     }
     
     public void ShowEndTurnBtn(bool v) => endTurnBtn.SetActive(v);

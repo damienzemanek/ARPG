@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
   prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
   currentLevel: 1
-  maxHP: 6
+  maxHP: 777
   maxArmor: 2
   damage: 1
   _maxEquippableActions: 2
@@ -41,3 +41,6 @@ MonoBehaviour:
       actionOrder: 0
   intentions: 3
   defaultPredicted: 2
+  references:
+    version: 2
+    RefIds: []

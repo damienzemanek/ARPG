@@ -24,9 +24,14 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 7
+    usableInColRanks: 15
     targetColRanks: 112
     targetCurrentCol: 0
+  movementCfg:
+    right: 3
+    left: 0
+    up: 0
+    down: 0
   aoe: 0
   apCost: 3
   actionIdentifier: 3

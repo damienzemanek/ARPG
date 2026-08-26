@@ -31,7 +31,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd27536b08a340140af87d5ef1e54eb0, type: 2}
   ForcedActions: []
   specialEffects: []
-  maxAP: 5
+  maxAP: 666
   maxHandSize: 6
   characterSprite: {fileID: 21300000, guid: 80d570c0b4d0dee47911d1eecf134ba5, type: 3}
   characterPortrait: {fileID: 21300000, guid: 80d570c0b4d0dee47911d1eecf134ba5, type: 3}
+  references:
+    version: 2
+    RefIds: []

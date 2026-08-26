@@ -129,6 +129,7 @@ public class GridWorld : MonoBehaviour
             else if (t.colRank == BattleTile.ColRank.Left1 || t.colRank == BattleTile.ColRank.Left2 || t.colRank == BattleTile.ColRank.Left3)
                 t.section = BattlefieldSection.Left;
             else if (t.colRank == BattleTile.ColRank.Right1 || t.colRank == BattleTile.ColRank.Right2 || t.colRank == BattleTile.ColRank.Right3)
+                t.section = BattlefieldSection.Right;
 
             switch (t.row)
             {
@@ -420,22 +421,22 @@ public class GridWorld : MonoBehaviour
     
     public enum TileDirection { Left, Right, Up, Down, DiagUpLeft, DiagUpRight, DiagDownLeft, DiagDownRight }
 
-    public BattleTile GetTileToThe(TileDirection dir, int row, int col)
+    public BattleTile GetTileToThe(TileDirection dir, int row, int col, int amount = 1)
     {
         switch (dir)
         {
-            case TileDirection.Left: if(col > 0) return gridRows[row].tiles[col - 1]; break;
-            case TileDirection.Right: if(col < gridRows[row].tiles.Count - 1) return gridRows[row].tiles[col + 1]; break;
-            case TileDirection.Up: if(row > 0) return gridRows[row - 1].tiles[col]; break;
-            case TileDirection.Down: if(row < gridRows.Count - 1) return gridRows[row + 1].tiles[col]; break;
-            case TileDirection.DiagUpLeft: if(col > 0 && row > 0) return gridRows[row - 1].tiles[col - 1]; break;
-            case TileDirection.DiagUpRight: if(col < gridRows[row].tiles.Count - 1 && row > 0) return gridRows[row - 1].tiles[col + 1]; break;
-            case TileDirection.DiagDownLeft: if(col > 0 && row < gridRows.Count - 1) return gridRows[row + 1].tiles[col - 1]; break;
-            case TileDirection.DiagDownRight: if(col < gridRows[row].tiles.Count - 1 && row < gridRows.Count - 1) return gridRows[row + 1].tiles[col + 1]; break;
+            case TileDirection.Left: if (col - amount >= 0) return gridRows[row].tiles[col - amount]; break;
+            case TileDirection.Right: if (col + amount < gridRows[row].tiles.Count) return gridRows[row].tiles[col + amount]; break;
+            case TileDirection.Up: if (row - amount >= 0) return gridRows[row - amount].tiles[col]; break;
+            case TileDirection.Down: if (row + amount < gridRows.Count) return gridRows[row + amount].tiles[col]; break;
+            case TileDirection.DiagUpLeft: if (col - amount >= 0 && row - amount >= 0) return gridRows[row - amount].tiles[col - amount]; break;
+            case TileDirection.DiagUpRight: if (col + amount < gridRows[row].tiles.Count && row - amount >= 0) return gridRows[row - amount].tiles[col + amount]; break;
+            case TileDirection.DiagDownLeft: if (col - amount >= 0 && row + amount < gridRows.Count) return gridRows[row + amount].tiles[col - amount]; break;
+            case TileDirection.DiagDownRight: if (col + amount < gridRows[row].tiles.Count && row + amount < gridRows.Count) return gridRows[row + amount].tiles[col + amount]; break;
         }
         return null;
     }
-    
+
     public void GetBattlerTiles(out List<BattleTile> opponentTiles, out List<BattleTile> playerTiles)
     {
         opponentTiles = new List<BattleTile>();

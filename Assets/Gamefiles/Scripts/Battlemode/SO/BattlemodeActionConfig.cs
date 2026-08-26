@@ -50,6 +50,16 @@ public class BattlemodeActionConfig : ScriptableObject
         [BoxGroup("Col Targeting")] public bool targetCurrentCol = false;
         public TargetingCfg() { }
     }
+
+    [Serializable]
+    public struct MovementCfg
+    {
+        public int right = 0;
+        public int left = 0;
+        public int up = 0;
+        public int down = 0;
+        public MovementCfg() { }
+    }
     
     
     public string actionName;
@@ -61,6 +71,7 @@ public class BattlemodeActionConfig : ScriptableObject
     [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
     [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
     public TargetingCfg targetingCfg;
+    public MovementCfg movementCfg;
 
     
     public int aoe = 0; // STRETCH GOAL

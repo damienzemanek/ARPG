@@ -4750,7 +4750,7 @@ GameObject:
   - component: {fileID: 191672653}
   m_Layer: 0
   m_Name: Btn EndTurn
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8188,7 +8188,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 0, y: 70}
+  m_SizeDelta: {x: 53.1, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -48227,7 +48227,7 @@ GameObject:
   - component: {fileID: 79103288859900428}
   m_Layer: 0
   m_Name: MoveBtn
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

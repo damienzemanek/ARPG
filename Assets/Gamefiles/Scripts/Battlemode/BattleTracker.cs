@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -146,6 +147,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
         selectedTarget?.ActUponTarget(queuedPlayerAction, currentlySelectedTile);
+        
+        // Post Movements
+        HandleMovement(currentlySelectedTile.row, currentlySelectedTile.col, queuedPlayerAction.actionCtx.cfg.movementCfg);
+        
         CoroutineRunner.Instance.RunMethodDelayed(() =>
         {
             queuedPlayerAction.hasQueuedAction = false;
@@ -154,7 +159,131 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             grid.UpdateGrid(); // Updates AP and HP through transient stats
         }, 0.1f);
     }
-    
+    struct MovementPathPoint
+    {
+        public BattleTile tile;
+        public OccupantCtx occupantCtx;
+    }
+    void HandleMovement(int myRow, int myCol, BattlemodeActionConfig.MovementCfg move)
+    {
+        var dir = move switch
+        {
+            _ when move.right > 0 => TileDirection.Right,
+            _ when move.left > 0 => TileDirection.Left,
+            _ when move.up > 0 => TileDirection.Up,
+            _ when move.down > 0 => TileDirection.Down,
+            _ => TileDirection.DiagDownLeft
+        };
+
+        var amount = dir switch
+        {
+            TileDirection.Right => move.right,
+            TileDirection.Left => move.left,
+            TileDirection.Up => move.up,
+            TileDirection.Down => move.down,
+            _ => 0
+        };
+
+        if (amount <= 0) return;
+
+        var originTile = currentlySelectedTile;
+        var origMover = originTile.occupantCtx;
+
+        if (origMover == null) return;
+
+        // Distance 1: normal move or direct swap.
+        if (amount == 1)
+        {
+            var destinationTile = grid.GetTileToThe(dir, myRow, myCol);
+
+            if (destinationTile == null) return;
+            if (destinationTile.section == BattlefieldSection.Right) return;
+
+            if (destinationTile.occupantCtx != null)
+                destinationTile.SwapOccupants(originTile, grid);
+            else
+                destinationTile.TransferInOccupant(originTile, grid);
+
+            return;
+        }
+
+        var savePath = new List<MovementPathPoint>();
+
+        // Snapshot the entire path BEFORE modifying any tiles.
+        for (int i = 0; i <= amount; i++)
+        {
+            var tile = grid.GetTileToThe(dir, myRow, myCol, i);
+
+            if (tile == null) return;
+            if (tile.section == BattlefieldSection.Right) return;
+
+            savePath.Add(new MovementPathPoint
+            {
+                tile = tile,
+                occupantCtx = tile.occupantCtx
+            });
+        }
+
+        // Destination is empty: ordinary movement.
+        if (savePath[amount].occupantCtx == null)
+        {
+            savePath[amount].tile.TransferInOccupant(originTile, grid);
+            return;
+        }
+
+        // Build the final arrangement.
+        var newPath = new MovementPathPoint[amount + 1];
+
+        // Mover goes into the destination.
+        newPath[amount] = new MovementPathPoint
+        {
+            tile = savePath[amount].tile,
+            occupantCtx = origMover
+        };
+
+        // Existing occupants get compressed toward the origin.
+        int newIndex = amount - 1;
+
+        for (int i = amount; i > 0; i--)
+        {
+            var occupant = savePath[i].occupantCtx;
+
+            if (occupant == null)
+                continue;
+
+            newPath[newIndex] = new MovementPathPoint
+            {
+                tile = savePath[newIndex].tile,
+                occupantCtx = occupant
+            };
+
+            newIndex--;
+        }
+
+        // Clear all affected tiles AFTER the snapshot/final arrangement is built.
+        foreach (var point in savePath)
+        {
+            point.tile.Clear();
+            point.tile.occupantCtx = null;
+        }
+
+        // Apply final arrangement.
+        foreach (var point in newPath)
+        {
+            if (point.occupantCtx == null)
+                continue;
+
+            point.tile.occupantCtx = point.occupantCtx;
+            point.occupantCtx.newTilePosition = point.tile;
+            point.occupantCtx.obj.transform.position =
+                point.tile.transform.position + point.tile.occupantSpawnOffset;
+
+            point.tile.display.SetActive(true);
+        }
+
+        grid.UpdateGrid();
+    }
+        
     public void UnSelectAll()
     {
         Debug.Log("Unselecting all tiles and clearing role targets.");

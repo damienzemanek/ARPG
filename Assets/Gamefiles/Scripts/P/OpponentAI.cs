@@ -39,6 +39,12 @@ public class OpponentAI : MonoBehaviour
         foreach (var tile in opponentTiles)
             battlerAttackOrder.Add(new OrderCtx(){ myTile = tile, myEnemyOccupantCtx = tile.occupantCtx as EnemyOccupantCtx});
 
+        if (opponentTiles.Count == 0)
+        {
+            Debug.LogWarning("No Opponent Tiles Found");
+            return;
+        }
+        
         // Sort the Order
         battlerAttackOrder.Sort((a, b) =>
         {
