@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static BattlemodeActionConfig;
 using static GridWorld;
 
 public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleTracker>
@@ -39,7 +42,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public BattlemodeActionCtx actionCtx;
         public BattlerOccupantCtx actingOccupantCtx;
         public BattleTile targetTile;
-        public BattlemodeActionConfig.Role lookingForTarget;  
+        public Role lookingForTarget;  
         
         public SelfRoleTarget targSelfSlot;
         public AllyRoleTarget targAllySlot;
@@ -60,7 +63,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             actionCtx = null;
             actingOccupantCtx = null;
             targetTile = null;
-            lookingForTarget = BattlemodeActionConfig.Role.None;
+            lookingForTarget = Role.None;
         }
     }
     
@@ -109,32 +112,32 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         player.ZoomIntoTile(currentlySelectedTile, DisplayActionsUI);
     }
 
-    public void UseActionOnTargetTile(BattleTile tile, BattlemodeActionConfig.Role targetRole)
+    public void UseActionOnTargetTile(BattleTile tile, Role targetRole)
     {
         RoleTarget selectedTarget = null;
         switch (targetRole)
         {
-            case BattlemodeActionConfig.Role.Self:
+            case Role.Self:
                 queuedPlayerAction.targSelfSlot.selfTile = tile; 
                 selectedTarget = queuedPlayerAction.targSelfSlot;
                 break;
-            case BattlemodeActionConfig.Role.Ally:
+            case Role.Ally:
                 queuedPlayerAction.targAllySlot.allyTile = tile; 
                 selectedTarget = queuedPlayerAction.targAllySlot;
                 break;
-            case BattlemodeActionConfig.Role.Enemy:
+            case Role.Enemy:
                 queuedPlayerAction.targEnemySlot.enemyTile = tile; 
                 selectedTarget = queuedPlayerAction.targEnemySlot;
                 break;
-            case BattlemodeActionConfig.Role.Team:
+            case Role.Team:
                 queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(tile); 
                 selectedTarget = queuedPlayerAction.targAllyTeamSlot;
                 break;
-            case BattlemodeActionConfig.Role.EnemyTeam:
+            case Role.EnemyTeam:
                 queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(tile); 
                 selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
                 break;
-            case BattlemodeActionConfig.Role.EmptyTile:
+            case Role.EmptyTile:
                 queuedPlayerAction.targEmptyTileSlot.emptyTile = tile; 
                 selectedTarget = queuedPlayerAction.targEmptyTileSlot;
                 break;
@@ -159,64 +162,54 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             grid.UpdateGrid(); // Updates AP and HP through transient stats
         }, 0.1f);
     }
-    struct MovementPathPoint
+    record struct MovementPathPoint
     {
         public BattleTile tile;
         public OccupantCtx occupantCtx;
     }
-    void HandleMovement(int myRow, int myCol, BattlemodeActionConfig.MovementCfg move)
+    
+    void HandleMovement(int myRow, int myCol, MovementCfg move)
     {
+        if(move.direction == MovementDirection.None) return;
+        if (move.amount <= 0) return;
+
         var dir = move switch
         {
-            _ when move.right > 0 => TileDirection.Right,
-            _ when move.left > 0 => TileDirection.Left,
-            _ when move.up > 0 => TileDirection.Up,
-            _ when move.down > 0 => TileDirection.Down,
+            _ when move.direction == MovementDirection.Right => TileDirection.Right,
+            _ when move.direction == MovementDirection.Left => TileDirection.Left,
+            _ when move.direction == MovementDirection.Up => TileDirection.Up,
+            _ when move.direction == MovementDirection.Down => TileDirection.Down,
             _ => TileDirection.DiagDownLeft
         };
-
-        var amount = dir switch
-        {
-            TileDirection.Right => move.right,
-            TileDirection.Left => move.left,
-            TileDirection.Up => move.up,
-            TileDirection.Down => move.down,
-            _ => 0
-        };
-
-        if (amount <= 0) return;
+        
 
         var originTile = currentlySelectedTile;
         var origMover = originTile.occupantCtx;
-
         if (origMover == null) return;
 
         // Distance 1: normal move or direct swap.
-        if (amount == 1)
+        if (move.amount == 1)
         {
             var destinationTile = grid.GetTileToThe(dir, myRow, myCol);
 
             if (destinationTile == null) return;
             if (destinationTile.section == BattlefieldSection.Right) return;
 
-            if (destinationTile.occupantCtx != null)
-                destinationTile.SwapOccupants(originTile, grid);
-            else
-                destinationTile.TransferInOccupant(originTile, grid);
-
+            if (destinationTile.occupantCtx != null) destinationTile.SwapOccupants(originTile, grid);
+            else destinationTile.TransferInOccupant(originTile, grid);
             return;
         }
 
         var savePath = new List<MovementPathPoint>();
 
         // Snapshot the entire path BEFORE modifying any tiles.
-        for (int i = 0; i <= amount; i++)
+        for (int i = 0; i <= move.amount; i++)
         {
             var tile = grid.GetTileToThe(dir, myRow, myCol, i);
 
-            if (tile == null) return;
-            if (tile.section == BattlefieldSection.Right) return;
-
+            if (tile == null) break;
+            if (tile.section == BattlefieldSection.Right) break;
+            
             savePath.Add(new MovementPathPoint
             {
                 tile = tile,
@@ -224,27 +217,38 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             });
         }
 
-        // Destination is empty: ordinary movement.
-        if (savePath[amount].occupantCtx == null)
+        var actualAmount = savePath.IndexOf(savePath[^1]);
+        
+
+        int a = 1;
+        foreach (var p in savePath)
         {
-            savePath[amount].tile.TransferInOccupant(originTile, grid);
+            Debug.Log($"SavePath Tile {a}: [" + p.tile.row + ", " + p.tile.col + "] " + (p.occupantCtx != null ? p.occupantCtx.cfg.name : "Empty"));
+            a++;
+        }
+        
+        // Destination is empty: ordinary movement.
+        if (savePath[^1].occupantCtx == null)
+        {
+            savePath[^1].tile.TransferInOccupant(originTile, grid);
             return;
         }
 
         // Build the final arrangement.
-        var newPath = new MovementPathPoint[amount + 1];
+        var newPath = new MovementPathPoint[actualAmount + 1];
 
         // Mover goes into the destination.
-        newPath[amount] = new MovementPathPoint
+        newPath[^1] = new MovementPathPoint
         {
-            tile = savePath[amount].tile,
+            tile = savePath[actualAmount].tile,
             occupantCtx = origMover
         };
 
         // Existing occupants get compressed toward the origin.
-        int newIndex = amount - 1;
+        
+        int newIndex = actualAmount -1;
 
-        for (int i = amount; i > 0; i--)
+        for (int i = actualAmount; i > 0; i--)
         {
             var occupant = savePath[i].occupantCtx;
 

@@ -51,13 +51,20 @@ public class BattlemodeActionConfig : ScriptableObject
         public TargetingCfg() { }
     }
 
+    public enum MovementDirection
+    {
+        None,
+        Right,
+        Left,
+        Up,
+        Down,
+    }
+    
     [Serializable]
     public struct MovementCfg
     {
-        public int right = 0;
-        public int left = 0;
-        public int up = 0;
-        public int down = 0;
+        public MovementDirection direction;
+        public int amount;
         public MovementCfg() { }
     }
     

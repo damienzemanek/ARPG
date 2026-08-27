@@ -28,10 +28,8 @@ MonoBehaviour:
     targetColRanks: 112
     targetCurrentCol: 0
   movementCfg:
-    right: 3
-    left: 0
-    up: 0
-    down: 0
+    direction: 1
+    amount: 4
   aoe: 0
   apCost: 3
   actionIdentifier: 3

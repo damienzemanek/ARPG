@@ -17,14 +17,8 @@ public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
             Debug.LogError("Trying to apply Deadeye effect to non-battler occupant");
             return actionCtx;
         }
-        Debug.Log("B4");
-        Debug.Log(actionCtx);
-        Debug.Log(actionCtx.cfg);
-        Debug.Log(actionCtx.cfg.actionName);
         if (actionCtx.cfg.actionName != "Deadeye") return actionCtx;
-        Debug.Log("B5");
         if (stacksTotal <= 0) return actionCtx;
-        Debug.Log("B6");
         actionCtx.deltaDmgMultiplier += (100 * stacksTotal);
         if(stacksTotal > 1)
             actionCtx.apDelta += stacksTotal - 1;
