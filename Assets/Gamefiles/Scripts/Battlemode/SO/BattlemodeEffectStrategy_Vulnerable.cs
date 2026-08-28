@@ -41,7 +41,6 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
         BattlemodeActionCtx actionCtx)
     {
         swiftStrategyCtx.usedThisRound = true;
-        ctx.markForReResolve = true;
         return actionCtx;
     }
     

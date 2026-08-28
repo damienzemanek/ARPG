@@ -14,14 +14,11 @@ public class BattlemodeEffectConfigInstance
         => PersistentConfigurationDataHolder.Instance.effectDict.data;
 
     
-    
-    
     public enum EffectTime
     {
         Turn,
         Battle,
         Expedition,
-        Permanent,
     }
     
     public enum AddOccurance
@@ -50,20 +47,18 @@ public abstract class BattlemodeEffectStrategyInstance
 {
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);
-
     public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime) => Array.Exists(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
 
     public ref StackCtx GetStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime)
     {
-        int index = Array.FindIndex(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
-        return ref ctx.stackCtxs[index];
+        int indx = Array.FindIndex(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
+        return ref ctx.stackCtxs[indx];
     }
     
     [Serializable, InlineProperty]
     public struct BattlemodeEffectStrategyCtx
     {
         public bool markedForRemoval = false;
-        public bool markForReResolve = false;
         public StackCtx[] stackCtxs;
         public BattlemodeEffectStrategyCtx() { }
     }
@@ -73,6 +68,7 @@ public abstract class BattlemodeEffectStrategyInstance
     {
         public BattlemodeEffectConfigInstance.EffectTime instanceEffectTime;
         public int stacks;
+        public bool setStacksDirectly;
     }
     
     [NonSerialized] public BattlemodeEffectConfigInstance cfg;
@@ -84,21 +80,33 @@ public abstract class BattlemodeEffectStrategyInstance
     public BattlemodeEffectStrategyInstance Clone(BattlemodeEffectConfigInstance cfg)
     {
         var clone = (BattlemodeEffectStrategyInstance)MemberwiseClone();
-        clone.ctx.stackCtxs = new StackCtx[ctx.stackCtxs.Length];
+
         clone.cfg = cfg;
         clone.ctx.stackCtxs = new StackCtx[effectValuesLength];
-        
-        bool cont = (cfg.defaultEffectStrategyValues.ctx.stackCtxs == null ||
-                     cfg.defaultEffectStrategyValues.ctx.stackCtxs.Length == 0);
-        
+
+        bool cont = cfg.defaultEffectStrategyValues.ctx.stackCtxs == null ||
+                    cfg.defaultEffectStrategyValues.ctx.stackCtxs.Length == 0;
+
         for (int i = 0; i < clone.ctx.stackCtxs.Length; i++)
         {
-            clone.ctx.stackCtxs[i] = new StackCtx {instanceEffectTime = (BattlemodeEffectConfigInstance.EffectTime)i};
-            clone.ctx.stackCtxs[i].stacks = 0;
+            var effectTime = (BattlemodeEffectConfigInstance.EffectTime)i;
+            clone.ctx.stackCtxs[i] = new StackCtx
+            {
+                instanceEffectTime = effectTime,
+                stacks = 0,
+                setStacksDirectly = false
+            };
+
             if (cont) continue;
-            if(cfg.defaultEffectStrategyValues.HasStackCtx((BattlemodeEffectConfigInstance.EffectTime)i))
-                clone.ctx.stackCtxs[i].stacks = cfg.defaultEffectStrategyValues.GetStackCtx((BattlemodeEffectConfigInstance.EffectTime)i).stacks;
+            if (cfg.defaultEffectStrategyValues.HasStackCtx(effectTime))
+            {
+                var defaultStackCtx = cfg.defaultEffectStrategyValues.GetStackCtx(effectTime);
+
+                clone.ctx.stackCtxs[i].stacks = defaultStackCtx.stacks;
+                clone.ctx.stackCtxs[i].setStacksDirectly = defaultStackCtx.setStacksDirectly;
+            }
         }
+
         return clone;
     }
     

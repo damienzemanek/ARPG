@@ -333,6 +333,9 @@ public class GridWorld : MonoBehaviour
         switch (rangeCtx.targetingCfg.targetingPatternAdditive)
         {
             case TargetingPattern.None: break;
+            case TargetingPattern.Self:
+                    inRangeTiles.Add(actingTile);
+                break;
             case TargetingPattern.Cross:
                     inRangeTiles.Add(GetTileToThe(TileDirection.Left, row, col));
                     inRangeTiles.Add(GetTileToThe(TileDirection.Right, row, col));
@@ -359,7 +362,6 @@ public class GridWorld : MonoBehaviour
         
         foreach (var t in inRangeTiles)
             t.InRange();
-
         
         return inRangeTiles;
     }

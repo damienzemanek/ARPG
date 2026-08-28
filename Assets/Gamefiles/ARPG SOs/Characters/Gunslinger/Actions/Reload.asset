@@ -10,47 +10,53 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Quick Draw
+  m_Name: Reload
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Quick Draw
-  description: Quick Draw Description
+  actionName: Reload
+  description: Reload Description
   apCost: 3
-  roleTarget: 2
+  roleTarget: 1
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 3
-  actionQualifier: 1
+  actionIdentifier: 5
+  actionQualifier: 2
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
-  dmgMultiplier: 100
+  dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 0
+    targetingPatternAdditive: 1
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
     usableInColRanks: 15
-    targetColRanks: 112
+    targetColRanks: 0
     targetCurrentCol: 0
   movementCfg:
-    direction: 1
-    amount: 1
+    direction: 2
+    amount: 2
   effectsToApplyToTarget: []
   effectsToApplyToSelf:
   - addOccurance: 2
     defaultEffectStrategyValues:
-      rid: 3738701859942301857
+      rid: 3738701904926474374
   aoe: 0
   references:
     version: 2
     RefIds:
-    - rid: 3738701859942301857
-      type: {class: BattlemodeEffectStrategy_Swift, ns: , asm: Assembly-CSharp}
+    - rid: 3738701904926474374
+      type: {class: SE_Deadeye, ns: , asm: Assembly-CSharp}
       data:
         ctx:
           markedForRemoval: 0
-          markForReResolve: 0
           stackCtxs:
           - instanceEffectTime: 0
-            stacks: 3
+            stacks: 0
+            setStacksDirectly: 1
+          - instanceEffectTime: 2
+            stacks: 0
+            setStacksDirectly: 1
+          - instanceEffectTime: 1
+            stacks: 0
+            setStacksDirectly: 1

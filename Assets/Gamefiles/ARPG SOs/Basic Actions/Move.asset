@@ -14,24 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Move Character
   description: Move your character into a different location
+  apCost: 1
+  roleTarget: 6
+  moveToSelectedEmptyTile: 1
+  actionIdentifier: 6
+  actionQualifier: 0
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
   dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0
+  capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 1
+    targetingPatternAdditive: 2
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
     usableInColRanks: 0
     targetColRanks: 0
     targetCurrentCol: 0
-  aoe: 0
-  apCost: 1
-  actionIdentifier: 6
-  moveToSelectedEmptyTile: 1
-  capArmorIncrease: 0
-  roleTarget: 6
+  movementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf: []
+  aoe: 0
+  references:
+    version: 2
+    RefIds: []

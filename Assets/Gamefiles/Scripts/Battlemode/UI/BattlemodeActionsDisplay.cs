@@ -10,12 +10,22 @@ using UnityEngine.UI;
 
 public class BattlemodeActionsDisplay : MonoBehaviour
 {
+    public enum ActionDisplayType
+    {
+        Hand,
+        Exhausted
+    }
+    
     const string k_LevelFormat = "Lvl {0}/60";
     
     [Required] public GameObject GUI;
     
     [Required] public GameObject actionDisplayPrefab;
-    [Required] public Transform actionDisplayParent;
+    [FormerlySerializedAs("actionDisplayParent")] [Required] public Transform actionsHandDisplayParent;
+    [Required] public Transform actionsExhaustedDisplayParent;
+    [Required] public GameObject displ_ActionInfo;
+
+    
 
     public RectTransform combatDisplayRect;
 
@@ -74,6 +84,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("BattleInfo: Enemy")] [Required] public EnemyIntentions enemyIntentions;
     
     [ReadOnly] public BattlemodeAction[] actionSlots = Array.Empty<BattlemodeAction>();
+    [ReadOnly] public List<BattlemodeAction> exhuastedActionSlots = new();
+
     [Required, SerializeField] BattlemodeAction moveAction;
     [Required, SerializeField] BattlemodeActionConfig moveActionConfig;
 
@@ -133,14 +145,11 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         currentlySelectedTile = null;
 
         // Reset Action Slots
-        actionDisplayParent.Children().DestroyAll();
+        actionsHandDisplayParent.Children().DestroyAll();
         // Populate Fresh Actions
         for (int i = 0; i < maxAmountOfTotalActionsAvaliable; i++)
-        {
-            actionSlots[i] = Instantiate(actionDisplayPrefab, actionDisplayParent).Get<BattlemodeAction>();
-            actionSlots[i].actionsDisplay.Inject(this);
-        }
-
+            actionSlots[i] = InitActionSlot(ActionDisplayType.Hand);
+        
         moveAction.actionsDisplay.Inject(this);
         var moveActionCtx = moveActionConfig.GenerateActionCtx(
             BattlemodeActionCtx.Status.Acting,
@@ -148,6 +157,14 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             null,
             1);
         moveAction.InitAction(moveActionCtx);
+    }
+
+    BattlemodeAction InitActionSlot(ActionDisplayType type)
+    {
+        var parent = type == ActionDisplayType.Hand ? actionsHandDisplayParent : actionsExhaustedDisplayParent;
+        var actionSlot = Instantiate(actionDisplayPrefab, parent).Get<BattlemodeAction>();
+        actionSlot.actionsDisplay.Inject(this);
+        return actionSlot;
     }
     
 
@@ -160,9 +177,12 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         currentlySelectedTile = tile; // Grab
         effectDisplayPool.ReleaseAll(); // Reset Effect Display
         specialEffectDisplayPool.ReleaseAll();
+        ClearExhuastedActionSlots();
+        ShowActionsDisplay(ActionDisplayType.Hand);
         GUI.SetActive(true); // Show GUI
+        displ_ActionInfo.SetActive(true);
         endTurnBtn.SetActive(false);
-        bool foundFirstAction = false;
+        bool foundFirstHandAction = false;
         BattlemodeAction firstAction = null;
         
         Debug.Log("A");
@@ -175,12 +195,24 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
             if (!hasActionSlot || !withinHandSize) continue;
 
-            var action = battlerConfig.equippedActions[i];
-            if (action == null) continue;
+            var actionCfg = battlerConfig.equippedActions[i];
+            if (actionCfg == null) continue;
 
             if(tile.occupantCtx is not BattlerOccupantCtx battlerOccupantCtx) continue;
+            if (battlerOccupantCtx.exhuastedActionCfgs.Contains(actionCfg))
+            {
+                var exhuastedAction = InitActionSlot(ActionDisplayType.Exhausted);
+                exhuastedActionSlots.Add(exhuastedAction);
+                var exhuastedActionCtx = actionCfg.GenerateActionCtx(
+                    BattlemodeActionCtx.Status.Acting,
+                    battlerOccupantCtx,
+                    null);
+                exhuastedAction.gameObject.SetActive(true);
+                exhuastedAction.InitAction(exhuastedActionCtx);
+                continue;
+            }
             
-            var actionCtx = action.GenerateActionCtx(
+            var actionCtx = actionCfg.GenerateActionCtx(
                 BattlemodeActionCtx.Status.Acting,
                 battlerOccupantCtx,
                 null);
@@ -188,8 +220,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             actionSlots[i].gameObject.SetActive(true);
             actionSlots[i].InitAction(actionCtx);
 
-            if (foundFirstAction) continue;
-            foundFirstAction = true;
+            if (foundFirstHandAction) continue;
+            foundFirstHandAction = true;
             firstAction = actionSlots[i];
         }
         
@@ -258,6 +290,13 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // Recently Selected Action Setup
         ShowAction(tile, firstAction.actionCtx);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+    }
+
+    void ClearExhuastedActionSlots()
+    {
+        if(exhuastedActionSlots.Count <= 0) return;
+        foreach (var exhuastedActionSlot in exhuastedActionSlots) exhuastedActionSlot.Hide();
+        exhuastedActionSlots.Clear();
     }
 
     public void ShowAction(BattleTile tile, BattlemodeActionCtx actionCtx)
@@ -355,13 +394,18 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     public void QueueAction()
     {
         Debug.Log("[BattlemodeActionDisplay] Queueing action");
+
+        if (currentlySelectedAction == null) {
+            Debug.LogError("[BattlemodeActionDisplay] Cannot queue action when no action is selected");
+            return; }
         if (currentlySelectedTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) {
             Debug.Log("[BattlemodeActionDisplay] Cannot use action on non-character occupant");
             return; }
+
+        if (exhuastedActionSlots.Any(s => s.actionCtx.cfg == currentlySelectedAction.cfg))
+            return;
         
-        if (currentlySelectedAction != null) 
-            BattleTracker.Instance.QueueAction(currentlySelectedTile, currentlySelectedAction);
-        else Debug.LogError("[BattlemodeActionDisplay] Using a null currentlySelectedAction");
+        BattleTracker.Instance.QueueAction(currentlySelectedTile, currentlySelectedAction);
     }
 
     public int GetCurrentlySelectedAPCost()
@@ -371,4 +415,36 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     }
     
     public void ShowEndTurnBtn(bool v) => endTurnBtn.SetActive(v);
+
+    public void ShowHandActionsDisplay() => ShowActionsDisplay(ActionDisplayType.Hand);
+    public void ShowExhaustedActionsDisplay() => ShowActionsDisplay(ActionDisplayType.Exhausted);
+    
+    public void ShowActionsDisplay(ActionDisplayType v)
+    {
+        if (v == ActionDisplayType.Hand)
+        {
+            actionsHandDisplayParent.parent.gameObject.SetActive(true);
+            actionsExhaustedDisplayParent.parent.gameObject.SetActive(false);
+            if (actionSlots.Any(s => s.actionCtx != null))
+            {
+                displ_ActionInfo.SetActive(true);
+                ShowAction(currentlySelectedTile, actionSlots.First(s => s.actionCtx != null).actionCtx);
+            }
+            else 
+                displ_ActionInfo.SetActive(false);
+
+        }
+        else 
+        {
+            actionsHandDisplayParent.parent.gameObject.SetActive(false);
+            actionsExhaustedDisplayParent.parent.gameObject.SetActive(true);
+            if (exhuastedActionSlots.Any(s => s.actionCtx != null))
+            {
+                displ_ActionInfo.SetActive(true);
+                ShowAction(currentlySelectedTile, exhuastedActionSlots.First(s => s.actionCtx != null).actionCtx);
+            }
+            else 
+                displ_ActionInfo.SetActive(false);
+        }
+    }
 }

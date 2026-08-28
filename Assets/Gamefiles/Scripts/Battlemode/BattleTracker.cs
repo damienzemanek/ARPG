@@ -96,7 +96,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
                 queuedPlayerAction.hasQueuedAction = false;
                 queuedPlayerAction.actionCtx = null;
             }
-            else // Select Target Tile
+            else if (queuedPlayerAction.actingOccupantCtx.exhuastedActionCfgs.Contains(queuedPlayerAction.actionCtx.cfg))
+                Debug.Log("Action has been exhuasted.");
+            else // Normal Select Target Tile
             {
                 UseActionOnTargetTile(tile, queuedPlayerAction.lookingForTarget);
             }
@@ -338,7 +340,6 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             myTarget: queuedPlayerAction.lookingForTarget,
             inRangeTiles,
             myTile: tile);
-        
         
         
         player.ZoomOutToSelectQueuedAction();

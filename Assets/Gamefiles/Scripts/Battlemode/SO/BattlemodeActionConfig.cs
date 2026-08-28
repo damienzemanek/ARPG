@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 public class BattlemodeActionConfig : ScriptableObject
 {
     bool isEmptyRoleTarget => roleTarget == Role.EmptyTile;
+    bool isIncreasingArmor => armorIncreasePercentage > 0;
     
     public enum Role
     {
@@ -34,6 +35,7 @@ public class BattlemodeActionConfig : ScriptableObject
     public enum TargetingPattern
     {
         None,
+        Self,
         Cross,
         Box,
     }
@@ -67,28 +69,37 @@ public class BattlemodeActionConfig : ScriptableObject
         public int amount;
         public MovementCfg() { }
     }
-    
-    
-    public string actionName;
-    public string description;
-    public Sprite icon;
-    public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
-    [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
-    [FormerlySerializedAs("healMultiplier")] 
-    [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
-    [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
-    public TargetingCfg targetingCfg;
-    public MovementCfg movementCfg;
 
+    [Flags]
+    public enum ActionQualifier
+    {
+        None = 0,
+        Exhuast = 1 << 0,
+        UnExhuastAll = 1 << 1,
+    }
+    
+    [BoxGroup("Settings")] public string actionName;
+    [BoxGroup("Settings")] public string description;
+    [BoxGroup("Settings")] public int apCost = 1;
+    [BoxGroup("Settings")] public Role roleTarget;
+    [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
+    [BoxGroup("Settings")] public ActionIdentifier actionIdentifier;
+    [BoxGroup("Settings")] public ActionQualifier actionQualifier;
+    [BoxGroup("Settings")] public Sprite icon;
+    [BoxGroup("Settings")] public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
+    [BoxGroup("Settings")] [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
+    [BoxGroup("Settings")] [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
+    [BoxGroup("Settings")] [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
+    [BoxGroup("Settings")] [ShowIf("isIncreasingArmor")] public bool capArmorIncrease;
+
+    [BoxGroup("Cfgs")] public TargetingCfg targetingCfg;
+    [BoxGroup("Cfgs")] public MovementCfg movementCfg;
+    
+    [BoxGroup("Effects")] public List<BattlemodeEffectConfigInstance> effectsToApplyToTarget = new();
+    [BoxGroup("Effects")] public List<BattlemodeEffectConfigInstance> effectsToApplyToSelf = new();
     
     public int aoe = 0; // STRETCH GOAL
-    public int apCost = 1;
-    public ActionIdentifier actionIdentifier;
-    [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
-    public bool capArmorIncrease;
-    [FormerlySerializedAs("useTarget")] public Role roleTarget;
-    public List<BattlemodeEffectConfigInstance> effectsToApplyToTarget = new();
-    public List<BattlemodeEffectConfigInstance> effectsToApplyToSelf = new();
+    
 
     public BattlemodeActionCtx GenerateActionCtx(
         BattlemodeActionCtx.Status _status,
@@ -146,7 +157,7 @@ public class BattlemodeActionCtx
     public float deltaDmgMultiplier;
     public float deltaHealMultiplier;
     public float deltaArmorMultiplier;
-    
+
     public BattlemodeActionConfig cfg;
 
     public void SetHealViaTargetMaxHealth(BattlerOccupantCtx targetBatlerCtx)

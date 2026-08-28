@@ -63,7 +63,7 @@ public abstract class RoleTarget
                 if (queuedAction.actingOccupantCtx.currentEffects
                     .Any(e => e.GetType() == addEffect.GetType()))
                 {
-                    queuedAction.actingOccupantCtx.AddStacksToAlreadyExistingEffect(addEffect);
+                    queuedAction.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
                     continue;
                 }
                 queuedAction.actingOccupantCtx.currentEffects.Add(addEffect);
@@ -75,7 +75,7 @@ public abstract class RoleTarget
                 if (queuedAction.actingOccupantCtx.specialEffects
                     .Any(e => e.GetType() == addSpEffect.GetType()))
                 {
-                    queuedAction.actingOccupantCtx.AddStacksToAlreadyExistingEffect(addSpEffect);
+                    queuedAction.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addSpEffect);
                     continue;
                 }
                 queuedAction.actingOccupantCtx.specialEffects.Add(addSpEffect);
@@ -89,43 +89,16 @@ public abstract class RoleTarget
         && queuedAction.actionCtx.cfg.moveToSelectedEmptyTile)
             targetTile.TransferInOccupant(fromTile, BattleTracker.Instance.grid);
     
-        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx, 
-            out effectsToAddToActorAfterActing, 
-            out specialEffectsToAddToActorAfterActing);
+        
+        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
+        
 
-        if (effectsToAddToActorAfterActing != null)
-            foreach (var addEffect in effectsToAddToActorAfterActing)
-            {
-                if (queuedAction.actingOccupantCtx.currentEffects
-                    .Any(e => e.GetType() == addEffect.GetType()))
-                {
-                    queuedAction.actingOccupantCtx.AddStacksToAlreadyExistingEffect(addEffect);
-                    continue;
-                }
-                queuedAction.actingOccupantCtx.currentEffects.Add(addEffect);
-            }
-
-        if (specialEffectsToAddToActorAfterActing != null)
-        {
-            foreach (var addSpEffect in specialEffectsToAddToActorAfterActing)
-            {
-                if (queuedAction.actingOccupantCtx.specialEffects
-                    .Any(sp => sp.GetType() == addSpEffect.GetType()))
-                {
-                    queuedAction.actingOccupantCtx.AddStacksToAlreadyExistingEffect(addSpEffect);
-                    continue;
-                }
-                queuedAction.actingOccupantCtx.specialEffects.Add(addSpEffect);
-            }
-        }
-
-        // bool reResolve = queuedAction.actingOccupantCtx.currentEffects.Any(e => e.ctx.markForReResolve) ||
-        //                  queuedAction.actingOccupantCtx.specialEffects.Any(e => e.ctx.markForReResolve);
-        // if (reResolve)
-        // {
-        //     
-        // }
-        //
+        if(queuedAction.actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.UnExhuastAll))
+            queuedAction.actingOccupantCtx.exhuastedActionCfgs.Clear();
+            
+        if (queuedAction.actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.Exhuast))
+            queuedAction.actingOccupantCtx.exhuastedActionCfgs.Add(queuedAction.actionCtx.cfg);
+        
     }
 
 
@@ -167,18 +140,18 @@ public abstract class RoleTarget
         return actingActionCtx;
     }
 
-    void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx,
-        out List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing,
-        out List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing)
+    void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
     {
-        effectsToAddToActorAfterActing = null;
-        specialEffectsToAddToActorAfterActing = null;
-        
         if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
+        
+        
         foreach (var effect in battlerCtx.currentEffects)
             effect.ResolveEffectAfterActing(battlerCtx, actingActionCtx);
         foreach (var spEffect in battlerCtx.specialEffects)
             spEffect.ResolveEffectAfterActing(battlerCtx, actingActionCtx);
+        
+        List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
+        List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
         
         effectsToAddToActorAfterActing = new List<BattlemodeEffectStrategyInstance>();
         foreach(var effectCfg in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
@@ -197,6 +170,35 @@ public abstract class RoleTarget
                 }
 
             }
+        
+        
+        if (effectsToAddToActorAfterActing != null)
+            foreach (var addEffect in effectsToAddToActorAfterActing)
+            {
+                if (queuedActionCtx.actingOccupantCtx.currentEffects
+                    .Any(e => e.GetType() == addEffect.GetType()))
+                {
+                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+                    continue;
+                }
+                queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
+            }
+
+        if (specialEffectsToAddToActorAfterActing != null)
+        {
+            Debug.Log("[ACTOR] Adding Special Effects: " + specialEffectsToAddToActorAfterActing.Count);
+            foreach (var addSpEffect in specialEffectsToAddToActorAfterActing)
+            {
+                if (queuedActionCtx.actingOccupantCtx.specialEffects
+                    .Any(sp => sp.GetType() == addSpEffect.GetType()))
+                {
+                    Debug.Log("[ACTOR] Special Effect always already exists, mutating...");
+                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addSpEffect);
+                    continue;
+                }
+                queuedActionCtx.actingOccupantCtx.specialEffects.Add(addSpEffect);
+            }
+        }
     }
 }
 

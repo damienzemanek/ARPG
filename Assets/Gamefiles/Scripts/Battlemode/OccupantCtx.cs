@@ -21,6 +21,7 @@
         public int currentArmor;
         public int currentDMG;
         public int currentConstitution => currentHp + currentArmor;
+        public List<BattlemodeActionConfig> exhuastedActionCfgs = new();
         [SerializeReference] public List<BattlemodeEffectStrategyInstance> currentEffects = new();
         [SerializeReference] public List<BattlemodeEffectStrategyInstance> specialEffects = new();
 
@@ -50,6 +51,7 @@
             List<BattlemodeEffectStrategyInstance> effectsToAddAfterResolve = null;
             
             if(queuedActorAction.actionCtx == null) Debug.LogError("[TARGET] No action context to be targeted with.");
+            Debug.Log("[HIT] Amount of effects to apply: " + queuedActorAction.actionCtx.cfg.effectsToApplyToTarget.Count);
             foreach (var effectToApply in queuedActorAction.actionCtx.cfg.effectsToApplyToTarget)
             {
                 var newEffectCtx = effectToApply.CreateNewEffectInstance();
@@ -58,11 +60,13 @@
                 {
                     effectsToAddBeforeResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddBeforeResolve.Add(newEffectCtx);
+                    Debug.Log("[HIT] Adding BeforeAction effect: " + newEffectCtx.GetType().Name);
                 }
                 else
                 {
                     effectsToAddAfterResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddAfterResolve.Add(newEffectCtx);
+                    Debug.Log("[HIT] Adding AfterAction effect: " + newEffectCtx.GetType().Name);
                 }
             }
             
@@ -193,7 +197,7 @@
                 foreach (var effectToAdd in effectsToAddBeforeResolve)
                 {
                     if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
-                        occupantCtx.AddStacksToAlreadyExistingEffect(effectToAdd);
+                        occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
                     else 
                         occupantCtx.currentEffects.Add(effectToAdd);
                 }
@@ -213,6 +217,7 @@
             BattlemodeActionCtx battleActionCtx, 
             List<BattlemodeEffectStrategyInstance> effectsToAddAfterResolve)
         {
+            Debug.Log("[HIT] Resolving effects after hit:");
             var occupantCtx = this;
             
             // Resolve SP Effects that resolve after mutation
@@ -226,13 +231,29 @@
             
             // Adding effects after resolve
             if (effectsToAddAfterResolve != null)
+            {
+                Debug.Log("[HIT] Add Effects Detected, mutating or adding...");
                 foreach (var effectToAdd in effectsToAddAfterResolve)
                 {
-                    if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
-                        occupantCtx.AddStacksToAlreadyExistingEffect(effectToAdd);
-                    else 
-                        occupantCtx.currentEffects.Add(effectToAdd);
+                    if (!effectToAdd.isSpecial)
+                    {
+                        Debug.Log("[HIT] [Regular] Adding or Mutating effect: " + effectToAdd.GetType().Name);
+                        if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                            occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
+                        else 
+                            occupantCtx.currentEffects.Add(effectToAdd);
+
+                    }
+                    else
+                    {
+                        Debug.Log("[HIT] [Special] Adding or Mutating effect: " + effectToAdd.GetType().Name);
+                        // Battlers will always have their special, but at 0 stacks, so we mutate
+                        if(occupantCtx.specialEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                            occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
+                    }
                 }
+            }
+            
             
             // Removing marked for removal, Only removes status effects, not special effects
             for (var index = currentEffects.Count - 1; index >= 0; index--)
@@ -287,27 +308,36 @@
         }
 
 
-        public void AddStacksToAlreadyExistingEffect(BattlemodeEffectStrategyInstance effectToAdd)
+        public void MutateStacksToAlreadyExistingEffect(BattlemodeEffectStrategyInstance effectToAdd)
         {
-            var ctx = effectToAdd.ctx;
+            var addCtx = effectToAdd.ctx;
 
-            foreach (var stackCtx in ctx.stackCtxs)
+            foreach (var addStackCtx in addCtx.stackCtxs)
             {
-                if(stackCtx.stacks <= 0) continue;
+                Debug.Log("[EFFECT] Stacks: " + addStackCtx.stacks + " set directly? " + addStackCtx.setStacksDirectly + " instance time: " + addStackCtx.instanceEffectTime + "");
+                if(addStackCtx.stacks <= 0 && !addStackCtx.setStacksDirectly) continue;
+                Debug.Log("[EFFECT] Mutating stacks on tile: " + cfg?.name + " to already existing effect: " + effectToAdd.GetType().Name + " with stacks: " + addStackCtx.stacks + "");
                 
                 foreach (var effect in currentEffects)
                 {
                     if (effect.GetType() != effectToAdd.GetType()) continue;
-                    effect.GetStackCtx(stackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(stackCtx.instanceEffectTime).stacks;
+                    if(!addStackCtx.setStacksDirectly)
+                        effect.GetStackCtx(addStackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(addStackCtx.instanceEffectTime).stacks;
+                    else
+                        effect.GetStackCtx(addStackCtx.instanceEffectTime).stacks = effectToAdd.GetStackCtx(addStackCtx.instanceEffectTime).stacks;
                 }
 
                 foreach (var spEffect in specialEffects)
                 {
                     if (spEffect.GetType() != effectToAdd.GetType()) continue;
-                    spEffect.GetStackCtx(stackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(stackCtx.instanceEffectTime).stacks;
+                    if(!addStackCtx.setStacksDirectly)
+                        spEffect.GetStackCtx(addStackCtx.instanceEffectTime).stacks += effectToAdd.GetStackCtx(addStackCtx.instanceEffectTime).stacks;
+                    else
+                        spEffect.GetStackCtx(addStackCtx.instanceEffectTime).stacks = effectToAdd.GetStackCtx(addStackCtx.instanceEffectTime).stacks;
                 }
             }
         }
+        
         
     }
 
