@@ -9,11 +9,10 @@ public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrate
 
     public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
-        actionCtx.dmg *= 2;
+        var newDmgVal = Mathf.CeilToInt(actionCtx.dmg * 1.5f); // *1.5, or 50% more dmg taken
+        actionCtx.dmg = newDmgVal;
         return actionCtx;
     }
-
-
 }
 
 [Serializable]
@@ -22,7 +21,7 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
     public override bool isSpecial => false;
     [ShowInInspector] SwiftStrategyCtx swiftStrategyCtx;
 
-    public override BattlemodeActionCtx ResolveEffectBeforeActing(
+    public override BattlemodeActionCtx ResolveEffectPreBeforeActing(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx)
     {
@@ -51,9 +50,39 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
         public SwiftStrategyCtx() { }
     }
 
-    public override void ResolveEffectAfterTurnEnds(OccupantCtx occupantCtx)
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx)
     {
         Debug.Log("[SP EFFECT] Swift: Turn Ends");
         swiftStrategyCtx.usedThisRound = false;
     }
+}
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffectStrategyInstance
+{
+    public override bool isSpecial => false;
+
+    public override BattlemodeActionCtx ResolveEffectRightBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    {
+        switch (actionCtx.cfg.roleTarget) {
+            case BattlemodeActionConfig.Role.Self: return actionCtx; 
+            case BattlemodeActionConfig.Role.Ally: return actionCtx;
+            case BattlemodeActionConfig.Role.Team: return actionCtx; }
+
+        if(stacksTotal == 0) return actionCtx;
+        if (stacksTotal == 1)
+        {
+            if (!actionCtx.critHit)
+                actionCtx.critHit = UnityEngine.Random.Range(0, 100) < 50;
+        }
+        else if (stacksTotal > 1)
+            actionCtx.critHit = true;
+
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks = 0;
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks = 0;
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks = 0;
+        
+        return actionCtx;
+    }
+    
 }

@@ -243,7 +243,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = characterCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + characterCtx.maxHp.ToString();
             ShowSpecialEffects(characterCtx);
-            characterCtx.ResolveBeforeActingEffects(actionSlots);
+            characterCtx.PreResolveBeforeActingEffectsPlayer(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(characterCtx);
             
             displ_IntentionsVLG.SetActive(false);
@@ -261,7 +261,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = enemyOccupantCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + enemyOccupantCtx.maxHp.ToString();
             ShowSpecialEffects(enemyOccupantCtx);
-            enemyOccupantCtx.ResolveBeforeActingEffects(actionSlots);
+            enemyOccupantCtx.PreResolveBeforeActingEffectsPlayer(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(enemyOccupantCtx);
             
             enemyIntentions.DisplayIntentions(enemyOccupantCtx.queuedActions);
@@ -281,7 +281,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             txt_CharacterHpNum.text = battlerCtx.currentHp.ToString();
             txt_CharacterMaxHpNum.text = "/" + battlerCtx.maxHp.ToString();
             ShowSpecialEffects(battlerCtx);
-            battlerCtx.ResolveBeforeActingEffects(actionSlots);
+            battlerCtx.PreResolveBeforeActingEffectsPlayer(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(battlerCtx);
             moveAction.gameObject.SetActive(false);
         }

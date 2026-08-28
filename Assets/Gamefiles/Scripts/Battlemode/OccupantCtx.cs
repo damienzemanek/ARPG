@@ -5,6 +5,7 @@
  using System.Linq;
  using Sirenix.OdinInspector;
  using UnityEngine;
+ using static BattleTracker;
 
  public abstract class OccupantCtx
     {
@@ -43,7 +44,7 @@
                 specialEffects.Add(cfgSpecialEffect.CreateNewEffectInstance());
         }
 
-        public void ActedUponByAction(BattleTracker.QueuedAction queuedActorAction, BattlemodeActionCtx attackersActionCtx)
+        public void ActedUponByAction(QueuedAction queuedActorAction, BattlemodeActionCtx attackersActionCtx)
         {
             attackersActionCtx.status = BattlemodeActionCtx.Status.BeingHit;
             
@@ -75,11 +76,13 @@
             MutateValues(attackersActionCtx);
             ResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
             
+            // Removing marked for removal, Only removes status effects, not special effects
+            currentEffects.RemoveAll(e => e.stacksTotal <= 0);
         }
 
         #region Start Of Battle
 
-        public void ResolveStartOfBattleOpponentEffects(List<BattleTracker.QueuedAction> opponentPreResolvedActions)
+        public void ResolveStartOfBattleOpponentEffects(List<QueuedAction> opponentPreResolvedActions)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
@@ -116,32 +119,26 @@
 
         #region After Turn Ends
 
-        public void ResolveAfterTurnEndsEnemyEffects(List<BattleTracker.QueuedAction> preResolvedActions)
+        public void ResolveAfterTurnEndsEnemyEffects()
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
-            foreach (var queuedAction in preResolvedActions)
-            {
-                foreach (var effect in battlerOccupantCtx.currentEffects)
-                    effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+            foreach (var effect in battlerOccupantCtx.currentEffects)
+                effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
                 
-                foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                    spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
-            }
+            foreach (var spEffect in battlerOccupantCtx.specialEffects)
+                spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
         }
         
-        public void ResolveAfterTurnEndsPlayerEffects(BattlemodeAction[] preResolvedActions)
+        public void ResolveAfterTurnEndsPlayerEffects()
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
-            foreach (var action in preResolvedActions)
-            {
-                foreach (var effect in battlerOccupantCtx.currentEffects)
-                    effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+            foreach (var effect in battlerOccupantCtx.currentEffects)
+                effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
                 
-                foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                    spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
-            }
+            foreach (var spEffect in battlerOccupantCtx.specialEffects)
+                spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
         }
 
 
@@ -150,7 +147,7 @@
         #region Before / After Acting (Each Works for both player and opponent)
 
                 
-        public void ResolveBeforeActingEffects(BattlemodeAction[] preResolvedActions)
+        public void PreResolveBeforeActingEffectsPlayer(BattlemodeAction[] preResolvedActions)
         {
             if (this is not BattlerOccupantCtx occupantCtx) return;
             
@@ -161,12 +158,28 @@
                 if(action.actionCtx == null) continue;
                 
                 foreach (var effect in occupantCtx.currentEffects)
-                    effect.ResolveEffectBeforeActing(occupantCtx, action.actionCtx);
+                    effect.ResolveEffectPreBeforeActing(occupantCtx, action.actionCtx);
                 
                 foreach (var spEffect in occupantCtx.specialEffects)
-                    spEffect.ResolveEffectBeforeActing(occupantCtx, action.actionCtx);
+                    spEffect.ResolveEffectPreBeforeActing(occupantCtx, action.actionCtx);
             }
         }
+        
+        public void PreResolveBeforeActingEffectsOpponent(QueuedAction preResolvedAction)
+        {
+            if (this is not BattlerOccupantCtx occupantCtx) return;
+            
+            if(preResolvedAction == null) return;
+            if(preResolvedAction.actionCtx == null) return;
+                
+            foreach (var effect in occupantCtx.currentEffects)
+                effect.ResolveEffectPreBeforeActing(occupantCtx, preResolvedAction.actionCtx);
+                
+            foreach (var spEffect in occupantCtx.specialEffects)
+                spEffect.ResolveEffectPreBeforeActing(occupantCtx, preResolvedAction.actionCtx);
+        }
+        
+        
         
         public void ResolveAfterActingEffects(BattlemodeActionCtx actionCtx)
         {
@@ -255,10 +268,6 @@
             }
             
             
-            // Removing marked for removal, Only removes status effects, not special effects
-            for (var index = currentEffects.Count - 1; index >= 0; index--)
-                if (currentEffects[index].ctx.markedForRemoval)
-                    currentEffects.RemoveAt(index);
         }
         
         void MutateValues(BattlemodeActionCtx ctx)
@@ -272,9 +281,16 @@
             
             Debug.Log("[HIT] Damage multiplier: " + dmgMult + " Heal multiplier: " + healMult);
             
-            int dmg = Mathf.CeilToInt(ctx.dmg * dmgMult);
-            int heal = Mathf.CeilToInt(ctx.heal * healMult);
-            int armor = Mathf.CeilToInt(ctx.armor * armorMult);
+            float preCeileddmg = (ctx.dmg * dmgMult);
+            float preCeiledheal = (ctx.heal * healMult);
+            float preCeiledarmor = (ctx.armor * armorMult);
+            
+            if(ctx.critHit && preCeileddmg > 0) preCeileddmg *= 2;
+            if(ctx.critHit) Debug.Log("[HIT] Crit Hit!");
+            
+            int dmg = Mathf.CeilToInt(preCeileddmg);
+            int heal = Mathf.CeilToInt(preCeiledheal);
+            int armor = Mathf.CeilToInt(preCeiledarmor);
             
             Debug.Log("[HIT] [Damage: " + dmg + " Heal: " + heal+ "] [Old DMG: " + ctx.dmg + " Old Heal: " + ctx.heal + "]");
 
@@ -284,6 +300,7 @@
             // Note: I am going to uncap armor increase for now as a gameplay balancing choice
             // however for enemy defends when they can do nothing, that will be capped
             //if (currentArmor > maxArmor) currentArmor = maxArmor;
+            
             
             if (currentArmor > 0)
             {
@@ -363,7 +380,7 @@
         public int currentPredicteds;
         public RandomBag<EnemyConfig.AttackPriority> attackPriority;
         public IntentUsage.IntentUsageCtx currentIntentUsageCtx;
-        public List<BattleTracker.QueuedAction> queuedActions = new();
+        public List<QueuedAction> queuedActions = new();
         
         public override OccupantCfg cfg { get => enemyCfg; set => enemyCfg = value as EnemyConfig;}
         public EnemyConfig enemyCfg;

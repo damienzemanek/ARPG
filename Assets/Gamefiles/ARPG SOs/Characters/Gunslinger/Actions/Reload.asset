@@ -41,6 +41,9 @@ MonoBehaviour:
   - addOccurance: 2
     defaultEffectStrategyValues:
       rid: 3738701904926474374
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: 3738701908868857856
   aoe: 0
   references:
     version: 2
@@ -60,3 +63,12 @@ MonoBehaviour:
           - instanceEffectTime: 1
             stacks: 0
             setStacksDirectly: 1
+    - rid: 3738701908868857856
+      type: {class: BattlemodeEffectStrategy_CriticalAvaliable, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          markedForRemoval: 0
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 1
+            setStacksDirectly: 0

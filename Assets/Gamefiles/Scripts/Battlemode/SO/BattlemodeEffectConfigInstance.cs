@@ -58,7 +58,6 @@ public abstract class BattlemodeEffectStrategyInstance
     [Serializable, InlineProperty]
     public struct BattlemodeEffectStrategyCtx
     {
-        public bool markedForRemoval = false;
         public StackCtx[] stackCtxs;
         public BattlemodeEffectStrategyCtx() { }
     }
@@ -119,8 +118,14 @@ public abstract class BattlemodeEffectStrategyInstance
     // AfterTurnEnds,
     // StartOfBattle
     
-    // Mutates Directly
+    // These all mutate directly cause the ctxs are classes
+    
+    // This one gets pre-resolved
     public virtual BattlemodeActionCtx ResolveEffectBeforeHitByAction(
+        OccupantCtx occupantCtx,
+        BattlemodeActionCtx actionCtx) => actionCtx;
+    
+    public virtual BattlemodeActionCtx ResolveEffectWhileHitByActionRightBefore(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
     
@@ -128,20 +133,35 @@ public abstract class BattlemodeEffectStrategyInstance
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
     
-    public virtual BattlemodeActionCtx ResolveEffectBeforeActing(
+    // This one gets pre-resolved
+    public virtual BattlemodeActionCtx ResolveEffectPreBeforeActing(
+        OccupantCtx occupantCtx,
+        BattlemodeActionCtx actionCtx) => actionCtx;
+    
+    public virtual BattlemodeActionCtx ResolveEffectRightBeforeActing(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
     
     public virtual BattlemodeActionCtx ResolveEffectAfterActing(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
+
+    public void ResolveEffectAfterTurnEnds(OccupantCtx occupantCtx)
+    {
+        ref var stackCtx = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn);
+        stackCtx.stacks--;
+        stackCtx.stacks = Mathf.Max(0, stackCtx.stacks);
+        ResolveEffectAfterTurnEndsImplementation(occupantCtx);
+    }
     
-    public virtual void ResolveEffectAfterTurnEnds(
+    public virtual void ResolveEffectAfterTurnEndsImplementation(
         OccupantCtx occupantCtx) { }
     
     public virtual BattlemodeActionCtx ResolveEffecStartOfBattle(
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
+    
+    
 }
 
 

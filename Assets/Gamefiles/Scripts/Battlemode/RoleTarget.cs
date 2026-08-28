@@ -9,7 +9,7 @@ public abstract class RoleTarget
 {
     public abstract BattlemodeActionConfig.Role role { get; }
     public abstract void ClearTarget();
-    public abstract void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile);
+    public abstract void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile);
     
     /// <summary>
     /// This may seem complex, Order is:
@@ -24,7 +24,7 @@ public abstract class RoleTarget
     /// </summary>
     /// <param name="queuedAction"></param>
     /// <param name="targetTile"></param>
-    public void ActUponTargetImpl(QueuedAction queuedAction, BattleTile targetTile, BattleTile fromTile)
+    public void ActedUponByImplementation(QueuedAction queuedAction, BattleTile targetTile, BattleTile fromTile)
     {
         if (targetTile == null) { Debug.LogError("No target selected for self role target."); return; }
         if (queuedAction.actionCtx == null) { Debug.LogError("No action context generated."); return; }
@@ -43,20 +43,22 @@ public abstract class RoleTarget
         List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
         List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
 
-        if(targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) // Empty Tile 
-            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx, 
+        if (targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) // Empty Tile 
+        {
+            ResolveRightBeforeActingEffects(queuedAction, queuedAction.actionCtx, 
                 out effectsToAddToActorBeforeActing,
                 out specialEffectsToAddToActorBeforeActing);
+        }
         else // Tile with Occupant
         {   
             _targetBattlerCtx = targetBattlerCtx;
             queuedAction.actionCtx.SetHealViaTargetMaxHealth(targetBattlerCtx);
-            queuedAction.actionCtx = ResolveBeforeActorEffects(queuedAction, queuedAction.actionCtx,
+            ResolveRightBeforeActingEffects(queuedAction, queuedAction.actionCtx,
                 out effectsToAddToActorBeforeActing,
                 out specialEffectsToAddToActorBeforeActing);
         }
-
-
+        
+        
         if (effectsToAddToActorBeforeActing != null)
             foreach (var addEffect in effectsToAddToActorBeforeActing)
             {
@@ -92,7 +94,9 @@ public abstract class RoleTarget
         
         ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
         
-
+        // Only removes status effects, not special effects
+        queuedAction.actingOccupantCtx.currentEffects.RemoveAll(effect => effect.stacksTotal <= 0);
+        
         if(queuedAction.actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.UnExhuastAll))
             queuedAction.actingOccupantCtx.exhuastedActionCfgs.Clear();
             
@@ -104,41 +108,42 @@ public abstract class RoleTarget
 
     
     
-
-
-    BattlemodeActionCtx ResolveBeforeActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx, 
-        out List<BattlemodeEffectStrategyInstance> effectsToAddToActorBeforeActing,
-        out List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorBeforeActing)
+    void ResolveRightBeforeActingEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx, 
+        out List<BattlemodeEffectStrategyInstance> effectsToAddToActorRightBeforeActing,
+        out List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorRightBeforeActing)
     {
-        effectsToAddToActorBeforeActing = null;
-        specialEffectsToAddToActorBeforeActing = null;
+        effectsToAddToActorRightBeforeActing = null;
+        specialEffectsToAddToActorRightBeforeActing = null;
         
-        if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return actingActionCtx;
+        if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx) return;
         
-        foreach (var effect in battlerCtx.currentEffects)
-            effect.ResolveEffectBeforeActing(battlerCtx, actingActionCtx);
-        foreach (var spEffect in battlerCtx.specialEffects)
-            spEffect.ResolveEffectBeforeActing(battlerCtx, actingActionCtx);
+        // Resolve Effects that resolve before mutation
+        foreach (var effect in queuedActionCtx.actingOccupantCtx.currentEffects)
+            effect.ResolveEffectRightBeforeActing(queuedActionCtx.actingOccupantCtx, queuedActionCtx.actionCtx);
+                
+        foreach (var spEffect in queuedActionCtx.actingOccupantCtx.specialEffects)
+            spEffect.ResolveEffectRightBeforeActing(queuedActionCtx.actingOccupantCtx, queuedActionCtx.actionCtx);
         
-        effectsToAddToActorBeforeActing = new List<BattlemodeEffectStrategyInstance>();
+        effectsToAddToActorRightBeforeActing = new List<BattlemodeEffectStrategyInstance>();
         foreach(var effectCfg in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
             if (effectCfg.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.BeforeAction)
             {
                 var effect = effectCfg.CreateNewEffectInstance();
                 if (effect.isSpecial)
                 {
-                    specialEffectsToAddToActorBeforeActing ??= new List<BattlemodeEffectStrategyInstance>();
-                    specialEffectsToAddToActorBeforeActing.Add(effect);
+                    specialEffectsToAddToActorRightBeforeActing ??= new List<BattlemodeEffectStrategyInstance>();
+                    specialEffectsToAddToActorRightBeforeActing.Add(effect);
                 }
                 else
                 {
-                    effectsToAddToActorBeforeActing ??= new List<BattlemodeEffectStrategyInstance>();
-                    effectsToAddToActorBeforeActing.Add(effectCfg.CreateNewEffectInstance());
+                    effectsToAddToActorRightBeforeActing ??= new List<BattlemodeEffectStrategyInstance>();
+                    effectsToAddToActorRightBeforeActing.Add(effectCfg.CreateNewEffectInstance());
                 }
 
             }
-        return actingActionCtx;
     }
+    
+    
 
     void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
     {
@@ -207,8 +212,8 @@ public sealed class SelfRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Self;
     public BattleTile selfTile;
     public override void ClearTarget() => selfTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
-        => ActUponTargetImpl(queuedActionCtx, selfTile, fromTile);
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActedUponByImplementation(queuedActionCtx, selfTile, fromTile);
 }
 
 public sealed class AllyRoleTarget : RoleTarget
@@ -216,8 +221,8 @@ public sealed class AllyRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Ally;
     public BattleTile allyTile;
     public override void ClearTarget() => allyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
-        => ActUponTargetImpl(queuedActionCtx, allyTile, fromTile);
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActedUponByImplementation(queuedActionCtx, allyTile, fromTile);
 }
 
 public sealed class EnemyRoleTarget : RoleTarget
@@ -225,8 +230,8 @@ public sealed class EnemyRoleTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Enemy;
     public BattleTile enemyTile;
     public override void ClearTarget() => enemyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
-        => ActUponTargetImpl(queuedActionCtx, enemyTile, fromTile);
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActedUponByImplementation(queuedActionCtx, enemyTile, fromTile);
 }
 
 // For now this is per target for every target, not for every target, mabye change later
@@ -235,10 +240,10 @@ public sealed class AllyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> allyTiles = new();
     public override void ClearTarget() => allyTiles.Clear();
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile)
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile)
     {
         foreach (var tile in allyTiles)
-            ActUponTargetImpl(queuedActionCtx, tile, fromTile);
+            ActedUponByImplementation(queuedActionCtx, tile, fromTile);
     }
 }
 
@@ -248,10 +253,10 @@ public sealed class EnemyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> enemyTiles = new();
     public override void ClearTarget() => enemyTiles.Clear();
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile)
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile)
     {
         foreach (var tile in enemyTiles)
-            ActUponTargetImpl(queuedActionCtx, tile, fromTile);
+            ActedUponByImplementation(queuedActionCtx, tile, fromTile);
     }
 }
 
@@ -260,6 +265,6 @@ public sealed class EmptyTileTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.EmptyTile;
     public BattleTile emptyTile;
     public override void ClearTarget() => emptyTile = null;
-    public override void ActUponTarget(QueuedAction queuedActionCtx, BattleTile fromTile) 
-        => ActUponTargetImpl(queuedActionCtx, emptyTile, fromTile);
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
+        => ActedUponByImplementation(queuedActionCtx, emptyTile, fromTile);
 }

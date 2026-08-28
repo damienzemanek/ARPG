@@ -150,20 +150,7 @@ public class OpponentAI : MonoBehaviour
         grid.UpdateGrid();
         onAttacksComplete?.Invoke();
     }
-    
-    RoleTarget UsedSavedIntention(
-        int intentionIndex, 
-        BattleTracker.QueuedAction currentQueuedActionToBeReplaced,
-        OrderCtx orderCtx,
-        List<BattleTile> playerTiles)
-    {
-        currentQueuedActionToBeReplaced = GenerateQueuedAction(intentionIndex, orderCtx);
-        Debug.Log($"[Intentions] Used Saved Intention: {intentionIndex} " + currentQueuedActionToBeReplaced);
-        Debug.Log("[Intentions] Which is " + currentQueuedActionToBeReplaced.actionCtx.cfg.actionName);
-        var ret = TryGetTarget(orderCtx, currentQueuedActionToBeReplaced, playerTiles);
-        orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
-        return ret;
-    }
+
     
     public IEnumerator C_Proto_Attack(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
@@ -198,9 +185,11 @@ public class OpponentAI : MonoBehaviour
             
             targetRole = RangeCheck(targetRole); // This can change if the target is not in range
             
+            orderCtx.myEnemyOccupantCtx.PreResolveBeforeActingEffectsOpponent(queuedAction);
+            
             // Idempotent Attacks
             if (targetRole == null) Debug.LogWarning("No Target Found");
-            else targetRole.ActUponTarget(queuedAction, orderCtx.myTile);
+            else targetRole.ActedUponBy(queuedAction, orderCtx.myTile);
 
 
             // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)

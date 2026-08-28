@@ -29,3 +29,9 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
         name: Swift
         description: -1 AP on first attack
+    - Key: BattlemodeEffectStrategy_CriticalAvaliable
+      Value:
+        icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
+        name: Critical Avaliable
+        description: '1 stack: 50% chance to CRIT, 2 stacks: 100% chance to CRIT.
+          CRIT: x2 DMG'

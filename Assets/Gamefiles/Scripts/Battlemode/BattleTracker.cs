@@ -151,7 +151,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
-        selectedTarget?.ActUponTarget(queuedPlayerAction, currentlySelectedTile);
+        selectedTarget?.ActedUponBy(queuedPlayerAction, currentlySelectedTile);
         
         // Post Movements
         HandleMovement(currentlySelectedTile.row, currentlySelectedTile.col, queuedPlayerAction.actionCtx.cfg.movementCfg);
@@ -396,7 +396,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             foreach (var opponentTile in opponentTiles)
             {
                 if (opponentTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
-                enemyOccupantCtx.ResolveAfterTurnEndsEnemyEffects(enemyOccupantCtx.queuedActions);
+                enemyOccupantCtx.ResolveAfterTurnEndsEnemyEffects();
             }
             
             Debug.Log("Starting to Resolve End of Turn effects for players.");
@@ -405,7 +405,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             {
                 if (playerTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
                 Debug.Log("Resolve End of Turn Effect for player occupant:" + characterOccupantCtx.cfg.name);
-                characterOccupantCtx.ResolveAfterTurnEndsPlayerEffects(actionsDisplay.actionSlots);
+                characterOccupantCtx.ResolveAfterTurnEndsPlayerEffects();
             }
         }
         else  //-------------------------- Start of Battle

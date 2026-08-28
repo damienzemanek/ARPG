@@ -157,6 +157,7 @@ public class BattlemodeActionCtx
     public float deltaDmgMultiplier;
     public float deltaHealMultiplier;
     public float deltaArmorMultiplier;
+    public bool critHit;
 
     public BattlemodeActionConfig cfg;
 

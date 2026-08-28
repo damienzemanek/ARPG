@@ -7,7 +7,7 @@ public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
 {
     public override bool isSpecial => true;
 
-    public override BattlemodeActionCtx ResolveEffectBeforeActing(
+    public override BattlemodeActionCtx ResolveEffectPreBeforeActing(
         OccupantCtx occupantCtx, 
         BattlemodeActionCtx actionCtx)
     {
