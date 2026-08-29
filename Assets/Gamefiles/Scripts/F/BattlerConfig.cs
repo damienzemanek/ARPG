@@ -20,7 +20,9 @@ public class BattlerConfig : OccupantCfg
             if (value < 0) return;
             if (value == _maxEquippableActions) return;
             _maxEquippableActions = value;
+            var old = equippedActions;
             equippedActions = new BattlemodeActionConfig[value];
+            Array.Copy(old, equippedActions, Mathf.Min(old.Length, value));
         }
     }
 

@@ -28,7 +28,7 @@ public class OpponentAI : MonoBehaviour
     BattlemodeActionCtx moveActionCtx;
     BattlemodeActionCtx defendActionCtx;
     
-    public void QueueActionsAtTurnStart(List<BattleTile> opponentTiles)
+    public void QueueOpponentActionsAtTurnStart(List<BattleTile> opponentTiles)
     {
         battlerAttackOrder.Clear();
 
@@ -67,14 +67,14 @@ public class OpponentAI : MonoBehaviour
             // For each intention
             for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
-                var newQueuedAction = GenerateQueuedAction(intentionsIndex, orderCtx);
+                var newQueuedAction = GenerateOpponentQueuedAction(intentionsIndex, orderCtx);
                 eoc.queuedActions.Add(newQueuedAction);
                 orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
             }
         }
     }
 
-    public BattleTracker.QueuedAction GenerateQueuedAction(int intentionsIndex, OrderCtx orderCtx)
+    public BattleTracker.QueuedAction GenerateOpponentQueuedAction(int intentionsIndex, OrderCtx orderCtx)
     {
         if(orderCtx.myEnemyOccupantCtx == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
         if (orderCtx.myEnemyOccupantCtx is not EnemyOccupantCtx eoc)
@@ -93,8 +93,12 @@ public class OpponentAI : MonoBehaviour
         newQueuedAction.actingOccupantCtx = eoc;
         newQueuedAction.actionCtx = actionCtx;
         newQueuedAction.lookingForTarget = actionCfg.roleTarget;
+
+        foreach (var effect in eoc.currentEffects)
+            effect.ResolveEffectRightBeforeQueued(eoc, actionCtx);
+        foreach(var spEffect in eoc.specialEffects)
+            spEffect.ResolveEffectRightBeforeQueued(eoc, actionCtx);
         
-                
         // Assign to order's queued action
         return newQueuedAction;
     }
@@ -162,7 +166,7 @@ public class OpponentAI : MonoBehaviour
             BattleTracker.QueuedAction queuedAction = _queuedAction;
             if (usedSaved)
             {
-                queuedAction = GenerateQueuedAction(savedIntention, orderCtx);
+                queuedAction = GenerateOpponentQueuedAction(savedIntention, orderCtx);
 
                 Debug.Log($"[Intentions] Used Saved Intention: {savedIntention} " + queuedAction);
                 Debug.Log("[Intentions] Which is " + queuedAction.actionCtx.cfg.actionName);
@@ -186,10 +190,17 @@ public class OpponentAI : MonoBehaviour
             targetRole = RangeCheck(targetRole); // This can change if the target is not in range
             
             orderCtx.myEnemyOccupantCtx.PreResolveBeforeActingEffectsOpponent(queuedAction);
-            
-            // Idempotent Attacks
-            if (targetRole == null) Debug.LogWarning("No Target Found");
-            else targetRole.ActedUponBy(queuedAction, orderCtx.myTile);
+
+            for (int currentHitCount = 1; currentHitCount <= queuedAction.actionCtx.cfg.hitCount; currentHitCount++)
+            {
+                // Idempotent Attacks
+                if (targetRole == null) Debug.LogWarning("No Target Found");
+                else
+                {
+                    queuedAction.actionCtx.currentHitCount = currentHitCount;
+                    targetRole.ActedUponBy(queuedAction, orderCtx.myTile);
+                }
+            }
 
 
             // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
@@ -209,14 +220,7 @@ public class OpponentAI : MonoBehaviour
 
                 while (!isInRange && !actionDecided)
                 {
-                    var inRangeCheckCtx = new InRangeCheckCtx
-                    {
-                        targetingCfg = queuedAction.actionCtx.cfg.targetingCfg,
-                        myRow = orderCtx.myTile.row,
-                        myCol = orderCtx.myTile.col
-                    };
-
-                    if (!grid.IsTargetInRange(inRangeCheckCtx, orderCtx.myTile, queuedAction.targetTile))
+                    if (!grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, queuedAction.targetTile))
                     {
                         TryToMoveTo(out var moveTile);
                         if (moveTile != null)
@@ -255,7 +259,7 @@ public class OpponentAI : MonoBehaviour
                         queuedAction.targetTile = grid.GetNextMoveTile(
                             orderCtx.myTile,
                             savedTargetTile, 
-                            inRangeCheckCtx,
+                            queuedAction.actionCtx.targetingCfgInstanced,
                             true);
                         moveTile = queuedAction.targetTile;
                     }

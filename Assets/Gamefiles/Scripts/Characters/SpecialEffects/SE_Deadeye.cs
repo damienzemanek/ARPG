@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
 {
+    public override int priority => 1;
     public override bool isSpecial => true;
 
     public override BattlemodeActionCtx ResolveEffectPreBeforeActing(

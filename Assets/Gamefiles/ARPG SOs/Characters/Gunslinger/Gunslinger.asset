@@ -19,15 +19,19 @@ MonoBehaviour:
   maxHP: 14
   maxArmor: 2
   damage: 2
-  _maxEquippableActions: 3
+  _maxEquippableActions: 5
   equippedActions:
-  - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
   - {fileID: 11400000, guid: 99f9dd62824881341a2ecc45ff95b42b, type: 2}
   - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
+  - {fileID: 11400000, guid: 71ce58a25efa0184ab39173f1405e3f5, type: 2}
+  - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
+  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: 99f9dd62824881341a2ecc45ff95b42b, type: 2}
   - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
-  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
+  - {fileID: 11400000, guid: 71ce58a25efa0184ab39173f1405e3f5, type: 2}
+  - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
+  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
   ForcedActions: []
   specialEffects:
   - addOccurance: 0
@@ -44,7 +48,6 @@ MonoBehaviour:
       type: {class: SE_Deadeye, ns: , asm: Assembly-CSharp}
       data:
         ctx:
-          markedForRemoval: 0
           stackCtxs:
           - instanceEffectTime: 1
             stacks: 0

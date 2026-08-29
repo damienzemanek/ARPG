@@ -61,24 +61,27 @@
                 {
                     effectsToAddBeforeResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddBeforeResolve.Add(newEffectCtx);
-                    Debug.Log("[HIT] Adding BeforeAction effect: " + newEffectCtx.GetType().Name);
+                    Debug.Log("[HIT] Queuing Adding BeforeAction effect: " + newEffectCtx.GetType().Name);
                 }
-                else
+                else if (effectToApply.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.AfterAction)
                 {
                     effectsToAddAfterResolve ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddAfterResolve.Add(newEffectCtx);
-                    Debug.Log("[HIT] Adding AfterAction effect: " + newEffectCtx.GetType().Name);
+                    Debug.Log("[HIT] Queuing Adding AfterAction effect: " + newEffectCtx.GetType().Name);
                 }
+                else Debug.LogError("[HIT] Unknown AddOccurance: " + effectToApply.addOccurance);
+
             }
             
             
-            attackersActionCtx = ResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
+            ResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
             MutateValues(attackersActionCtx);
             ResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
             
             // Removing marked for removal, Only removes status effects, not special effects
             currentEffects.RemoveAll(e => e.stacksTotal <= 0);
         }
+        
 
         #region Start Of Battle
 
@@ -119,7 +122,7 @@
 
         #region After Turn Ends
 
-        public void ResolveAfterTurnEndsEnemyEffects()
+        public void ResolveAfterTurnEndsEffects()
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
@@ -128,19 +131,10 @@
                 
             foreach (var spEffect in battlerOccupantCtx.specialEffects)
                 spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+            
+            battlerOccupantCtx.currentEffects.RemoveAll(e => e.stacksTotal <= 0);
         }
         
-        public void ResolveAfterTurnEndsPlayerEffects()
-        {
-            if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
-            
-            foreach (var effect in battlerOccupantCtx.currentEffects)
-                effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
-                
-            foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
-        }
-
 
         #endregion
 
@@ -150,6 +144,9 @@
         public void PreResolveBeforeActingEffectsPlayer(BattlemodeAction[] preResolvedActions)
         {
             if (this is not BattlerOccupantCtx occupantCtx) return;
+            
+            occupantCtx.currentEffects.Sort(
+                (a, b) => b.priority.CompareTo(a.priority));
             
             // Resolve Effects that resolve before mutation
             foreach (var action in preResolvedActions)
@@ -171,6 +168,9 @@
             
             if(preResolvedAction == null) return;
             if(preResolvedAction.actionCtx == null) return;
+            
+            occupantCtx.currentEffects.Sort(
+                (a, b) => b.priority.CompareTo(a.priority));
                 
             foreach (var effect in occupantCtx.currentEffects)
                 effect.ResolveEffectPreBeforeActing(occupantCtx, preResolvedAction.actionCtx);
@@ -200,7 +200,7 @@
         #endregion
 
         
-        BattlemodeActionCtx ResolveBeforeHitEffects(BattlemodeActionCtx battleActionCtx, 
+        void ResolveBeforeHitEffects(BattlemodeActionCtx battleActionCtx, 
             List<BattlemodeEffectStrategyInstance> effectsToAddBeforeResolve)
         {
             var occupantCtx = this;
@@ -222,8 +222,6 @@
             // Resolve SP Effects that resolve before mutation
             foreach (var spEffect in specialEffects)
                 spEffect.ResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
-            
-            return battleActionCtx;
         }
 
         void ResolveAfterHitEffects(
@@ -243,26 +241,33 @@
 
             
             // Adding effects after resolve
-            if (effectsToAddAfterResolve != null)
+            if (effectsToAddAfterResolve != null && effectsToAddAfterResolve.Count > 0)
             {
-                Debug.Log("[HIT] Add Effects Detected, mutating or adding...");
+                Debug.Log($"[HIT] {effectsToAddAfterResolve.Count} Add Effects Detected, mutating or adding...");
                 foreach (var effectToAdd in effectsToAddAfterResolve)
                 {
                     if (!effectToAdd.isSpecial)
                     {
-                        Debug.Log("[HIT] [Regular] Adding or Mutating effect: " + effectToAdd.GetType().Name);
                         if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                        {
+                            Debug.Log("[HIT] Mutating existing regular effect: " + effectToAdd.GetType().Name);
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
-                        else 
+                        }
+                        else
+                        {
                             occupantCtx.currentEffects.Add(effectToAdd);
+                            Debug.Log("[HIT] Added regular effect: " + effectToAdd.GetType().Name);
+                        }
 
                     }
                     else
                     {
-                        Debug.Log("[HIT] [Special] Adding or Mutating effect: " + effectToAdd.GetType().Name);
                         // Battlers will always have their special, but at 0 stacks, so we mutate
-                        if(occupantCtx.specialEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                        if (occupantCtx.specialEffects.Any(e => e.GetType() == effectToAdd.GetType()))
+                        {
+                            Debug.Log("[HIT] Mutating existing special effect: " + effectToAdd.GetType().Name);
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
+                        }
                     }
                 }
             }

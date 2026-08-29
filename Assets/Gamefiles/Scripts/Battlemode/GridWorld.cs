@@ -195,26 +195,12 @@ public class GridWorld : MonoBehaviour
     public BattleTile GetNextMoveTile(
         BattleTile start,
         BattleTile end,
-        InRangeCheckCtx rangeCtx,
+        TargetingCfg targetingCfgInstance,
         bool reverse)
     {
-        if (start == null)
-        {
-            Debug.LogWarning("[BFS] Start is null.");
-            return null;
-        }
-
-        if (end == null)
-        {
-            Debug.LogWarning("[BFS] End is null.");
-            return null;
-        }
-
-        if (start == end)
-        {
-            Debug.Log("[BFS] Start and end are the same tile. No movement required.");
-            return null;
-        }
+        if (start == null) { Debug.LogWarning("[BFS] Start is null."); return null; }
+        if (end == null) { Debug.LogWarning("[BFS] End is null."); return null; }
+        if (start == end) { Debug.Log("[BFS] Start and end are the same tile. No movement required."); return null; }
 
         var queue = new Queue<BattleTile>();
         var visited = new HashSet<BattleTile>();
@@ -228,7 +214,7 @@ public class GridWorld : MonoBehaviour
             var current = queue.Dequeue();
 
             // Find the closest tile from which the target can be attacked.
-            if (IsTargetInRange(rangeCtx, current, end))
+            if (IsTargetInRange(targetingCfgInstance, current, end))
             {
                 var result = current == start
                     ? null
@@ -290,17 +276,17 @@ public class GridWorld : MonoBehaviour
     }
     
     // Target to Actor
-    public bool IsTargetInRange(InRangeCheckCtx rangeCtx, BattleTile actingTile, BattleTile targetTile)
+    public bool IsTargetInRange(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile)
     {
-        bool colUsable = rangeCtx.targetingCfg.usableInColRanks.HasFlag(actingTile.colRank) || rangeCtx.targetingCfg.targetCurrentCol;
-        bool colTargeted = rangeCtx.targetingCfg.targetColRanks.HasFlag(targetTile.colRank);
-        bool rowUsable = rangeCtx.targetingCfg.usableInRowRanks.HasFlag(actingTile.rowRank) || rangeCtx.targetingCfg.targetCurrentRow;
-        bool rowTargeted = rangeCtx.targetingCfg.targetRowRanks.HasFlag(targetTile.rowRank);
+        bool colUsable = targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank) || targetingCfgInstance.targetCurrentCol;
+        bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
+        bool rowUsable = targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank) || targetingCfgInstance.targetCurrentRow;
+        bool rowTargeted = targetingCfgInstance.targetRowRanks.HasFlag(targetTile.rowRank);
         return (colUsable && colTargeted) || (rowUsable && rowTargeted);
     }
     
     // Actor to Target
-    public List<BattleTile> GetInRangeTiles(InRangeCheckCtx rangeCtx, BattleTile actingTile)
+    public List<BattleTile> GetInRangeTiles(TargetingCfg targetingCfgInstance, BattleTile actingTile)
     {
         var inRangeTiles = new List<BattleTile>();
         var allTiles = GetAllTiles();
@@ -309,28 +295,26 @@ public class GridWorld : MonoBehaviour
             t.HideAndMakeUnSelectable();
         
                 
-        if (rangeCtx.targetingCfg.usableInColRanks.HasFlag(actingTile.colRank))
+        if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank))
         {
-            var targetRanks = rangeCtx.targetingCfg.targetColRanks;
+            var targetRanks = targetingCfgInstance.targetColRanks;
 
             inRangeTiles.AddRange(
                 allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
         }
     
-        if (rangeCtx.targetingCfg.targetCurrentCol)
+        if (targetingCfgInstance.targetCurrentCol)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentColTile => potentialCurrentColTile.col == actingTile.col));
         
-        if (rangeCtx.targetingCfg.targetCurrentRow)
+        if (targetingCfgInstance.targetCurrentRow)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentRowTile => potentialCurrentRowTile.row == actingTile.row));
         
-        foreach (var t in inRangeTiles)
-            Debug.Log("Found: [" + t.row + ", " + t.col + "]");
-
+        Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
         
         int row = actingTile.row;
         int col = actingTile.col;
         // Movement Patterns
-        switch (rangeCtx.targetingCfg.targetingPatternAdditive)
+        switch (targetingCfgInstance.targetingPatternAdditive)
         {
             case TargetingPattern.None: break;
             case TargetingPattern.Self:
@@ -477,15 +461,13 @@ public class GridWorld : MonoBehaviour
     {
         foreach (var t in gridRows.SelectMany(r => r.tiles)) t.Unhide();
     }
+    
 
-    public struct InRangeCheckCtx
-    {
-        public int myCol;
-        public int myRow;
-        public TargetingCfg targetingCfg;
-    }
-
-    public BattleTile GetClosestTargetTile(InRangeCheckCtx ctx, Role actionTarget, OccupantCfg compareCfg)
+    public BattleTile GetClosestTargetTile(
+        TargetingCfg targetingCfgInstance,
+        (int myCol, int myRow) loc,
+        Role actionTarget,
+        OccupantCfg compareCfg)
     {
         var tiles = GetAllTiles();
 
@@ -497,8 +479,8 @@ public class GridWorld : MonoBehaviour
             if (tile.occupied) continue;
 
             int distance =
-                Mathf.Abs(tile.col - ctx.myCol) +
-                Mathf.Abs(tile.row - ctx.myRow);
+                Mathf.Abs(tile.col - loc.myCol) +
+                Mathf.Abs(tile.row - loc.myRow);
 
             if (distance >= closestDistance) continue;
             if (!tile.IsSameRoleTarget(actionTarget, compareCfg)) continue;

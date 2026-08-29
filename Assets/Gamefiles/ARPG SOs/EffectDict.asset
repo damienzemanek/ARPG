@@ -34,4 +34,15 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
         name: Critical Avaliable
         description: '1 stack: 50% chance to CRIT, 2 stacks: 100% chance to CRIT.
-          CRIT: x2 DMG'
+          CRIT: x2 DMG. All stacks removed when landing any attack'
+    - Key: BattlemodeEffectStrategy_MoveLocked
+      Value:
+        icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+        name: Move Locked
+        description: Prevents Movement and Movement from Moving Actions
+    - Key: BattlemodeEffectStrategy_CriticallyExposed
+      Value:
+        icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+        name: Citically Exposed
+        description: '1 stack: 50% chance to be CRIT by an attack. 2 stacks: 100%
+          chance to be CRIT by an attack. CRIT: x2 DMG. All stacks removed when hit.'

@@ -405,7 +405,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         if (exhuastedActionSlots.Any(s => s.actionCtx.cfg == currentlySelectedAction.cfg))
             return;
         
-        BattleTracker.Instance.QueueAction(currentlySelectedTile, currentlySelectedAction);
+        BattleTracker.Instance.QueuePlayerAction(currentlySelectedTile, currentlySelectedAction);
     }
 
     public int GetCurrentlySelectedAPCost()

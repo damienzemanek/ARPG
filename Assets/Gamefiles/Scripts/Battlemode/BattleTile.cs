@@ -149,7 +149,7 @@ public class BattleTile : MonoBehaviour
         if (selected.activeInHierarchy) return;
         hover.SetActive(true);
         inRange.SetActive(false);
-        Debug.Log("Hovering tile");
+        Debug.Log("[BattleTile] Player Hovered over tile [" + col + ", " + row + "]");
     }
     
 

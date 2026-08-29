@@ -134,7 +134,9 @@ public class IntentUsage
         {
             if (currentIntentUsageCtx.savedIntentIndex == -1)
             {
-                Debug.Log("Incrementing Intent Index from " + currentIntentUsageCtx.intentIndex + " to " + currentIntentUsageCtx.intentIndex + 1);
+                Debug.Log("[EnemyConfig] Incrementing IntentUsageCtx's Intent Index from " +
+                          "" + currentIntentUsageCtx.intentIndex + " to " 
+                          + (currentIntentUsageCtx.intentIndex + 1).ToString());
                 currentIntentUsageCtx.intentIndex++;
                 if(currentIntentUsageCtx.intentIndex > currentIntentUsageCtx.intentionsAmount)
                     currentIntentUsageCtx.intentIndex = 0;

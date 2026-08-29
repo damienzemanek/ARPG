@@ -45,6 +45,7 @@ public class BattlemodeEffectConfigInstance
 [Serializable]
 public abstract class BattlemodeEffectStrategyInstance
 {
+    public abstract int priority { get; }
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);
     public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime) => Array.Exists(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
@@ -119,33 +120,46 @@ public abstract class BattlemodeEffectStrategyInstance
     // StartOfBattle
     
     // These all mutate directly cause the ctxs are classes
-    
-    // This one gets pre-resolved
-    public virtual BattlemodeActionCtx ResolveEffectBeforeHitByAction(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
-    
-    public virtual BattlemodeActionCtx ResolveEffectWhileHitByActionRightBefore(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
-    
-    public virtual BattlemodeActionCtx ResolveEffectAfterHitByAction(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
-    
-    // This one gets pre-resolved
-    public virtual BattlemodeActionCtx ResolveEffectPreBeforeActing(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
-    
-    public virtual BattlemodeActionCtx ResolveEffectRightBeforeActing(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
-    
-    public virtual BattlemodeActionCtx ResolveEffectAfterActing(
-        OccupantCtx occupantCtx,
-        BattlemodeActionCtx actionCtx) => actionCtx;
 
+
+    #region ------- HIT ------------
+
+        public virtual BattlemodeActionCtx ResolveEffectBeforeHitByAction(
+            OccupantCtx occupantCtx,
+            BattlemodeActionCtx actionCtx) => actionCtx;
+        
+        
+        public virtual BattlemodeActionCtx ResolveEffectAfterHitByAction(
+            OccupantCtx occupantCtx,
+            BattlemodeActionCtx actionCtx) => actionCtx;
+
+    #endregion
+
+
+    #region --------- ACT -------------
+
+        // This one gets pre-resolved,
+        // Player: resolves when CombatUI is opened
+        // Enemy: resolved before acting, and before `ResolveEffectRightBeforeActing`
+        public virtual BattlemodeActionCtx ResolveEffectPreBeforeActing(
+            OccupantCtx occupantCtx,
+            BattlemodeActionCtx actionCtx) => actionCtx;
+        
+        public virtual BattlemodeActionCtx ResolveEffectRightBeforeActing(
+            OccupantCtx occupantCtx,
+            BattlemodeActionCtx actionCtx) => actionCtx;
+        
+        public virtual BattlemodeActionCtx ResolveEffectAfterActing(
+            OccupantCtx occupantCtx,
+            BattlemodeActionCtx actionCtx) => actionCtx;
+
+    #endregion
+
+
+    public virtual BattlemodeActionCtx ResolveEffectRightBeforeQueued(
+        OccupantCtx occupantCtx,
+        BattlemodeActionCtx actionCtx) => actionCtx;
+    
     public void ResolveEffectAfterTurnEnds(OccupantCtx occupantCtx)
     {
         ref var stackCtx = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn);

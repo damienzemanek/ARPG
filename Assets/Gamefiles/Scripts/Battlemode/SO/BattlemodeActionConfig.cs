@@ -109,7 +109,8 @@ public class BattlemodeActionConfig : ScriptableObject
     {
         var ctx = new BattlemodeActionCtx
         {
-            hitCount = this.hitCount,
+            currentHitCount = 1,
+            maxHitCount = this.hitCount,
             hitCountDelta = 0,
             dmg = actingBatlerCtx?.currentDMG ?? 0,
             heal = targetBatlerCtx?.maxHp ?? 0,
@@ -119,6 +120,9 @@ public class BattlemodeActionConfig : ScriptableObject
             deltaArmorMultiplier = this.armorIncreasePercentage,
             status = _status,
             cfg = this,
+            movementCfgInstanced = this.movementCfg,
+            targetingCfgInstanced = this.targetingCfg,
+            critchanceCalculatedAlready = false
         };
 
         if (actingBatlerCtx is CharacterOccupantCtx)
@@ -146,7 +150,8 @@ public class BattlemodeActionCtx
     
     public Status status;
 
-    public int hitCount;
+    public int currentHitCount;
+    public int maxHitCount;
     public int dmg;
     public int heal;
     public int armor;
@@ -158,7 +163,10 @@ public class BattlemodeActionCtx
     public float deltaHealMultiplier;
     public float deltaArmorMultiplier;
     public bool critHit;
+    public bool critchanceCalculatedAlready;
 
+    public BattlemodeActionConfig.TargetingCfg targetingCfgInstanced;
+    public BattlemodeActionConfig.MovementCfg movementCfgInstanced;
     public BattlemodeActionConfig cfg;
 
     public void SetHealViaTargetMaxHealth(BattlerOccupantCtx targetBatlerCtx)

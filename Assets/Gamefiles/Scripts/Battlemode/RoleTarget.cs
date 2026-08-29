@@ -35,11 +35,12 @@ public abstract class RoleTarget
                   $"at tile: [" + targetTile.col + ", " + targetTile.row + "]" +
                   "with action: " + queuedAction.actionCtx.cfg.name + "");
         
-        BattlerOccupantCtx _targetBattlerCtx = null;
+        queuedAction.actingOccupantCtx.currentEffects.Sort(
+            (a, b) => b.priority.CompareTo(a.priority));
         
+        BattlerOccupantCtx _targetBattlerCtx = null;
         List<BattlemodeEffectStrategyInstance> effectsToAddToActorBeforeActing = null;
         List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorBeforeActing = null;
-        
         List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
         List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
 
@@ -240,7 +241,7 @@ public sealed class AllyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> allyTiles = new();
     public override void ClearTarget() => allyTiles.Clear();
-    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile)
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
     {
         foreach (var tile in allyTiles)
             ActedUponByImplementation(queuedActionCtx, tile, fromTile);
@@ -253,7 +254,7 @@ public sealed class EnemyTeamTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.Team;
     public List<BattleTile> enemyTiles = new();
     public override void ClearTarget() => enemyTiles.Clear();
-    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile)
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
     {
         foreach (var tile in enemyTiles)
             ActedUponByImplementation(queuedActionCtx, tile, fromTile);
@@ -265,6 +266,6 @@ public sealed class EmptyTileTarget : RoleTarget
     public override BattlemodeActionConfig.Role role => BattlemodeActionConfig.Role.EmptyTile;
     public BattleTile emptyTile;
     public override void ClearTarget() => emptyTile = null;
-    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile) 
+    public override void ActedUponBy(QueuedAction queuedActionCtx, BattleTile fromTile)  
         => ActedUponByImplementation(queuedActionCtx, emptyTile, fromTile);
 }
