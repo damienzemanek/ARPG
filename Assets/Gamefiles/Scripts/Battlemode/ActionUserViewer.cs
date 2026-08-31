@@ -23,7 +23,6 @@ public class ActionUserViewer : MonoBehaviour
         }
 
         Vector3 actorOriginalPosition = actor.transform.position;
-        Vector3 targetOriginalPosition = target.transform.position;
 
         Sequence sequence = DOTween.Sequence();
 
@@ -38,6 +37,8 @@ public class ActionUserViewer : MonoBehaviour
         }
         else
         {
+            Vector3 targetOriginalPosition = target.transform.position;
+
             sequence
                 // Move both into position together
                 .Append(actor.transform.DOMove(leftLoc.position, tweenDuration))

@@ -93,6 +93,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void SelectTile(BattleTile tile, bool backSelect = false)
     {
+        if (BattleTracker.instance.isUsingAnAction) return;
         Debug.Log("Selecting tile 1");
         if (queuedPlayerAction.hasQueuedAction)
         {
@@ -161,15 +162,19 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
-        Debug.Log("Actor: " + queuedPlayerAction.actingOccupantCtx.obj.name + ", Target: " + targetTile.occupantCtx.obj.name);
+        string targetName = targetTile?.occupantCtx?.cfg.name ?? "Empty";
+        Debug.Log("Actor: " + queuedPlayerAction.actingOccupantCtx.obj.name + ", Target: " + targetName);
         
         selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
+        
+        CalculatedMovement calcMovement = new();
+        PrepareMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
 
         yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
             FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
             actionUserViewer.C_UseActionUserViewer(
                 queuedPlayerAction.actingOccupantCtx.obj, 
-                targetTile.occupantCtx.obj));
+                targetTile?.occupantCtx.obj));
 
         
         for (int currentHitcount = 2; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
@@ -184,7 +189,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         yield return new WaitForSeconds(0.1f); // finish attacking
 
         // Post Movements
-        HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced);
+        HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
 
 
         // delay for fade back in
@@ -204,13 +209,22 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public BattleTile tile;
         public OccupantCtx occupantCtx;
     }
-    
-    void HandleMovement(int myRow, int myCol, MovementCfg move)
+
+    struct CalculatedMovement
     {
-        if(move.direction == MovementDirection.None) return;
+        public List<MovementPathPoint> savePath;
+        public MovementPathPoint[] newPath;
+        public BattleTile originTile;
+        public int actualAmount;
+        public TileDirection dir;
+    }
+
+    void PrepareMovement(int myRow, int myCol, MovementCfg move, ref CalculatedMovement calcMovement)
+    {
+        if (move.direction == MovementDirection.None) return;
         if (move.amount <= 0) return;
 
-        var dir = move switch
+        calcMovement.dir = move switch
         {
             _ when move.direction == MovementDirection.Right => TileDirection.Right,
             _ when move.direction == MovementDirection.Left => TileDirection.Left,
@@ -220,81 +234,89 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         };
         
 
-        var originTile = fromTile;
-        var origMover = originTile.occupantCtx;
-        if (origMover == null) return;
+        calcMovement.originTile = fromTile;
+        if (calcMovement.originTile.occupantCtx == null) return;
 
         // Distance 1: normal move or direct swap.
-        if (move.amount == 1)
-        {
-            var destinationTile = grid.GetTileToThe(dir, myRow, myCol);
+        if (move.amount == 1) return;
 
-            if (destinationTile == null) return;
-            if (destinationTile.section == BattlefieldSection.Right) return;
 
-            if (destinationTile.occupantCtx != null) destinationTile.SwapOccupants(originTile, grid);
-            else destinationTile.TransferInOccupant(originTile, grid);
-            return;
-        }
-
-        var savePath = new List<MovementPathPoint>();
+        calcMovement.savePath = new List<MovementPathPoint>();
 
         // Snapshot the entire path BEFORE modifying any tiles.
         for (int i = 0; i <= move.amount; i++)
         {
-            var tile = grid.GetTileToThe(dir, myRow, myCol, i);
+            var tile = grid.GetTileToThe(calcMovement.dir, myRow, myCol, i);
 
             if (tile == null) break;
             if (tile.section == BattlefieldSection.Right) break;
             
-            savePath.Add(new MovementPathPoint
+            calcMovement.savePath.Add(new MovementPathPoint
             {
                 tile = tile,
                 occupantCtx = tile.occupantCtx
             });
         }
 
-        var actualAmount = savePath.IndexOf(savePath[^1]);
+        calcMovement.actualAmount = calcMovement.savePath.IndexOf(calcMovement.savePath[^1]);
         
-
         int a = 1;
-        foreach (var p in savePath)
+        foreach (var p in calcMovement.savePath)
         {
             Debug.Log($"SavePath Tile {a}: [" + p.tile.row + ", " + p.tile.col + "] " + (p.occupantCtx != null ? p.occupantCtx.cfg.name : "Empty"));
             a++;
         }
         
-        // Destination is empty: ordinary movement.
-        if (savePath[^1].occupantCtx == null)
+        // Build the final arrangement.
+        calcMovement.newPath = new MovementPathPoint[calcMovement.actualAmount + 1];
+        
+        // Mover goes into the destination.
+        calcMovement.newPath[^1] = new MovementPathPoint
         {
-            savePath[^1].tile.TransferInOccupant(originTile, grid);
+            tile = calcMovement.savePath[calcMovement.actualAmount].tile,
+            occupantCtx = calcMovement.originTile.occupantCtx
+        };
+    }
+    
+    void HandleMovement(int myRow, int myCol, MovementCfg move, ref CalculatedMovement calcMovement)
+    {
+        if (move.direction == MovementDirection.None) return;
+        if (move.amount <= 0) return;
+        if (calcMovement.originTile.occupantCtx == null) return;
+
+
+        if (move.amount == 1)
+        {
+            var destinationTile = grid.GetTileToThe(calcMovement.dir, myRow, myCol);
+
+            if (destinationTile == null) return;
+            if (destinationTile.section == BattlefieldSection.Right) return;
+
+            if (destinationTile.occupantCtx != null) destinationTile.SwapOccupants(calcMovement.originTile, grid);
+            else destinationTile.TransferInOccupant(calcMovement.originTile, grid);
             return;
         }
-
-        // Build the final arrangement.
-        var newPath = new MovementPathPoint[actualAmount + 1];
-
-        // Mover goes into the destination.
-        newPath[^1] = new MovementPathPoint
-        {
-            tile = savePath[actualAmount].tile,
-            occupantCtx = origMover
-        };
-
-        // Existing occupants get compressed toward the origin.
         
-        int newIndex = actualAmount -1;
-
-        for (int i = actualAmount; i > 0; i--)
+        // Destination is empty: ordinary movement.
+        if (calcMovement.savePath[^1].occupantCtx == null)
         {
-            var occupant = savePath[i].occupantCtx;
+            calcMovement.savePath[^1].tile.TransferInOccupant(calcMovement.originTile, grid);
+            return;
+        }
+        
+        // Existing occupants get compressed toward the origin.
+        int newIndex = calcMovement.actualAmount -1;
+
+        for (int i = calcMovement.actualAmount; i > 0; i--)
+        {
+            var occupant = calcMovement.savePath[i].occupantCtx;
 
             if (occupant == null)
                 continue;
 
-            newPath[newIndex] = new MovementPathPoint
+            calcMovement.newPath[newIndex] = new MovementPathPoint
             {
-                tile = savePath[newIndex].tile,
+                tile = calcMovement.savePath[newIndex].tile,
                 occupantCtx = occupant
             };
 
@@ -302,14 +324,14 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         }
 
         // Clear all affected tiles AFTER the snapshot/final arrangement is built.
-        foreach (var point in savePath)
+        foreach (var point in calcMovement.savePath)
         {
             point.tile.Clear();
             point.tile.occupantCtx = null;
         }
 
         // Apply final arrangement.
-        foreach (var point in newPath)
+        foreach (var point in calcMovement.newPath)
         {
             if (point.occupantCtx == null)
                 continue;
