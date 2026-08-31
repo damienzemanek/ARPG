@@ -376,7 +376,7 @@ MonoBehaviour:
   unselectable: 0
   alreadySelected: 0
   tileCanBeSelectedOveride: 0
-  occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
+  occupantSpawnOffset: {x: 3, y: 0, z: -3}
   maxHPBarScale: 3.5
   display: {fileID: 6581894102413030855}
   hpBar: {fileID: 3932555389431421451}

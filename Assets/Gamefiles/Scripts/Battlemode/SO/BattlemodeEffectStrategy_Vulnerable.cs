@@ -74,9 +74,11 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
             case BattlemodeActionConfig.Role.Team: return actionCtx; }
 
         if(stacksTotal == 0) return actionCtx;
+        actionCtx.hasCritChance = true;
+
         if (actionCtx.critchanceCalculatedAlready)
         {
-            RemoveAllStacksOnLastHit();
+            RemoveAllStacksOnLastHit(actionCtx);
             return actionCtx;
         }
 
@@ -87,18 +89,9 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
         }
         else if (stacksTotal > 1) actionCtx.critHit = true;
         
-        RemoveAllStacksOnLastHit();
+        RemoveAllStacksOnLastHit(actionCtx);
         
         return actionCtx;
-        
-        void RemoveAllStacksOnLastHit()
-        {
-            if(actionCtx.currentHitCount < actionCtx.maxHitCount) return;
-            Debug.Log("[Critical Avaliable] Removing stacks");
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks = 0;
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks = 0;
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks = 0;
-        }
     }
 }
 
@@ -117,9 +110,10 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
             case BattlemodeActionConfig.Role.Team: return actionCtx; }
 
         if(stacksTotal == 0) return actionCtx;
+        actionCtx.hasCritChance = true;
         if (actionCtx.critchanceCalculatedAlready)
         {
-            RemoveAllStacksOnLastHit();
+            RemoveAllStacksOnLastHit(actionCtx);
             return actionCtx;
         }
         
@@ -130,18 +124,10 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
         }
         else if (stacksTotal > 1) actionCtx.critHit = true;
         
-        RemoveAllStacksOnLastHit();
+        RemoveAllStacksOnLastHit(actionCtx);
         
         return actionCtx;
-
-        void RemoveAllStacksOnLastHit()
-        {
-            if (actionCtx.currentHitCount < actionCtx.maxHitCount) return;
-            Debug.Log("[Critically Exposed] Removing stacks");
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks = 0;
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks = 0;
-            GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks = 0;
-        }
+        
     }
     
 }
@@ -166,4 +152,31 @@ public sealed class BattlemodeEffectStrategy_MoveLocked : BattlemodeEffectStrate
             targetingCfgInstanced.targetingPatternAdditive = BattlemodeActionConfig.TargetingPattern.None;
         return actionCtx;
     }
+}
+
+[Serializable ]
+public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 0; // Last, should happen after critically exposed caluclates, to check if the crit hit
+    public override bool isSpecial => false;
+    
+    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    {
+        if (!actionCtx.hasCritChance) return actionCtx;
+        if (actionCtx.bodyPartAlreadyBrokenThisAction || !actionCtx.critHit)
+        {
+            RemoveAllStacksOnLastHit(actionCtx);
+            return actionCtx;
+        }
+        
+        if (UnityEngine.Random.Range(0, 100) < 50)
+        {
+            actionCtx.brokenBodyPart = actionCtx.cfg.targetedBodyPart;
+            Debug.Log("[Body Compromised] BONE BREAK! : " + actionCtx.brokenBodyPart + " is broken");
+        }
+        RemoveAllStacksOnLastHit(actionCtx);
+        return actionCtx;
+    }
+    
+    
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6383740059561456535}
   - component: {fileID: 6500398793070926374}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: IntentionPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

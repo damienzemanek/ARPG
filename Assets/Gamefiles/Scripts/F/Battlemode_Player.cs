@@ -81,6 +81,8 @@ public class BattlemodePlayerInstance : MonoBehaviour
     [Button]
     public void BackZoomEsc()
     {
+        if (BattleTracker.Instance.isUsingAnAction) return;
+        
         if (zoomState.Equals(ZoomState.ZoomedIntoTile)) 
         {
             if (Application.isPlaying)
@@ -104,7 +106,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
         else if (zoomState.Equals(ZoomState.QueuedAction))
         {
             zoomState = ZoomState.ZoomedIntoTile;
-            BattleTracker.Instance.SelectTile(BattleTracker.Instance.queuedPlayerAction.targetTile, true);
+            BattleTracker.Instance.SelectTile(BattleTracker.Instance.queuedPlayerAction.actorTile, true);
         }
         else if (zoomState.Equals(ZoomState.Battlefield)) 
             Debug.Log("Already at battlefield zoom");
@@ -112,6 +114,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
 
     public void ScrollUpMoveLeft(bool scroll)
     {
+        if (BattleTracker.Instance.isUsingAnAction) return;
         if(zoomState.Equals(ZoomState.ZoomedIntoTile)) return;
         transform.position = Vector3.SmoothDamp(
             transform.position,
@@ -122,6 +125,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
     }
     public void ScrollUpMoveRight(bool scroll)
     {
+        if (BattleTracker.Instance.isUsingAnAction) return;
         if(zoomState.Equals(ZoomState.ZoomedIntoTile)) return;
         transform.position = Vector3.SmoothDamp(
             transform.position,

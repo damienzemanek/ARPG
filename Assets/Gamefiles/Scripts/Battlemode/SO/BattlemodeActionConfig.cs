@@ -40,6 +40,15 @@ public class BattlemodeActionConfig : ScriptableObject
         Box,
     }
 
+    [Flags]
+    public enum BodyPart
+    {
+        None = 0,
+        Head = 1 << 0,
+        Body = 1 << 1,
+        Legs = 1 << 2
+    }
+
     [Serializable]
     public struct TargetingCfg
     {
@@ -85,6 +94,7 @@ public class BattlemodeActionConfig : ScriptableObject
     [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
     [BoxGroup("Settings")] public ActionIdentifier actionIdentifier;
     [BoxGroup("Settings")] public ActionQualifier actionQualifier;
+    [BoxGroup("Settings")] public BodyPart targetedBodyPart;
     [BoxGroup("Settings")] public Sprite icon;
     [BoxGroup("Settings")] public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
     [BoxGroup("Settings")] [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
@@ -122,7 +132,8 @@ public class BattlemodeActionConfig : ScriptableObject
             cfg = this,
             movementCfgInstanced = this.movementCfg,
             targetingCfgInstanced = this.targetingCfg,
-            critchanceCalculatedAlready = false
+            critchanceCalculatedAlready = false,
+            brokenBodyPart = BattlemodeActionConfig.BodyPart.None,
         };
 
         if (actingBatlerCtx is CharacterOccupantCtx)
@@ -162,8 +173,12 @@ public class BattlemodeActionCtx
     public float deltaDmgMultiplier;
     public float deltaHealMultiplier;
     public float deltaArmorMultiplier;
+    public bool hasCritChance;
     public bool critHit;
     public bool critchanceCalculatedAlready;
+    
+    public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;
+    public BattlemodeActionConfig.BodyPart brokenBodyPart;
 
     public BattlemodeActionConfig.TargetingCfg targetingCfgInstanced;
     public BattlemodeActionConfig.MovementCfg movementCfgInstanced;

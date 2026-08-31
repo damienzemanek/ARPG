@@ -15,4 +15,22 @@ public class CoroutineRunner : PersistantReplacerSingleton<CoroutineRunner>
         yield return new WaitForSeconds(delay);
         action();
     }
+    
+    public IEnumerator RunAllMethodsAtOnce(params IEnumerator[] methods)
+    {
+        int remaining = methods.Length;
+
+        if (remaining == 0) yield break;
+
+        foreach (IEnumerator method in methods)
+            StartCoroutine(RunAndTrackCompletion(method, () => remaining--));
+        
+        yield return new WaitUntil(() => remaining <= 0);
+    }
+
+    IEnumerator RunAndTrackCompletion(IEnumerator method, Action onComplete)
+    {
+        yield return StartCoroutine(method);
+        onComplete?.Invoke();
+    }
 }

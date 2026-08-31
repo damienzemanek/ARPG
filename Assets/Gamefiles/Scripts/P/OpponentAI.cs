@@ -68,6 +68,7 @@ public class OpponentAI : MonoBehaviour
             for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
                 var newQueuedAction = GenerateOpponentQueuedAction(intentionsIndex, orderCtx);
+                newQueuedAction.actorTile = orderCtx.myTile;
                 eoc.queuedActions.Add(newQueuedAction);
                 orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
             }
@@ -171,13 +172,12 @@ public class OpponentAI : MonoBehaviour
                 Debug.Log($"[Intentions] Used Saved Intention: {savedIntention} " + queuedAction);
                 Debug.Log("[Intentions] Which is " + queuedAction.actionCtx.cfg.actionName);
 
-                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles);
+                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles, out queuedAction.targetTile);
 
                 orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
             }
             else
-                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles);
-
+                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles, out queuedAction.targetTile);
             
             // Refresh my tile if i moved
             
@@ -217,24 +217,25 @@ public class OpponentAI : MonoBehaviour
             {
                 bool isInRange = false;
                 bool actionDecided = false;
+                var targetTile = queuedAction.targetTile;
 
                 while (!isInRange && !actionDecided)
                 {
-                    if (!grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, queuedAction.targetTile))
+                    if (!grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, targetTile))
                     {
                         TryToMoveTo(out var moveTile);
                         if (moveTile != null)
                         {
-                            queuedAction.targEmptyTileSlot.emptyTile = queuedAction.targetTile;
+                            queuedAction.targEmptyTileSlot.emptyTile = targetTile;
 
                             Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
-                                      + $"to [{queuedAction.targetTile.col},{queuedAction.targetTile.row}]");
+                                      + $"to [{targetTile.col},{targetTile.row}]");
                             return queuedAction.targEmptyTileSlot;
                         }
                         else
                         {
                             Defend();
-                            queuedAction.targSelfSlot.selfTile = queuedAction.targetTile;
+                            queuedAction.targSelfSlot.selfTile = targetTile;
                             return queuedAction.targSelfSlot;
                         }
                     }
@@ -245,7 +246,7 @@ public class OpponentAI : MonoBehaviour
                     {
                         Debug.Log("Not In Range, Queuing Move Action");
 
-                        var savedTargetTile = queuedAction.targetTile;
+                        var savedTargetTile = targetTile;
 
                         queuedAction.Init();
                         queuedAction.actingOccupantCtx = orderCtx.myEnemyOccupantCtx;
@@ -256,12 +257,12 @@ public class OpponentAI : MonoBehaviour
                         orderCtx.myEnemyOccupantCtx.SaveCurrentIntention();
 
                         // Find the FIRST tile of the shortest path.
-                        queuedAction.targetTile = grid.GetNextMoveTile(
+                        targetTile = grid.GetNextMoveTile(
                             orderCtx.myTile,
                             savedTargetTile, 
                             queuedAction.actionCtx.targetingCfgInstanced,
                             true);
-                        moveTile = queuedAction.targetTile;
+                        moveTile = targetTile;
                     }
                     
                     void Defend()
@@ -273,7 +274,7 @@ public class OpponentAI : MonoBehaviour
                         queuedAction.actionCtx = defendActionCtx;
                         queuedAction.lookingForTarget = BattlemodeActionConfig.Role.Self;
                         actionDecided = true;
-                        queuedAction.targetTile = orderCtx.myTile;
+                        targetTile = orderCtx.myTile;
                     }
                     
                 }
@@ -299,10 +300,11 @@ public class OpponentAI : MonoBehaviour
 
     RoleTarget TryGetTarget(OrderCtx orderCtx,
         BattleTracker.QueuedAction queuedAction,
-        List<BattleTile> playerTiles)
+        List<BattleTile> playerTiles, out BattleTile targetTile)
     {
         
         RoleTarget target = null;
+        targetTile = null;
         // Target Selection
         switch (queuedAction.lookingForTarget)
         {
@@ -319,7 +321,7 @@ public class OpponentAI : MonoBehaviour
                 queuedAction.targEnemySlot.enemyTile = newTargetTile;
                 Debug.Log("Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " +
                           "position " + queuedAction.targEnemySlot.enemyTile.col + " , " +  queuedAction.targEnemySlot.enemyTile.row);
-                queuedAction.targetTile = newTargetTile;
+                targetTile = newTargetTile;
                 target = queuedAction.targEnemySlot;
                 break;
             case BattlemodeActionConfig.Role.Team:

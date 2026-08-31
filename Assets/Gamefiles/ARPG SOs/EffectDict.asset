@@ -46,3 +46,9 @@ MonoBehaviour:
         name: Citically Exposed
         description: '1 stack: 50% chance to be CRIT by an attack. 2 stacks: 100%
           chance to be CRIT by an attack. CRIT: x2 DMG. All stacks removed when hit.'
+    - Key: BattlemodeEffectStrategy_BodyCompromised
+      Value:
+        icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+        name: Body Compromised
+        description: 'On CRIT: 1 stack: 50% chance to BONE BREAK. 2 stacks: 100%
+          chance to BONE BREAK'

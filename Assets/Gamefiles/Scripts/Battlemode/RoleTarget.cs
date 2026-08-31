@@ -28,6 +28,7 @@ public abstract class RoleTarget
     {
         if (targetTile == null) { Debug.LogError("No target selected for self role target."); return; }
         if (queuedAction.actionCtx == null) { Debug.LogError("No action context generated."); return; }
+        queuedAction.targetTile = targetTile;
 
         string targName = targetTile.occupantCtx?.cfg.occupantName ?? "Empty Tile";
         Debug.Log($"{queuedAction.actingOccupantCtx.cfg.occupantName}" +
@@ -116,7 +117,7 @@ public abstract class RoleTarget
         effectsToAddToActorRightBeforeActing = null;
         specialEffectsToAddToActorRightBeforeActing = null;
         
-        if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx) return;
+        if (queuedActionCtx.actorTile.occupantCtx is not BattlerOccupantCtx) return;
         
         // Resolve Effects that resolve before mutation
         foreach (var effect in queuedActionCtx.actingOccupantCtx.currentEffects)
@@ -148,7 +149,7 @@ public abstract class RoleTarget
 
     void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
     {
-        if (queuedActionCtx.targetTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
+        if (queuedActionCtx.actorTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
         
         
         foreach (var effect in battlerCtx.currentEffects)

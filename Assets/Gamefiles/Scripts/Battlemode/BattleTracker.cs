@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EMILtools.Extensions;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
@@ -20,11 +21,17 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Enemy,
         Transitioning
     }
+
+    public FadeSettings usingActionFadeSettings;
+    [Required] public GameObject usingActionFadeTarg;
+    public float usingActionFadeAlpha = 0.6f;
+    public bool isUsingAnAction = false;
     
-    [ReadOnly] public BattleTile currentlySelectedTile;
+    [ReadOnly] public BattleTile fromTile;
     [FormerlySerializedAs("gridWorld")] [Required] public GridWorld grid;
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
+    [Required] public ActionUserViewer actionUserViewer;
     [Required] public TurnDisplay turnDisplay;
     [Required] public OpponentAI opponentAI;
     [ReadOnly] public Turn currentTurn;
@@ -41,6 +48,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public bool hasQueuedAction;
         public BattlemodeActionCtx actionCtx;
         public BattlerOccupantCtx actingOccupantCtx;
+        public BattleTile actorTile;
         public BattleTile targetTile;
         public Role lookingForTarget;  
         
@@ -62,7 +70,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             hasQueuedAction = false;
             actionCtx = null;
             actingOccupantCtx = null;
-            targetTile = null;
+            actorTile = null;
             lookingForTarget = Role.None;
         }
     }
@@ -78,6 +86,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         queuedPlayerAction.Init();
         actionsDisplay.ShowEndTurnBtn(false);
         EndEnemyTurnOrStartBattle(true);
+        FadeEX.ResetFade(usingActionFadeSettings, false, usingActionFadeTarg);
     }
     
 
@@ -100,47 +109,48 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
                 Debug.Log("Action has been exhuasted.");
             else // Normal Select Target Tile
             {
-                UseActionOnTargetTile(tile, queuedPlayerAction.lookingForTarget);
+                StartCoroutine(C_UseActionOnTargetTile(tile, queuedPlayerAction.lookingForTarget));
             }
             return;
         }
         Debug.Log("Selecting tile 2");
         grid.UnSelectAll();
-        currentlySelectedTile = tile;
+        fromTile = tile;
         queuedPlayerAction.actingOccupantCtx = null;
-        if(currentlySelectedTile.occupantCtx is BattlerOccupantCtx battlerOccupantCtx)
+        if(fromTile.occupantCtx is BattlerOccupantCtx battlerOccupantCtx)
             queuedPlayerAction.actingOccupantCtx = battlerOccupantCtx;
         HideActionsUI();
-        player.ZoomIntoTile(currentlySelectedTile, DisplayActionsUI);
+        player.ZoomIntoTile(fromTile, DisplayActionsUI);
     }
 
-    public void UseActionOnTargetTile(BattleTile tile, Role targetRole)
+    public IEnumerator C_UseActionOnTargetTile(BattleTile targetTile, Role targetRole)
     {
+        isUsingAnAction = true;
         RoleTarget selectedTarget = null;
         switch (targetRole)
         {
             case Role.Self:
-                queuedPlayerAction.targSelfSlot.selfTile = tile; 
+                queuedPlayerAction.targSelfSlot.selfTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targSelfSlot;
                 break;
             case Role.Ally:
-                queuedPlayerAction.targAllySlot.allyTile = tile; 
+                queuedPlayerAction.targAllySlot.allyTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targAllySlot;
                 break;
             case Role.Enemy:
-                queuedPlayerAction.targEnemySlot.enemyTile = tile; 
+                queuedPlayerAction.targEnemySlot.enemyTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targEnemySlot;
                 break;
             case Role.Team:
-                queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(tile); 
+                queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(targetTile); 
                 selectedTarget = queuedPlayerAction.targAllyTeamSlot;
                 break;
             case Role.EnemyTeam:
-                queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(tile); 
+                queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(targetTile); 
                 selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
                 break;
             case Role.EmptyTile:
-                queuedPlayerAction.targEmptyTileSlot.emptyTile = tile; 
+                queuedPlayerAction.targEmptyTileSlot.emptyTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targEmptyTileSlot;
                 break;
         }
@@ -151,22 +161,43 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
-        for (int currentHitcount = 1; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
+        Debug.Log("Actor: " + queuedPlayerAction.actingOccupantCtx.obj.name + ", Target: " + targetTile.occupantCtx.obj.name);
+        
+        selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
+
+        yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
+            FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
+            actionUserViewer.C_UseActionUserViewer(
+                queuedPlayerAction.actingOccupantCtx.obj, 
+                targetTile.occupantCtx.obj));
+
+        
+        for (int currentHitcount = 2; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
         {
+            // TODO: delay to be dependant on a dict storing moveanims, which itself is stored on the battlerconfig
             queuedPlayerAction.actionCtx.currentHitCount = currentHitcount;
-            selectedTarget?.ActedUponBy(queuedPlayerAction, currentlySelectedTile);
+
+            yield return new WaitForSeconds(0.1f); // delay between attack counts
+            selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
+            
         }
-        
+        yield return new WaitForSeconds(0.1f); // finish attacking
+
         // Post Movements
-        HandleMovement(currentlySelectedTile.row, currentlySelectedTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced);
+        HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced);
+
+
+        // delay for fade back in
+        yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
         
-        CoroutineRunner.Instance.RunMethodDelayed(() =>
-        {
-            queuedPlayerAction.hasQueuedAction = false;
-            queuedPlayerAction.actingOccupantCtx.ResolveAfterActingEffects(queuedPlayerAction.actionCtx);
-            UnSelectAll();
-            grid.UpdateGrid(); // Updates AP and HP through transient stats
-        }, 0.1f);
+        // delay for status effects to resolve, eventually also for status add anims
+        yield return new WaitForSeconds(0.1f);
+
+        queuedPlayerAction.hasQueuedAction = false;
+        queuedPlayerAction.actingOccupantCtx.ResolveAfterActingEffects(queuedPlayerAction.actionCtx);
+        UnSelectAll();
+        grid.UpdateGrid(); // Updates AP and HP through transient stats
+        isUsingAnAction = false;
     }
     record struct MovementPathPoint
     {
@@ -189,7 +220,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         };
         
 
-        var originTile = currentlySelectedTile;
+        var originTile = fromTile;
         var origMover = originTile.occupantCtx;
         if (origMover == null) return;
 
@@ -297,7 +328,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public void UnSelectAll()
     {
         Debug.Log("Unselecting all tiles and clearing role targets.");
-        currentlySelectedTile = null;
+        fromTile = null;
         queuedPlayerAction.actingOccupantCtx = null;
         grid.UnSelectAll();
         HideActionsUI();
@@ -317,7 +348,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         ClearRoleTargets();
         queuedPlayerAction.hasQueuedAction = true;
         queuedPlayerAction.actionCtx = actionCtx;
-        queuedPlayerAction.targetTile = tile;
+        queuedPlayerAction.actorTile = tile;
         queuedPlayerAction.lookingForTarget = actionCtx.cfg.roleTarget;
         Debug.Log("Queued action: " + actionCtx.cfg.name + " on tile: [" + tile.row + ", " + tile.col + "]");
         
@@ -367,7 +398,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void DisplayActionsUI()
     {
-        actionsDisplay.ShowDisplay(currentlySelectedTile);
+        actionsDisplay.ShowDisplay(fromTile);
     }
 
     public void HideActionsUI()
@@ -433,9 +464,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void EndEnemyTurnOrStartBattle(bool firstStart)
     {
-        Debug.Log("A");
         if (currentTurn == Turn.Transitioning) return;
-        Debug.Log("B");
         turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(firstStart));
     }
     

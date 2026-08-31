@@ -110,6 +110,15 @@ public abstract class BattlemodeEffectStrategyInstance
         return clone;
     }
     
+    protected void RemoveAllStacksOnLastHit(BattlemodeActionCtx actionCtx)
+    {
+        if (actionCtx.currentHitCount < actionCtx.maxHitCount) return;
+        Debug.Log("[Critically Exposed] Removing stacks");
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks = 0;
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks = 0;
+        GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks = 0;
+    }
+    
     // Resolve Occurances
     // ------------------
     // BeforeHitByAction,
