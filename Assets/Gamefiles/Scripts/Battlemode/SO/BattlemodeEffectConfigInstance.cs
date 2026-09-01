@@ -45,6 +45,41 @@ public class BattlemodeEffectConfigInstance
 [Serializable]
 public abstract class BattlemodeEffectStrategyInstance
 {
+    public static BattlemodeEffectStrategyInstance CreateInstance<TChild>(
+        int turnStacks,
+        int battleStacks,
+        int expeditionStacks,
+        BattlemodeEffectConfigInstance.AddOccurance addOccurance) where TChild : BattlemodeEffectStrategyInstance
+    {
+        var instance = (TChild)Activator.CreateInstance(typeof(TChild));
+        instance.cfg = new BattlemodeEffectConfigInstance();
+        instance.cfg.defaultEffectStrategyValues = instance;
+        instance.cfg.addOccurance = addOccurance;
+
+        instance.ctx = new BattlemodeEffectStrategyCtx();
+        instance.ctx.stackCtxs = new StackCtx[effectValuesLength];
+
+        for (int i = 0; i < effectValuesLength; i++)
+        {
+            var effectTime = (BattlemodeEffectConfigInstance.EffectTime)i;
+
+            int stacks = effectTime switch
+            {
+                BattlemodeEffectConfigInstance.EffectTime.Turn => turnStacks,
+                BattlemodeEffectConfigInstance.EffectTime.Battle => battleStacks,
+                BattlemodeEffectConfigInstance.EffectTime.Expedition => expeditionStacks,
+                _ => 0
+            };
+
+            instance.ctx.stackCtxs[i] = new StackCtx
+            {
+                instanceEffectTime = effectTime,
+                stacks = stacks,
+                setStacksDirectly = false
+            };
+        }
+        return instance;
+    }
     public abstract int priority { get; }
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);

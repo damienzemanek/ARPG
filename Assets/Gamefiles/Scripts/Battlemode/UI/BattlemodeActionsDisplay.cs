@@ -225,7 +225,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             firstAction = actionSlots[i];
         }
         
-        Debug.Log("B");
 
         // Info
         txt_CharacterName.text = battlerConfig.occupantName;
@@ -233,8 +232,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         txt_CharacterDmgNum.text = battlerConfig.damage.ToString();
         if (tile.occupantCtx is CharacterOccupantCtx characterCtx)
         {
-            Debug.Log("B1");
-
             apValues.gameObject.SetActive(true);
             txt_CharacterAPNum.text = characterCtx.currentAP.ToString();
             txt_CharacterMaxAPNum.text = "/" + characterCtx.maxAP.ToString();
@@ -250,8 +247,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             displ_IntentionsNumGO.SetActive(false);
             displ_PredictedNumGO.SetActive(false);
             moveAction.gameObject.SetActive(true);
-            Debug.Log("B2");
-
         }
         else if (tile.occupantCtx is EnemyOccupantCtx enemyOccupantCtx)
         {
@@ -286,7 +281,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             moveAction.gameObject.SetActive(false);
         }
         
-        Debug.Log("Display 1");
         // Recently Selected Action Setup
         ShowAction(tile, firstAction.actionCtx);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
@@ -301,12 +295,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
     public void ShowAction(BattleTile tile, BattlemodeActionCtx actionCtx)
     {
-        Debug.Log("Trying to show an action");
-        if (actionCtx == null)
-        {
-            Debug.Log("No action context provided");
-            return;
-        }
+        if (actionCtx == null) { Debug.Log("No action context provided"); return; }
+        
         Debug.Log("Showing action: " + actionCtx.cfg.actionName);
         // Populate Action Display Info
         if(tile.occupantCtx.cfg is EnemyConfig ec)          

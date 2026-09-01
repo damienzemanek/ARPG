@@ -357,6 +357,10 @@ public class GridWorld : MonoBehaviour
         Right,
         OutOfBounds,
     }
+    
+    public void HideAllDisplays() => GetAllTiles().ForEach(t => t.HideDisplay());
+    public void ClearAllTiles() => GetAllTiles().ForEach(t => t.Clear());
+    
 
     public List<BattleTile> ExcludeSection(BattlefieldSection section, List<BattleTile> inRangeTiles)
     {

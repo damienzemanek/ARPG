@@ -77,6 +77,7 @@
             ResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
             MutateValues(attackersActionCtx);
             ResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
+            AddInAdditionalEffectsFromActionCtx(attackersActionCtx);
             
             // Removing marked for removal, Only removes status effects, not special effects
             currentEffects.RemoveAll(e => e.stacksTotal <= 0);
@@ -250,13 +251,11 @@
                     {
                         if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
                         {
-                            Debug.Log("[HIT] Mutating existing regular effect: " + effectToAdd.GetType().Name);
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
                         }
                         else
                         {
                             occupantCtx.currentEffects.Add(effectToAdd);
-                            Debug.Log("[HIT] Added regular effect: " + effectToAdd.GetType().Name);
                         }
 
                     }
@@ -265,7 +264,6 @@
                         // Battlers will always have their special, but at 0 stacks, so we mutate
                         if (occupantCtx.specialEffects.Any(e => e.GetType() == effectToAdd.GetType()))
                         {
-                            Debug.Log("[HIT] Mutating existing special effect: " + effectToAdd.GetType().Name);
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
                         }
                     }
@@ -273,6 +271,28 @@
             }
             
             
+        }
+
+        public void AddInAdditionalEffectsFromActionCtx(BattlemodeActionCtx battleActionCtx)
+        {
+            if(battleActionCtx.additionalEffectsToApplyToTarget == null || battleActionCtx.additionalEffectsToApplyToTarget.Count == 0) return;
+            foreach (var addEffect in battleActionCtx.additionalEffectsToApplyToTarget)
+            {
+                if(addEffect.isSpecial)
+                {
+                    if (specialEffects.Any(e => e.GetType() == addEffect.GetType()))
+                        MutateStacksToAlreadyExistingEffect(addEffect);
+                }
+                else
+                {
+                    if (currentEffects.Any(e => e.GetType() == addEffect.GetType()))
+                    {
+                        MutateStacksToAlreadyExistingEffect(addEffect);
+                        continue;
+                    }
+                    currentEffects.Add(addEffect);
+                }
+            }
         }
         
         void MutateValues(BattlemodeActionCtx ctx)

@@ -95,6 +95,8 @@ public class BattlemodeActionConfig : ScriptableObject
     [BoxGroup("Settings")] public ActionIdentifier actionIdentifier;
     [BoxGroup("Settings")] public ActionQualifier actionQualifier;
     [BoxGroup("Settings")] public BodyPart targetedBodyPart;
+    [BoxGroup("Settings")] public bool useActionAnim = true;
+    [BoxGroup("Settings")] public bool useActionDelays = true;
     [BoxGroup("Settings")] public Sprite icon;
     [BoxGroup("Settings")] public int hitCount = 1; // STRETCH GOAL (I think this already works tho)
     [BoxGroup("Settings")] [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
@@ -104,6 +106,8 @@ public class BattlemodeActionConfig : ScriptableObject
 
     [BoxGroup("Cfgs")] public TargetingCfg targetingCfg;
     [BoxGroup("Cfgs")] public MovementCfg movementCfg;
+    [BoxGroup("Cfgs")] public MovementCfg targetMovementCfg;
+
     
     [BoxGroup("Effects")] public List<BattlemodeEffectConfigInstance> effectsToApplyToTarget = new();
     [BoxGroup("Effects")] public List<BattlemodeEffectConfigInstance> effectsToApplyToSelf = new();
@@ -131,6 +135,8 @@ public class BattlemodeActionConfig : ScriptableObject
             status = _status,
             cfg = this,
             movementCfgInstanced = this.movementCfg,
+            isArmorPiercing = false,
+            targetMovementCfgInstanced = this.targetMovementCfg,
             targetingCfgInstanced = this.targetingCfg,
             critchanceCalculatedAlready = false,
             brokenBodyPart = BattlemodeActionConfig.BodyPart.None,
@@ -176,13 +182,18 @@ public class BattlemodeActionCtx
     public bool hasCritChance;
     public bool critHit;
     public bool critchanceCalculatedAlready;
+    public bool isArmorPiercing;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;
     public BattlemodeActionConfig.BodyPart brokenBodyPart;
 
     public BattlemodeActionConfig.TargetingCfg targetingCfgInstanced;
     public BattlemodeActionConfig.MovementCfg movementCfgInstanced;
+    public BattlemodeActionConfig.MovementCfg targetMovementCfgInstanced;
     public BattlemodeActionConfig cfg;
+    
+    public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToActor;
+    public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToTarget;
 
     public void SetHealViaTargetMaxHealth(BattlerOccupantCtx targetBatlerCtx)
         => heal = targetBatlerCtx?.maxHp ?? 0;

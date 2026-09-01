@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   occupantName: Regular Speed Enemy
   icon: {fileID: 21300000, guid: e8d43f9a5163b484cbc2abd78e39c3d2, type: 3}
-  prefab: {fileID: 6444827278929016904, guid: e6eb4ff7c30024d4ab4b59990169b5f0, type: 3}
+  prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
   currentLevel: 1
   maxHP: 3
   maxArmor: 1
@@ -40,3 +40,6 @@ MonoBehaviour:
       actionOrder: 0
   intentions: 1
   defaultPredicted: 1
+  references:
+    version: 2
+    RefIds: []

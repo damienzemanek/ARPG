@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
 {
     public override int priority => 1;
     public override bool isSpecial => false;
-    [ShowInInspector] SwiftStrategyCtx swiftStrategyCtx;
+    public SwiftStrategyCtx swiftStrategyCtx;
 
     public override BattlemodeActionCtx ResolveEffectPreBeforeActing(
         OccupantCtx occupantCtx,
@@ -177,6 +178,50 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
         RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
     }
+}
+
+// next attack armor peirces and does +50% DMG, removed on use
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 1; // Last, should happen after critically exposed calculates, to check if the crit hit
+    public override bool isSpecial => false;
+    BattlemodeEffectStrategy_Stagnation newStagnationEffect 
+        => (BattlemodeEffectStrategy_Stagnation)CreateInstance<BattlemodeEffectStrategy_Stagnation>
+            (1, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
+
+    public override BattlemodeActionCtx ResolveEffectRightBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    {
+        actionCtx.isArmorPiercing = true;
+        actionCtx.deltaDmgMultiplier += 50;
+        RemoveAllStacksOnLastHit(actionCtx);
+        if (actionCtx.cfg.actionName == "Cleave Legs")
+        {
+            actionCtx.additionalEffectsToApplyToTarget ??= new List<BattlemodeEffectStrategyInstance>();
+            actionCtx.additionalEffectsToApplyToTarget.Add(newStagnationEffect);
+        }
+        return actionCtx;
+    }
+    
+    
+    
+}
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Stagnation : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 1; // Last, should happen after critically exposed caluclates, to check if the crit hit
+    public override bool isSpecial => false;
+
+    public override BattlemodeActionCtx ResolveEffectPreBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    {
+        bool increaseAP = UnityEngine.Random.Range(0, 100) < 40;
+        if (increaseAP)
+            actionCtx.apDelta += stacksTotal;
+        return actionCtx;
+    }
+    
+    
     
     
 }

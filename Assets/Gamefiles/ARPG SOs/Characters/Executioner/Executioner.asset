@@ -21,13 +21,13 @@ MonoBehaviour:
   damage: 3
   _maxEquippableActions: 3
   equippedActions:
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
+  - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
+  - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
+  - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
   AllAvaliableActions:
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
+  - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
+  - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
+  - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
   ForcedActions: []
   specialEffects: []
   maxAP: 777

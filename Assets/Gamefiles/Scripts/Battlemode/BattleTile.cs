@@ -10,6 +10,7 @@ using UnityEngine.Serialization;
 
 public class BattleTile : MonoBehaviour
 {
+    public Vector3 worldOccupantSpawnPos => transform.position + occupantSpawnOffset;
     [Flags]
     public enum ColRank
     {
@@ -110,7 +111,8 @@ public class BattleTile : MonoBehaviour
         display.SetActive(occupantCtx != null);
     }
     
-
+    public void HideDisplay() => display.SetActive(false);
+    
     public void HideAndMakeUnSelectable()
     {
         Clear();

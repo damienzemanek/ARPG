@@ -86,7 +86,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         queuedPlayerAction.Init();
         actionsDisplay.ShowEndTurnBtn(false);
         EndEnemyTurnOrStartBattle(true);
-        FadeEX.ResetFade(usingActionFadeSettings, false, usingActionFadeTarg);
+        FadeEX.ResetFade(usingActionFadeSettings, false, usingActionFadeTarg, 0);
     }
     
 
@@ -168,13 +168,24 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
         
         CalculatedMovement calcMovement = new();
-        PrepareMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        CalculatedMovement targetCalcMovement = new();
+        bool moves = DoesPrepareMovement(fromTile, BattlefieldSection.Right, false, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
-        yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
-            FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
-            actionUserViewer.C_UseActionUserViewer(
-                queuedPlayerAction.actingOccupantCtx.obj, 
-                targetTile?.occupantCtx.obj));
+        Vector3 actorFinalPos = queuedPlayerAction.actingOccupantCtx.obj.transform.position;
+        Vector3 targetFinalPos = targetTile.worldOccupantSpawnPos;
+        
+        if (moves) actorFinalPos = calcMovement.newPath[^1].tile.worldOccupantSpawnPos;
+        if (targetMoves) targetFinalPos = targetCalcMovement.newPath[^1].tile.worldOccupantSpawnPos;
+
+        grid.HideAllDisplays();
+        if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
+            yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
+                FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
+                actionUserViewer.C_UseActionUserViewer(
+                    queuedPlayerAction.actingOccupantCtx.obj, actorFinalPos,
+                    targetTile.occupantCtx.obj, targetFinalPos,
+                    true));
 
         
         for (int currentHitcount = 2; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
@@ -186,17 +197,23 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
             
         }
-        yield return new WaitForSeconds(0.1f); // finish attacking
+        if(queuedPlayerAction.actionCtx.cfg.useActionDelays)
+            yield return new WaitForSeconds(0.1f); // finish attacking
 
         // Post Movements
         HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        HandleMovement(targetTile.row, targetTile.col, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
 
 
         // delay for fade back in
-        yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
+        if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
+            yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
+        
+        grid.ClearAllTiles();
         
         // delay for status effects to resolve, eventually also for status add anims
-        yield return new WaitForSeconds(0.1f);
+        if(queuedPlayerAction.actionCtx.cfg.useActionDelays)
+            yield return new WaitForSeconds(0.1f);
 
         queuedPlayerAction.hasQueuedAction = false;
         queuedPlayerAction.actingOccupantCtx.ResolveAfterActingEffects(queuedPlayerAction.actionCtx);
@@ -219,10 +236,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public TileDirection dir;
     }
 
-    void PrepareMovement(int myRow, int myCol, MovementCfg move, ref CalculatedMovement calcMovement)
+    bool DoesPrepareMovement(BattleTile forTile, BattlefieldSection preventMovementIntoSection, bool preventCenterSection, MovementCfg move, ref CalculatedMovement calcMovement)
     {
-        if (move.direction == MovementDirection.None) return;
-        if (move.amount <= 0) return;
+        if (move.direction == MovementDirection.None) return false;
+        if (move.amount <= 0) return false;
 
         calcMovement.dir = move switch
         {
@@ -234,11 +251,22 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         };
         
 
-        calcMovement.originTile = fromTile;
-        if (calcMovement.originTile.occupantCtx == null) return;
-
+        calcMovement.originTile = forTile;
+        if (calcMovement.originTile.occupantCtx == null) { Debug.LogError("Origin tile occupant is null"); return false; }
+ 
         // Distance 1: normal move or direct swap.
-        if (move.amount == 1) return;
+        if (move.amount == 1)
+        {
+            var destinationTile = grid.GetTileToThe(calcMovement.dir, forTile.row, forTile.col);
+            if (destinationTile == null) return false;
+            if (destinationTile.section == preventMovementIntoSection) return false;
+            if (preventCenterSection && destinationTile.section == BattlefieldSection.Contested) return false;
+            calcMovement.newPath = new[]
+            {
+                new MovementPathPoint { tile = destinationTile, occupantCtx = calcMovement.originTile.occupantCtx }
+            };
+            return true;
+        }
 
 
         calcMovement.savePath = new List<MovementPathPoint>();
@@ -246,10 +274,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         // Snapshot the entire path BEFORE modifying any tiles.
         for (int i = 0; i <= move.amount; i++)
         {
-            var tile = grid.GetTileToThe(calcMovement.dir, myRow, myCol, i);
+            var tile = grid.GetTileToThe(calcMovement.dir, forTile.row, forTile.col, i);
 
             if (tile == null) break;
-            if (tile.section == BattlefieldSection.Right) break;
+            if (tile.section == preventMovementIntoSection) break;
+            if (preventCenterSection && tile.section == BattlefieldSection.Contested) break;
             
             calcMovement.savePath.Add(new MovementPathPoint
             {
@@ -276,6 +305,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             tile = calcMovement.savePath[calcMovement.actualAmount].tile,
             occupantCtx = calcMovement.originTile.occupantCtx
         };
+        
+        return true;
     }
     
     void HandleMovement(int myRow, int myCol, MovementCfg move, ref CalculatedMovement calcMovement)
@@ -283,15 +314,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         if (move.direction == MovementDirection.None) return;
         if (move.amount <= 0) return;
         if (calcMovement.originTile.occupantCtx == null) return;
-
-
+        
         if (move.amount == 1)
         {
-            var destinationTile = grid.GetTileToThe(calcMovement.dir, myRow, myCol);
-
-            if (destinationTile == null) return;
-            if (destinationTile.section == BattlefieldSection.Right) return;
-
+            var destinationTile = calcMovement.newPath[^1].tile;
             if (destinationTile.occupantCtx != null) destinationTile.SwapOccupants(calcMovement.originTile, grid);
             else destinationTile.TransferInOccupant(calcMovement.originTile, grid);
             return;

@@ -16,14 +16,14 @@ public class Btn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!enter) return;
-        Debug.Log($"[{gameObject.name}] Btn Hovered Over");
+        //Debug.Log($"[{gameObject.name}] Btn Hovered Over");
         onEnter?.Invoke();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!exit) return;
-        Debug.Log($"[{gameObject.name}] Btn Hovered Out");
+        //Debug.Log($"[{gameObject.name}] Btn Hovered Out");
         onExit?.Invoke();
     }
 

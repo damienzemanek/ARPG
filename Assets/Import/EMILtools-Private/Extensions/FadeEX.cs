@@ -12,22 +12,23 @@ namespace EMILtools.Extensions
             FadeSettings fade,
             Object targ)
         {
-            ResetFade(fade, true, targ);
+            ResetFade(fade, true, targ, 1f);
 
             FadeToTransparent(
                 fade,
                 targ,
-                () => ResetFade(fade, false, targ)
+                () => ResetFade(fade, false, targ, 0f)
             );
         }
 
         public static void ResetFade(
             FadeSettings fade,
             bool _active,
-            Object targ)
+            Object targ, 
+            float alphaVal)
         {
             Color color = fade.GetColor(targ);
-            color.a = 1f;
+            color.a = alphaVal;
 
             fade.SetColor(color, targ);
             fade.GetGO(targ)?.gameObject.SetActive(_active);

@@ -42,8 +42,6 @@ public abstract class RoleTarget
         BattlerOccupantCtx _targetBattlerCtx = null;
         List<BattlemodeEffectStrategyInstance> effectsToAddToActorBeforeActing = null;
         List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorBeforeActing = null;
-        List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
-        List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
 
         if (targetTile.occupantCtx is not BattlerOccupantCtx targetBattlerCtx) // Empty Tile 
         {
@@ -95,6 +93,7 @@ public abstract class RoleTarget
     
         
         ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
+        AddInAdditionalEffectsToActor(queuedAction, queuedAction.actionCtx);
         
         // Only removes status effects, not special effects
         queuedAction.actingOccupantCtx.currentEffects.RemoveAll(effect => effect.stacksTotal <= 0);
@@ -161,6 +160,7 @@ public abstract class RoleTarget
         List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
         
         effectsToAddToActorAfterActing = new List<BattlemodeEffectStrategyInstance>();
+        
         foreach(var effectCfg in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
             if (effectCfg.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.AfterAction)
             {
@@ -175,7 +175,6 @@ public abstract class RoleTarget
                     effectsToAddToActorAfterActing ??= new List<BattlemodeEffectStrategyInstance>();
                     effectsToAddToActorAfterActing.Add(effectCfg.CreateNewEffectInstance());
                 }
-
             }
         
         
@@ -207,6 +206,31 @@ public abstract class RoleTarget
             }
         }
     }
+    
+    public void AddInAdditionalEffectsToActor(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+    {
+        if(actingActionCtx.additionalEffectsToApplyToActor == null || actingActionCtx.additionalEffectsToApplyToActor.Count == 0) return;
+        foreach (var addEffect in actingActionCtx.additionalEffectsToApplyToActor)
+        {
+            if(addEffect.isSpecial)
+            {
+                if (queuedActionCtx.actingOccupantCtx.specialEffects
+                .Any(e => e.GetType() == addEffect.GetType()))
+                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+            }
+            else
+            {
+                if (queuedActionCtx.actingOccupantCtx.currentEffects
+                .Any(e => e.GetType() == addEffect.GetType()))
+                {
+                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+                    continue;
+                }
+                queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
+            }
+        }
+    }
+    
 }
 
 public sealed class SelfRoleTarget : RoleTarget
