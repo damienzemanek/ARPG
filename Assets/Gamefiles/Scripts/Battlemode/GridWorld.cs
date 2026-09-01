@@ -344,8 +344,6 @@ public class GridWorld : MonoBehaviour
             .Distinct()
             .ToList();
         
-        foreach (var t in inRangeTiles)
-            t.InRange();
         
         return inRangeTiles;
     }
@@ -362,13 +360,13 @@ public class GridWorld : MonoBehaviour
     public void ClearAllTiles() => GetAllTiles().ForEach(t => t.Clear());
     
 
-    public List<BattleTile> ExcludeSection(BattlefieldSection section, List<BattleTile> inRangeTiles)
+    public List<BattleTile> ExcludeSection(BattlefieldSection excludeSection, List<BattleTile> inRangeTiles)
     {
         var ret = new List<BattleTile>(inRangeTiles);
         if (ret == null) throw new ArgumentNullException(nameof(ret));
         
 
-        if (section == BattlefieldSection.Left)
+        if (excludeSection == BattlefieldSection.Left)
         {
             foreach (var tile in inRangeTiles)
             {
@@ -377,23 +375,25 @@ public class GridWorld : MonoBehaviour
                    tile.colRank == BattleTile.ColRank.Left3)
                     ret.Remove(tile);
                 if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+                if(tile.section == excludeSection) ret.Remove(tile);
             }
             
             return ret;
         }
 
-        if (section == BattlefieldSection.Contested)
+        if (excludeSection == BattlefieldSection.Contested)
         {
             foreach (var tile in inRangeTiles)
             {
                 if(tile.colRank == BattleTile.ColRank.Center) ret.Remove(tile);
                 if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+                if(tile.section == excludeSection) ret.Remove(tile);
             }
 
             return ret;
         }
 
-        if (section == BattlefieldSection.Right)
+        if (excludeSection == BattlefieldSection.Right)
         {
             foreach (var tile in inRangeTiles)
             {
@@ -402,6 +402,7 @@ public class GridWorld : MonoBehaviour
                    tile.colRank == BattleTile.ColRank.Right3)
                     ret.Remove(tile);
                 if(tile.section == BattlefieldSection.OutOfBounds) ret.Remove(tile);
+                if(tile.section == excludeSection) ret.Remove(tile);
             }
             return ret;
         }

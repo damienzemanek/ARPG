@@ -10,10 +10,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33f15211-8933-4dbc-a0b6-5e464d0217ce" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Import/Adventure Forge Studio/Modular Dungeon Pack/MDP_Textures/MDP_Tex_Prebaked_Textures/MDP_Tex_PreB_4K/MDP_Tex_Preb_4K_SquareStoneTilesWithMoss/MDP_Tex_PreB_4K_SquareStoneTilesWithMoss_AlbedoTransparency.tif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Import/Adventure Forge Studio/Modular Dungeon Pack/MDP_Textures/MDP_Tex_Prebaked_Textures/MDP_Tex_PreB_4K/MDP_Tex_Preb_4K_SquareStoneTilesWithMoss/MDP_Tex_PreB_4K_SquareStoneTilesWithMoss_MetallicSmoothness.tif.meta" beforeDir="false" />
-    </list>
+    <list default="true" id="33f15211-8933-4dbc-a0b6-5e464d0217ce" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
