@@ -77,7 +77,7 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
         if(stacksTotal == 0) return actionCtx;
         actionCtx.hasCritChance = true;
 
-        if (actionCtx.critchanceCalculatedAlready)
+        if (actionCtx.critChanceCalculatedAlready)
         {
             RemoveAllStacksOnLastHit(actionCtx);
             return actionCtx;
@@ -112,7 +112,7 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
 
         if(stacksTotal == 0) return actionCtx;
         actionCtx.hasCritChance = true;
-        if (actionCtx.critchanceCalculatedAlready)
+        if (actionCtx.critChanceCalculatedAlready)
         {
             RemoveAllStacksOnLastHit(actionCtx);
             return actionCtx;

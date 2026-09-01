@@ -138,7 +138,7 @@ public class BattlemodeActionConfig : ScriptableObject
             isArmorPiercing = false,
             targetMovementCfgInstanced = this.targetMovementCfg,
             targetingCfgInstanced = this.targetingCfg,
-            critchanceCalculatedAlready = false,
+            critChanceCalculatedAlready = false,
             brokenBodyPart = BattlemodeActionConfig.BodyPart.None,
         };
 
@@ -181,7 +181,7 @@ public class BattlemodeActionCtx
     public float deltaArmorMultiplier;
     public bool hasCritChance;
     public bool critHit;
-    public bool critchanceCalculatedAlready;
+    public bool critChanceCalculatedAlready;
     public bool isArmorPiercing;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;

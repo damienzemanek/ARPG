@@ -39,8 +39,6 @@ public class ActionUserViewer : MonoBehaviour
         }
         else
         {
-            Vector3 targetOriginalPosition = target.transform.position;
-
             sequence
                 // Move both into position together
                 .Append(actor.transform.DOMove(leftLoc.position, tweenDuration))
