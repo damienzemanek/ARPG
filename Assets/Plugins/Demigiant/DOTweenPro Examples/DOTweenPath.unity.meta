@@ -1,11 +1,7 @@
 fileFormatVersion: 2
 guid: a351b59ca54a0bc4083c35844da13a61
 DefaultImporter:
+  externalObjects: {}
   userData: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 32416
-  packageName: DOTween Pro
-  packageVersion: 1.0.430
-  assetPath: Assets/Plugins/Demigiant/DOTweenPro Examples/DOTweenPath.unity
-  uploadId: 939690
+  assetBundleName: 
+  assetBundleVariant: 
