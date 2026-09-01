@@ -195,7 +195,7 @@ public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategy
         actionCtx.isArmorPiercing = true;
         actionCtx.deltaDmgMultiplier += 50;
         RemoveAllStacksOnLastHit(actionCtx);
-        if (actionCtx.cfg.actionName == "Cleave Legs")
+        if (actionCtx.cfg.actionName == "Cleave Legs") // change to: if has body compromise, add stagnation
         {
             actionCtx.additionalEffectsToApplyToTarget ??= new List<BattlemodeEffectStrategyInstance>();
             actionCtx.additionalEffectsToApplyToTarget.Add(newStagnationEffect);
