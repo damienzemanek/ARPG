@@ -184,7 +184,7 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategyInstance
 {
-    public override int priority => 1; // Last, should happen after critically exposed calculates, to check if the crit hit
+    public override int priority => 1; // Higher number, the higher priority, the earlier it goes
     public override bool isSpecial => false;
     BattlemodeEffectStrategy_Stagnation newStagnationEffect 
         => (BattlemodeEffectStrategy_Stagnation)CreateInstance<BattlemodeEffectStrategy_Stagnation>
@@ -202,15 +202,12 @@ public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategy
         }
         return actionCtx;
     }
-    
-    
-    
 }
 
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Stagnation : BattlemodeEffectStrategyInstance
 {
-    public override int priority => 1; // Last, should happen after critically exposed caluclates, to check if the crit hit
+    public override int priority => 1; 
     public override bool isSpecial => false;
 
     public override BattlemodeActionCtx ResolveEffectPreBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
@@ -220,8 +217,31 @@ public sealed class BattlemodeEffectStrategy_Stagnation : BattlemodeEffectStrate
             actionCtx.apDelta += stacksTotal;
         return actionCtx;
     }
+}
+
+
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Mark : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 1;  // Higher number, the higher priority, the earlier it goes
+    public override bool isSpecial => false;
     
-    
-    
-    
+    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    {
+        if (!actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.MarkHit)) return actionCtx;
+        if (stacksTotal <= 0) return actionCtx;
+        
+        if (actionCtx.markStrategy != null)
+        {
+            actionCtx.markStrategy.ResolveMarkStrategy(occupantCtx, actionCtx);
+
+            if (actionCtx.currentHitCount < actionCtx.maxHitCount) return actionCtx;
+            if (actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.ConsumeMark))
+                ProgressiveStackRemoval(actionCtx, 1);
+        }
+        else Debug.LogError("MarkHit Action hit marked target, no mark strategy set");
+        
+        return actionCtx;
+    }
 }

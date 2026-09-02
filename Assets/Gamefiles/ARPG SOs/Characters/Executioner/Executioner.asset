@@ -19,15 +19,17 @@ MonoBehaviour:
   maxHP: 18
   maxArmor: 7
   damage: 3
-  _maxEquippableActions: 3
+  _maxEquippableActions: 4
   equippedActions:
   - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
   - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
   - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
+  - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
   - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
   - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
+  - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
   ForcedActions: []
   specialEffects: []
   maxAP: 777

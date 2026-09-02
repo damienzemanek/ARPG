@@ -153,6 +153,35 @@ public abstract class BattlemodeEffectStrategyInstance
         GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks = 0;
         GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks = 0;
     }
+
+    public void ProgressiveStackRemoval(BattlemodeActionCtx actionCtx, int amount)
+    {
+        for (int i = 1; i <= amount; i++)
+        {
+            ref var turnStacks = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks;
+            if (turnStacks > 0)
+            {
+                turnStacks--;
+                continue;
+            }
+            
+            ref var battleStacks = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks;
+            if (battleStacks > 0)
+            {
+                battleStacks--;
+                continue;
+            }
+
+            ref var expeditionStacks = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks;
+            if (expeditionStacks > 0)
+            {
+                expeditionStacks--;
+            }
+            else
+                Debug.Log("No more stacks of Mark to Consume");
+
+        }
+    }
     
     // Resolve Occurances
     // ------------------

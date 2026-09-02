@@ -9,6 +9,7 @@ public class BattlemodeActionConfig : ScriptableObject
 {
     bool isEmptyRoleTarget => roleTarget == Role.EmptyTile;
     bool isIncreasingArmor => armorIncreasePercentage > 0;
+    bool isMarkHitting => actionQualifier.HasFlag(ActionQualifier.MarkHit);
     
     public enum Role
     {
@@ -85,6 +86,8 @@ public class BattlemodeActionConfig : ScriptableObject
         None = 0,
         Exhuast = 1 << 0,
         UnExhuastAll = 1 << 1,
+        MarkHit = 1 << 2,
+        ConsumeMark = 1 << 3,
     }
     
     [BoxGroup("Settings")] public string actionName;
@@ -94,6 +97,7 @@ public class BattlemodeActionConfig : ScriptableObject
     [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
     [BoxGroup("Settings")] public ActionIdentifier actionIdentifier;
     [BoxGroup("Settings")] public ActionQualifier actionQualifier;
+    [BoxGroup("Settings")] [ShowIf("isMarkHitting")] public MarkStrategy markStrategy;
     [BoxGroup("Settings")] public BodyPart targetedBodyPart;
     [BoxGroup("Settings")] public bool useActionAnim = true;
     [BoxGroup("Settings")] public bool useActionDelays = true;
@@ -140,6 +144,7 @@ public class BattlemodeActionConfig : ScriptableObject
             targetingCfgInstanced = this.targetingCfg,
             critChanceCalculatedAlready = false,
             brokenBodyPart = BattlemodeActionConfig.BodyPart.None,
+            markStrategy = markStrategy,
         };
 
         if (actingBatlerCtx is CharacterOccupantCtx)
@@ -183,6 +188,7 @@ public class BattlemodeActionCtx
     public bool critHit;
     public bool critChanceCalculatedAlready;
     public bool isArmorPiercing;
+    public int marksToConsume;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;
     public BattlemodeActionConfig.BodyPart brokenBodyPart;
@@ -191,6 +197,8 @@ public class BattlemodeActionCtx
     public BattlemodeActionConfig.MovementCfg movementCfgInstanced;
     public BattlemodeActionConfig.MovementCfg targetMovementCfgInstanced;
     public BattlemodeActionConfig cfg;
+    public MarkStrategy markStrategy;
+
     
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToActor;
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToTarget;

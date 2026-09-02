@@ -62,3 +62,8 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
         name: Stagnation
         description: 'All Attacks: 40% chance to cost +(Stacks) AP'
+    - Key: BattlemodeEffectStrategy_Mark
+      Value:
+        icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+        name: Mark
+        description: Certain attacks benefit from hitting a marked target.
