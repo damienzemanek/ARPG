@@ -11,6 +11,8 @@ using UnityEngine.Serialization;
 public class BattleTile : MonoBehaviour
 {
     public Vector3 worldOccupantSpawnPos => transform.position + occupantSpawnOffset;
+    public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
+
     [Flags]
     public enum ColRank
     {
@@ -33,7 +35,6 @@ public class BattleTile : MonoBehaviour
         Bottom = 1 << 2,
     }
     
-    public bool occupied => occupantCtx != null && occupantCtx.cfg != null;
     
     [BoxGroup("Position")] [ReadOnly] public ColRank colRank;
     [BoxGroup("Position")] [ReadOnly] public RowRank rowRank;
