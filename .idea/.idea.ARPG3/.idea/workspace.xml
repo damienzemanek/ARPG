@@ -23,10 +23,69 @@
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1,
-  "fromUser": false
-}]]></component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000288752510262" />
+      <entry key="S2" value="1.135141345508699" />
+      <entry key="S5" value="1.9820183475063082" />
+      <entry key="S10" value="2.9780739040201176" />
+      <entry key="S30" value="4.621808184032448" />
+      <entry key="S60" value="5.75151235729593" />
+      <entry key="M2" value="7.718943325446736" />
+      <entry key="M5" value="26.818890516669654" />
+      <entry key="M10" value="73.7306876212766" />
+      <entry key="M15" value="116.67356273265867" />
+      <entry key="M30" value="199.84134118367652" />
+      <entry key="H1" value="269.8631960576037" />
+      <entry key="H2" value="316.0432934882529" />
+      <entry key="H4" value="342.6684194040733" />
+      <entry key="D1" value="366.91111810061733" />
+      <entry key="W1" value="371.26794221694604" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.006045175756024962" />
+      <entry key="MS500" value="0.3599828611946768" />
+      <entry key="S2" value="0.7952834569917763" />
+      <entry key="S5" value="1.2223983764488016" />
+      <entry key="S10" value="1.7835847830395344" />
+      <entry key="S30" value="3.1032285131243356" />
+      <entry key="S60" value="4.100863361646224" />
+      <entry key="M2" value="5.351768662153937" />
+      <entry key="M5" value="12.32528036961559" />
+      <entry key="M10" value="25.840501878362968" />
+      <entry key="M15" value="36.442331774792784" />
+      <entry key="M30" value="54.84726310410256" />
+      <entry key="H1" value="69.17662416539845" />
+      <entry key="H2" value="78.26646987671714" />
+      <entry key="H4" value="83.40770663516933" />
+      <entry key="D1" value="88.0347504301229" />
+      <entry key="W1" value="88.86126837382875" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.010308656816349475" />
+      <entry key="MS500" value="0.4171713249685108" />
+      <entry key="S2" value="1.3036742991439842" />
+      <entry key="S5" value="2.834983631321865" />
+      <entry key="S10" value="4.525334685198902" />
+      <entry key="S30" value="7.614554897909235" />
+      <entry key="S60" value="9.785468679761182" />
+      <entry key="M2" value="13.026171992590482" />
+      <entry key="M5" value="39.09602395424836" />
+      <entry key="M10" value="99.51749878853306" />
+      <entry key="M15" value="153.064186954383" />
+      <entry key="M30" value="254.64856664589732" />
+      <entry key="H1" value="339.0141590346285" />
+      <entry key="H2" value="394.29512223404004" />
+      <entry key="H4" value="426.06829040246026" />
+      <entry key="D1" value="454.94448504738904" />
+      <entry key="W1" value="460.1290109676712" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3IjrZdpLa64iRu4NDhw2tqnoMUL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -34,6 +93,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -48,7 +108,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Inspections-C#"
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#"
   }
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
