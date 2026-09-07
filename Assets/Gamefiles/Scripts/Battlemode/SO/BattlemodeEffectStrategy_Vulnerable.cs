@@ -9,7 +9,7 @@ public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrate
     public override int priority => 1;
     public override bool isSpecial => false;
 
-    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    public override BattlemodeActionCtx TargetResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
         var newDmgVal = Mathf.CeilToInt(actionCtx.dmg * 1.5f); // *1.5, or 50% more dmg taken
         actionCtx.dmg = newDmgVal;
@@ -87,11 +87,14 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
         {
             if (!actionCtx.critHit)
                 actionCtx.critHit = UnityEngine.Random.Range(0, 100) < 50;
+
         }
         else if (stacksTotal > 1) actionCtx.critHit = true;
         
-        RemoveAllStacksOnLastHit(actionCtx);
+        if(actionCtx.critHit) Debug.Log("[Critical Avaliable] Crit hit!");
+        else Debug.Log("[Critical Avaliable] Crit missed!");
         
+        RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
     }
 }
@@ -102,7 +105,7 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
     public override int priority => 2;
     public override bool isSpecial => false;
 
-    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    public override BattlemodeActionCtx TargetResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
         // Crits cannot target the self or allys
         switch (actionCtx.cfg.roleTarget) {
@@ -125,8 +128,10 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
         }
         else if (stacksTotal > 1) actionCtx.critHit = true;
         
-        RemoveAllStacksOnLastHit(actionCtx);
+        if(actionCtx.critHit) Debug.Log("[Critically Exposed] Crit hit!");
+        else Debug.Log("[Critically Exposed] Crit missed!");
         
+        RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
         
     }
@@ -161,7 +166,7 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
     public override int priority => 0; // Last, should happen after critically exposed caluclates, to check if the crit hit
     public override bool isSpecial => false;
     
-    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    public override BattlemodeActionCtx TargetResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
         if (!actionCtx.hasCritChance) return actionCtx;
         if (actionCtx.bodyPartAlreadyBrokenThisAction || !actionCtx.critHit)
@@ -175,6 +180,7 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
             actionCtx.brokenBodyPart = actionCtx.cfg.targetedBodyPart;
             Debug.Log("[Body Compromised] BONE BREAK! : " + actionCtx.brokenBodyPart + " is broken");
         }
+        else Debug.Log("[Body Compromised] No bone break : " + actionCtx.brokenBodyPart + " is not broken");
         RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
     }
@@ -186,9 +192,8 @@ public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategy
 {
     public override int priority => 1; // Higher number, the higher priority, the earlier it goes
     public override bool isSpecial => false;
-    BattlemodeEffectStrategy_Stagnation newStagnationEffect 
-        => (BattlemodeEffectStrategy_Stagnation)CreateInstance<BattlemodeEffectStrategy_Stagnation>
-            (1, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
+    BattlemodeEffectStrategy_Stagnation newStagnationEffect => CreateInstance<BattlemodeEffectStrategy_Stagnation>
+        (1, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
 
     public override BattlemodeActionCtx ResolveEffectRightBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
@@ -227,7 +232,7 @@ public sealed class BattlemodeEffectStrategy_Mark : BattlemodeEffectStrategyInst
     public override int priority => 1;  // Higher number, the higher priority, the earlier it goes
     public override bool isSpecial => false;
     
-    public override BattlemodeActionCtx ResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+    public override BattlemodeActionCtx TargetResolveEffectBeforeHitByAction(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
         if (!actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.MarkHit)) return actionCtx;
         if (stacksTotal <= 0) return actionCtx;

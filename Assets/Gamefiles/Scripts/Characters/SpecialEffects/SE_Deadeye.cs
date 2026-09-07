@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,4 +28,31 @@ public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
 
         return actionCtx;
     }
+}
+
+
+// Attacks that consume mark will apply 2 additional marks to the target. 
+// Which essentially extends the mark duration by 1 and this turn.
+[Serializable]
+public sealed class SE_DoubleJeopardy : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 1;
+    public override bool isSpecial => true;
+    BattlemodeEffectStrategy_Mark newMarkEffect => CreateInstance<BattlemodeEffectStrategy_Mark>
+        (2, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
+
+    public override BattlemodeActionCtx ResolveEffectAfterActing(
+        OccupantCtx occupantCtx, 
+        BattlemodeActionCtx actionCtx)
+    {
+        if(stacksTotal <= 0) return actionCtx;
+        Debug.Log("[SP EFFECT] Double Jeopardy: Resolving");
+        if (!actionCtx.cfg.actionQualifier.HasFlag(BattlemodeActionConfig.ActionQualifier.ConsumeMark)) return actionCtx;
+        Debug.Log("[SP EFFECT] Double Jeopardy: Guard Clause Passed, Applying: Adding 2 Marks to target");
+        actionCtx.additionalEffectsToApplyToTarget ??= new List<BattlemodeEffectStrategyInstance>();
+        actionCtx.additionalEffectsToApplyToTarget.Add(newMarkEffect);
+        RemoveAllStacksOnLastHit(actionCtx);
+        return actionCtx;
+    }
+    
 }

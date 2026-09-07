@@ -171,8 +171,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     // Future: Reset most recetly selected action on battle complete
     public void ShowDisplay(BattleTile tile)
     {
-        Debug.Log("Showing display");
         if (tile.occupantCtx.cfg is not BattlerConfig battlerConfig) return;
+        Debug.Log("Showing Display for Occupant: " + tile.occupantCtx.cfg.name);
 
         currentlySelectedTile = tile; // Grab
         effectDisplayPool.ReleaseAll(); // Reset Effect Display
@@ -184,8 +184,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         endTurnBtn.SetActive(false);
         bool foundFirstHandAction = false;
         BattlemodeAction firstAction = null;
-        
-        Debug.Log("A");
         
         // Action Slot Enabling
         for (int i = 0; i < maxAmountOfTotalActionsAvaliable; i++)
@@ -224,6 +222,14 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             foundFirstHandAction = true;
             firstAction = actionSlots[i];
         }
+        
+        // Move Action Reset
+        var moveActionCtx = moveActionConfig.GenerateActionCtx(
+            BattlemodeActionCtx.Status.Acting,
+            null,
+            null,
+            1);
+        moveAction.InitAction(moveActionCtx);
         
 
         // Info
@@ -282,7 +288,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         }
         
         // Recently Selected Action Setup
-        ShowAction(tile, firstAction.actionCtx);
+        if(firstAction != null && firstAction.actionCtx != null)
+            ShowAction(tile, firstAction.actionCtx);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 

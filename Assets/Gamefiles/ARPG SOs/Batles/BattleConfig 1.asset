@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8d3dbf272ed547439ce7227b29391ac, type: 3}
-  m_Name: BattleConfig
+  m_Name: BattleConfig 1
   m_EditorClassIdentifier: Assembly-CSharp::BattleConfig
   rows:
   - colPositions:
@@ -45,7 +45,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 2
       row: 1
-      occupant: {fileID: 11400000, guid: e87a1760c12e56444812bd90e3472fca, type: 2}
+      occupant: {fileID: 0}
     - col: 3
       row: 1
       occupant: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 5
       row: 1
-      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
+      occupant: {fileID: 0}
     - col: 6
       row: 1
       occupant: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 1
       row: 2
-      occupant: {fileID: 11400000, guid: f1a27083f0cbed04799c8c6e0051ef70, type: 2}
+      occupant: {fileID: 0}
     - col: 2
       row: 2
       occupant: {fileID: 0}

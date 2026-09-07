@@ -19,23 +19,38 @@ MonoBehaviour:
   maxHP: 18
   maxArmor: 7
   damage: 3
-  _maxEquippableActions: 4
+  _maxEquippableActions: 6
   equippedActions:
   - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
   - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
   - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
   - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
+  - {fileID: 11400000, guid: 005fbd5c6da9e8548b23d0d0d819fded, type: 2}
+  - {fileID: 11400000, guid: 95a8a6e4f20d6c840ae9ba669d55d717, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
   - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
   - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
   - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
+  - {fileID: 11400000, guid: 005fbd5c6da9e8548b23d0d0d819fded, type: 2}
+  - {fileID: 11400000, guid: 95a8a6e4f20d6c840ae9ba669d55d717, type: 2}
   ForcedActions: []
-  specialEffects: []
+  specialEffects:
+  - addOccurance: 0
+    defaultEffectStrategyValues:
+      rid: 9097403365658722433
   maxAP: 777
   maxHandSize: 6
   characterSprite: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
   characterPortrait: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 9097403365658722433
+      type: {class: SE_DoubleJeopardy, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 0
+            setStacksDirectly: 0

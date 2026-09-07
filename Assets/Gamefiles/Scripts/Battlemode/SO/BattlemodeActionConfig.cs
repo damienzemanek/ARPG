@@ -188,7 +188,6 @@ public class BattlemodeActionCtx
     public bool critHit;
     public bool critChanceCalculatedAlready;
     public bool isArmorPiercing;
-    public int marksToConsume;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;
     public BattlemodeActionConfig.BodyPart brokenBodyPart;

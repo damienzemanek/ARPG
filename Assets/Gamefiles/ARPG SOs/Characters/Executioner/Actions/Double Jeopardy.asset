@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Move
+  m_Name: Double Jeopardy
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Move
-  description: Move your character into a different location
-  apCost: 1
-  roleTarget: 6
-  moveToSelectedEmptyTile: 1
-  actionIdentifier: 6
+  actionName: Double Jeopardy
+  description: Double Jeopardy Description
+  apCost: 3
+  roleTarget: 1
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 5
   actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 0
-  useActionAnim: 0
+  targetedBodyPart: 2
+  useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
+  icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
   dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 2
+    targetingPatternAdditive: 1
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
@@ -44,8 +44,19 @@ MonoBehaviour:
     direction: 0
     amount: 0
   effectsToApplyToTarget: []
-  effectsToApplyToSelf: []
+  effectsToApplyToSelf:
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: 9097403365658722400
   aoe: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 9097403365658722400
+      type: {class: SE_DoubleJeopardy, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 2
+            setStacksDirectly: 0

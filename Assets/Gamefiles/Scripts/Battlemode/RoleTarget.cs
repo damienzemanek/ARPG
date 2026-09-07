@@ -92,8 +92,10 @@ public abstract class RoleTarget
             targetTile.TransferInOccupant(fromTile, BattleTracker.Instance.grid);
     
         
-        ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
-        AddInAdditionalEffectsToActor(queuedAction, queuedAction.actionCtx);
+        // Mabye this was needed? Switched it over to battle tracker, 
+        // pretty sure enemies dont resolve for this yet
+        // ResolveAfterActorEffects(queuedAction, queuedAction.actionCtx);
+        // AddInAdditionalEffectsToActor(queuedAction, queuedAction.actionCtx);
         
         // Only removes status effects, not special effects
         queuedAction.actingOccupantCtx.currentEffects.RemoveAll(effect => effect.stacksTotal <= 0);
@@ -145,91 +147,7 @@ public abstract class RoleTarget
     }
     
     
-
-    void ResolveAfterActorEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
-    {
-        if (queuedActionCtx.actorTile.occupantCtx is not BattlerOccupantCtx battlerCtx) return;
-        
-        
-        foreach (var effect in battlerCtx.currentEffects)
-            effect.ResolveEffectAfterActing(battlerCtx, actingActionCtx);
-        foreach (var spEffect in battlerCtx.specialEffects)
-            spEffect.ResolveEffectAfterActing(battlerCtx, actingActionCtx);
-        
-        List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
-        List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
-        
-        effectsToAddToActorAfterActing = new List<BattlemodeEffectStrategyInstance>();
-        
-        foreach(var effectCfg in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
-            if (effectCfg.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.AfterAction)
-            {
-                var effect = effectCfg.CreateNewEffectInstance();
-                if (effect.isSpecial)
-                {
-                    specialEffectsToAddToActorAfterActing ??= new List<BattlemodeEffectStrategyInstance>();
-                    specialEffectsToAddToActorAfterActing.Add(effect);
-                }
-                else
-                {
-                    effectsToAddToActorAfterActing ??= new List<BattlemodeEffectStrategyInstance>();
-                    effectsToAddToActorAfterActing.Add(effectCfg.CreateNewEffectInstance());
-                }
-            }
-        
-        
-        if (effectsToAddToActorAfterActing != null)
-            foreach (var addEffect in effectsToAddToActorAfterActing)
-            {
-                if (queuedActionCtx.actingOccupantCtx.currentEffects
-                    .Any(e => e.GetType() == addEffect.GetType()))
-                {
-                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
-                    continue;
-                }
-                queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
-            }
-
-        if (specialEffectsToAddToActorAfterActing != null)
-        {
-            Debug.Log("[ACTOR] Adding Special Effects: " + specialEffectsToAddToActorAfterActing.Count);
-            foreach (var addSpEffect in specialEffectsToAddToActorAfterActing)
-            {
-                if (queuedActionCtx.actingOccupantCtx.specialEffects
-                    .Any(sp => sp.GetType() == addSpEffect.GetType()))
-                {
-                    Debug.Log("[ACTOR] Special Effect always already exists, mutating...");
-                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addSpEffect);
-                    continue;
-                }
-                queuedActionCtx.actingOccupantCtx.specialEffects.Add(addSpEffect);
-            }
-        }
-    }
     
-    public void AddInAdditionalEffectsToActor(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
-    {
-        if(actingActionCtx.additionalEffectsToApplyToActor == null || actingActionCtx.additionalEffectsToApplyToActor.Count == 0) return;
-        foreach (var addEffect in actingActionCtx.additionalEffectsToApplyToActor)
-        {
-            if(addEffect.isSpecial)
-            {
-                if (queuedActionCtx.actingOccupantCtx.specialEffects
-                .Any(e => e.GetType() == addEffect.GetType()))
-                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
-            }
-            else
-            {
-                if (queuedActionCtx.actingOccupantCtx.currentEffects
-                .Any(e => e.GetType() == addEffect.GetType()))
-                {
-                    queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
-                    continue;
-                }
-                queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
-            }
-        }
-    }
     
 }
 

@@ -74,10 +74,10 @@
             }
             
             
-            ResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
+            TargetResolveBeforeHitEffects(attackersActionCtx, effectsToAddBeforeResolve);
             MutateValues(attackersActionCtx);
-            ResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
-            AddInAdditionalEffectsFromActionCtx(attackersActionCtx);
+            TargetResolveAfterHitEffects(attackersActionCtx, effectsToAddAfterResolve);
+            TargetAddAdditionalEffects(attackersActionCtx);
             
             // Removing marked for removal, Only removes status effects, not special effects
             currentEffects.RemoveAll(e => e.stacksTotal <= 0);
@@ -139,7 +139,7 @@
 
         #endregion
 
-        #region Before / After Acting (Each Works for both player and opponent)
+        #region Pre Resolves
 
                 
         public void PreResolveBeforeActingEffectsPlayer(BattlemodeAction[] preResolvedActions)
@@ -180,9 +180,11 @@
                 spEffect.ResolveEffectPreBeforeActing(occupantCtx, preResolvedAction.actionCtx);
         }
         
+        #endregion
+
+        #region Actor Resolves
         
-        
-        public void ResolveAfterActingEffects(BattlemodeActionCtx actionCtx)
+        public void ActorResolveAfterActingEffects(BattlemodeActionCtx actionCtx)
         {
             if (this is not BattlerOccupantCtx battlerOccupantCtx) return;
             if (actionCtx == null)
@@ -197,11 +199,90 @@
             foreach (var spEffect in battlerOccupantCtx.specialEffects)
                 spEffect.ResolveEffectAfterActing(battlerOccupantCtx, actionCtx);
         }
-
-        #endregion
+        
+        public void ActorAddEffectsAfterActing(QueuedAction queuedActionCtx)
+        {
+            List<BattlemodeEffectStrategyInstance> effectsToAddToActorAfterActing = null;
+            List<BattlemodeEffectStrategyInstance> specialEffectsToAddToActorAfterActing = null;
+            
+            effectsToAddToActorAfterActing = new List<BattlemodeEffectStrategyInstance>();
+            
+            foreach(var effectCfg in queuedActionCtx.actionCtx.cfg.effectsToApplyToSelf)
+                if (effectCfg.addOccurance == BattlemodeEffectConfigInstance.AddOccurance.AfterAction)
+                {
+                    var effect = effectCfg.CreateNewEffectInstance();
+                    if (effect.isSpecial)
+                    {
+                        specialEffectsToAddToActorAfterActing ??= new List<BattlemodeEffectStrategyInstance>();
+                        specialEffectsToAddToActorAfterActing.Add(effect);
+                    }
+                    else
+                    {
+                        effectsToAddToActorAfterActing ??= new List<BattlemodeEffectStrategyInstance>();
+                        effectsToAddToActorAfterActing.Add(effectCfg.CreateNewEffectInstance());
+                    }
+                }
+            
+            
+            if (effectsToAddToActorAfterActing != null)
+                foreach (var addEffect in effectsToAddToActorAfterActing)
+                {
+                    if (queuedActionCtx.actingOccupantCtx.currentEffects
+                        .Any(e => e.GetType() == addEffect.GetType()))
+                    {
+                        queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+                        continue;
+                    }
+                    queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
+                }
+        
+            if (specialEffectsToAddToActorAfterActing != null)
+            {
+                Debug.Log("[ACTOR] Adding Special Effects: " + specialEffectsToAddToActorAfterActing.Count);
+                foreach (var addSpEffect in specialEffectsToAddToActorAfterActing)
+                {
+                    if (queuedActionCtx.actingOccupantCtx.specialEffects
+                        .Any(sp => sp.GetType() == addSpEffect.GetType()))
+                    {
+                        Debug.Log("[ACTOR] Special Effect always already exists, mutating...");
+                        queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addSpEffect);
+                        continue;
+                    }
+                    queuedActionCtx.actingOccupantCtx.specialEffects.Add(addSpEffect);
+                }
+            }
+        }
 
         
-        void ResolveBeforeHitEffects(BattlemodeActionCtx battleActionCtx, 
+        public void ActorAddAdditionalEffects(QueuedAction queuedActionCtx, BattlemodeActionCtx actingActionCtx)
+        {
+            if(actingActionCtx.additionalEffectsToApplyToActor == null || actingActionCtx.additionalEffectsToApplyToActor.Count == 0) return;
+            foreach (var addEffect in actingActionCtx.additionalEffectsToApplyToActor)
+            {
+                if(addEffect.isSpecial)
+                {
+                    if (queuedActionCtx.actingOccupantCtx.specialEffects
+                        .Any(e => e.GetType() == addEffect.GetType()))
+                        queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+                }
+                else
+                {
+                    if (queuedActionCtx.actingOccupantCtx.currentEffects
+                        .Any(e => e.GetType() == addEffect.GetType()))
+                    {
+                        queuedActionCtx.actingOccupantCtx.MutateStacksToAlreadyExistingEffect(addEffect);
+                        continue;
+                    }
+                    queuedActionCtx.actingOccupantCtx.currentEffects.Add(addEffect);
+                }
+            }
+        }
+        
+        #endregion
+
+        #region Target Resolves
+        
+        void TargetResolveBeforeHitEffects(BattlemodeActionCtx battleActionCtx, 
             List<BattlemodeEffectStrategyInstance> effectsToAddBeforeResolve)
         {
             var occupantCtx = this;
@@ -218,14 +299,14 @@
             
             // Resolve Effects that resolve before mutation
             foreach (var effect in currentEffects)
-                effect.ResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
+                effect.TargetResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
             
             // Resolve SP Effects that resolve before mutation
             foreach (var spEffect in specialEffects)
-                spEffect.ResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
+                spEffect.TargetResolveEffectBeforeHitByAction(occupantCtx, battleActionCtx);
         }
 
-        void ResolveAfterHitEffects(
+        void TargetResolveAfterHitEffects(
             BattlemodeActionCtx battleActionCtx, 
             List<BattlemodeEffectStrategyInstance> effectsToAddAfterResolve)
         {
@@ -269,14 +350,12 @@
                     }
                 }
             }
-            
-            
         }
-
-        public void AddInAdditionalEffectsFromActionCtx(BattlemodeActionCtx battleActionCtx)
+        
+        public void TargetAddAdditionalEffects(BattlemodeActionCtx actionCtx)
         {
-            if(battleActionCtx.additionalEffectsToApplyToTarget == null || battleActionCtx.additionalEffectsToApplyToTarget.Count == 0) return;
-            foreach (var addEffect in battleActionCtx.additionalEffectsToApplyToTarget)
+            if(actionCtx.additionalEffectsToApplyToTarget == null || actionCtx.additionalEffectsToApplyToTarget.Count == 0) return;
+            foreach (var addEffect in actionCtx.additionalEffectsToApplyToTarget)
             {
                 if(addEffect.isSpecial)
                 {
@@ -295,21 +374,27 @@
             }
         }
         
+        #endregion
+        
+        
+        
         void MutateValues(BattlemodeActionCtx ctx)
         {
-            Debug.Log("[HIT] Mutating values on tile: " + cfg?.name);
-            Debug.Log("[HIT] Old HP: " + currentHp + " Old Armor: " + currentArmor);
+            int oldHp = currentHp;
+            int oldArmor = currentArmor;
+            Debug.Log("[HIT] Occupant: " + cfg?.name);
 
             var dmgMult = ctx.deltaDmgMultiplier / 100f;
             var healMult = ctx.deltaHealMultiplier / 100f;
             var armorMult = ctx.deltaArmorMultiplier / 100f;
             
-            Debug.Log("[HIT] Damage multiplier: " + dmgMult + " Heal multiplier: " + healMult);
             
             float preCeileddmg = (ctx.dmg * dmgMult);
             float preCeiledheal = (ctx.heal * healMult);
             float preCeiledarmor = (ctx.armor * armorMult);
             
+            
+            int preCritDmg = Mathf.CeilToInt(preCeileddmg);
             if(ctx.critHit && preCeileddmg > 0) preCeileddmg *= 2;
             if(ctx.critHit) Debug.Log("[HIT] Crit Hit!");
             
@@ -317,8 +402,13 @@
             int heal = Mathf.CeilToInt(preCeiledheal);
             int armor = Mathf.CeilToInt(preCeiledarmor);
             
-            Debug.Log("[HIT] [Damage: " + dmg + " Heal: " + heal+ "] [Old DMG: " + ctx.dmg + " Old Heal: " + ctx.heal + "]");
-
+            Debug.Log($"$[HIT] DMG Stat: [{ctx.dmg}] " +
+                      $" Base DMG Mult [{ctx.cfg.dmgMultiplier}%] " +
+                      $" Ctx (Actual) DMG Mult: [{dmgMult}]" +
+                      $" Crit? [{ctx.critHit}] " +
+                      $"PreCrit Actual DMG: [{preCritDmg}] Actual DMG (w/ CRIT if Applied): [{dmg}]");
+            
+            
             currentArmor = ctx.cfg.capArmorIncrease
                 ? Mathf.Min(currentArmor + armor, maxArmor)
                 : currentArmor + armor;
@@ -326,13 +416,14 @@
             // however for enemy defends when they can do nothing, that will be capped
             //if (currentArmor > maxArmor) currentArmor = maxArmor;
             
-            
-            if (currentArmor > 0)
+            if (currentArmor > 0 && !ctx.isArmorPiercing)
             {
-                currentArmor -= dmg;
-                if (currentArmor < 0)
+                currentArmor -= dmg; 
+                
+                if (currentArmor < 0) // meaning dmg is greater than armor
                 {
-                    currentHp += currentArmor; // Subtract leftover damage from HP
+                    // currentArmor is negative so its added to currentHp
+                    currentHp += currentArmor; 
                     currentArmor = 0;
                 }
             }
@@ -346,7 +437,7 @@
             if (currentHp < 0) currentHp = 0;
             if (currentArmor < 0) currentArmor = 0;
             
-            Debug.Log("[HIT] New HP: " + currentHp + " New Armor: " + currentArmor);
+            Debug.Log($"[HIT] [OldHP: {oldHp} New HP: {currentHp}] isArmorPiercing? {ctx.isArmorPiercing} [Old Armor: {oldArmor} New Armor: {currentArmor}]");
         }
 
 

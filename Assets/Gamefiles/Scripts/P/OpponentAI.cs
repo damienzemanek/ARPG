@@ -206,7 +206,7 @@ public class OpponentAI : MonoBehaviour
             // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
             CoroutineRunner.Instance.RunMethodDelayed(() =>
             {
-                queuedAction.actingOccupantCtx.ResolveAfterActingEffects(queuedAction.actionCtx);
+                queuedAction.actingOccupantCtx.ActorResolveAfterActingEffects(queuedAction.actionCtx);
                 grid.UpdateGrid(); // Updates AP and HP through transient stats
                 
             }, proto_delayBetweenAttackFinishing);

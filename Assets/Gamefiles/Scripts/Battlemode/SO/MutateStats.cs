@@ -16,6 +16,6 @@ public class MutateStats : MarkStrategy
         actionCtx.deltaArmorMultiplier += armorMultDelta;
         actionCtx.apDelta  += apDelta;
         actionCtx.hitCountDelta += hitCountDelta;
-        Debug.Log("Mark Strategy Resolved " + name);
+        Debug.Log("Mark Strategy Resolved " + name + $"Deltas: DMG: {dmgMultDelta} Heal: {healMultDelta} Armor: {armorMultDelta} AP: {apDelta} Hit Count: {hitCountDelta}");
     }
 }

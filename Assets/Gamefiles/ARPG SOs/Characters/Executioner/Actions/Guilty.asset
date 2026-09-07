@@ -10,32 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Move
+  m_Name: Guilty
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Move
-  description: Move your character into a different location
-  apCost: 1
-  roleTarget: 6
-  moveToSelectedEmptyTile: 1
-  actionIdentifier: 6
+  actionName: Guilty
+  description: Guilty Description
+  apCost: 2
+  roleTarget: 2
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 2
   actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 0
-  useActionAnim: 0
+  targetedBodyPart: 2
+  useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
+  icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
-  dmgMultiplier: 0
+  dmgMultiplier: 100
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 2
+    targetingPatternAdditive: 0
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 0
-    targetColRanks: 0
+    usableInColRanks: 127
+    targetColRanks: 127
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -43,9 +43,20 @@ MonoBehaviour:
   targetMovementCfg:
     direction: 0
     amount: 0
-  effectsToApplyToTarget: []
+  effectsToApplyToTarget:
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: 9097403365658722401
   effectsToApplyToSelf: []
   aoe: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 9097403365658722401
+      type: {class: BattlemodeEffectStrategy_BodyCompromised, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 1
+            setStacksDirectly: 0

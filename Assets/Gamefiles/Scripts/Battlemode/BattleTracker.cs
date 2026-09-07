@@ -110,7 +110,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
                 Debug.Log("Action has been exhuasted.");
             else // Normal Select Target Tile
             {
-                StartCoroutine(C_UseActionOnTargetTile(tile, queuedPlayerAction.lookingForTarget));
+                queuedPlayerAction.targetTile = tile;
+                StartCoroutine(C_UseActionOnTargetTile(queuedPlayerAction, queuedPlayerAction.lookingForTarget));
             }
             return;
         }
@@ -124,10 +125,12 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         player.ZoomIntoTile(fromTile, DisplayActionsUI);
     }
 
-    public IEnumerator C_UseActionOnTargetTile(BattleTile targetTile, Role targetRole)
+    public IEnumerator C_UseActionOnTargetTile(QueuedAction queuedAction, Role targetRole)
     {
         isUsingAnAction = true;
+        bool isEmptyTileTargeted = false;
         RoleTarget selectedTarget = null;
+        BattleTile targetTile = queuedAction.targetTile;
         switch (targetRole)
         {
             case Role.Self:
@@ -142,52 +145,60 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
                 queuedPlayerAction.targEnemySlot.enemyTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targEnemySlot;
                 break;
-            case Role.Team:
-                queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(targetTile); 
-                selectedTarget = queuedPlayerAction.targAllyTeamSlot;
-                break;
-            case Role.EnemyTeam:
-                queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(targetTile); 
-                selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
-                break;
+            // No Team Targetting just yet
+            // case Role.Team:
+            //     queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(targetTile); 
+            //     selectedTarget = queuedPlayerAction.targAllyTeamSlot;
+            //     break;
+            // case Role.EnemyTeam:
+            //     queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(targetTile); 
+            //     selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
+            //     break;
             case Role.EmptyTile:
                 queuedPlayerAction.targEmptyTileSlot.emptyTile = targetTile; 
                 selectedTarget = queuedPlayerAction.targEmptyTileSlot;
+                isEmptyTileTargeted = true;
                 break;
         }
-
+        
+        BattlerOccupantCtx actingOccupantCtx = queuedPlayerAction.actingOccupantCtx;
+        BattlerOccupantCtx targetOccupantCtx = !isEmptyTileTargeted ? queuedAction.targetTile.occupantCtx as BattlerOccupantCtx : null;
+        
         // Should always be the case
-        if (queuedPlayerAction.actingOccupantCtx != null && queuedPlayerAction.actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
+        if (actingOccupantCtx != null && actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
             actingCharacterCtx.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
         else 
             Debug.LogWarning("Trying to use AP on non-character occupant.");
 
-        string targetName = targetTile?.occupantCtx?.cfg.name ?? "Empty";
-        Debug.Log("Actor: " + queuedPlayerAction.actingOccupantCtx.obj.name + ", Target: " + targetName);
-        
+        // First Attack
+        string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
+        Debug.Log("Actor: " + actingOccupantCtx.obj.name + ", Target: " + targetName);
         selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
         
+        // Pre Movement Calculations
         CalculatedMovement calcMovement = new();
         CalculatedMovement targetCalcMovement = new();
         bool moves = DoesPrepareMovement(fromTile, BattlefieldSection.Right, false, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
         bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
-        Vector3 actorFinalPos = queuedPlayerAction.actingOccupantCtx.obj.transform.position;
+        // Pre Movement Animations Location Destinations
+        Vector3 actorFinalPos = actingOccupantCtx.obj.transform.position;
         Vector3 targetFinalPos = targetTile.worldOccupantSpawnPos;
-        
         if (moves) actorFinalPos = calcMovement.newPath[^1].tile.worldOccupantSpawnPos;
         if (targetMoves) targetFinalPos = targetCalcMovement.newPath[^1].tile.worldOccupantSpawnPos;
 
+        // Movement Animations
         grid.HideAllDisplays();
         if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
                 actionUserViewer.C_UseActionUserViewer(
-                    queuedPlayerAction.actingOccupantCtx.obj, actorFinalPos,
-                    targetTile.occupantCtx.obj, targetFinalPos,
+                    actingOccupantCtx.obj, actorFinalPos,
+                    targetOccupantCtx.obj, targetFinalPos,
                     true));
 
         
+        // Actual hits (times) hit count
         for (int currentHitcount = 2; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
         {
             // TODO: delay to be dependant on a dict storing moveanims, which itself is stored on the battlerconfig
@@ -195,16 +206,17 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
             yield return new WaitForSeconds(0.1f); // delay between attack counts
             selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
-            
         }
+        
+        // Hit Delay 
         if(queuedPlayerAction.actionCtx.cfg.useActionDelays)
             yield return new WaitForSeconds(0.1f); // finish attacking
+        
 
         // Post Movements
         HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
         HandleMovement(targetTile.row, targetTile.col, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
-
-
+        
         // delay for fade back in
         if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
             yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
@@ -216,11 +228,28 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             yield return new WaitForSeconds(0.1f);
 
         queuedPlayerAction.hasQueuedAction = false;
-        queuedPlayerAction.actingOccupantCtx.ResolveAfterActingEffects(queuedPlayerAction.actionCtx);
+        
+        // Actor After-Acting Resolves
+        Debug.Log("Resolving After Acting: Actor");
+        
+        // Addition Effects
+        // Note: Target is included here cause AfterEffect Resolves can still add to the AdditionalEffects
+        //       lists of both Target and Actor
+        actingOccupantCtx.ActorResolveAfterActingEffects(queuedPlayerAction.actionCtx);
+        actingOccupantCtx.ActorAddEffectsAfterActing(queuedPlayerAction);
+        
+        actingOccupantCtx.ActorAddAdditionalEffects(queuedPlayerAction, queuedPlayerAction.actionCtx);
+        targetOccupantCtx?.TargetAddAdditionalEffects(queuedPlayerAction.actionCtx);
+        
+        
         UnSelectAll();
         grid.UpdateGrid(); // Updates AP and HP through transient stats
         isUsingAnAction = false;
     }
+    
+    
+
+    
     record struct MovementPathPoint
     {
         public BattleTile tile;
@@ -235,7 +264,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public int actualAmount;
         public TileDirection dir;
     }
-
+    
     bool DoesPrepareMovement(BattleTile forTile, BattlefieldSection preventMovementIntoSection, bool preventCenterSection, MovementCfg move, ref CalculatedMovement calcMovement)
     {
         if (move.direction == MovementDirection.None) return false;

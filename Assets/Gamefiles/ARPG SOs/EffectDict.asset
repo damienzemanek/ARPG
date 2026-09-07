@@ -67,3 +67,8 @@ MonoBehaviour:
         icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
         name: Mark
         description: Certain attacks benefit from hitting a marked target.
+    - Key: SE_DoubleJeopardy
+      Value:
+        icon: {fileID: 0}
+        name: Double Jeopardy
+        description: 'On Consume Mark: Mark +2'

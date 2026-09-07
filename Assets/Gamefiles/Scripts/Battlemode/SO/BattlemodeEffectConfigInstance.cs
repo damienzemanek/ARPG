@@ -45,7 +45,7 @@ public class BattlemodeEffectConfigInstance
 [Serializable]
 public abstract class BattlemodeEffectStrategyInstance
 {
-    public static BattlemodeEffectStrategyInstance CreateInstance<TChild>(
+    public static TChild CreateInstance<TChild>(
         int turnStacks,
         int battleStacks,
         int expeditionStacks,
@@ -80,6 +80,7 @@ public abstract class BattlemodeEffectStrategyInstance
         }
         return instance;
     }
+    
     public abstract int priority { get; }
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);
@@ -197,7 +198,7 @@ public abstract class BattlemodeEffectStrategyInstance
 
     #region ------- HIT ------------
 
-        public virtual BattlemodeActionCtx ResolveEffectBeforeHitByAction(
+        public virtual BattlemodeActionCtx TargetResolveEffectBeforeHitByAction(
             OccupantCtx occupantCtx,
             BattlemodeActionCtx actionCtx) => actionCtx;
         
