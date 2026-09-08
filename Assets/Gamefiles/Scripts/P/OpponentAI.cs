@@ -5,6 +5,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
+using static BattleTracker;
 using static GridWorld;
 using Random = UnityEngine.Random;
 
@@ -24,16 +25,10 @@ public class OpponentAI : MonoBehaviour
 
     [Required] public BattlemodeActionConfig moveActionCfg;
     [Required] public BattlemodeActionConfig armorActionCfg;
-
-    BattlemodeActionCtx moveActionCtx;
-    BattlemodeActionCtx defendActionCtx;
     
     public void QueueOpponentActionsAtTurnStart(List<BattleTile> opponentTiles)
     {
         battlerAttackOrder.Clear();
-
-        moveActionCtx ??= moveActionCfg.GenerateActionCtx(BattlemodeActionCtx.Status.Acting, null, null, 1);
-        defendActionCtx ??= armorActionCfg.GenerateActionCtx(BattlemodeActionCtx.Status.Acting, null, null, 1);
         
         // Opponent's Attack Order
         foreach (var tile in opponentTiles)
@@ -54,20 +49,18 @@ public class OpponentAI : MonoBehaviour
             return aConfig.attackOrder.CompareTo(bConfig.attackOrder);
         });
         
-        // Queue Actions
-        // For each battler
+        // Queue Actions for each battler
         foreach (var orderCtx in battlerAttackOrder)
         {
             var eoc = orderCtx.myEnemyOccupantCtx;
             var intentions = eoc.currentIntentUsageCtx.intentionsAmount;
             orderCtx.myEnemyOccupantCtx = eoc;
-            orderCtx.myTile.SetIntentionsAmount(intentions);
-            orderCtx.myTile.intentionsGrid.gameObject.SetActive(true);
+            orderCtx.myTile.DisplayGridIntentions(intentions);
             
             // For each intention
             for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
-                var newQueuedAction = GenerateOpponentQueuedAction(intentionsIndex, orderCtx);
+                var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetActionCfg(eoc));
                 newQueuedAction.actorTile = orderCtx.myTile;
                 eoc.queuedActions.Add(newQueuedAction);
                 orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
@@ -75,26 +68,26 @@ public class OpponentAI : MonoBehaviour
         }
     }
 
-    public BattleTracker.QueuedAction GenerateOpponentQueuedAction(int intentionsIndex, OrderCtx orderCtx)
+    public QueuedAction GenerateOpponentQueuedAction(OrderCtx orderCtx, BattlemodeActionConfig actionCfg)
     {
         if(orderCtx.myEnemyOccupantCtx == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
         if (orderCtx.myEnemyOccupantCtx is not EnemyOccupantCtx eoc)
             { Debug.LogError("No Enemy Occupant Context found when queing action"); return null; }
         
         // Generate Action Context
-        var actionCfg = GetActionCfg(eoc);
-        var actionCtx = GetActionCfg(eoc).GenerateActionCtx(
+        var actionCtx = actionCfg.GenerateActionCtx(
             BattlemodeActionCtx.Status.Acting,
-            orderCtx.myEnemyOccupantCtx,
+            eoc,
             null); //this null is a slot only for teamates and healing them
                 
         // Create the action for queuing
-        BattleTracker.QueuedAction newQueuedAction = new BattleTracker.QueuedAction();
+        QueuedAction newQueuedAction = new QueuedAction();
         newQueuedAction.Init();
         newQueuedAction.actingOccupantCtx = eoc;
         newQueuedAction.actionCtx = actionCtx;
-        newQueuedAction.lookingForTarget = actionCfg.roleTarget;
+        newQueuedAction.lookingForTarget = actionCtx.cfg.roleTarget;
 
+        // Before Queued Resolves
         foreach (var effect in eoc.currentEffects)
             effect.ResolveEffectRightBeforeQueued(eoc, actionCtx);
         foreach(var spEffect in eoc.specialEffects)
@@ -105,20 +98,15 @@ public class OpponentAI : MonoBehaviour
     }
     
     
+    
     public BattlemodeActionConfig GetActionCfg(EnemyOccupantCtx eoc)
     {
         float hpPerc01 = eoc.currentHp / eoc.maxHp;
         var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
                 
         // Acounting for saved intentions, saves will allways be an actual action
-        bool useSaved = (newIntentUsage.savedIntentIndex != -1);
-        var actionIndex = (useSaved) ? (newIntentUsage.savedIntentIndex) : (newIntentUsage.intentIndex);
-        if (useSaved)
-        {
-            eoc.ResetSavedIntention();
-            Debug.Log("[Intentions] Used Saved Intention");
-        }
-                
+        var actionIndex = newIntentUsage.intentIndex;
+
         // Get the action via the intention index
         // if null keep looping for a bit
         var actionCfg = GetAnEquippedActionCfg(eoc, actionIndex);
@@ -146,7 +134,9 @@ public class OpponentAI : MonoBehaviour
         foreach (var orderCtx in attackOrder)
         {
             playerTiles.RemoveAll(playerTile => playerTile.occupantCtx == null); // Remove dead tiles
-            yield return StartCoroutine(C_Proto_Attack(orderCtx, playerTiles, grid));
+            
+            yield return StartCoroutine(C_OpponentUseAction(orderCtx, playerTiles, grid));
+            
             orderCtx.myEnemyOccupantCtx.queuedActions.Clear();
             grid.RefreshAllApsAndIntentions();
             Debug.Log($"{orderCtx.myEnemyOccupantCtx.cfg.occupantName} finished all attacks");
@@ -157,154 +147,94 @@ public class OpponentAI : MonoBehaviour
     }
 
     
-    public IEnumerator C_Proto_Attack(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
+    public IEnumerator C_OpponentUseAction(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
-        foreach (var _queuedAction in _orderCtx.myEnemyOccupantCtx.queuedActions)
+        int amountOfActions = _orderCtx.myEnemyOccupantCtx.queuedActions.Count;
+        for (int currentActionIndex = 0; currentActionIndex < amountOfActions; currentActionIndex++)
         {
-            bool usedSaved = _orderCtx.myEnemyOccupantCtx.HasSavedIntention(out int savedIntention);
-            OrderCtx orderCtx = _orderCtx;
-            RoleTarget targetRole = null;
-            BattleTracker.QueuedAction queuedAction = _queuedAction;
-            if (usedSaved)
-            {
-                queuedAction = GenerateOpponentQueuedAction(savedIntention, orderCtx);
-
-                Debug.Log($"[Intentions] Used Saved Intention: {savedIntention} " + queuedAction);
-                Debug.Log("[Intentions] Which is " + queuedAction.actionCtx.cfg.actionName);
-
-                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles, out queuedAction.targetTile);
-
-                orderCtx.myEnemyOccupantCtx.ResetSavedIntention();
-            }
-            else
-                targetRole = TryGetTarget(orderCtx, queuedAction, playerTiles, out queuedAction.targetTile);
+            var eoc = _orderCtx.myEnemyOccupantCtx;
+            var _queuedAction = eoc.queuedActions[currentActionIndex];
+            QueuedAction queuedAction = _queuedAction; // prevents closure
+            OrderCtx orderCtx = _orderCtx;                           // prevents closure
             
-            // Refresh my tile if i moved
-            
-            var currentTile = orderCtx.myEnemyOccupantCtx.newTilePosition != null
-                ? orderCtx.myEnemyOccupantCtx.newTilePosition
+            // Refresh my tile if I moved
+            var currentTile = eoc.newTilePosition != null
+                ? eoc.newTilePosition
                 : orderCtx.myTile;
-            orderCtx.myEnemyOccupantCtx.newTilePosition = null;
+            eoc.newTilePosition = null;
             orderCtx.myTile = currentTile;
             
-            targetRole = RangeCheck(targetRole); // This can change if the target is not in range
+            var selectedTarget = SelectATargetUsingQueuedAction(orderCtx, queuedAction, playerTiles);
+            var changedTarget = RangeCheck(eoc, queuedAction, grid, orderCtx, ref amountOfActions, ref currentActionIndex); // This can change if the target is not in range
+            if(changedTarget != null) selectedTarget = changedTarget;
             
-            orderCtx.myEnemyOccupantCtx.PreResolveBeforeActingEffectsOpponent(queuedAction);
+            var actingOccupantCtx = queuedAction.actingOccupantCtx;
+            var targetOccupantCtx = (BattlerOccupantCtx)queuedAction.targetTile.occupantCtx; // can be null for empty tile
+            
+            eoc.PreResolveBeforeActingEffectsOpponent(queuedAction);
 
-            for (int currentHitCount = 1; currentHitCount <= queuedAction.actionCtx.cfg.hitCount; currentHitCount++)
-            {
-                // Idempotent Attacks
-                if (targetRole == null) Debug.LogWarning("No Target Found");
-                else
-                {
-                    queuedAction.actionCtx.currentHitCount = currentHitCount;
-                    targetRole.ActedUponBy(queuedAction, orderCtx.myTile);
-                }
-            }
-
-
-            // Still evaluate effects after attacking or not attacking (esp for DoT effects like bleed)
-            CoroutineRunner.Instance.RunMethodDelayed(() =>
-            {
-                queuedAction.actingOccupantCtx.ActorResolveAfterActingEffects(queuedAction.actionCtx);
-                grid.UpdateGrid(); // Updates AP and HP through transient stats
-                
-            }, proto_delayBetweenAttackFinishing);
+            yield return BattleTracker.Instance.C_UseAction(
+                actingOccupantCtx,
+                targetOccupantCtx, 
+                selectedTarget,
+                queuedAction,
+                false);
 
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
-            
-            RoleTarget RangeCheck(RoleTarget target)
-            {
-                bool isInRange = false;
-                bool actionDecided = false;
-                var targetTile = queuedAction.targetTile;
-
-                while (!isInRange && !actionDecided)
-                {
-                    if (!grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, targetTile))
-                    {
-                        TryToMoveTo(out var moveTile);
-                        if (moveTile != null)
-                        {
-                            queuedAction.targEmptyTileSlot.emptyTile = targetTile;
-
-                            Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
-                                      + $"to [{targetTile.col},{targetTile.row}]");
-                            return queuedAction.targEmptyTileSlot;
-                        }
-                        else
-                        {
-                            Defend();
-                            queuedAction.targSelfSlot.selfTile = targetTile;
-                            return queuedAction.targSelfSlot;
-                        }
-                    }
-
-                    isInRange = true;
-                    
-                    void TryToMoveTo(out BattleTile moveTile)
-                    {
-                        Debug.Log("Not In Range, Queuing Move Action");
-
-                        var savedTargetTile = targetTile;
-
-                        queuedAction.Init();
-                        queuedAction.actingOccupantCtx = orderCtx.myEnemyOccupantCtx;
-                        queuedAction.actionCtx = moveActionCtx;
-                        queuedAction.lookingForTarget = BattlemodeActionConfig.Role.EmptyTile;
-
-                        actionDecided = true;
-                        orderCtx.myEnemyOccupantCtx.SaveCurrentIntention();
-
-                        // Find the FIRST tile of the shortest path.
-                        targetTile = grid.GetNextMoveTile(
-                            orderCtx.myTile,
-                            savedTargetTile, 
-                            queuedAction.actionCtx.targetingCfgInstanced,
-                            true);
-                        moveTile = targetTile;
-                    }
-                    
-                    void Defend()
-                    {
-                        Debug.Log("Not In Range, Queuing Defend Action");
-                        
-                        queuedAction.Init();
-                        queuedAction.actingOccupantCtx = orderCtx.myEnemyOccupantCtx;
-                        queuedAction.actionCtx = defendActionCtx;
-                        queuedAction.lookingForTarget = BattlemodeActionConfig.Role.Self;
-                        actionDecided = true;
-                        targetTile = orderCtx.myTile;
-                    }
-                    
-                }
-                return target;
-                
-            }
-            
-            
         }
     }
     
-    // GridWorld.InRangeCheckCtx inRangeCheckCtx = new GridWorld.InRangeCheckCtx()
-    // {
-    //     upRange = queuedAction.actionCtx.cfg.upRange,
-    //     fwdRange = queuedAction.actionCtx.cfg.fwdRange,
-    //     downRange = queuedAction.actionCtx.cfg.downRange,
-    //     myRow = orderCtx.tile.row,
-    //     myCol = orderCtx.tile.col,
-    // };
-    //     
-    // grid.GetClosestTargetTile(inRangeCheckCtx, queuedAction.lookingForTarget, orderCtx.tile.occupantCtx.cfg);
-
-
-    RoleTarget TryGetTarget(OrderCtx orderCtx,
-        BattleTracker.QueuedAction queuedAction,
-        List<BattleTile> playerTiles, out BattleTile targetTile)
+    RoleTarget RangeCheck(
+        EnemyOccupantCtx eoc,
+        QueuedAction queuedAction,
+        GridWorld grid,
+        OrderCtx orderCtx,
+        ref int amountOfActions,
+        ref int currentActionIndex)
     {
+        var targetTile = queuedAction.targetTile;
+        bool targetInRange = grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, targetTile);
+        if (targetInRange) return null;
         
-        RoleTarget target = null;
-        targetTile = null;
+        Debug.Log("Not In Range, Queuing Move Action");
+        amountOfActions++;
+                
+                
+        var endTile = targetTile;
+        var startTile = orderCtx.myTile;
+        var newQueuedMoveAction = GenerateOpponentQueuedAction(orderCtx, moveActionCfg);
+        eoc.queuedActions.Insert(currentActionIndex, newQueuedMoveAction);
+                
+        // Target: FIRST tile of the shortest path. 
+        targetTile = grid.GetNextMoveTile(startTile, endTile, 
+            queuedAction.actionCtx.targetingCfgInstanced,
+            true);
+        
+                
+        if (targetTile != null)
+        {
+            queuedAction.targEmptyTileSlot.emptyTile = targetTile;
+            Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
+                      + $"to [{targetTile.col},{targetTile.row}]");
+            return queuedAction.targEmptyTileSlot;
+        }
+        
+        //Defend
+        Debug.Log("Cannot Move, Queuing Defend Action");
+        var newDefendActionCtx = GenerateOpponentQueuedAction(orderCtx, armorActionCfg);
+        eoc.queuedActions.Insert(currentActionIndex, newDefendActionCtx);
+        
+        // Target: SELF for defending
+        targetTile = orderCtx.myTile;                    
+        newDefendActionCtx.targSelfSlot.selfTile = targetTile;
+        return newDefendActionCtx.targSelfSlot;
+        
+    }
+
+    RoleTarget SelectATargetUsingQueuedAction(OrderCtx orderCtx,
+        QueuedAction queuedAction,
+        List<BattleTile> playerTiles)
+    {
         // Target Selection
         switch (queuedAction.lookingForTarget)
         {
@@ -317,13 +247,11 @@ public class OpponentAI : MonoBehaviour
                 // target = queuedAction.targAlly;
                 break;
             case BattlemodeActionConfig.Role.Enemy:
-                var newTargetTile = FindTargetViaAttackPriority();
-                queuedAction.targEnemySlot.enemyTile = newTargetTile;
+                queuedAction.targetTile = FindTargetViaAttackPriority();
+                queuedAction.targEnemySlot.enemyTile = queuedAction.targetTile;
                 Debug.Log("Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " +
                           "position " + queuedAction.targEnemySlot.enemyTile.col + " , " +  queuedAction.targEnemySlot.enemyTile.row);
-                targetTile = newTargetTile;
-                target = queuedAction.targEnemySlot;
-                break;
+                return queuedAction.targEnemySlot;
             case BattlemodeActionConfig.Role.Team:
                 // queuedAction.targAllyTeam.tiles.Add(actorTile); 
                 // target = queuedAction.targAllyTeam;
@@ -334,11 +262,9 @@ public class OpponentAI : MonoBehaviour
                 break;
             case BattlemodeActionConfig.Role.EmptyTile:
                 // happens during range check
-                target = null;
-                break;
+                queuedAction.targetTile = null;
+                return queuedAction.targEmptyTileSlot;
         }
-
-        return target;
         
         BattleTile FindTargetViaAttackPriority()
         {
@@ -355,6 +281,7 @@ public class OpponentAI : MonoBehaviour
                     break;
             }
         }
+        return null;
     }
 
 

@@ -18,6 +18,14 @@ public class ActionUserViewer : MonoBehaviour
         GameObject target, Vector3 targetFinishLoc,
         bool leftIsActor)
     {
+        Transform actorLoc = leftLoc;
+        Transform targetLoc = rightLoc;
+        if(!leftIsActor) 
+        {
+            actorLoc = rightLoc;
+            targetLoc = leftLoc;
+        }
+
         if (actor == null || target == null)
         {
             Debug.LogError("No actor or target given to ActionUserViewer.");
@@ -29,7 +37,7 @@ public class ActionUserViewer : MonoBehaviour
         if (actor == target)
         {
             sequence
-                .Append(actor.transform.DOMove(leftLoc.position, tweenDuration))
+                .Append(actor.transform.DOMove(actorLoc.position, tweenDuration))
                 .Join(actor.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
                 .AppendInterval(stay)
                 .JoinCallback(() => LeftActsNoTarget(actor.transform))
@@ -41,9 +49,9 @@ public class ActionUserViewer : MonoBehaviour
         {
             sequence
                 // Move both into position together
-                .Append(actor.transform.DOMove(leftLoc.position, tweenDuration))
+                .Append(actor.transform.DOMove(actorLoc.position, tweenDuration))
                 .Join(actor.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
-                .Join(target.transform.DOMove(rightLoc.position, tweenDuration))
+                .Join(target.transform.DOMove(targetLoc.position, tweenDuration))
                 .Join(target.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
 
 

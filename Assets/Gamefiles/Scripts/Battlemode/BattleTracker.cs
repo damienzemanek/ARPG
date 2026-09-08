@@ -27,7 +27,6 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public float usingActionFadeAlpha = 0.6f;
     public bool isUsingAnAction = false;
     
-    [ReadOnly] public BattleTile fromTile;
     [FormerlySerializedAs("gridWorld")] [Required] public GridWorld grid;
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
@@ -93,93 +92,142 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void SelectTile(BattleTile tile, bool backSelect = false)
     {
-        if (BattleTracker.instance.isUsingAnAction) return;
-        Debug.Log("Selecting tile 1");
+        if (isUsingAnAction) return;
+        Debug.Log("Selected Tile: [" + tile.row + ", " + tile.col + "]");
+       
         if (queuedPlayerAction.hasQueuedAction)
         {
-            if (backSelect) // Back Select
-            {
-                // Reselect Previous Tile (Queued State -> Zoom State)
-                grid.UnSelectAll();
-                ClearRoleTargets();
-                player.ZoomIntoTile(tile, DisplayActionsUI);
-                queuedPlayerAction.hasQueuedAction = false;
-                queuedPlayerAction.actionCtx = null;
-            }
-            else if (queuedPlayerAction.actingOccupantCtx.exhuastedActionCfgs.Contains(queuedPlayerAction.actionCtx.cfg))
-                Debug.Log("Action has been exhuasted.");
-            else // Normal Select Target Tile
-            {
-                queuedPlayerAction.targetTile = tile;
-                StartCoroutine(C_UseActionOnTargetTile(queuedPlayerAction, queuedPlayerAction.lookingForTarget));
-            }
+            if (backSelect) SelectPreviousSelectedTile();
+            else TryUseQueuedAction(queuedPlayerAction, tile);
             return;
         }
-        Debug.Log("Selecting tile 2");
-        grid.UnSelectAll();
-        fromTile = tile;
-        queuedPlayerAction.actingOccupantCtx = null;
-        if(fromTile.occupantCtx is BattlerOccupantCtx battlerOccupantCtx)
-            queuedPlayerAction.actingOccupantCtx = battlerOccupantCtx;
-        HideActionsUI();
-        player.ZoomIntoTile(fromTile, DisplayActionsUI);
-    }
 
-    public IEnumerator C_UseActionOnTargetTile(QueuedAction queuedAction, Role targetRole)
+        SelectANewTile();
+
+        // No Tile is currently selected, Selects a new tile
+        void SelectANewTile() 
+        {
+            grid.UnSelectAll();
+            queuedPlayerAction.actingOccupantCtx = null;
+            if(tile.occupantCtx is BattlerOccupantCtx battlerOccupantCtx)
+                queuedPlayerAction.actingOccupantCtx = battlerOccupantCtx;
+            HideActionsUI();
+            player.ZoomIntoTile(tile, 
+                () => actionsDisplay.ShowDisplay(tile));
+        }
+        
+        // Action is currently queued, Unqueues that action and selects the previously selected tile
+        void SelectPreviousSelectedTile()
+        {
+            // Reselect Previous Tile (Queued State -> Zoom State)
+            grid.UnSelectAll();
+            ClearRoleTargets();
+            player.ZoomIntoTile(queuedPlayerAction.actorTile, 
+                () => actionsDisplay.ShowDisplay(queuedPlayerAction.actorTile));
+            queuedPlayerAction.hasQueuedAction = false;
+            queuedPlayerAction.actionCtx = null;
+        }
+    }
+    
+    // Action is currently queued, Uses the queued action on a newly selected target tile
+    void TryUseQueuedAction(QueuedAction queuedAction, BattleTile targetTile)
+    {
+        if (queuedAction.actingOccupantCtx.exhuastedActionCfgs.Contains(queuedPlayerAction.actionCtx.cfg))
+            Debug.Log("Action has been exhuasted.");
+        else // Normal Select Target Tile
+        {
+            // actor tile already selected during Queue
+            queuedPlayerAction.targetTile = targetTile;
+            StartCoroutine(C_PlayerUseActionOnTargetTile(queuedPlayerAction, queuedPlayerAction.lookingForTarget));
+        }
+    }
+    
+
+    // PreReqs
+    // - Target
+    // - TargetRole
+    // - QueuedAction
+    // - Doesnt need a range check due to selection restrictions
+    public IEnumerator C_PlayerUseActionOnTargetTile(QueuedAction queuedAction, Role targetRole)
     {
         isUsingAnAction = true;
         bool isEmptyTileTargeted = false;
         RoleTarget selectedTarget = null;
         BattleTile targetTile = queuedAction.targetTile;
+        
         switch (targetRole)
         {
             case Role.Self:
-                queuedPlayerAction.targSelfSlot.selfTile = targetTile; 
-                selectedTarget = queuedPlayerAction.targSelfSlot;
+                queuedAction.targSelfSlot.selfTile = targetTile; 
+                selectedTarget = queuedAction.targSelfSlot;
                 break;
             case Role.Ally:
-                queuedPlayerAction.targAllySlot.allyTile = targetTile; 
-                selectedTarget = queuedPlayerAction.targAllySlot;
+                queuedAction.targAllySlot.allyTile = targetTile; 
+                selectedTarget = queuedAction.targAllySlot;
                 break;
             case Role.Enemy:
-                queuedPlayerAction.targEnemySlot.enemyTile = targetTile; 
-                selectedTarget = queuedPlayerAction.targEnemySlot;
+                queuedAction.targEnemySlot.enemyTile = targetTile; 
+                selectedTarget = queuedAction.targEnemySlot;
                 break;
             // No Team Targetting just yet
             // case Role.Team:
-            //     queuedPlayerAction.targAllyTeamSlot.allyTiles.Add(targetTile); 
+            //     queuedAction.targAllyTeamSlot.allyTiles.Add(targetTile); 
             //     selectedTarget = queuedPlayerAction.targAllyTeamSlot;
             //     break;
             // case Role.EnemyTeam:
-            //     queuedPlayerAction.targEnemyTeamSlot.enemyTiles.Add(targetTile); 
+            //     queuedAction.targEnemyTeamSlot.enemyTiles.Add(targetTile); 
             //     selectedTarget = queuedPlayerAction.targEnemyTeamSlot;
             //     break;
             case Role.EmptyTile:
-                queuedPlayerAction.targEmptyTileSlot.emptyTile = targetTile; 
-                selectedTarget = queuedPlayerAction.targEmptyTileSlot;
+                queuedAction.targEmptyTileSlot.emptyTile = targetTile; 
+                selectedTarget = queuedAction.targEmptyTileSlot;
                 isEmptyTileTargeted = true;
                 break;
         }
         
-        BattlerOccupantCtx actingOccupantCtx = queuedPlayerAction.actingOccupantCtx;
+        BattlerOccupantCtx actingOccupantCtx = queuedAction.actingOccupantCtx;
         BattlerOccupantCtx targetOccupantCtx = !isEmptyTileTargeted ? queuedAction.targetTile.occupantCtx as BattlerOccupantCtx : null;
         
-        // Should always be the case
-        if (actingOccupantCtx != null && actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
+        grid.HideAllDisplays();
+
+        yield return C_UseAction(actingOccupantCtx, targetOccupantCtx, selectedTarget, queuedAction, true);
+        
+        grid.ClearAllTiles();
+
+        queuedAction.hasQueuedAction = false;
+        
+        UnSelectAll();
+        isUsingAnAction = false;
+    }
+
+    public IEnumerator C_UseAction(
+        BattlerOccupantCtx actingOccupantCtx,
+        BattlerOccupantCtx targetOccupantCtx,
+        RoleTarget selectedTarget,
+        QueuedAction queuedAction, 
+        bool leftIsActor)
+    {
+        BattleTile actorTile = queuedAction.actorTile;
+        BattleTile targetTile = queuedAction.targetTile;
+
+        if(actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
             actingCharacterCtx.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
-        else 
-            Debug.LogWarning("Trying to use AP on non-character occupant.");
+        else if (actingOccupantCtx is EnemyOccupantCtx actingEnemyCtx)
+        {
+            // enemy intentions subtraction
+        }
+        
 
         // First Attack
         string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
         Debug.Log("Actor: " + actingOccupantCtx.obj.name + ", Target: " + targetName);
-        selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
+        selectedTarget?.ActedUponBy(queuedAction, actorTile);
         
         // Pre Movement Calculations
         CalculatedMovement calcMovement = new();
         CalculatedMovement targetCalcMovement = new();
-        bool moves = DoesPrepareMovement(fromTile, BattlefieldSection.Right, false, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
-        bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
+        bool moves = DoesPrepareMovement(actorTile, BattlefieldSection.Right, false, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
         // Pre Movement Animations Location Destinations
         Vector3 actorFinalPos = actingOccupantCtx.obj.transform.position;
@@ -188,46 +236,41 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         if (targetMoves) targetFinalPos = targetCalcMovement.newPath[^1].tile.worldOccupantSpawnPos;
 
         // Movement Animations
-        grid.HideAllDisplays();
-        if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
+        if (queuedAction.actionCtx.cfg.useActionAnim)
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
                 actionUserViewer.C_UseActionUserViewer(
                     actingOccupantCtx.obj, actorFinalPos,
                     targetOccupantCtx.obj, targetFinalPos,
-                    true));
+                    leftIsActor));
 
         
         // Actual hits (times) hit count
-        for (int currentHitcount = 2; currentHitcount <= queuedPlayerAction.actionCtx.cfg.hitCount; currentHitcount++)
+        for (int currentHitcount = 2; currentHitcount <= queuedAction.actionCtx.cfg.hitCount; currentHitcount++)
         {
             // TODO: delay to be dependant on a dict storing moveanims, which itself is stored on the battlerconfig
-            queuedPlayerAction.actionCtx.currentHitCount = currentHitcount;
+            queuedAction.actionCtx.currentHitCount = currentHitcount;
 
             yield return new WaitForSeconds(0.1f); // delay between attack counts
-            selectedTarget?.ActedUponBy(queuedPlayerAction, fromTile);
+            selectedTarget?.ActedUponBy(queuedAction, actorTile);
         }
         
         // Hit Delay 
-        if(queuedPlayerAction.actionCtx.cfg.useActionDelays)
+        if(queuedAction.actionCtx.cfg.useActionDelays)
             yield return new WaitForSeconds(0.1f); // finish attacking
         
 
         // Post Movements
-        HandleMovement(fromTile.row, fromTile.col, queuedPlayerAction.actionCtx.movementCfgInstanced, ref calcMovement);
-        HandleMovement(targetTile.row, targetTile.col, queuedPlayerAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
+        HandleMovement(actorTile.row, actorTile.col, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        HandleMovement(targetTile.row, targetTile.col, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
         
         // delay for fade back in
-        if(queuedPlayerAction.actionCtx.cfg.useActionAnim)
+        if(queuedAction.actionCtx.cfg.useActionAnim)
             yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
         
-        grid.ClearAllTiles();
-        
         // delay for status effects to resolve, eventually also for status add anims
-        if(queuedPlayerAction.actionCtx.cfg.useActionDelays)
+        if(queuedAction.actionCtx.cfg.useActionDelays)
             yield return new WaitForSeconds(0.1f);
-
-        queuedPlayerAction.hasQueuedAction = false;
         
         // Actor After-Acting Resolves
         Debug.Log("Resolving After Acting: Actor");
@@ -235,16 +278,13 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         // Addition Effects
         // Note: Target is included here cause AfterEffect Resolves can still add to the AdditionalEffects
         //       lists of both Target and Actor
-        actingOccupantCtx.ActorResolveAfterActingEffects(queuedPlayerAction.actionCtx);
-        actingOccupantCtx.ActorAddEffectsAfterActing(queuedPlayerAction);
+        actingOccupantCtx.ActorResolveAfterActingEffects(queuedAction.actionCtx);
+        actingOccupantCtx.ActorAddEffectsAfterActing(queuedAction);
         
-        actingOccupantCtx.ActorAddAdditionalEffects(queuedPlayerAction, queuedPlayerAction.actionCtx);
-        targetOccupantCtx?.TargetAddAdditionalEffects(queuedPlayerAction.actionCtx);
+        actingOccupantCtx.ActorAddAdditionalEffects(queuedAction, queuedAction.actionCtx);
+        targetOccupantCtx?.TargetAddAdditionalEffects(queuedAction.actionCtx);
         
-        
-        UnSelectAll();
         grid.UpdateGrid(); // Updates AP and HP through transient stats
-        isUsingAnAction = false;
     }
     
     
@@ -405,7 +445,6 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public void UnSelectAll()
     {
         Debug.Log("Unselecting all tiles and clearing role targets.");
-        fromTile = null;
         queuedPlayerAction.actingOccupantCtx = null;
         grid.UnSelectAll();
         HideActionsUI();
@@ -452,6 +491,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
         player.ZoomOutToSelectQueuedAction();
         actionsDisplay.HideDisplay();
+        
 
         foreach (var t in targetTiles)
         {
@@ -472,11 +512,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         queuedPlayerAction.targEmptyTileSlot.ClearTarget();
         Debug.Log("Cleared role targets");
     }
-
-    public void DisplayActionsUI()
-    {
-        actionsDisplay.ShowDisplay(fromTile);
-    }
+    
 
     public void HideActionsUI()
     {

@@ -231,11 +231,13 @@ public class BattleTile : MonoBehaviour
         txt_AP.text = current.ToString();
     }
 
-    public void SetIntentionsAmount(int intentions)
+    public void DisplayGridIntentions(int intentions)
     {
         intentionsGrid.x = intentions;
+        intentionsGrid.gameObject.SetActive(true);
         Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
     }
+    
     public void DisplayIntentionToBattleTile(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
     {
         Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");

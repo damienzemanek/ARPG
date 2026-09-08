@@ -87,7 +87,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [ReadOnly] public List<BattlemodeAction> exhuastedActionSlots = new();
 
     [Required, SerializeField] BattlemodeAction moveAction;
-    [Required, SerializeField] BattlemodeActionConfig moveActionConfig;
+    [Required, SerializeField] public BattlemodeActionConfig moveActionConfig;
 
     void Awake()
     {

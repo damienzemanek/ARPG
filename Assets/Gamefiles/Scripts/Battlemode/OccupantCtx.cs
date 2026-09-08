@@ -333,12 +333,13 @@
                         if (occupantCtx.currentEffects.Any(e => e.GetType() == effectToAdd.GetType()))
                         {
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
+                            Debug.Log("[HIT] Effect already exists, Mutated: " + effectToAdd.GetType().Name);
                         }
                         else
                         {
                             occupantCtx.currentEffects.Add(effectToAdd);
+                            Debug.Log("[HIT] Added Effect: " + effectToAdd.GetType().Name + "");
                         }
-
                     }
                     else
                     {
@@ -346,6 +347,7 @@
                         if (occupantCtx.specialEffects.Any(e => e.GetType() == effectToAdd.GetType()))
                         {
                             occupantCtx.MutateStacksToAlreadyExistingEffect(effectToAdd);
+                            Debug.Log("[HIT] Special Effect already exists, Mutated:" + effectToAdd.GetType().Name);
                         }
                     }
                 }
@@ -361,15 +363,18 @@
                 {
                     if (specialEffects.Any(e => e.GetType() == addEffect.GetType()))
                         MutateStacksToAlreadyExistingEffect(addEffect);
+                    Debug.Log("[HIT] Additional Special Effect Mutated: " + addEffect.GetType().Name);
                 }
                 else
                 {
                     if (currentEffects.Any(e => e.GetType() == addEffect.GetType()))
                     {
                         MutateStacksToAlreadyExistingEffect(addEffect);
+                        Debug.Log("[HIT] Additional Effect already exists, Mutated: " + addEffect.GetType().Name);
                         continue;
                     }
                     currentEffects.Add(addEffect);
+                    Debug.Log("[HIT] Added Additional Effect: " + addEffect.GetType().Name);
                 }
             }
         }
@@ -512,14 +517,5 @@
             for(int i = 0; i < config.secondaryAttackPriorityWeight; i++)
                 _attackPriority.Add(config.SecondaryAttackPriority);
             attackPriority = new RandomBag<EnemyConfig.AttackPriority>(_attackPriority);
-        }
-        
-        public void ResetSavedIntention() => currentIntentUsageCtx.savedIntentIndex = -1;
-        public void SaveCurrentIntention() => currentIntentUsageCtx.savedIntentIndex = currentIntentUsageCtx.intentIndex;
-
-        public bool HasSavedIntention(out int index)
-        {
-            index = currentIntentUsageCtx.savedIntentIndex;
-            return (index != -1);
         }
     }
