@@ -516,7 +516,6 @@ MonoBehaviour:
   usingActionFadeTarg: {fileID: 2108020412}
   usingActionFadeAlpha: 0.6
   isUsingAnAction: 0
-  fromTile: {fileID: 0}
   grid: {fileID: 989606693}
   player: {fileID: 1792127552}
   actionsDisplay: {fileID: 625448866}
@@ -7831,7 +7830,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 53.1, y: 70}
+  m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -40570,7 +40569,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -81.94397, y: -438.6999}
+  m_AnchoredPosition: {x: -81.94391, y: -438.69995}
   m_SizeDelta: {x: -1573.8878, y: -1042.431}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796880317

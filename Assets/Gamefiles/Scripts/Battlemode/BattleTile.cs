@@ -200,7 +200,9 @@ public class BattleTile : MonoBehaviour
         if (unselectable) return; // if already unselectable just return
         HideAndMakeUnSelectable();
     }
-    
+
+    #region Display Stats
+
     public void UpdateTransientStats()
     {
         if (!occupied) return;
@@ -231,6 +233,10 @@ public class BattleTile : MonoBehaviour
         txt_AP.text = current.ToString();
     }
 
+    #endregion
+    
+    #region Intentons
+    
     public void DisplayGridIntentions(int intentions)
     {
         intentionsGrid.x = intentions;
@@ -254,6 +260,20 @@ public class BattleTile : MonoBehaviour
         };
     }
 
+    public void TryDisplayIntentions()
+    {
+        if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc) return;
+        DisplayGridIntentions(eoc.currentIntentUsageCtx.intentionsAmount);
+        
+        // For each intention
+        for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
+        {
+            var actionIdentifier = eoc.queuedActions[intentionsIndex].actionCtx.cfg.actionIdentifier;
+            DisplayIntentionToBattleTile(intentionsIndex, actionIdentifier);
+        }
+    }
+    
+    #endregion
 
 
 
@@ -332,6 +352,8 @@ public class BattleTile : MonoBehaviour
         occupantCtx = null;
         Debug.Assert(occupantCtx == null, "OccupantCtx should be null after destroying");
     }
+    
+    
 
     public void TransferInOccupant(BattleTile previousTile, GridWorld grid)
     {
@@ -348,6 +370,7 @@ public class BattleTile : MonoBehaviour
         display.SetActive(true);
         previousTile.ResetTileOccupancy(false);
         grid.UpdateGrid();
+        TryDisplayIntentions();
         Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
     }
     
@@ -372,6 +395,9 @@ public class BattleTile : MonoBehaviour
         Clear();
         previousTile.Clear();
         grid.UpdateGrid();
+        
+        previousTile.TryDisplayIntentions();
+        TryDisplayIntentions();
 
         Debug.Log($"Swapped occupants between [{col}, {row}] and [{previousTile.col}, {previousTile.row}]");
     }
