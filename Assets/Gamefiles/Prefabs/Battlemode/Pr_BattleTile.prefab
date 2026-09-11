@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 721891265572645343}
   - component: {fileID: 4770241996635471756}
   m_Layer: 0
-  m_Name: BattleTile Prefab
+  m_Name: Pr_BattleTile
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

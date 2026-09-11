@@ -10,6 +10,14 @@
  public abstract class OccupantCtx
     {
         public GameObject obj;
+        BattlerDisplayGenerator _battlerDisplayGenerator;
+        public BattlerDisplayGenerator battlerDisplayGenerator {
+            get
+            {
+                if(_battlerDisplayGenerator == null) _battlerDisplayGenerator = obj.GetComponent<BattlerDisplayGenerator>();
+                return _battlerDisplayGenerator;
+            } }
+        
         public abstract OccupantCfg cfg { get; set; }
         public BattleTile newTilePosition = null;
     }
@@ -438,7 +446,8 @@
             }
             else
                 currentHp -= dmg;
-
+        
+            battlerDisplayGenerator.GenerateDmgNumberDisplay(dmg, ctx.critHit);
 
             // Apply healing and clamp to max HP
             currentHp += heal;
