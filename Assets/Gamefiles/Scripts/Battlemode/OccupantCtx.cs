@@ -16,6 +16,8 @@
 
     public class BattlerOccupantCtx : OccupantCtx
     {
+        public bool hasFreeMove;
+        
         public int maxHp;
         public int currentHp;
         public int maxArmor;
@@ -42,6 +44,8 @@
 
             foreach (var cfgSpecialEffect in config.specialEffects)
                 specialEffects.Add(cfgSpecialEffect.CreateNewEffectInstance());
+
+            hasFreeMove = true;
         }
 
         public void ActedUponByAction(QueuedAction queuedActorAction, BattlemodeActionCtx attackersActionCtx)

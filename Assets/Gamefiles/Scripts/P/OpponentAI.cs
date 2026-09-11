@@ -165,8 +165,8 @@ public class OpponentAI : MonoBehaviour
     
     public IEnumerator C_OpponentUseAction(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
-        bool usedFreeMove = false;
-        for (;_orderCtx.eoc.queuedActions.Count > 0;)
+        int currIntention = _orderCtx.eoc.currentIntentUsageCtx.intentionsAmount;
+        for (; currIntention >= 0 && _orderCtx.eoc.queuedActions.Count > 0; currIntention--)
         {
             Debug.Log($"[OPP AI] Using First Action [{_orderCtx.eoc.queuedActions.Count}] sequnce is: ");
             var eoc = _orderCtx.eoc;
@@ -216,6 +216,7 @@ public class OpponentAI : MonoBehaviour
 
             eoc.queuedActions.RemoveFirst();
             
+            
             yield return BattleTracker.Instance.C_UseAction(
                 actingOccupantCtx,
                 targetOccupantCtx, 
@@ -232,11 +233,12 @@ public class OpponentAI : MonoBehaviour
             void MoveOntoTryingNextAction()
             {
                 eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
-                if (!usedFreeMove)
+                if (eoc.hasFreeMove)
                 {
                     var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
                     eoc.queuedActions.AddLast(newQueuedAction);
-                    usedFreeMove = true;
+                    eoc.hasFreeMove = false;
+                    currIntention++;
                 }
                 eoc.queuedActions.RemoveFirst();
             }

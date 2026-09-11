@@ -217,6 +217,8 @@ public class GridWorld : MonoBehaviour
             {
                 if (visited.Contains(neighbor)) continue;
                 if (neighbor.occupied && neighbor != end) continue; // Occupied tiles are obstacles.
+                if (neighbor.colRank is BattleTile.ColRank.Center or BattleTile.ColRank.Left1 or BattleTile.ColRank.Left2 or BattleTile.ColRank.Left3) 
+                    continue;
 
                 visited.Add(neighbor);
 

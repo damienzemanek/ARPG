@@ -201,7 +201,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     }
 
     public IEnumerator C_UseAction(
-        BattlerOccupantCtx actingOccupantCtx,
+        BattlerOccupantCtx boc,
         BattlerOccupantCtx targetOccupantCtx,
         RoleTarget selectedTarget,
         QueuedAction queuedAction, 
@@ -210,17 +210,25 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         BattleTile actorTile = queuedAction.actorTile;
         BattleTile targetTile = queuedAction.targetTile;
 
-        if(actingOccupantCtx is CharacterOccupantCtx actingCharacterCtx)
-            actingCharacterCtx.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
-        else if (actingOccupantCtx is EnemyOccupantCtx actingEnemyCtx)
+
+        if (boc is CharacterOccupantCtx coc)
         {
-            // enemy intentions subtraction
+            bool free = false;
+            if (queuedAction.actionCtx.cfg.actionName == "Move")
+            {
+                if (boc.hasFreeMove)
+                {
+                    free = true;
+                    boc.hasFreeMove = false;
+                }
+            }
+            if (!free) coc.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
         }
-        
+
 
         // First Attack
         string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
-        Debug.Log("Actor: " + actingOccupantCtx.obj.name + ", Target: " + targetName);
+        Debug.Log("Actor: " + boc.obj.name + ", Target: " + targetName);
         selectedTarget?.ActedUponBy(queuedAction, actorTile);
         
         // Pre Movement Calculations
@@ -230,7 +238,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
         // Pre Movement Animations Location Destinations
-        Vector3 actorFinalPos = actingOccupantCtx.obj.transform.position;
+        Vector3 actorFinalPos = boc.obj.transform.position;
         Vector3 targetFinalPos = targetTile.worldOccupantSpawnPos;
         if (moves) actorFinalPos = calcMovement.newPath[^1].tile.worldOccupantSpawnPos;
         if (targetMoves) targetFinalPos = targetCalcMovement.newPath[^1].tile.worldOccupantSpawnPos;
@@ -240,7 +248,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
                 actionUserViewer.C_UseActionUserViewer(
-                    actingOccupantCtx.obj, actorFinalPos,
+                    boc.obj, actorFinalPos,
                     targetOccupantCtx.obj, targetFinalPos,
                     leftIsActor));
 
@@ -278,10 +286,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         // Addition Effects
         // Note: Target is included here cause AfterEffect Resolves can still add to the AdditionalEffects
         //       lists of both Target and Actor
-        actingOccupantCtx.ActorResolveAfterActingEffects(queuedAction.actionCtx);
-        actingOccupantCtx.ActorAddEffectsAfterActing(queuedAction);
+        boc.ActorResolveAfterActingEffects(queuedAction.actionCtx);
+        boc.ActorAddEffectsAfterActing(queuedAction);
         
-        actingOccupantCtx.ActorAddAdditionalEffects(queuedAction, queuedAction.actionCtx);
+        boc.ActorAddAdditionalEffects(queuedAction, queuedAction.actionCtx);
         targetOccupantCtx?.TargetAddAdditionalEffects(queuedAction.actionCtx);
         
         grid.UpdateGrid(); // Updates AP and HP through transient stats
@@ -525,6 +533,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeMove = true; });
+        playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeMove = true; });
         actionsDisplay.ShowEndTurnBtn(true);
         
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
