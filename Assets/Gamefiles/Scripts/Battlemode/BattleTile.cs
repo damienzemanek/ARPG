@@ -268,7 +268,7 @@ public class BattleTile : MonoBehaviour
         // For each intention
         for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
         {
-            var actionIdentifier = eoc.queuedActions[intentionsIndex].actionCtx.cfg.actionIdentifier;
+            var actionIdentifier = eoc.queuedActions.ElementAt(intentionsIndex).actionCtx.cfg.actionIdentifier;
             DisplayIntentionToBattleTile(intentionsIndex, actionIdentifier);
         }
     }

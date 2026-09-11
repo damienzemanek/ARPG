@@ -118,6 +118,8 @@ public abstract class RoleTarget
         effectsToAddToActorRightBeforeActing = null;
         specialEffectsToAddToActorRightBeforeActing = null;
         
+        if(queuedActionCtx.actorTile == null) Debug.LogError("Actor tile null");
+        if (queuedActionCtx.actorTile.occupantCtx == null) return;
         if (queuedActionCtx.actorTile.occupantCtx is not BattlerOccupantCtx) return;
         
         // Resolve Effects that resolve before mutation

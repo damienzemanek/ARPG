@@ -86,7 +86,7 @@
 
         #region Start Of Battle
 
-        public void ResolveStartOfBattleOpponentEffects(List<QueuedAction> opponentPreResolvedActions)
+        public void ResolveStartOfBattleOpponentEffects(LinkedList<QueuedAction> opponentPreResolvedActions)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
@@ -501,7 +501,7 @@
         public int currentPredicteds;
         public RandomBag<EnemyConfig.AttackPriority> attackPriority;
         public IntentUsage.IntentUsageCtx currentIntentUsageCtx;
-        public List<QueuedAction> queuedActions = new();
+        public LinkedList<QueuedAction> queuedActions = new();
         
         public override OccupantCfg cfg { get => enemyCfg; set => enemyCfg = value as EnemyConfig;}
         public EnemyConfig enemyCfg;

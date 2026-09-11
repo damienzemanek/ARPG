@@ -212,30 +212,11 @@ public class GridWorld : MonoBehaviour
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
-
-            // Find the closest tile from which the target can be attacked.
-            if (IsTargetInRange(targetingCfgInstance, current, end))
-            {
-                var result = current == start
-                    ? null
-                    : firstMove[current];
-
-                Debug.Log(
-                    $"[BFS] Found attack position [{current.col},{current.row}] " +
-                    $"for target [{end.col},{end.row}]. " +
-                    $"Next move = [{result?.col},{result?.row}]");
-
-                return result;
-            }
-
             foreach (var neighbor in GetNeighbors(current))
             {
-                if (visited.Contains(neighbor))
-                    continue;
-
-                // Occupied tiles are obstacles.
-                if (neighbor.occupied)
-                    continue;
+                if (visited.Contains(neighbor)) continue;
+                if (current == end) return firstMove[current];
+                if (neighbor.occupied && neighbor != end) continue; // Occupied tiles are obstacles.
 
                 visited.Add(neighbor);
 
@@ -249,8 +230,8 @@ public class GridWorld : MonoBehaviour
         }
 
         Debug.LogWarning(
-            $"[BFS] No attack position found from [{start.col},{start.row}] " +
-            $"against [{end.col},{end.row}].");
+            $"[BFS] No attack position found from [{start.row},{start.col}] " +
+            $"against [{end.row},{end.col}].");
 
         return null;
 
@@ -276,13 +257,21 @@ public class GridWorld : MonoBehaviour
     }
     
     // Target to Actor
-    public bool IsTargetInRange(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile)
+    public bool IsInRange(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile) 
+        => IsActionUsable(targetingCfgInstance, actingTile) && IsTargetTargettable(targetingCfgInstance, targetTile);
+
+    public bool IsActionUsable(TargetingCfg targetingCfgInstance, BattleTile actingTile)
     {
         bool colUsable = targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank) || targetingCfgInstance.targetCurrentCol;
-        bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
         bool rowUsable = targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank) || targetingCfgInstance.targetCurrentRow;
+        return colUsable || rowUsable;
+    }
+
+    public bool IsTargetTargettable(TargetingCfg targetingCfgInstance, BattleTile targetTile)
+    {
+        bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
         bool rowTargeted = targetingCfgInstance.targetRowRanks.HasFlag(targetTile.rowRank);
-        return (colUsable && colTargeted) || (rowUsable && rowTargeted);
+        return colTargeted || rowTargeted;
     }
     
     // Actor to Target
@@ -478,7 +467,6 @@ public class GridWorld : MonoBehaviour
     
 
     public BattleTile GetClosestTargetTile(
-        TargetingCfg targetingCfgInstance,
         (int myCol, int myRow) loc,
         Role actionTarget,
         OccupantCfg compareCfg)
@@ -498,6 +486,33 @@ public class GridWorld : MonoBehaviour
 
             if (distance >= closestDistance) continue;
             if (!tile.IsSameRoleTarget(actionTarget, compareCfg)) continue;
+            closestDistance = distance;
+            closest = tile;
+        }
+
+        return closest;
+    }
+    
+    public BattleTile GetClosestUsableTile(
+        TargetingCfg targetingCfgInstance,
+        (int myCol, int myRow) loc)
+    {
+        var tiles = GetAllTiles();
+
+        BattleTile closest = null;
+        int closestDistance = int.MaxValue;
+
+        foreach (var tile in tiles)
+        {
+            if (tile.occupied) continue;
+            if (!targetingCfgInstance.usableInRowRanks.HasFlag(tile.rowRank)
+                && !targetingCfgInstance.usableInColRanks.HasFlag(tile.colRank)) continue;
+
+            int distance =
+                Mathf.Abs(tile.col - loc.myCol) +
+                Mathf.Abs(tile.row - loc.myRow);
+
+            if (distance >= closestDistance) continue;
             closestDistance = distance;
             closest = tile;
         }

@@ -58,9 +58,12 @@ public class EnemyConfig : BattlerConfig
 [Serializable]
 public class IntentUsage
 {
+    
+    // creating in new eoc, eoc created in tile init, which is at start
     [Serializable]
     public class IntentUsageCtx
     {
+        public int currentIntentionIndexCurrentAttempt;
         public int intentionsAmount;
         public int intentIndex;
         public int phaseIndex;
@@ -70,6 +73,7 @@ public class IntentUsage
             intentionsAmount = intentions;
             intentIndex = 0;
             phaseIndex = 0;
+            currentIntentionIndexCurrentAttempt = 1;
         }
     }
 
@@ -126,7 +130,7 @@ public class IntentUsage
             currentIntentUsageCtx.intentIndex = 0;
         }
         else // if no phase change, increment the intent index.
-        // if theres a saved intent index, use it, else increment the intent index.
+        // else increment the intent index.
         // note: saved intent indexes do not save across phases.
         {
             Debug.Log("[EnemyConfig] Incrementing IntentUsageCtx's Intent Index from " +

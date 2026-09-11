@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -53,17 +54,17 @@ public class OpponentAI : MonoBehaviour
         foreach (var orderCtx in battlerAttackOrder)
         {
             var eoc = orderCtx.myEnemyOccupantCtx;
-            var intentions = eoc.currentIntentUsageCtx.intentionsAmount;
+            var currentMaxIntentions = eoc.currentIntentUsageCtx.intentionsAmount;
             orderCtx.myEnemyOccupantCtx = eoc;
-            orderCtx.myTile.DisplayGridIntentions(intentions);
+            orderCtx.myTile.DisplayGridIntentions(currentMaxIntentions);
             
             // For each intention
-            for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
+            for (int intentionsIndex = 0; eoc.queuedActions.Count < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
                 var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetActionCfg(eoc));
-                newQueuedAction.actorTile = orderCtx.myTile;
-                eoc.queuedActions.Add(newQueuedAction);
+                eoc.queuedActions.AddLast(newQueuedAction);
                 orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
+                Debug.Log("[OPP AI] Queued Intention, Intention Queue Now At: " + eoc.queuedActions.Count + " out of currentMaxIntentions: " + currentMaxIntentions);
             }
         }
     }
@@ -86,6 +87,7 @@ public class OpponentAI : MonoBehaviour
         newQueuedAction.actingOccupantCtx = eoc;
         newQueuedAction.actionCtx = actionCtx;
         newQueuedAction.lookingForTarget = actionCtx.cfg.roleTarget;
+        newQueuedAction.actorTile = orderCtx.myTile;
 
         // Before Queued Resolves
         foreach (var effect in eoc.currentEffects)
@@ -149,12 +151,16 @@ public class OpponentAI : MonoBehaviour
     
     public IEnumerator C_OpponentUseAction(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
-        int amountOfActions = _orderCtx.myEnemyOccupantCtx.queuedActions.Count;
-        for (int currentActionIndex = 0; currentActionIndex < amountOfActions; currentActionIndex++)
+        bool usedFreeMove = false;
+        int maxIntentions = _orderCtx.myEnemyOccupantCtx.currentIntentUsageCtx.intentionsAmount;
+        int intentions = maxIntentions;
+        for (; intentions > 0 && _orderCtx.myEnemyOccupantCtx.queuedActions.Count > 0; intentions--)
         {
+            Debug.Log($"[OPP AI] Using First Action [{intentions}] out of [{maxIntentions}], sequnce is: ");
             var eoc = _orderCtx.myEnemyOccupantCtx;
-            var _queuedAction = eoc.queuedActions[currentActionIndex];
-            QueuedAction queuedAction = _queuedAction; // prevents closure
+            eoc.queuedActions.ToList().PrintList();
+            var _queuedAction = eoc.queuedActions.First();
+            QueuedAction queuedAction = _queuedAction;               // prevents closure
             OrderCtx orderCtx = _orderCtx;                           // prevents closure
             
             // Refresh my tile if I moved
@@ -163,16 +169,44 @@ public class OpponentAI : MonoBehaviour
                 : orderCtx.myTile;
             eoc.newTilePosition = null;
             orderCtx.myTile = currentTile;
+
+            // action attempts max reached
+            if (eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt > queuedAction.actionCtx.cfg.maxEocTargetingAttempts)
+                { MoveOntoTryingNextAction(); continue; }
+
+            // Usable Range Check
+            RoleTarget selectedTarget = null;
+            bool usable = grid.IsActionUsable(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile);
+            bool altAction = false;
+            if (!usable)
+            {
+                Debug.Log("[OPP AI] Unusable Attack");
+                //Move & reqeue
+                eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt++;
+                var usableTile = grid.GetClosestUsableTile(queuedAction.actionCtx.targetingCfgInstanced, (orderCtx.myTile.col, orderCtx.myTile.row));
+                if (usableTile != null) Debug.Log("[OPP AI] Cloeset Usable tile: [" + usableTile.row +  "," + usableTile.col + "]");
+                else Debug.Log("[OPP AI] No Cloeset Usable tile found! Queuing Defend");
+                selectedTarget = QueueMoveTarget(eoc, usableTile, queuedAction, orderCtx, grid) 
+                                 ?? QueueDefendTarget(eoc, orderCtx);
+                queuedAction = eoc.queuedActions.First(); // grab new first
+                Debug.Log("[OPP AI] Attempting to do alternative action: " + queuedAction.actionCtx.cfg.actionName);
+                altAction  = true;
+            }
+            else
+                // Target Selection (Can target empty tiles for movement)
+                selectedTarget = SelectATargetUsingQueuedAction(orderCtx, queuedAction, playerTiles);
             
-            var selectedTarget = SelectATargetUsingQueuedAction(orderCtx, queuedAction, playerTiles);
-            var changedTarget = RangeCheck(eoc, queuedAction, grid, orderCtx, ref amountOfActions, ref currentActionIndex); // This can change if the target is not in range
-            if(changedTarget != null) selectedTarget = changedTarget;
+            // Target Range Check
+            var isTargetInRange = grid.IsTargetTargettable(queuedAction.actionCtx.targetingCfgInstanced, queuedAction.targetTile);
+            if (!isTargetInRange && !altAction)
+                { MoveOntoTryingNextAction(); continue; }
             
             var actingOccupantCtx = queuedAction.actingOccupantCtx;
             var targetOccupantCtx = (BattlerOccupantCtx)queuedAction.targetTile.occupantCtx; // can be null for empty tile
             
             eoc.PreResolveBeforeActingEffectsOpponent(queuedAction);
 
+            eoc.queuedActions.RemoveFirst();
             yield return BattleTracker.Instance.C_UseAction(
                 actingOccupantCtx,
                 targetOccupantCtx, 
@@ -181,54 +215,52 @@ public class OpponentAI : MonoBehaviour
                 false);
 
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
+
+            void MoveOntoTryingNextAction()
+            {
+                eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
+                if (!usedFreeMove) { intentions++; usedFreeMove = true; }
+                eoc.queuedActions.RemoveFirst();
+            }
         }
     }
     
-    RoleTarget RangeCheck(
-        EnemyOccupantCtx eoc,
-        QueuedAction queuedAction,
-        GridWorld grid,
-        OrderCtx orderCtx,
-        ref int amountOfActions,
-        ref int currentActionIndex)
+
+    RoleTarget QueueDefendTarget(EnemyOccupantCtx eoc, OrderCtx orderCtx)
     {
-        var targetTile = queuedAction.targetTile;
-        bool targetInRange = grid.IsTargetInRange(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, targetTile);
-        if (targetInRange) return null;
-        
-        Debug.Log("Not In Range, Queuing Move Action");
-        amountOfActions++;
-                
-                
-        var endTile = targetTile;
-        var startTile = orderCtx.myTile;
-        var newQueuedMoveAction = GenerateOpponentQueuedAction(orderCtx, moveActionCfg);
-        eoc.queuedActions.Insert(currentActionIndex, newQueuedMoveAction);
-                
-        // Target: FIRST tile of the shortest path. 
-        targetTile = grid.GetNextMoveTile(startTile, endTile, 
-            queuedAction.actionCtx.targetingCfgInstanced,
-            true);
-        
-                
-        if (targetTile != null)
-        {
-            queuedAction.targEmptyTileSlot.emptyTile = targetTile;
-            Debug.Log($"[MOVE] Moving from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
-                      + $"to [{targetTile.col},{targetTile.row}]");
-            return queuedAction.targEmptyTileSlot;
-        }
-        
-        //Defend
         Debug.Log("Cannot Move, Queuing Defend Action");
         var newDefendActionCtx = GenerateOpponentQueuedAction(orderCtx, armorActionCfg);
-        eoc.queuedActions.Insert(currentActionIndex, newDefendActionCtx);
-        
         // Target: SELF for defending
-        targetTile = orderCtx.myTile;                    
+        var targetTile = orderCtx.myTile;   
+        newDefendActionCtx.targetTile = targetTile;
         newDefendActionCtx.targSelfSlot.selfTile = targetTile;
-        return newDefendActionCtx.targSelfSlot;
+        eoc.queuedActions.AddFirst(newDefendActionCtx);
         
+        return newDefendActionCtx.targSelfSlot;
+    }
+
+    RoleTarget QueueMoveTarget(
+        EnemyOccupantCtx eoc,
+        BattleTile endTile,
+        QueuedAction queuedAction,
+        OrderCtx orderCtx,
+        GridWorld grid)
+    {
+        var startTile = orderCtx.myTile;
+        
+        var newQueuedMoveAction = GenerateOpponentQueuedAction(orderCtx, moveActionCfg);
+        // Target: FIRST tile of the shortest path. 
+        var targetMoveTile = grid.GetNextMoveTile(startTile, endTile, 
+            queuedAction.actionCtx.targetingCfgInstanced,
+            true);
+        if (targetMoveTile == null) return null;
+        
+        newQueuedMoveAction.targetTile = targetMoveTile;
+        newQueuedMoveAction.targEmptyTileSlot.emptyTile = targetMoveTile;
+        eoc.queuedActions.AddFirst(newQueuedMoveAction);
+        Debug.Log($"[MOVE] Queued Move from [{orderCtx.myTile.col},{orderCtx.myTile.row}] "
+                  + $"to [{targetMoveTile.col},{targetMoveTile.row}]");
+        return newQueuedMoveAction.targEmptyTileSlot;
     }
 
     RoleTarget SelectATargetUsingQueuedAction(OrderCtx orderCtx,

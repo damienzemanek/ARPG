@@ -21,10 +21,10 @@ MonoBehaviour:
   damage: 1
   _maxEquippableActions: 1
   equippedActions:
-  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
-  ForcedActions: []
+  - {fileID: 11400000, guid: 17337f9059a2374478c4d5e0d16eb56a, type: 2}
+  AllAvaliableActions: []
+  ForcedActions:
+  - {fileID: 0}
   specialEffects: []
   attackOrder: 4
   primaryAttackPriorityWeight: 2
