@@ -212,10 +212,10 @@ public class GridWorld : MonoBehaviour
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
+            if (current == end) return firstMove[current];
             foreach (var neighbor in GetNeighbors(current))
             {
                 if (visited.Contains(neighbor)) continue;
-                if (current == end) return firstMove[current];
                 if (neighbor.occupied && neighbor != end) continue; // Occupied tiles are obstacles.
 
                 visited.Add(neighbor);

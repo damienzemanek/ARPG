@@ -32,8 +32,8 @@ MonoBehaviour:
   capArmorIncrease: 0
   targetingCfg:
     targetingPatternAdditive: 0
-    usableInRowRanks: 0
-    targetRowRanks: 4
+    usableInRowRanks: 4
+    targetRowRanks: 0
     targetCurrentRow: 0
     usableInColRanks: 0
     targetColRanks: 6

@@ -105,7 +105,7 @@ public class IntentUsage
     }
 
 
-    public IntentUsageCtx GetIntent(float healthPercentage01, IntentUsageCtx currentIntentUsageCtx)
+    public IntentUsageCtx GetAndProgressIntent(float healthPercentage01, IntentUsageCtx currentIntentUsageCtx)
     {
         if (phases == null || phases.Length == 0) {
             Debug.LogError("No phases found in IntentUsage.");

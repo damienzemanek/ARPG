@@ -14,7 +14,7 @@ public class OpponentAI : MonoBehaviour
 {
     public class OrderCtx
     {
-        public EnemyOccupantCtx myEnemyOccupantCtx;
+        public EnemyOccupantCtx eoc;
         public BattleTile myTile;
     }
 
@@ -33,7 +33,7 @@ public class OpponentAI : MonoBehaviour
         
         // Opponent's Attack Order
         foreach (var tile in opponentTiles)
-            battlerAttackOrder.Add(new OrderCtx(){ myTile = tile, myEnemyOccupantCtx = tile.occupantCtx as EnemyOccupantCtx});
+            battlerAttackOrder.Add(new OrderCtx(){ myTile = tile, eoc = tile.occupantCtx as EnemyOccupantCtx});
 
         if (opponentTiles.Count == 0)
         {
@@ -53,26 +53,40 @@ public class OpponentAI : MonoBehaviour
         // Queue Actions for each battler
         foreach (var orderCtx in battlerAttackOrder)
         {
-            var eoc = orderCtx.myEnemyOccupantCtx;
+            var eoc = orderCtx.eoc;
             var currentMaxIntentions = eoc.currentIntentUsageCtx.intentionsAmount;
-            orderCtx.myEnemyOccupantCtx = eoc;
-            orderCtx.myTile.DisplayGridIntentions(currentMaxIntentions);
-            
+            orderCtx.eoc = eoc;
+            orderCtx.myTile.RegenerateAndDisplayGrid(currentMaxIntentions);
+
             // For each intention
             for (int intentionsIndex = 0; eoc.queuedActions.Count < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
             {
-                var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetActionCfg(eoc));
+                var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
                 eoc.queuedActions.AddLast(newQueuedAction);
                 orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
-                Debug.Log("[OPP AI] Queued Intention, Intention Queue Now At: " + eoc.queuedActions.Count + " out of currentMaxIntentions: " + currentMaxIntentions);
+                Debug.Log("[OPP AI] Queued Intention");
             }
         }
     }
+//Intention Queue Now At: " + eoc.queuedActions.Count + " out of currentMaxIntentions: " + currentMaxIntentions
+    void RegenerateIntentionsDisplayGrid(OrderCtx orderCtx)
+    {
+        var possibleNewSize = orderCtx.eoc.queuedActions.Count - 1;
+        orderCtx.myTile.RegenerateAndDisplayGrid(possibleNewSize+1);
 
+        var queuedIndex = possibleNewSize;
+        for (; queuedIndex >= 0; queuedIndex--)
+        {
+            var queuedAction = orderCtx.eoc.queuedActions.ElementAt(queuedIndex);
+            orderCtx.myTile.DisplayIntentionToBattleTile(queuedIndex, queuedAction.actionCtx.cfg.actionIdentifier);
+        }
+        Debug.Log("[OPP AI] Regenerated Intentions Display Grid, now at Now At: " + orderCtx.eoc.queuedActions.Count);
+    }
+    
     public QueuedAction GenerateOpponentQueuedAction(OrderCtx orderCtx, BattlemodeActionConfig actionCfg)
     {
-        if(orderCtx.myEnemyOccupantCtx == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
-        if (orderCtx.myEnemyOccupantCtx is not EnemyOccupantCtx eoc)
+        if(orderCtx.eoc == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
+        if (orderCtx.eoc is not EnemyOccupantCtx eoc)
             { Debug.LogError("No Enemy Occupant Context found when queing action"); return null; }
         
         // Generate Action Context
@@ -101,10 +115,10 @@ public class OpponentAI : MonoBehaviour
     
     
     
-    public BattlemodeActionConfig GetActionCfg(EnemyOccupantCtx eoc)
+    public BattlemodeActionConfig GetNewIntentsActionCfg(EnemyOccupantCtx eoc)
     {
         float hpPerc01 = eoc.currentHp / eoc.maxHp;
-        var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetIntent(hpPerc01, eoc.currentIntentUsageCtx);
+        var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetAndProgressIntent(hpPerc01, eoc.currentIntentUsageCtx);
                 
         // Acounting for saved intentions, saves will allways be an actual action
         var actionIndex = newIntentUsage.intentIndex;
@@ -139,9 +153,9 @@ public class OpponentAI : MonoBehaviour
             
             yield return StartCoroutine(C_OpponentUseAction(orderCtx, playerTiles, grid));
             
-            orderCtx.myEnemyOccupantCtx.queuedActions.Clear();
+            orderCtx.eoc.queuedActions.Clear();
             grid.RefreshAllApsAndIntentions();
-            Debug.Log($"{orderCtx.myEnemyOccupantCtx.cfg.occupantName} finished all attacks");
+            Debug.Log($"{orderCtx.eoc.cfg.occupantName} finished all attacks");
             yield return new WaitForSeconds(proto_delayBetweenAttackers);
         }
         grid.UpdateGrid();
@@ -152,23 +166,17 @@ public class OpponentAI : MonoBehaviour
     public IEnumerator C_OpponentUseAction(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
         bool usedFreeMove = false;
-        int maxIntentions = _orderCtx.myEnemyOccupantCtx.currentIntentUsageCtx.intentionsAmount;
-        int intentions = maxIntentions;
-        for (; intentions > 0 && _orderCtx.myEnemyOccupantCtx.queuedActions.Count > 0; intentions--)
+        for (;_orderCtx.eoc.queuedActions.Count > 0;)
         {
-            Debug.Log($"[OPP AI] Using First Action [{intentions}] out of [{maxIntentions}], sequnce is: ");
-            var eoc = _orderCtx.myEnemyOccupantCtx;
+            Debug.Log($"[OPP AI] Using First Action [{_orderCtx.eoc.queuedActions.Count}] sequnce is: ");
+            var eoc = _orderCtx.eoc;
             eoc.queuedActions.ToList().PrintList();
             var _queuedAction = eoc.queuedActions.First();
             QueuedAction queuedAction = _queuedAction;               // prevents closure
             OrderCtx orderCtx = _orderCtx;                           // prevents closure
             
             // Refresh my tile if I moved
-            var currentTile = eoc.newTilePosition != null
-                ? eoc.newTilePosition
-                : orderCtx.myTile;
-            eoc.newTilePosition = null;
-            orderCtx.myTile = currentTile;
+            RefreshTile();
 
             // action attempts max reached
             if (eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt > queuedAction.actionCtx.cfg.maxEocTargetingAttempts)
@@ -207,20 +215,39 @@ public class OpponentAI : MonoBehaviour
             eoc.PreResolveBeforeActingEffectsOpponent(queuedAction);
 
             eoc.queuedActions.RemoveFirst();
+            
             yield return BattleTracker.Instance.C_UseAction(
                 actingOccupantCtx,
                 targetOccupantCtx, 
                 selectedTarget,
                 queuedAction,
                 false);
-
+            
+            RefreshTile();
+            if(!altAction) RegenerateIntentionsDisplayGrid(orderCtx); // needs to happen after rmeovefirst
+            
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
 
+            
             void MoveOntoTryingNextAction()
             {
                 eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
-                if (!usedFreeMove) { intentions++; usedFreeMove = true; }
+                if (!usedFreeMove)
+                {
+                    var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
+                    eoc.queuedActions.AddLast(newQueuedAction);
+                    usedFreeMove = true;
+                }
                 eoc.queuedActions.RemoveFirst();
+            }
+
+            void RefreshTile()
+            {
+                var currentTile = eoc.newTilePosition != null
+                    ? eoc.newTilePosition
+                    : orderCtx.myTile;
+                eoc.newTilePosition = null;
+                orderCtx.myTile = currentTile;
             }
         }
     }
@@ -300,7 +327,7 @@ public class OpponentAI : MonoBehaviour
         
         BattleTile FindTargetViaAttackPriority()
         {
-            var atkPriority = orderCtx.myEnemyOccupantCtx.attackPriority.RandBagPull();
+            var atkPriority = orderCtx.eoc.attackPriority.RandBagPull();
             
             switch (atkPriority)
             {

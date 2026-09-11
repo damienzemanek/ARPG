@@ -237,17 +237,21 @@ public class BattleTile : MonoBehaviour
     
     #region Intentons
     
-    public void DisplayGridIntentions(int intentions)
+    public void RegenerateAndDisplayGrid(int intentions)
     {
-        intentionsGrid.x = intentions;
+        if (intentions <= 0) { intentionsGrid.gameObject.SetActive(false); return; }
         intentionsGrid.gameObject.SetActive(true);
+        if(intentions == intentionsGrid.x) return;
+        intentionsGrid.x = intentions;
         Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
     }
     
     public void DisplayIntentionToBattleTile(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
     {
         Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
-        var spriteRenderer = intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>();
+        var rowPos = intentionsGrid.GetRow(0).rowPositions;
+        if (intentionIndex < 0 || intentionIndex >= rowPos.Count) return;
+        var spriteRenderer = rowPos[intentionIndex].created.Get<SpriteRenderer>();
         spriteRenderer.sprite = actionIdentifier switch
         {
             BattlemodeActionConfig.ActionIdentifier.Attack => actionIdentifier_Attack,
@@ -263,7 +267,7 @@ public class BattleTile : MonoBehaviour
     public void TryDisplayIntentions()
     {
         if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc) return;
-        DisplayGridIntentions(eoc.currentIntentUsageCtx.intentionsAmount);
+        RegenerateAndDisplayGrid(eoc.currentIntentUsageCtx.intentionsAmount);
         
         // For each intention
         for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
