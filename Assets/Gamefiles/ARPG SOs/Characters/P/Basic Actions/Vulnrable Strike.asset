@@ -14,11 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Vulnrable Strike
   description: Influcts Vulnrable
+  apCost: 3
+  roleTarget: 2
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 4
+  actionQualifier: 0
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 0
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 50
   healPercentage: 0
   armorIncreasePercentage: 0
+  capArmorIncrease: 0
   targetingCfg:
     targetingPatternAdditive: 0
     usableInRowRanks: 0
@@ -27,18 +38,18 @@ MonoBehaviour:
     usableInColRanks: 4
     targetColRanks: 112
     targetCurrentCol: 0
-  aoe: 0
-  apCost: 3
-  actionIdentifier: 1
-  moveToSelectedEmptyTile: 0
-  capArmorIncrease: 0
-  roleTarget: 2
+  movementCfg:
+    direction: 0
+    amount: 0
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget:
   - addOccurance: 2
-    time: 0
     defaultEffectStrategyValues:
       rid: 3738701859942301839
   effectsToApplyToSelf: []
+  aoe: 0
   references:
     version: 2
     RefIds:
@@ -46,8 +57,7 @@ MonoBehaviour:
       type: {class: BattlemodeEffectStrategy_Vulnerable, ns: , asm: Assembly-CSharp}
       data:
         ctx:
-          markedForRemoval: 0
-          markForReResolve: 0
           stackCtxs:
           - instanceEffectTime: 0
             stacks: 1
+            setStacksDirectly: 0

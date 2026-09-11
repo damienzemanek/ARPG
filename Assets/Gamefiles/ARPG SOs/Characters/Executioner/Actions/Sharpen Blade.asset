@@ -17,13 +17,15 @@ MonoBehaviour:
   apCost: 1
   roleTarget: 1
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 5
+  actionIdentifier: 10
   actionQualifier: 0
+  markStrategy: {fileID: 0}
   targetedBodyPart: 4
   useActionAnim: 1
   useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   apCost: 3
   roleTarget: 2
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 1
+  actionIdentifier: 2
   actionQualifier: 12
   markStrategy: {fileID: 11400000, guid: 42793ef5cefc86848bda8c88e2dd07be, type: 2}
   targetedBodyPart: 2
@@ -25,6 +25,7 @@ MonoBehaviour:
   useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 150
   healPercentage: 0
   armorIncreasePercentage: 0

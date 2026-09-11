@@ -17,10 +17,15 @@ MonoBehaviour:
   apCost: 3
   roleTarget: 1
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 5
+  actionIdentifier: 11
   actionQualifier: 2
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 0
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0
@@ -36,6 +41,9 @@ MonoBehaviour:
   movementCfg:
     direction: 2
     amount: 2
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf:
   - addOccurance: 2
@@ -52,7 +60,6 @@ MonoBehaviour:
       type: {class: SE_Deadeye, ns: , asm: Assembly-CSharp}
       data:
         ctx:
-          markedForRemoval: 0
           stackCtxs:
           - instanceEffectTime: 0
             stacks: 0
@@ -67,7 +74,6 @@ MonoBehaviour:
       type: {class: BattlemodeEffectStrategy_CriticalAvaliable, ns: , asm: Assembly-CSharp}
       data:
         ctx:
-          markedForRemoval: 0
           stackCtxs:
           - instanceEffectTime: 0
             stacks: 1

@@ -10,27 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Heal
+  m_Name: Self Heal
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Self Heal
   description: Self Heal
+  apCost: 1
+  roleTarget: 1
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 6
+  actionQualifier: 0
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 0
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 0
   healPercentage: 25
   armorIncreasePercentage: 0
+  capArmorIncrease: 0
   targetingCfg:
+    targetingPatternAdditive: 1
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
     usableInColRanks: 0
     targetColRanks: 0
     targetCurrentCol: 0
-  aoe: 0
-  apCost: 1
-  actionIdentifier: 5
-  moveToSelectedEmptyTile: 0
-  capArmorIncrease: 0
-  roleTarget: 1
+  movementCfg:
+    direction: 0
+    amount: 0
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf: []
+  aoe: 0
+  references:
+    version: 2
+    RefIds: []

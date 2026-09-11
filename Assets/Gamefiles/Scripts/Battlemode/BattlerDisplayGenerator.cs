@@ -2,6 +2,7 @@ using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using static BattlemodeActionConfig;
 
 public class BattlerDisplayGenerator : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class BattlerDisplayGenerator : MonoBehaviour
 
     public string critPretext = "Crit!";
     public Color critColor;
-    public Color normalColor;
+    public Color healColor;
+    public Color damageColor;
+    public Color armorColor;
     
-    public void GenerateDmgNumberDisplay(int damage, bool crit)
+    public void GenerateNumberDisplay(int amount, bool crit, ActionIdentifier actionIdentifier)
     {
         var randX = Random.Range(_bounds.min.x, _bounds.max.x);
         var randY = Random.Range(_bounds.min.y, _bounds.max.y);
@@ -21,7 +24,23 @@ public class BattlerDisplayGenerator : MonoBehaviour
         var display = Instantiate(dmgNumberDisplayPrefab, transform);
         display.transform.position = position;
         var text = display.Get<TextMeshPro>();
-        text.color = crit ? critColor : normalColor;
-        text.text = crit ? critPretext + damage.ToString() : damage.ToString();
+        var color = actionIdentifier switch
+        {
+            ActionIdentifier.Attack 
+            or ActionIdentifier.AttackBuff
+            or ActionIdentifier.ArmorDebuff 
+            or ActionIdentifier.AttackMove => damageColor,
+            ActionIdentifier.Heal 
+            or ActionIdentifier.HealBuff 
+            or ActionIdentifier.HealDebuff 
+            or ActionIdentifier.HealMove => healColor,
+            ActionIdentifier.Armor
+            or ActionIdentifier.ArmorBuff
+            or ActionIdentifier.ArmorDebuff 
+            or ActionIdentifier.ArmorMove => armorColor,
+            _ => damageColor
+        };
+        text.color = crit ? critColor : color;
+        text.text  = crit ? critPretext + amount.ToString() : amount.ToString();
     }
 }

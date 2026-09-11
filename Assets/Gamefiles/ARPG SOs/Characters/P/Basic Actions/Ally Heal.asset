@@ -14,17 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Ally Heal
   description: Ally Heal
+  apCost: 1
+  roleTarget: 3
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 6
+  actionQualifier: 0
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 0
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 0
-  healMultiplier: 25
-  fwdRange: {x: 0, y: 4}
-  upRange: {x: 0, y: 0}
-  downRange: {x: 0, y: 0}
-  aoe: 0
-  apCost: 1
-  actionIdentifier: 5
-  moveToSelectedEmptyTile: 0
-  roleTarget: 3
+  healPercentage: 0
+  armorIncreasePercentage: 0
+  capArmorIncrease: 0
+  targetingCfg:
+    targetingPatternAdditive: 0
+    usableInRowRanks: 0
+    targetRowRanks: 0
+    targetCurrentRow: 0
+    usableInColRanks: 0
+    targetColRanks: 0
+    targetCurrentCol: 0
+  movementCfg:
+    direction: 0
+    amount: 0
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf: []
+  aoe: 0
+  references:
+    version: 2
+    RefIds: []

@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static BattlemodeActionConfig;
 
 
 public class BattleTile : MonoBehaviour
@@ -65,13 +66,26 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("References")] [Required] public GameObject selected;
     [BoxGroup("References")] [Required] public GameObject inRange;
 
-
-    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Attack;
-    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackDebuff;
-    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackBuff;
-    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Debuff;
-    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Buff;
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_Move;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Attack;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackBuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackDebuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackMove;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Heal;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_HealBuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_HealDebuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_HealMove;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Buff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_BuffMove;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Debuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_DebuffMove;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_Armor;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_ArmorBuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_ArmorDebuff;
+    [BoxGroup("References")] [Required] public Sprite actionIdentifier_ArmorMove;
+
+    
+    
 
     public void Init(int _col, int _row, OccupantCfg occupantCfg = null)
     {
@@ -246,7 +260,7 @@ public class BattleTile : MonoBehaviour
         Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
     }
     
-    public void DisplayIntentionToBattleTile(int intentionIndex, BattlemodeActionConfig.ActionIdentifier actionIdentifier)
+    public void DisplayIntentionToBattleTile(int intentionIndex, ActionIdentifier actionIdentifier)
     {
         Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
         var rowPos = intentionsGrid.GetRow(0).rowPositions;
@@ -254,12 +268,23 @@ public class BattleTile : MonoBehaviour
         var spriteRenderer = rowPos[intentionIndex].created.Get<SpriteRenderer>();
         spriteRenderer.sprite = actionIdentifier switch
         {
-            BattlemodeActionConfig.ActionIdentifier.Attack => actionIdentifier_Attack,
-            BattlemodeActionConfig.ActionIdentifier.AttackBuff => actionIdentifier_AttackBuff,
-            BattlemodeActionConfig.ActionIdentifier.AttackDebuff => actionIdentifier_AttackDebuff,
-            BattlemodeActionConfig.ActionIdentifier.Buff => actionIdentifier_Buff,
-            BattlemodeActionConfig.ActionIdentifier.Debuff => actionIdentifier_AttackDebuff,
-            BattlemodeActionConfig.ActionIdentifier.Move => actionIdentifier_Move,
+            ActionIdentifier.Move => actionIdentifier_Move,
+            ActionIdentifier.Attack => actionIdentifier_Attack,
+            ActionIdentifier.AttackBuff => actionIdentifier_AttackBuff,
+            ActionIdentifier.AttackDebuff => actionIdentifier_AttackDebuff,
+            ActionIdentifier.AttackMove => actionIdentifier_AttackMove,
+            ActionIdentifier.Heal => actionIdentifier_Heal,
+            ActionIdentifier.HealBuff => actionIdentifier_HealBuff,
+            ActionIdentifier.HealDebuff => actionIdentifier_HealDebuff,
+            ActionIdentifier.HealMove => actionIdentifier_HealMove,
+            ActionIdentifier.Buff => actionIdentifier_Buff,
+            ActionIdentifier.BuffMove => actionIdentifier_BuffMove,
+            ActionIdentifier.Debuff => actionIdentifier_Debuff,
+            ActionIdentifier.DebuffMove => actionIdentifier_DebuffMove,
+            ActionIdentifier.Armor => actionIdentifier_Armor,
+            ActionIdentifier.ArmorBuff => actionIdentifier_ArmorBuff,
+            ActionIdentifier.ArmorDebuff => actionIdentifier_ArmorDebuff,
+            ActionIdentifier.ArmorMove => actionIdentifier_ArmorMove,
             _ => intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>().sprite
         };
     }
@@ -307,9 +332,9 @@ public class BattleTile : MonoBehaviour
         tileCanBeSelectedOveride = false;
     }
 
-    public void SpecialTargetConsiderations(BattlemodeActionConfig.Role useTarget)
+    public void SpecialTargetConsiderations(Role useTarget)
     {
-        if (useTarget == BattlemodeActionConfig.Role.EmptyTile && IsEmptyTile())
+        if (useTarget == Role.EmptyTile && IsEmptyTile())
         {
             unselectable = false;
             tileCanBeSelectedOveride = true;
@@ -327,14 +352,14 @@ public class BattleTile : MonoBehaviour
     }
     public bool IsEmptyTile() => occupantCtx == null;
 
-    public bool IsSameRoleTarget(BattlemodeActionConfig.Role roleTarget, OccupantCfg compareCfg)
+    public bool IsSameRoleTarget(Role roleTarget, OccupantCfg compareCfg)
     {
         switch (roleTarget)
         {
-            case BattlemodeActionConfig.Role.Enemy: return IsEnemy();
-            case BattlemodeActionConfig.Role.Self: return IsSelf(compareCfg);
-            case BattlemodeActionConfig.Role.Ally: return IsAlly(compareCfg);
-            case BattlemodeActionConfig.Role.EmptyTile: return IsEmptyTile();
+            case Role.Enemy: return IsEnemy();
+            case Role.Self: return IsSelf(compareCfg);
+            case Role.Ally: return IsAlly(compareCfg);
+            case Role.EmptyTile: return IsEmptyTile();
             default: return false;
         }
     }

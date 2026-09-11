@@ -25,12 +25,23 @@ public class BattlemodeActionConfig : ScriptableObject
     public enum ActionIdentifier
     {
         None,
-        Attack,
-        AttackDebuff,
-        AttackBuff,
-        Debuff,
-        Buff,
         Move,
+        Attack,
+        AttackBuff,
+        AttackDebuff,
+        AttackMove,
+        Heal,
+        HealBuff,
+        HealDebuff,
+        HealMove,
+        Buff,
+        BuffMove,
+        Debuff,
+        DebuffMove,
+        Armor,
+        ArmorBuff,
+        ArmorDebuff,
+        ArmorMove,
     }
 
     public enum TargetingPattern

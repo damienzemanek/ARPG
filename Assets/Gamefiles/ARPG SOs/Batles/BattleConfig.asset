@@ -74,11 +74,11 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 4
       row: 2
-      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
+      occupant: {fileID: 0}
     - col: 5
       row: 2
-      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
+      occupant: {fileID: 0}
     - col: 6
       row: 2
-      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
+      occupant: {fileID: 0}
     rowNum: 2

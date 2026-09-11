@@ -390,12 +390,23 @@ MonoBehaviour:
   hover: {fileID: 6026947397047563319}
   selected: {fileID: 4085307831902723093}
   inRange: {fileID: 6690317283003894873}
-  actionIdentifier_Attack: {fileID: 21300000, guid: fbfdc552e4ee34748b3fb11dcc982a0c, type: 3}
-  actionIdentifier_AttackDebuff: {fileID: 21300000, guid: dd6ed7bc0ee823b41a1a4954ec639871, type: 3}
-  actionIdentifier_AttackBuff: {fileID: 21300000, guid: 55325133e385f5041943c14bf02e41e1, type: 3}
-  actionIdentifier_Debuff: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
-  actionIdentifier_Buff: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
   actionIdentifier_Move: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
+  actionIdentifier_Attack: {fileID: 21300000, guid: fbfdc552e4ee34748b3fb11dcc982a0c, type: 3}
+  actionIdentifier_AttackBuff: {fileID: 21300000, guid: 55325133e385f5041943c14bf02e41e1, type: 3}
+  actionIdentifier_AttackDebuff: {fileID: 21300000, guid: dd6ed7bc0ee823b41a1a4954ec639871, type: 3}
+  actionIdentifier_AttackMove: {fileID: 21300000, guid: 5c05cc1a51b8a3f4dafe0d3c2850dceb, type: 3}
+  actionIdentifier_Heal: {fileID: 21300000, guid: f757497b8a236864d883f6c5affc275c, type: 3}
+  actionIdentifier_HealBuff: {fileID: 21300000, guid: 2cd8263cfbcd7b0419c07c702d51e1be, type: 3}
+  actionIdentifier_HealDebuff: {fileID: 21300000, guid: f41610d5e6913814fb7eb72187dca021, type: 3}
+  actionIdentifier_HealMove: {fileID: 21300000, guid: 32d36d2f6827c03479745368fe21a532, type: 3}
+  actionIdentifier_Buff: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
+  actionIdentifier_BuffMove: {fileID: 21300000, guid: 94827ae23a375884eb2a76b374f386ac, type: 3}
+  actionIdentifier_Debuff: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+  actionIdentifier_DebuffMove: {fileID: 21300000, guid: 8f32a6c811a592d4f97ff145d75143a0, type: 3}
+  actionIdentifier_Armor: {fileID: 21300000, guid: b14c796eff871f74f95ebc4a22ee76a5, type: 3}
+  actionIdentifier_ArmorBuff: {fileID: 21300000, guid: 60505da88af140b4092e9e911474e481, type: 3}
+  actionIdentifier_ArmorDebuff: {fileID: 21300000, guid: 2126f0435e24ed14992b5e9e54eb35c6, type: 3}
+  actionIdentifier_ArmorMove: {fileID: 21300000, guid: 0f885b36613a9424db87667c2a1c5571, type: 3}
 --- !u!1 &997776135097482517
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +674,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 18.73, y: 30.687231}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -755,7 +766,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 18.73, y: 30.687231}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1638,7 +1649,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 18.73, y: 30.687231}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

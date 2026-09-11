@@ -447,7 +447,10 @@
             else
                 currentHp -= dmg;
         
-            battlerDisplayGenerator.GenerateDmgNumberDisplay(dmg, ctx.critHit);
+            var amount = dmg > 0 ? dmg :
+                            heal > 0 ? heal :
+                            armor > 0 ? armor : 0;
+            battlerDisplayGenerator.GenerateNumberDisplay(amount, ctx.critHit, ctx.cfg.actionIdentifier);    
 
             // Apply healing and clamp to max HP
             currentHp += heal;

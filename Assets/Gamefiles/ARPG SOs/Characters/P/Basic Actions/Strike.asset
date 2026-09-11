@@ -17,7 +17,7 @@ MonoBehaviour:
   apCost: 1
   roleTarget: 2
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 1
+  actionIdentifier: 2
   actionQualifier: 0
   markStrategy: {fileID: 0}
   targetedBodyPart: 0

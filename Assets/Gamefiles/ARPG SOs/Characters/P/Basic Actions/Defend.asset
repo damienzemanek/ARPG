@@ -14,19 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   actionName: Defend
   description: Defend When Cornered
+  apCost: 1
+  roleTarget: 1
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 14
+  actionQualifier: 0
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 0
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 15
-  fwdRange: {x: 0, y: 1}
-  upRange: {x: 0, y: 1}
-  downRange: {x: 0, y: 1}
-  aoe: 0
-  apCost: 1
-  actionIdentifier: 5
-  moveToSelectedEmptyTile: 0
   capArmorIncrease: 1
-  roleTarget: 1
+  targetingCfg:
+    targetingPatternAdditive: 0
+    usableInRowRanks: 0
+    targetRowRanks: 0
+    targetCurrentRow: 0
+    usableInColRanks: 0
+    targetColRanks: 0
+    targetCurrentCol: 0
+  movementCfg:
+    direction: 0
+    amount: 0
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf: []
+  aoe: 0
+  references:
+    version: 2
+    RefIds: []
