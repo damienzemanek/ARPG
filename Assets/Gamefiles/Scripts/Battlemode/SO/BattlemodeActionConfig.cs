@@ -190,7 +190,8 @@ public class BattlemodeActionCtx
     public int heal;
     public int armor;
     public int ap;
-    
+
+    public int intentionsDelta;
     public int hitCountDelta;
     public int apDelta;
     public float deltaDmgMultiplier;

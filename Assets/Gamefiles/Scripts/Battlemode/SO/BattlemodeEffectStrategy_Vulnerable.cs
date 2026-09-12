@@ -30,7 +30,9 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
     {
         Debug.Log("[SP EFFECT] Swift: Resolving");
         if(swiftStrategyCtx.usedThisRound) return actionCtx;
-        
+
+        Debug.Log("[SP EFFECT] Swift: Proc`d");
+        actionCtx.intentionsDelta += 1;
         actionCtx.ap -= 1;
         if(actionCtx.ap < 0) 
             actionCtx.ap = 0;
@@ -38,10 +40,12 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
         return actionCtx;
     }
 
+
     public override BattlemodeActionCtx ResolveEffectAfterActing(
         OccupantCtx occupantCtx, 
         BattlemodeActionCtx actionCtx)
     {
+        Debug.Log("[SP EFFECT] Swift: Used. Closing");
         swiftStrategyCtx.usedThisRound = true;
         return actionCtx;
     }

@@ -19,11 +19,13 @@ MonoBehaviour:
   maxHP: 9
   maxArmor: 2
   damage: 2
-  _maxEquippableActions: 1
+  _maxEquippableActions: 2
   equippedActions:
   - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
+  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
+  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   ForcedActions: []
   specialEffects: []
   attackOrder: 0

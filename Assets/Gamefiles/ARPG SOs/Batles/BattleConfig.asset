@@ -28,7 +28,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 4
       row: 0
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: 130f94a25ed9e154c91e5acaf07ca1d5, type: 2}
     - col: 5
       row: 0
       occupant: {fileID: 0}
@@ -74,11 +74,11 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 4
       row: 2
-      occupant: {fileID: 11400000, guid: 56af746c79a50534290fa99b098e3af6, type: 2}
+      occupant: {fileID: 0}
     - col: 5
       row: 2
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: 130f94a25ed9e154c91e5acaf07ca1d5, type: 2}
     - col: 6
       row: 2
-      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
+      occupant: {fileID: 0}
     rowNum: 2

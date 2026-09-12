@@ -234,8 +234,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         // Pre Movement Calculations
         CalculatedMovement calcMovement = new();
         CalculatedMovement targetCalcMovement = new();
-        bool moves = DoesPrepareMovement(actorTile, BattlefieldSection.Right, false, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
-        bool targetMoves = DoesPrepareMovement(targetTile, BattlefieldSection.Left, true, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
+        var preventedSelfMovementSection = boc is CharacterOccupantCtx ? BattlefieldSection.Right :  BattlefieldSection.Left;
+        var preventedTargetMovementSection = targetOccupantCtx is CharacterOccupantCtx ? BattlefieldSection.Right : BattlefieldSection.Left;
+        bool moves = DoesPrepareMovement(actorTile, preventedSelfMovementSection, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        bool targetMoves = DoesPrepareMovement(targetTile, preventedTargetMovementSection, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
         // Pre Movement Animations Location Destinations
         Vector3 actorFinalPos = boc.obj.transform.position;
@@ -313,11 +315,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         public TileDirection dir;
     }
     
-    bool DoesPrepareMovement(BattleTile forTile, BattlefieldSection preventMovementIntoSection, bool preventCenterSection, MovementCfg move, ref CalculatedMovement calcMovement)
+    bool DoesPrepareMovement(BattleTile forTile, BattlefieldSection preventMovementIntoSection, MovementCfg move, ref CalculatedMovement calcMovement)
     {
         if (move.direction == MovementDirection.None) return false;
         if (move.amount <= 0) return false;
-
+        Debug.Log($"[MOVE] Preparing movement {move.direction} amount:  {move.amount}");
         calcMovement.dir = move switch
         {
             _ when move.direction == MovementDirection.Right => TileDirection.Right,
@@ -335,9 +337,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         if (move.amount == 1)
         {
             var destinationTile = grid.GetTileToThe(calcMovement.dir, forTile.row, forTile.col);
-            if (destinationTile == null) return false;
-            if (destinationTile.section == preventMovementIntoSection) return false;
-            if (preventCenterSection && destinationTile.section == BattlefieldSection.Contested) return false;
+            if (destinationTile == null) { Debug.Log("[MOVE] Destination Tile Null"); return false;}
+            if (destinationTile.section == preventMovementIntoSection) { Debug.Log("[MOVE] Cannot Move into section: " + preventMovementIntoSection); return false;}
+            if (preventMovementIntoSection == BattlefieldSection.Left && destinationTile.section == BattlefieldSection.Contested) { Debug.Log("[MOVE] Cannot Move into section: " + BattlefieldSection.Contested); return false;}
             calcMovement.newPath = new[]
             {
                 new MovementPathPoint { tile = destinationTile, occupantCtx = calcMovement.originTile.occupantCtx }
@@ -355,7 +357,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
             if (tile == null) break;
             if (tile.section == preventMovementIntoSection) break;
-            if (preventCenterSection && tile.section == BattlefieldSection.Contested) break;
+            if (preventMovementIntoSection == BattlefieldSection.Left && tile.section == BattlefieldSection.Contested) break;
             
             calcMovement.savePath.Add(new MovementPathPoint
             {

@@ -135,6 +135,8 @@ public class OpponentAI : MonoBehaviour
     {
         foreach (var orderCtx in attackOrder)
         {
+            if (orderCtx.myTile.occupantCtx == null) continue;
+            
             playerTiles.RemoveAll(playerTile => playerTile.occupantCtx == null); // Remove dead tiles
             
             yield return StartCoroutine(C_OpponentUseAction(orderCtx, playerTiles, grid));
@@ -200,7 +202,7 @@ public class OpponentAI : MonoBehaviour
             var targetOccupantCtx = (BattlerOccupantCtx)queuedAction.targetTile.occupantCtx; // can be null for empty tile
             
             eoc.PreResolveBeforeActingEffectsOpponent(queuedAction);
-
+            CheckForIntentionsDelta();
             eoc.queuedActions.RemoveFirst();
             
             
@@ -212,8 +214,10 @@ public class OpponentAI : MonoBehaviour
                 false);
             
             RefreshTile();
+            CheckForIntentionsDelta();
             if(!altAction) orderCtx.myTile.TryDisplayIntentions(); // needs to happen after rmeovefirst
             
+
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
 
             
@@ -222,8 +226,7 @@ public class OpponentAI : MonoBehaviour
                 eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
                 if (eoc.hasFreeMove)
                 {
-                    var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
-                    eoc.queuedActions.AddLast(newQueuedAction);
+                    QueueNewAction();
                     eoc.hasFreeMove = false;
                 }
                 else
@@ -242,6 +245,23 @@ public class OpponentAI : MonoBehaviour
                     : orderCtx.myTile;
                 eoc.newTilePosition = null;
                 orderCtx.myTile = currentTile;
+            }
+
+            void QueueNewAction()
+            {
+                var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
+                eoc.queuedActions.AddLast(newQueuedAction);
+            }
+
+            void CheckForIntentionsDelta()
+            {
+                if (queuedAction.actionCtx.intentionsDelta <= 0) return;
+                for (int i = 0; i < queuedAction.actionCtx.intentionsDelta; i++)
+                {
+                    currIntention++;
+                    QueueNewAction();
+                }
+                queuedAction.actionCtx.intentionsDelta--;
             }
         }
     }
