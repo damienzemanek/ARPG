@@ -34,7 +34,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 6
       row: 0
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: f250bf057dce6164c9b8206757c17140, type: 2}
     rowNum: 0
   - colPositions:
     - col: 0

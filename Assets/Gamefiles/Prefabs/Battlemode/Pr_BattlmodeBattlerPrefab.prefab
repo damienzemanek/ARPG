@@ -291,7 +291,9 @@ MonoBehaviour:
   bounds: {fileID: 8007877512974965664}
   critPretext: Crit!
   critColor: {r: 1, g: 0.7115293, b: 0.023584902, a: 1}
-  normalColor: {r: 0.6132076, g: 0.024365861, b: 0, a: 1}
+  healColor: {r: 0.16697389, g: 0.8867924, b: 0.08784264, a: 1}
+  damageColor: {r: 0.8666667, g: 0.07058823, b: 0.11591985, a: 1}
+  armorColor: {r: 0, g: 0, b: 0.8235294, a: 1}
 --- !u!1 &8047069488186251604
 GameObject:
   m_ObjectHideFlags: 0

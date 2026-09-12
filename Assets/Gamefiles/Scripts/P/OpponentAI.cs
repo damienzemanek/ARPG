@@ -54,35 +54,21 @@ public class OpponentAI : MonoBehaviour
         foreach (var orderCtx in battlerAttackOrder)
         {
             var eoc = orderCtx.eoc;
-            var currentMaxIntentions = eoc.currentIntentUsageCtx.intentionsAmount;
             orderCtx.eoc = eoc;
-            orderCtx.myTile.RegenerateAndDisplayGrid(currentMaxIntentions);
 
             // For each intention
-            for (int intentionsIndex = 0; eoc.queuedActions.Count < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
+            for (;eoc.queuedActions.Count < eoc.currentIntentUsageCtx.intentionsAmount;)
             {
                 var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
                 eoc.queuedActions.AddLast(newQueuedAction);
-                orderCtx.myTile.DisplayIntentionToBattleTile(intentionsIndex, newQueuedAction.actionCtx.cfg.actionIdentifier);
-                Debug.Log("[OPP AI] Queued Intention");
+                Debug.Log("[OPP AI] Queued Intention : " + newQueuedAction.actionCtx.cfg.actionName);
             }
+            
+            orderCtx.myTile.TryDisplayIntentions();
         }
     }
 //Intention Queue Now At: " + eoc.queuedActions.Count + " out of currentMaxIntentions: " + currentMaxIntentions
-    void RegenerateIntentionsDisplayGrid(OrderCtx orderCtx)
-    {
-        var possibleNewSize = orderCtx.eoc.queuedActions.Count - 1;
-        orderCtx.myTile.RegenerateAndDisplayGrid(possibleNewSize+1);
 
-        var queuedIndex = possibleNewSize;
-        for (; queuedIndex >= 0; queuedIndex--)
-        {
-            var queuedAction = orderCtx.eoc.queuedActions.ElementAt(queuedIndex);
-            orderCtx.myTile.DisplayIntentionToBattleTile(queuedIndex, queuedAction.actionCtx.cfg.actionIdentifier);
-        }
-        Debug.Log("[OPP AI] Regenerated Intentions Display Grid, now at Now At: " + orderCtx.eoc.queuedActions.Count);
-    }
-    
     public QueuedAction GenerateOpponentQueuedAction(OrderCtx orderCtx, BattlemodeActionConfig actionCfg)
     {
         if(orderCtx.eoc == null) { Debug.LogError("No Occupant Context found when queing action"); return null; }
@@ -153,7 +139,6 @@ public class OpponentAI : MonoBehaviour
             
             yield return StartCoroutine(C_OpponentUseAction(orderCtx, playerTiles, grid));
             
-            orderCtx.eoc.queuedActions.Clear();
             grid.RefreshAllApsAndIntentions();
             Debug.Log($"{orderCtx.eoc.cfg.occupantName} finished all attacks");
             yield return new WaitForSeconds(proto_delayBetweenAttackers);
@@ -166,12 +151,13 @@ public class OpponentAI : MonoBehaviour
     public IEnumerator C_OpponentUseAction(OrderCtx _orderCtx, List<BattleTile> playerTiles, GridWorld grid)
     {
         int currIntention = _orderCtx.eoc.currentIntentUsageCtx.intentionsAmount;
-        for (; currIntention >= 0 && _orderCtx.eoc.queuedActions.Count > 0; currIntention--)
+        int removedIntentions = 0;
+        for (; currIntention >= 0 && _orderCtx.eoc.queuedActions.Count - removedIntentions > 0; currIntention--)
         {
-            Debug.Log($"[OPP AI] Using First Action [{_orderCtx.eoc.queuedActions.Count}] sequnce is: ");
             var eoc = _orderCtx.eoc;
-            eoc.queuedActions.ToList().PrintList();
             var _queuedAction = eoc.queuedActions.First();
+            Debug.Log($"[OPP AI] Using First Action {_queuedAction.actionCtx.cfg.actionName}, sequence size is {eoc.queuedActions.Count}, sequnce is: ");
+            eoc.queuedActions.ToList().PrintList();
             QueuedAction queuedAction = _queuedAction;               // prevents closure
             OrderCtx orderCtx = _orderCtx;                           // prevents closure
             
@@ -190,7 +176,6 @@ public class OpponentAI : MonoBehaviour
             {
                 Debug.Log("[OPP AI] Unusable Attack");
                 //Move & reqeue
-                eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt++;
                 var usableTile = grid.GetClosestUsableTile(queuedAction.actionCtx.targetingCfgInstanced, (orderCtx.myTile.col, orderCtx.myTile.row));
                 if (usableTile != null) Debug.Log("[OPP AI] Cloeset Usable tile: [" + usableTile.row +  "," + usableTile.col + "]");
                 else Debug.Log("[OPP AI] No Cloeset Usable tile found! Queuing Defend");
@@ -199,13 +184,15 @@ public class OpponentAI : MonoBehaviour
                 queuedAction = eoc.queuedActions.First(); // grab new first
                 Debug.Log("[OPP AI] Attempting to do alternative action: " + queuedAction.actionCtx.cfg.actionName);
                 altAction  = true;
+                
+                if(!eoc.hasFreeMove) eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt++;
             }
             else
                 // Target Selection (Can target empty tiles for movement)
                 selectedTarget = SelectATargetUsingQueuedAction(orderCtx, queuedAction, playerTiles);
             
             // Target Range Check
-            var isTargetInRange = grid.IsTargetTargettable(queuedAction.actionCtx.targetingCfgInstanced, queuedAction.targetTile);
+            var isTargetInRange = grid.IsTargetTargettable(queuedAction.actionCtx.targetingCfgInstanced, orderCtx.myTile, queuedAction.targetTile);
             if (!isTargetInRange && !altAction)
                 { MoveOntoTryingNextAction(); continue; }
             
@@ -225,7 +212,7 @@ public class OpponentAI : MonoBehaviour
                 false);
             
             RefreshTile();
-            if(!altAction) RegenerateIntentionsDisplayGrid(orderCtx); // needs to happen after rmeovefirst
+            if(!altAction) orderCtx.myTile.TryDisplayIntentions(); // needs to happen after rmeovefirst
             
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
 
@@ -238,8 +225,13 @@ public class OpponentAI : MonoBehaviour
                     var newQueuedAction = GenerateOpponentQueuedAction(orderCtx, GetNewIntentsActionCfg(eoc));
                     eoc.queuedActions.AddLast(newQueuedAction);
                     eoc.hasFreeMove = false;
-                    currIntention++;
                 }
+                else
+                {
+                    Debug.Log("[OPP AI] Removed an Intentions on action: " + queuedAction.actionCtx.cfg.actionName);
+                    removedIntentions++;
+                }
+                Debug.Log("[OPP AI] Moving on from " + queuedAction.actionCtx.cfg.actionName + " to next action");
                 eoc.queuedActions.RemoveFirst();
             }
 
@@ -257,7 +249,7 @@ public class OpponentAI : MonoBehaviour
 
     RoleTarget QueueDefendTarget(EnemyOccupantCtx eoc, OrderCtx orderCtx)
     {
-        Debug.Log("Cannot Move, Queuing Defend Action");
+        Debug.Log("[OPP AI] Cannot Move, Queuing Defend Action");
         var newDefendActionCtx = GenerateOpponentQueuedAction(orderCtx, armorActionCfg);
         // Target: SELF for defending
         var targetTile = orderCtx.myTile;   
@@ -300,9 +292,10 @@ public class OpponentAI : MonoBehaviour
         switch (queuedAction.lookingForTarget)
         {
             case BattlemodeActionConfig.Role.Self:
-                // orderCtx.queuedAction.targSelf.tile = actorTile; 
-                // target = queuedAction.targSelf;
-                break;
+                queuedAction.targetTile = orderCtx.myTile; 
+                queuedAction.targSelfSlot.selfTile = orderCtx.myTile;
+                Debug.Log("[OPP AI] Self Target Selected : " + queuedAction.targSelfSlot.selfTile.occupantCtx.cfg.occupantName);
+                return queuedAction.targSelfSlot;
             case BattlemodeActionConfig.Role.Ally:
                 // queuedAction.targAlly.tile = actorTile; 
                 // target = queuedAction.targAlly;
@@ -310,7 +303,7 @@ public class OpponentAI : MonoBehaviour
             case BattlemodeActionConfig.Role.Enemy:
                 queuedAction.targetTile = FindTargetViaAttackPriority();
                 queuedAction.targEnemySlot.enemyTile = queuedAction.targetTile;
-                Debug.Log("Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " +
+                Debug.Log("[OPP AI] Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " +
                           "position " + queuedAction.targEnemySlot.enemyTile.col + " , " +  queuedAction.targEnemySlot.enemyTile.row);
                 return queuedAction.targEnemySlot;
             case BattlemodeActionConfig.Role.Team:
@@ -356,7 +349,7 @@ public class OpponentAI : MonoBehaviour
         var equippedActions = eoc.enemyCfg.equippedActions;
         if (equippedActions == null || equippedActions.Length == 0)
         {
-            Debug.LogError($"No equipped actions found for {eoc.enemyCfg.name}.");
+            Debug.LogError($"[OPP AI] No equipped actions found for {eoc.enemyCfg.name}.");
             return null;
         }
         
@@ -376,8 +369,8 @@ public class OpponentAI : MonoBehaviour
             }
         }
 
-        if (action == null) Debug.LogError($"No equipped actions found for {eoc.enemyCfg.name}.");
-        else Debug.Log("Action Retrieved from ActionCfg for OpponentAI : " + action.name);
+        if (action == null) Debug.LogError($"[OPP AI] No equipped actions found for {eoc.enemyCfg.name}.");
+        else Debug.Log("[OPP AI] Action Retrieved from ActionCfg for OpponentAI : " + action.actionName);
         return action;
     }
     

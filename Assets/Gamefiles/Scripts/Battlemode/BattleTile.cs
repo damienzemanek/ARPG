@@ -262,7 +262,7 @@ public class BattleTile : MonoBehaviour
     
     public void DisplayIntentionToBattleTile(int intentionIndex, ActionIdentifier actionIdentifier)
     {
-        Debug.Log("Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
+        Debug.Log("[BattleTile: Opponent] Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
         var rowPos = intentionsGrid.GetRow(0).rowPositions;
         if (intentionIndex < 0 || intentionIndex >= rowPos.Count) return;
         var spriteRenderer = rowPos[intentionIndex].created.Get<SpriteRenderer>();
@@ -292,10 +292,11 @@ public class BattleTile : MonoBehaviour
     public void TryDisplayIntentions()
     {
         if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc) return;
-        RegenerateAndDisplayGrid(eoc.currentIntentUsageCtx.intentionsAmount);
+        int amountOfActualActions = eoc.queuedActions.Count;
+        RegenerateAndDisplayGrid(amountOfActualActions);
         
         // For each intention
-        for (int intentionsIndex = 0; intentionsIndex < eoc.currentIntentUsageCtx.intentionsAmount; intentionsIndex++)
+        for (int intentionsIndex = 0; intentionsIndex < amountOfActualActions; intentionsIndex++)
         {
             var actionIdentifier = eoc.queuedActions.ElementAt(intentionsIndex).actionCtx.cfg.actionIdentifier;
             DisplayIntentionToBattleTile(intentionsIndex, actionIdentifier);

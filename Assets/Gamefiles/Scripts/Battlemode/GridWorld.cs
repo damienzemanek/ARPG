@@ -260,20 +260,28 @@ public class GridWorld : MonoBehaviour
     
     // Target to Actor
     public bool IsInRange(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile) 
-        => IsActionUsable(targetingCfgInstance, actingTile) && IsTargetTargettable(targetingCfgInstance, targetTile);
+        => IsActionUsable(targetingCfgInstance, actingTile) && IsTargetTargettable(targetingCfgInstance, actingTile, targetTile);
 
     public bool IsActionUsable(TargetingCfg targetingCfgInstance, BattleTile actingTile)
     {
         bool colUsable = targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank) || targetingCfgInstance.targetCurrentCol;
         bool rowUsable = targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank) || targetingCfgInstance.targetCurrentRow;
-        return colUsable || rowUsable;
+        // Self Targetting Pattern makes it usable on the self
+        bool selfUsable = targetingCfgInstance.targetingPatternAdditive == 
+            TargetingPattern.Self || targetingCfgInstance.targetingPatternAdditive == TargetingPattern.Cross
+            && actingTile.occupied;
+        return colUsable || rowUsable || selfUsable;
     }
 
-    public bool IsTargetTargettable(TargetingCfg targetingCfgInstance, BattleTile targetTile)
+    public bool IsTargetTargettable(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile)
     {
+        if(targetTile == null) Debug.LogError("TargetTile is null.");
         bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
         bool rowTargeted = targetingCfgInstance.targetRowRanks.HasFlag(targetTile.rowRank);
-        return colTargeted || rowTargeted;
+        bool targetSelf = actingTile == targetTile
+                          && targetingCfgInstance.targetingPatternAdditive == TargetingPattern.Self
+                          || targetingCfgInstance.targetingPatternAdditive == TargetingPattern.Cross;
+        return colTargeted || rowTargeted || targetSelf;
     }
     
     // Actor to Target
