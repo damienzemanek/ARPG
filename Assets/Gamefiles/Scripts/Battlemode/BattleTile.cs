@@ -291,7 +291,11 @@ public class BattleTile : MonoBehaviour
 
     public void TryDisplayIntentions()
     {
-        if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc) return;
+        if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc)
+        {
+            RegenerateAndDisplayGrid(0);
+            return;
+        }
         int amountOfActualActions = eoc.queuedActions.Count;
         RegenerateAndDisplayGrid(amountOfActualActions);
         

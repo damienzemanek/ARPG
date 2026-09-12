@@ -269,8 +269,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
 
         // Post Movements
-        HandleMovement(actorTile.row, actorTile.col, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
-        HandleMovement(targetTile.row, targetTile.col, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
+        HandleMovement(queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        HandleMovement(queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
         
         // delay for fade back in
         if(queuedAction.actionCtx.cfg.useActionAnim)
@@ -386,7 +386,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         return true;
     }
     
-    void HandleMovement(int myRow, int myCol, MovementCfg move, ref CalculatedMovement calcMovement)
+    void HandleMovement(MovementCfg move, ref CalculatedMovement calcMovement)
     {
         if (move.direction == MovementDirection.None) return;
         if (move.amount <= 0) return;
@@ -448,6 +448,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         }
 
         grid.UpdateGrid();
+
+        foreach (var point in calcMovement.savePath)
+            point.tile.TryDisplayIntentions();
     }
         
     public void UnSelectAll()
