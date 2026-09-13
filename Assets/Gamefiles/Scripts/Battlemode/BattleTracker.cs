@@ -294,6 +294,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         targetOccupantCtx?.TargetAddAdditionalEffects(queuedAction.actionCtx);
         
         grid.UpdateGrid(); // Updates AP and HP through transient stats
+        
+        // TODO:
+        // Check for win or lose
+        // Load Exploration scene,
+        // w/: saved location, rewards
     }
     
     
