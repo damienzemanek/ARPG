@@ -68,6 +68,7 @@ public class IntentUsage
         public int position;
         public int intentIndex;
         public int phaseIndex;
+        public int removedIntentions;
 
         public IntentUsageCtx(int intentions)
         {
@@ -75,6 +76,8 @@ public class IntentUsage
             intentIndex = 0;
             phaseIndex = 0;
             currentIntentionIndexCurrentAttempt = 1;
+            position = 0;
+            removedIntentions = 0;
         }
     }
 

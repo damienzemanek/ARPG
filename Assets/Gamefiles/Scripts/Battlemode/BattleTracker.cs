@@ -216,10 +216,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             bool free = false;
             if (queuedAction.actionCtx.cfg.actionName == "Move")
             {
-                if (boc.hasFreeMove)
+                if (boc.hasFreeIntent)
                 {
                     free = true;
-                    boc.hasFreeMove = false;
+                    boc.hasFreeIntent = false;
                 }
             }
             if (!free) coc.currentAP -= actionsDisplay.GetCurrentlySelectedAPCost();
@@ -537,8 +537,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
-        opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeMove = true; });
-        playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeMove = true; });
+        opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
+        playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
         actionsDisplay.ShowEndTurnBtn(true);
         
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
@@ -605,7 +605,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
         actionsDisplay.ShowEndTurnBtn(false);
-        opponentAI.AttackAll(playerTiles, grid, () => EndEnemyTurnOrStartBattle(false));
+        opponentAI.AttackAll(grid, () => EndEnemyTurnOrStartBattle(false));
     }
     
     

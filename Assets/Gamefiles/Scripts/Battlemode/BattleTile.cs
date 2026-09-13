@@ -54,6 +54,7 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("References")] [Required] public GameObject display;
     [BoxGroup("References")] [Required] public GameObject hpBar;
     [BoxGroup("References")] [Required] public GameObject display_AP;
+    [BoxGroup("References")] [Required] public TextMeshPro lblTxt_ApOrIntention;
     [BoxGroup("References")] [Required] public TextMeshPro txt_AP;
     [BoxGroup("References")] [Required] public TextMeshPro txt_remainingHP;
 
@@ -110,7 +111,7 @@ public class BattleTile : MonoBehaviour
             Debug.LogError($"Created Occupant Ctx wrongly has null config [{occupantCtx.cfg}]");
 
         Spawn(occupantCfg);
-        display_AP.SetActive(occupantCfg is CharacterConfig);
+        display_AP.SetActive(occupantCfg is BattlerConfig);
     }
 
     public void Clear()
@@ -291,13 +292,20 @@ public class BattleTile : MonoBehaviour
 
     public void TryDisplayIntentions()
     {
-        if (occupantCtx == null || occupantCtx is not EnemyOccupantCtx eoc)
+        if (occupantCtx is not EnemyOccupantCtx eoc)
         {
+            if (occupantCtx is CharacterOccupantCtx coc)
+            {
+                lblTxt_ApOrIntention.text = "AP";
+                txt_AP.text = coc.currentAP.ToString();
+            }
             RegenerateAndDisplayGrid(0);
             return;
         }
         int amountOfActualActions = eoc.queuedActions.Count;
         RegenerateAndDisplayGrid(amountOfActualActions);
+        lblTxt_ApOrIntention.text = "IN";
+        txt_AP.text = (eoc.queuedActions.Count - eoc.currentIntentUsageCtx.removedIntentions).ToString();
         
         // For each intention
         for (int intentionsIndex = 0; intentionsIndex < amountOfActualActions; intentionsIndex++)

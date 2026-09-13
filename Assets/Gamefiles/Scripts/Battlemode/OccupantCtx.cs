@@ -24,7 +24,7 @@
 
     public class BattlerOccupantCtx : OccupantCtx
     {
-        public bool hasFreeMove;
+        public bool hasFreeIntent;
         
         public int maxHp;
         public int currentHp;
@@ -53,7 +53,7 @@
             foreach (var cfgSpecialEffect in config.specialEffects)
                 specialEffects.Add(cfgSpecialEffect.CreateNewEffectInstance());
 
-            hasFreeMove = true;
+            hasFreeIntent = true;
         }
 
         public void ActedUponByAction(QueuedAction queuedActorAction, BattlemodeActionCtx attackersActionCtx)

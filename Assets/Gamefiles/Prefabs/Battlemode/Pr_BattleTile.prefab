@@ -381,6 +381,7 @@ MonoBehaviour:
   display: {fileID: 6581894102413030855}
   hpBar: {fileID: 3932555389431421451}
   display_AP: {fileID: 3003641778291861426}
+  lblTxt_ApOrIntention: {fileID: 3015938471610769757}
   txt_AP: {fileID: 4543402657678702621}
   txt_remainingHP: {fileID: 3797320857208024143}
   intentionsGrid: {fileID: 7259913703566096659}
@@ -419,7 +420,7 @@ GameObject:
   - component: {fileID: 3042265416854285376}
   - component: {fileID: 3015938471610769757}
   m_Layer: 2
-  m_Name: txt_AP (1)
+  m_Name: lblTxt AP or Intention
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1394,7 +1395,7 @@ GameObject:
   - component: {fileID: 4853484581786549751}
   - component: {fileID: 4543402657678702621}
   m_Layer: 2
-  m_Name: txt_APamount
+  m_Name: txt_APorIntention
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
