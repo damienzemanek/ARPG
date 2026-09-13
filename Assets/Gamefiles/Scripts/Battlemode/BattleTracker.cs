@@ -226,10 +226,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         }
 
 
-        // First Attack
-        string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
-        Debug.Log("Actor: " + boc.obj.name + ", Target: " + targetName);
-        selectedTarget?.ActedUponBy(queuedAction, actorTile);
+
         
         // Pre Movement Calculations
         CalculatedMovement calcMovement = new();
@@ -249,11 +246,12 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         if (queuedAction.actionCtx.cfg.useActionAnim)
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
-                actionUserViewer.C_UseActionUserViewer(
-                    boc.obj, actorFinalPos,
-                    targetOccupantCtx.obj, targetFinalPos,
-                    leftIsActor));
+                actionUserViewer.C_ZoomIn(boc.obj, targetOccupantCtx.obj, leftIsActor));
 
+        // First Attack
+        string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
+        Debug.Log("Actor: " + boc.obj.name + ", Target: " + targetName);
+        selectedTarget?.ActedUponBy(queuedAction, actorTile);
         
         // Actual hits (times) hit count
         for (int currentHitcount = 2; currentHitcount <= queuedAction.actionCtx.cfg.hitCount; currentHitcount++)
@@ -261,22 +259,23 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             // TODO: delay to be dependant on a dict storing moveanims, which itself is stored on the battlerconfig
             queuedAction.actionCtx.currentHitCount = currentHitcount;
 
-            yield return new WaitForSeconds(0.1f); // delay between attack counts
+            yield return new WaitForSeconds(0.11f); // delay between attack counts
             selectedTarget?.ActedUponBy(queuedAction, actorTile);
         }
         
         // Hit Delay 
         if(queuedAction.actionCtx.cfg.useActionDelays)
-            yield return new WaitForSeconds(0.1f); // finish attacking
+            yield return new WaitForSeconds(1f); // finish attacking
         
-
         // Post Movements
         HandleMovement(queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
         HandleMovement(queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
         
         // delay for fade back in
-        if(queuedAction.actionCtx.cfg.useActionAnim)
-            yield return FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f);
+        if (queuedAction.actionCtx.cfg.useActionAnim)
+            yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
+                FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f),
+                actionUserViewer.C_ZoomOut(boc.obj, actorFinalPos, targetOccupantCtx.obj, targetFinalPos));
         
         // delay for status effects to resolve, eventually also for status add anims
         if(queuedAction.actionCtx.cfg.useActionDelays)
@@ -551,20 +550,13 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
         if (!firstTurn) //----------------- Regular Turns
         {
+            Debug.Log("[BattleTracker] Resolving End of Turn effects for opponents.");
             // Resolve end of turn effects for opponents
-            foreach (var opponentTile in opponentTiles)
+            foreach (var oppTile in opponentTiles)
             {
-                if (opponentTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
-                enemyOccupantCtx.ResolveAfterTurnEndsEffects();
-            }
-            
-            Debug.Log("Starting to Resolve End of Turn effects for players.");
-            // Resolve End of Turn effects for player
-            foreach (var playerTile in playerTiles)
-            {
-                if (playerTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
-                Debug.Log("Resolve End of Turn Effect for player occupant:" + characterOccupantCtx.cfg.name);
-                characterOccupantCtx.ResolveAfterTurnEndsEffects();
+                if (oppTile.occupantCtx is not EnemyOccupantCtx enemyOccupantCtx) continue;
+                enemyOccupantCtx.ResolveAfterTurnEndsEffects(oppTile);
+                Debug.Log("[BattleTracker] Resolved End of Turn Effect for enemy occupant:" + enemyOccupantCtx.cfg.name);
             }
         }
         else  //-------------------------- Start of Battle
@@ -585,6 +577,16 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void EndPlayerTurn()
     {
+        grid.GetBattlerTiles(out _, out var playerTiles);
+        Debug.Log("[BattleTracker] Resolving End of Turn effects for players.");
+        // Resolve End of Turn effects for player
+        foreach (var plrTile in playerTiles)
+        {
+            if (plrTile.occupantCtx is not CharacterOccupantCtx characterOccupantCtx) continue;
+            characterOccupantCtx.ResolveAfterTurnEndsEffects(plrTile);
+            Debug.Log("[BattleTracker] Resolved End of Turn Effect for character occupant:" + characterOccupantCtx.cfg.name);
+        }
+        
         if (currentTurn == Turn.Transitioning) return;
         actionsDisplay.ShowEndTurnBtn(false);
         turnDisplay.StartTurn(Turn.Enemy, EndPlayerTurnImplementation);

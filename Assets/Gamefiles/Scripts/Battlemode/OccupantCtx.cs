@@ -135,15 +135,15 @@
 
         #region After Turn Ends
 
-        public void ResolveAfterTurnEndsEffects()
+        public void ResolveAfterTurnEndsEffects(BattleTile tile)
         {
             if(this is not BattlerOccupantCtx battlerOccupantCtx) return;
             
             foreach (var effect in battlerOccupantCtx.currentEffects)
-                effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+                effect.ResolveEffectAfterTurnEnds(battlerOccupantCtx, tile);
                 
             foreach (var spEffect in battlerOccupantCtx.specialEffects)
-                spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx);
+                spEffect.ResolveEffectAfterTurnEnds(battlerOccupantCtx, tile);
             
             battlerOccupantCtx.currentEffects.RemoveAll(e => e.stacksTotal <= 0);
         }

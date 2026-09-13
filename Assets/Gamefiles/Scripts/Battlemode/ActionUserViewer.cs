@@ -13,9 +13,9 @@ public class ActionUserViewer : MonoBehaviour
     public float stay = 1f;
     public float tweenDuration = 0.1f;
 
-    public IEnumerator C_UseActionUserViewer(
-        GameObject actor, Vector3 actorFinishLoc,
-        GameObject target, Vector3 targetFinishLoc,
+    public IEnumerator C_ZoomIn(
+        GameObject actor,
+        GameObject target,
         bool leftIsActor)
     {
         Transform actorLoc = leftLoc;
@@ -39,11 +39,7 @@ public class ActionUserViewer : MonoBehaviour
             sequence
                 .Append(actor.transform.DOMove(actorLoc.position, tweenDuration))
                 .Join(actor.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
-                .AppendInterval(stay)
-                .JoinCallback(() => LeftActsNoTarget(actor.transform))
-                .Append(actor.transform.DOMove(actorFinishLoc, tweenDuration))
-                .Join(actor.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))
-                .JoinCallback(() => DefaultAll(actor.transform, null));
+                .JoinCallback(() => LeftActsNoTarget(actor.transform));
         }
         else
         {
@@ -53,16 +49,38 @@ public class ActionUserViewer : MonoBehaviour
                 .Join(actor.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
                 .Join(target.transform.DOMove(targetLoc.position, tweenDuration))
                 .Join(target.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
-
-
-                // Stay
-                .AppendInterval(stay)
                 .JoinCallback(() =>
                 {
                     if (leftIsActor) LeftAttacksRight(actor.transform, target.transform);
                     else RightAttacksLeft(actor.transform, target.transform);
-                })
+                });
+        }
 
+        yield return sequence.WaitForCompletion();
+    }
+    
+    public IEnumerator C_ZoomOut(
+        GameObject actor, Vector3 actorFinishLoc,
+        GameObject target, Vector3 targetFinishLoc)
+    {
+        if (actor == null || target == null)
+        {
+            Debug.LogError("No actor or target given to ActionUserViewer.");
+            yield break;
+        }
+        
+        Sequence sequence = DOTween.Sequence();
+
+        if (actor == target)
+        {
+            sequence
+                .Append(actor.transform.DOMove(actorFinishLoc, tweenDuration))
+                .Join(actor.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))
+                .JoinCallback(() => DefaultAll(actor.transform, null));
+        }
+        else
+        {
+            sequence
                 // Move both back together
                 .Append(actor.transform.DOMove(actorFinishLoc, tweenDuration))
                 .Join(actor.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))

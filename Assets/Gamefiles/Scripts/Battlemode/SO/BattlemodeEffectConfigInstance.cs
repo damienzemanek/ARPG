@@ -234,16 +234,16 @@ public abstract class BattlemodeEffectStrategyInstance
         OccupantCtx occupantCtx,
         BattlemodeActionCtx actionCtx) => actionCtx;
     
-    public void ResolveEffectAfterTurnEnds(OccupantCtx occupantCtx)
+    public void ResolveEffectAfterTurnEnds(OccupantCtx occupantCtx, BattleTile tile)
     {
         ref var stackCtx = ref GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn);
         stackCtx.stacks--;
         stackCtx.stacks = Mathf.Max(0, stackCtx.stacks);
-        ResolveEffectAfterTurnEndsImplementation(occupantCtx);
+        ResolveEffectAfterTurnEndsImplementation(occupantCtx, tile);
     }
     
     public virtual void ResolveEffectAfterTurnEndsImplementation(
-        OccupantCtx occupantCtx) { }
+        OccupantCtx occupantCtx, BattleTile tile) { }
     
     public virtual BattlemodeActionCtx ResolveEffecStartOfBattle(
         OccupantCtx occupantCtx,

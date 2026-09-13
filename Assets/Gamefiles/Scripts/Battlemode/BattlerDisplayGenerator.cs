@@ -6,29 +6,27 @@ using static BattlemodeActionConfig;
 
 public class BattlerDisplayGenerator : MonoBehaviour
 {
-    [Required] public GameObject dmgNumberDisplayPrefab; 
-    [Required] public SpriteRenderer bounds;
-    Bounds _bounds => bounds.bounds;
+    [Required] public GameObject dmgNumberDisplayPrefab;
+    [Required] public Transform spawnpos;
 
+    public int vertOffset = 3;
     public string critPretext = "Crit!";
     public Color critColor;
     public Color healColor;
     public Color damageColor;
     public Color armorColor;
     
+    [Button]
     public void GenerateNumberDisplay(int amount, bool crit, ActionIdentifier actionIdentifier)
     {
-        var randX = Random.Range(_bounds.min.x, _bounds.max.x);
-        var randY = Random.Range(_bounds.min.y, _bounds.max.y);
-        var position = new Vector3(randX, randY, transform.position.z);
         var display = Instantiate(dmgNumberDisplayPrefab, transform);
-        display.transform.position = position;
-        var text = display.Get<TextMeshPro>();
+        display.transform.position = spawnpos.position;
+        var text = display.GetComponentInChildren<TextMeshPro>();
         var color = actionIdentifier switch
         {
             ActionIdentifier.Attack 
             or ActionIdentifier.AttackBuff
-            or ActionIdentifier.ArmorDebuff 
+            or ActionIdentifier.AttackDebuff 
             or ActionIdentifier.AttackMove => damageColor,
             ActionIdentifier.Heal 
             or ActionIdentifier.HealBuff 

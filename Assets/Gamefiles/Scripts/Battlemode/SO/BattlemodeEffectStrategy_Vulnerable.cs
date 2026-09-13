@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
 
         Debug.Log("[SP EFFECT] Swift: Proc`d");
         actionCtx.intentionsDelta += 1;
-        actionCtx.ap -= 1;
+        actionCtx.ap -= 2;
         if(actionCtx.ap < 0) 
             actionCtx.ap = 0;
         
@@ -57,7 +58,7 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
         public SwiftStrategyCtx() { }
     }
 
-    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx)
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
     {
         Debug.Log("[SP EFFECT] Swift: Turn Ends");
         swiftStrategyCtx.usedThisRound = false;
@@ -253,4 +254,21 @@ public sealed class BattlemodeEffectStrategy_Mark : BattlemodeEffectStrategyInst
         
         return actionCtx;
     }
+}
+
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Bleed : BattlemodeEffectStrategyInstance
+{
+    public override int priority => 1;
+    public override bool isSpecial => false;
+
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
+    {
+        if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.currentHp -= stacksTotal;
+        tile.UpdateTransientStats();
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
+    }
+    
 }
