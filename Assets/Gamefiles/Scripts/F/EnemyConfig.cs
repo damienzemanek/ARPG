@@ -141,7 +141,7 @@ public class IntentUsage
         Debug.Log($"[EnemyCfg] (Pos {currentIntentUsageCtx.position}): Set IntentIndex from: " + prev + " to: " +  currentIntentUsageCtx.intentIndex);
 
         currentIntentUsageCtx.position++;
-        if (currentIntentUsageCtx.position >= ecfg.maxEquippableActions)
+        if (currentIntentUsageCtx.position > currentPhase.ActionOrderLength)
             currentIntentUsageCtx.position = 0;
         
         return currentIntentUsageCtx;
@@ -165,8 +165,27 @@ public class IntentPhase
     [Tooltip("Each decimal digit represents an action index. Example: 2314 = 2 -> 3 -> 1 -> 4.")]
     [HideIf("linearDefaultTraversal")]
     public ulong actionOrder;
-    
 
+    public int ActionOrderLength
+    {
+        get
+        {
+            int length = 0;
+            ulong temp = actionOrder;
+
+            while (temp > 0)
+            {
+                length++;
+                temp /= 10;
+            }
+
+            if (leadingZero) length++;
+
+            return length;
+        }
+    }
+    
+    
     public int GetActionIndex(int position, int maxAmountOfTotalActionsAvaliable)
     {
         if (position < 0) return -1;

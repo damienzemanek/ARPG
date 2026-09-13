@@ -35,12 +35,12 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 127
-    targetColRanks: 127
+    usableInColRanks: 4
+    targetColRanks: 16
     targetCurrentCol: 0
   movementCfg:
-    direction: 0
-    amount: 0
+    direction: 2
+    amount: 1
   targetMovementCfg:
     direction: 0
     amount: 0

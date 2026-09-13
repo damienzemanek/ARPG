@@ -20,7 +20,7 @@ MonoBehaviour:
   actionIdentifier: 2
   actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 0
+  targetedBodyPart: 2
   useActionAnim: 1
   useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
@@ -35,8 +35,8 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 15
-    targetColRanks: 112
+    usableInColRanks: 12
+    targetColRanks: 16
     targetCurrentCol: 0
   movementCfg:
     direction: 0

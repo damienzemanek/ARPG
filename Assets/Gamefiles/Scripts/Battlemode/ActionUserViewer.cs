@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using EMILtools.Extensions;
@@ -36,10 +37,11 @@ public class ActionUserViewer : MonoBehaviour
 
         if (actor == target)
         {
+            Action<Transform> animCb = leftIsActor ? LeftActsNoTarget : RightActsNoTarget;
             sequence
                 .Append(actor.transform.DOMove(actorLoc.position, tweenDuration))
                 .Join(actor.transform.DORotate(battlemodePlayer.transform.rotation.eulerAngles, tweenDuration))
-                .JoinCallback(() => LeftActsNoTarget(actor.transform));
+                .JoinCallback(() => animCb(actor.transform));
         }
         else
         {
@@ -107,6 +109,11 @@ public class ActionUserViewer : MonoBehaviour
     void LeftActsNoTarget(Transform actorLeft)
     {
         actorLeft.Get<Animator>().Play("LeftActing");
+    }
+    
+    void RightActsNoTarget(Transform actorRight)
+    {
+        actorRight.Get<Animator>().Play("RightActing");
     }
 
     void DefaultAll(Transform actor, Transform target)

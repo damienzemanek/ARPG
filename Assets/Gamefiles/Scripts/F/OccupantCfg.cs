@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class OccupantCfg : ScriptableObject
 {
-    [Required] public string occupantName;
-    [Required] public Sprite icon;
-    [Required] public GameObject prefab;
+    [BoxGroup("Settings")] [Required] public string occupantName;
+    [BoxGroup("Settings")] [Required] public Sprite icon;
+    [BoxGroup("Settings")] [Required] public GameObject prefab;
 }

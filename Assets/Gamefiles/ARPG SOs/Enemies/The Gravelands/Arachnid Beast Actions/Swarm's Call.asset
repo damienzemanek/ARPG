@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Disabling Shot
+  m_Name: Swarm's Call
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Disabling Shot
-  description: Disabling Shot Description
-  apCost: 2
-  roleTarget: 2
+  actionName: Swarm's Call
+  description: Swarm's Call Description
+  apCost: 1
+  roleTarget: 1
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 4
-  actionQualifier: 1
+  actionIdentifier: 10
+  actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 4
+  targetedBodyPart: 0
   useActionAnim: 1
   useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 100
+  dmgMultiplier: 0
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 0
+    targetingPatternAdditive: 1
     usableInRowRanks: 0
     targetRowRanks: 0
-    targetCurrentRow: 1
-    usableInColRanks: 6
-    targetColRanks: 48
+    targetCurrentRow: 0
+    usableInColRanks: 0
+    targetColRanks: 0
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -44,31 +44,20 @@ MonoBehaviour:
   targetMovementCfg:
     direction: 0
     amount: 0
-  effectsToApplyToTarget:
+  effectsToApplyToTarget: []
+  effectsToApplyToSelf:
   - addOccurance: 2
     defaultEffectStrategyValues:
-      rid: 3738701929127346287
-  - addOccurance: 2
-    defaultEffectStrategyValues:
-      rid: 3738701929127346297
-  effectsToApplyToSelf: []
+      rid: 9097403499500273795
   aoe: 0
   references:
     version: 2
     RefIds:
-    - rid: 3738701929127346287
-      type: {class: BattlemodeEffectStrategy_MoveLocked, ns: , asm: Assembly-CSharp}
+    - rid: 9097403499500273795
+      type: {class: BattlemodeEffectStrategy_CriticalAvaliable, ns: , asm: Assembly-CSharp}
       data:
         ctx:
           stackCtxs:
           - instanceEffectTime: 0
-            stacks: 2
-            setStacksDirectly: 0
-    - rid: 3738701929127346297
-      type: {class: BattlemodeEffectStrategy_CriticallyExposed, ns: , asm: Assembly-CSharp}
-      data:
-        ctx:
-          stackCtxs:
-          - instanceEffectTime: 0
-            stacks: 2
+            stacks: 1
             setStacksDirectly: 0

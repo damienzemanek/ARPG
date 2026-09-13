@@ -10,40 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f18e7ad92b4304bec2dba7f748b3a1, type: 3}
-  m_Name: Wolf
+  m_Name: Arachnid Beast
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  occupantName: Wolf
+  occupantName: Arachnid Beast
   icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
   currentLevel: 1
-  maxHP: 9
-  maxArmor: 2
+  maxHP: 10
+  maxArmor: 4
   damage: 2
-  _maxEquippableActions: 4
+  _maxEquippableActions: 3
   equippedActions:
-  - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
-  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
-  - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
-  - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
-  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
-  - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
-  - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
+  - {fileID: 11400000, guid: bc00902c8ee2c4549bfc898ec8cac04f, type: 2}
+  - {fileID: 11400000, guid: fc4f9855e3f4e974f91d036664138d14, type: 2}
+  - {fileID: 11400000, guid: 55dff97fb28976a469a32291eda64582, type: 2}
+  AllAvaliableActions: []
   ForcedActions: []
   specialEffects: []
-  attackOrder: 0
+  attackOrder: 1
   primaryAttackPriorityWeight: 2
   secondaryAttackPriorityWeight: 1
-  PrimaryAttackPriority: 0
+  PrimaryAttackPriority: 1
   SecondaryAttackPriority: 0
   intentUsageCfg:
     phases:
     - hpThreshold: 0
       linearDefaultTraversal: 0
       leadingZero: 0
-      actionOrder: 3012
-  intentions: 1
+      actionOrder: 2210
+  intentions: 2
   defaultPredicted: 1
   references:
     version: 2

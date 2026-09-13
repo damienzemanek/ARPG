@@ -108,7 +108,6 @@ public class OpponentAI : MonoBehaviour
         
         // Acounting for saved intentions, saves will allways be an actual action
         var actionIndex = newIntentUsage.intentIndex;
-        Debug.Log("[OPP AI] Received Intent Index: " + actionIndex);
 
         // Get the action via the intention index
         // if null keep looping for a bit
@@ -193,12 +192,17 @@ public class OpponentAI : MonoBehaviour
                                  ?? QueueDefendTarget(eoc, orderCtx, out altAction);
                 queuedAction = eoc.queuedActions.First(); // grab new first
                 Debug.Log("[OPP AI] Attempting to do alternative action: " + queuedAction.actionCtx.cfg.actionName);
-                
-                if(!eoc.hasFreeIntent) eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt++;
+
+                if (!eoc.hasFreeIntent)
+                {
+                    eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt++;
+                    eoc.currentIntentUsageCtx.removedIntentions++;
+                    Debug.Log($"[OPP AI] Alternative Action: Removed an intention (Free Move Already Used)");
+                }
                 else
                 {
                     eoc.hasFreeIntent = false;
-                    Debug.Log($"[OPP AI] Free Intent Used: Alternative Action {altAction}");
+                    Debug.Log($"[OPP AI] Alternative Action: Free Move Used, no intention removed");
                 }
             }
             else
@@ -418,7 +422,7 @@ public class OpponentAI : MonoBehaviour
         }
 
         if (action == null) Debug.LogError($"[OPP AI] No equipped actions found for {eoc.enemyCfg.name}.");
-        else Debug.Log("[OPP AI] Action Retrieved from ActionCfg for OpponentAI : " + action.actionName);
+        else Debug.Log("[OPP AI] Retrieved Action : " + action.actionName);
         return action;
     }
     

@@ -19,8 +19,13 @@ MonoBehaviour:
   moveToSelectedEmptyTile: 0
   actionIdentifier: 3
   actionQualifier: 1
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 6
+  useActionAnim: 1
+  useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
+  maxEocTargetingAttempts: 2
   dmgMultiplier: 100
   healPercentage: 0
   armorIncreasePercentage: 0
@@ -30,12 +35,15 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 15
-    targetColRanks: 112
+    usableInColRanks: 3
+    targetColRanks: 96
     targetCurrentCol: 0
   movementCfg:
     direction: 1
     amount: 1
+  targetMovementCfg:
+    direction: 0
+    amount: 0
   effectsToApplyToTarget: []
   effectsToApplyToSelf:
   - addOccurance: 2
@@ -49,8 +57,7 @@ MonoBehaviour:
       type: {class: BattlemodeEffectStrategy_Swift, ns: , asm: Assembly-CSharp}
       data:
         ctx:
-          markedForRemoval: 0
-          markForReResolve: 0
           stackCtxs:
           - instanceEffectTime: 0
             stacks: 3
+            setStacksDirectly: 0

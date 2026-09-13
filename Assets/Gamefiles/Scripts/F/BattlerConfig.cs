@@ -7,10 +7,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BattlerConfig", menuName = "ARPG/SO/BattlerConfig")]
 public class BattlerConfig : OccupantCfg
 {
-    public int currentLevel = 1;
-    public int maxHP;
-    public int maxArmor;
-    public int damage;
+    [BoxGroup("Stats")] public int currentLevel = 1;
+    [BoxGroup("Stats")] public int maxHP;
+    [BoxGroup("Stats")] public int maxArmor;
+    [BoxGroup("Stats")] public int damage;
     [SerializeField, HideInInspector] int _maxEquippableActions;
     [ShowInInspector] public int maxEquippableActions
     {

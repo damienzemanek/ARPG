@@ -34,10 +34,10 @@ MonoBehaviour:
     targetingPatternAdditive: 0
     usableInRowRanks: 0
     targetRowRanks: 0
-    targetCurrentRow: 1
-    usableInColRanks: 0
-    targetColRanks: 0
-    targetCurrentCol: 1
+    targetCurrentRow: 0
+    usableInColRanks: 2
+    targetColRanks: 48
+    targetCurrentCol: 0
   movementCfg:
     direction: 0
     amount: 0

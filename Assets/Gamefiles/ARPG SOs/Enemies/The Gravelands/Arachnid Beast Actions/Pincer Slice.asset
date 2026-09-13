@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Disabling Shot
+  m_Name: Pincer Slice
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Disabling Shot
-  description: Disabling Shot Description
-  apCost: 2
+  actionName: Pincer Slice
+  description: Pincer Slice Description
+  apCost: 1
   roleTarget: 2
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 4
-  actionQualifier: 1
+  actionIdentifier: 3
+  actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 4
+  targetedBodyPart: 2
   useActionAnim: 1
   useActionDelays: 1
   icon: {fileID: 21300000, guid: e60f0ea830560054f81c0a12ccecdf93, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 100
+  dmgMultiplier: 50
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
@@ -34,9 +34,9 @@ MonoBehaviour:
     targetingPatternAdditive: 0
     usableInRowRanks: 0
     targetRowRanks: 0
-    targetCurrentRow: 1
-    usableInColRanks: 6
-    targetColRanks: 48
+    targetCurrentRow: 0
+    usableInColRanks: 48
+    targetColRanks: 14
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -44,28 +44,17 @@ MonoBehaviour:
   targetMovementCfg:
     direction: 0
     amount: 0
-  effectsToApplyToTarget:
+  effectsToApplyToTarget: []
+  effectsToApplyToSelf:
   - addOccurance: 2
     defaultEffectStrategyValues:
-      rid: 3738701929127346287
-  - addOccurance: 2
-    defaultEffectStrategyValues:
-      rid: 3738701929127346297
-  effectsToApplyToSelf: []
+      rid: 9097403499500273794
   aoe: 0
   references:
     version: 2
     RefIds:
-    - rid: 3738701929127346287
-      type: {class: BattlemodeEffectStrategy_MoveLocked, ns: , asm: Assembly-CSharp}
-      data:
-        ctx:
-          stackCtxs:
-          - instanceEffectTime: 0
-            stacks: 2
-            setStacksDirectly: 0
-    - rid: 3738701929127346297
-      type: {class: BattlemodeEffectStrategy_CriticallyExposed, ns: , asm: Assembly-CSharp}
+    - rid: 9097403499500273794
+      type: {class: BattlemodeEffectStrategy_Piercing, ns: , asm: Assembly-CSharp}
       data:
         ctx:
           stackCtxs:

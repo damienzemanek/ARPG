@@ -35,7 +35,7 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 15
+    usableInColRanks: 0
     targetColRanks: 0
     targetCurrentCol: 0
   movementCfg:
