@@ -65,6 +65,7 @@ public class IntentUsage
     {
         public int currentIntentionIndexCurrentAttempt;
         public int intentionsAmount;
+        public int position;
         public int intentIndex;
         public int phaseIndex;
 
@@ -105,13 +106,12 @@ public class IntentUsage
     }
 
 
-    public IntentUsageCtx GetAndProgressIntent(float healthPercentage01, IntentUsageCtx currentIntentUsageCtx)
+    public IntentUsageCtx GetAndProgressIntent(float healthPercentage01, IntentUsageCtx currentIntentUsageCtx, EnemyConfig ecfg)
     {
         if (phases == null || phases.Length == 0) {
             Debug.LogError("No phases found in IntentUsage.");
             return currentIntentUsageCtx; }
         
-
         healthPercentage01 = Mathf.Clamp01(healthPercentage01);
         int phaseIndex = 0;
 
@@ -126,23 +126,25 @@ public class IntentUsage
         // If the phase changed, restart its intent traversal.
         if (phaseIndex != currentIntentUsageCtx.phaseIndex)
         {
+            Debug.Log("[EnemyCfg] Phase Change Detected, Changing From: " + currentIntentUsageCtx.phaseIndex + " to " + phaseIndex);
             currentIntentUsageCtx.phaseIndex = phaseIndex;
             currentIntentUsageCtx.intentIndex = 0;
         }
-        else // if no phase change, increment the intent index.
-        // else increment the intent index.
-        // note: saved intent indexes do not save across phases.
-        {
-            Debug.Log("[EnemyConfig] Incrementing IntentUsageCtx's Intent Index from " +
-                      "" + currentIntentUsageCtx.intentIndex + " to " 
-                      + (currentIntentUsageCtx.intentIndex + 1).ToString());
-            currentIntentUsageCtx.intentIndex++;
-            if(currentIntentUsageCtx.intentIndex > currentIntentUsageCtx.intentionsAmount)
-                currentIntentUsageCtx.intentIndex = 0;
-        }
+        
+        var currentPhase = phases[phaseIndex];
+        int prev = currentIntentUsageCtx.intentIndex;
+        currentIntentUsageCtx.intentIndex =
+            currentPhase.GetActionIndex(currentIntentUsageCtx.position, ecfg.maxEquippableActions);
+        Debug.Log($"[EnemyCfg] (Pos {currentIntentUsageCtx.position}): Set IntentIndex from: " + prev + " to: " +  currentIntentUsageCtx.intentIndex);
+
+        currentIntentUsageCtx.position++;
+        if (currentIntentUsageCtx.position >= ecfg.maxEquippableActions)
+            currentIntentUsageCtx.position = 0;
         
         return currentIntentUsageCtx;
     }
+    
+    
 }
 
 [Serializable]
@@ -160,13 +162,16 @@ public class IntentPhase
     [Tooltip("Each decimal digit represents an action index. Example: 2314 = 2 -> 3 -> 1 -> 4.")]
     [HideIf("linearDefaultTraversal")]
     public ulong actionOrder;
+    
 
     public int GetActionIndex(int position, int maxAmountOfTotalActionsAvaliable)
     {
         if (position < 0) return -1;
+        
         if (maxAmountOfTotalActionsAvaliable <= 0 ||
             maxAmountOfTotalActionsAvaliable > 9)
             return -1;
+        
         // Default traversal is simply 0 -> 1 -> 2 -> ... -> max - 1 -> 0...
         if (linearDefaultTraversal) return position % maxAmountOfTotalActionsAvaliable;
 

@@ -104,10 +104,11 @@ public class OpponentAI : MonoBehaviour
     public BattlemodeActionConfig GetNewIntentsActionCfg(EnemyOccupantCtx eoc)
     {
         float hpPerc01 = eoc.currentHp / eoc.maxHp;
-        var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetAndProgressIntent(hpPerc01, eoc.currentIntentUsageCtx);
-                
+        var newIntentUsage = eoc.enemyCfg.intentUsageCfg.GetAndProgressIntent(hpPerc01, eoc.currentIntentUsageCtx, eoc.enemyCfg);
+        
         // Acounting for saved intentions, saves will allways be an actual action
         var actionIndex = newIntentUsage.intentIndex;
+        Debug.Log("[OPP AI] Received Intent Index: " + actionIndex);
 
         // Get the action via the intention index
         // if null keep looping for a bit
@@ -308,6 +309,8 @@ public class OpponentAI : MonoBehaviour
         QueuedAction queuedAction,
         List<BattleTile> playerTiles)
     {
+        playerTiles.RemoveAll(playerTile => playerTile.occupantCtx == null); // Remove dead tiles
+
         // Target Selection
         switch (queuedAction.lookingForTarget)
         {

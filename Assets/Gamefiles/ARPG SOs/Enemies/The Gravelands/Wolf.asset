@@ -19,13 +19,17 @@ MonoBehaviour:
   maxHP: 9
   maxArmor: 2
   damage: 2
-  _maxEquippableActions: 1
+  _maxEquippableActions: 4
   equippedActions:
+  - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
+  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
+  - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
   AllAvaliableActions:
   - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
   - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
+  - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
   ForcedActions: []
   specialEffects: []
   attackOrder: 0
@@ -36,10 +40,10 @@ MonoBehaviour:
   intentUsageCfg:
     phases:
     - hpThreshold: 0
-      linearDefaultTraversal: 1
-      leadingZero: 0
-      actionOrder: 0
-  intentions: 1
+      linearDefaultTraversal: 0
+      leadingZero: 1
+      actionOrder: 1322013
+  intentions: 2
   defaultPredicted: 1
   references:
     version: 2
