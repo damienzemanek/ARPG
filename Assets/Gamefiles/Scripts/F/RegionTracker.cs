@@ -50,7 +50,7 @@ public class RegionTracker : Singleton<RegionTracker>
         var player = Instantiate(prefab, spawn.point.position, spawn.point.rotation)
             .GetComponentInChildren<PlayerInstance>().gameObject;
 
-        PersistentConfigurationDataHolder.Instance.sceneLoadInMethod.Invoke(this);
+        PersistentConfigurationDataHolder.Instance.sceneLoadInMethod.FadeInScreen();
         OnSpawnPlayer?.Invoke(player);
     }
     

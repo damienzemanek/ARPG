@@ -5,12 +5,20 @@ using UnityEngine;
 public class BattleSO_MethodVTable : SO_MethodVTable
 {
     public int loaderIndex;
-
-    public void LoadBattle(BattleConfig battleConfig)
+    public string startBattlemodeEncounterAnimName;
+    public string camZoomAnimName;
+    
+    public void LoadBattle(GameObject playerObj, BattleConfig battleConfig)
     {
+        if (!playerObj.Has(out PlayerInstance playerInstance)) return;
         var fade = PlayerScreenFade.Instance.fadeTarg;
-        Loader.Instance.LoadSceneAdditiveDisableCurrent(2);
         SessionData.Instance.currentBattleConfig = battleConfig;
+
+        playerInstance.faderAnimator.PlayOnEnd(startBattlemodeEncounterAnimName, () => 
+        {
+            playerInstance.cameraSystemAnimator.PlayOnEnd(camZoomAnimName, () =>
+                { Loader.Instance.LoadSceneAdditiveDisableCurrent(loaderIndex); });
+        });
     }
     
 }

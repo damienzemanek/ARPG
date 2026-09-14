@@ -5,11 +5,12 @@ using UnityEngine;
 /// Called when loading into a new scene
 /// </summary>
 [CreateAssetMenu(fileName = "Load In", menuName = "ARPG/SO/Method/Load In")]
-public class LoadIn : SO_Method<MonoBehaviour>
+public class LoadIn : SO_MethodVTable
 {
-    public override void Invoke(MonoBehaviour host)
+    public void FadeInScreen()
     {
         Object targ = PlayerScreenFade.Instance.fadeTarg;
-        host.StartCoroutine(FadeEX.C_FadeToTransparent(Loader.Instance.loadingFade, targ));
+        CoroutineRunner.Instance.StartCoroutine(
+            FadeEX.C_FadeToTransparent(Loader.Instance.loadingFade, targ));
     }
 }

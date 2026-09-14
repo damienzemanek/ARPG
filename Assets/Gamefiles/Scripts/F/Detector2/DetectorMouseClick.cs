@@ -5,21 +5,20 @@ using UnityEngine.EventSystems;
 
 public class DetectorMouseClick : Detector
 {
-    public bool eventSystemPointerOverGameObject = true;
     public override DetectorType type => DetectorType.MouseOver;
 
-    bool IsPointerOverUITaggedObject()
-    {
-        if (!eventSystemPointerOverGameObject) return false;
-        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-        var results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-        return results.Any(result => result.gameObject.CompareTag("UI"));
-    }
+    // bool IsPointerOverUITaggedObject()
+    // {
+    //     PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+    //     var results = new List<RaycastResult>();
+    //     EventSystem.current.RaycastAll(pointerData, results);
+    //     return results.Any(result =>
+    //         result.gameObject.GetComponentInParent<Transform>()?.CompareTag("UI") == true);
+    // }
 
     void OnMouseDown()
     {
-        if (IsPointerOverUITaggedObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Enter)) return;
 
         Detect(gameObject);
@@ -27,7 +26,7 @@ public class DetectorMouseClick : Detector
 
     void OnMouseUp()
     {
-        if (IsPointerOverUITaggedObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Exit)) return;
 
         LoseDetect(gameObject);
@@ -35,7 +34,7 @@ public class DetectorMouseClick : Detector
 
     public void OnMouseDrag()
     {
-        if (IsPointerOverUITaggedObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (DoesntHandle(DetectionState.Stay)) return;
 
         Detect(gameObject);

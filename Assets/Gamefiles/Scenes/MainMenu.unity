@@ -696,86 +696,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &970613974
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 970613976}
-  - component: {fileID: 970613977}
-  m_Layer: 0
-  m_Name: MainMenu Bootstrapper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &970613976
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970613974}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.1079, y: 0, z: -3.66225}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &970613977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970613974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb25b5336e5df764d9567ee384442c76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EMILtools::UnityLifecycleHook
-  awake: 0
-  onenable: 0
-  ondisable: 0
-  start: 1
-  update: 0
-  fixedupdate: 0
-  OnAwake:
-    m_PersistentCalls:
-      m_Calls: []
-  OnEnabled:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDisabled:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: a7dbd7bba7be5064daf1d5a044d90663, type: 2}
-        m_TargetAssemblyTypeName: LoadIn, Assembly-CSharp
-        m_MethodName: Invoke
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 970613977}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.MonoBehaviour, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnUpdate:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFixedUpdate:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &978612407
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +784,7 @@ GameObject:
   - component: {fileID: 1008283276}
   - component: {fileID: 1008283275}
   - component: {fileID: 1008283274}
+  - component: {fileID: 1008283277}
   m_Layer: 5
   m_Name: FADE
   m_TagString: Untagged
@@ -941,6 +862,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008283272}
   m_CullTransparentMesh: 1
+--- !u!114 &1008283277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008283272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb25b5336e5df764d9567ee384442c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EMILtools::UnityLifecycleHook
+  awake: 1
+  onenable: 0
+  ondisable: 0
+  start: 0
+  update: 0
+  fixedupdate: 0
+  OnAwake:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: a7dbd7bba7be5064daf1d5a044d90663, type: 2}
+        m_TargetAssemblyTypeName: LoadIn, Assembly-CSharp
+        m_MethodName: FadeInScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFixedUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1013932432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,4 +1459,3 @@ SceneRoots:
   - {fileID: 1024528891}
   - {fileID: 1962129444}
   - {fileID: 1185506848}
-  - {fileID: 970613976}

@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 922029e07ddf4abbb543a9b3594d871f, type: 3}
   m_Name: Battle MethodVTable
   m_EditorClassIdentifier: Assembly-CSharp::BattleSO_MethodVTable
-  loaderIndex: 3
+  loaderIndex: 2
+  startBattlemodeEncounterAnimName: StartEncounter
+  camZoomAnimName: ZoomIn

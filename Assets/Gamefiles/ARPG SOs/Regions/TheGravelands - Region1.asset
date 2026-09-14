@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15652938fb9c4077b3f8081bf9fcd679, type: 3}
-  m_Name: TheGraveyard - Region1
+  m_Name: TheGravelands - Region1
   m_EditorClassIdentifier: Assembly-CSharp::RegionData
-  regionName: The Graveyard
+  regionName: The Gravelands
   regionSpawnLocationTags:
   - Original
   - Door1

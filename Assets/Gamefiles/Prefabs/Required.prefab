@@ -188,14 +188,16 @@ MonoBehaviour:
   autoUnparentOnAwake: 1
   minTimeLoading: 1
   loadingFade:
-    totalDurationForFade: 0
-    amountOfSteps: 0
+    totalDurationForFade: 1
+    amountOfSteps: 50
     delayToStartFading: 0
   loadScreenIndx: 1
   scenesToLoad:
   - name: Region1
     values: 02000000
   - name: Region2
+    values: 03000000
+  - name: Battle
     values: 03000000
   LoadingScreenObjects: []
   disables: []

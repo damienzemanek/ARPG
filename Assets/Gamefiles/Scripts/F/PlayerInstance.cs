@@ -23,6 +23,10 @@ public class PlayerInstance : MonoBehaviour
     
     [BoxGroup("Input")] [Required] public InputReader_TopDown inputReader;
     
+    [BoxGroup("Battlemode")] [Required] public Animator cameraSystemAnimator;
+    [BoxGroup("Battlemode")] [Required] public Animator faderAnimator;
+
+
     void Awake()
     {
         // For RotComposer
