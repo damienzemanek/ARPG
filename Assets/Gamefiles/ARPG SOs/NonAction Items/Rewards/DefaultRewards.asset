@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DefaultRewards
   m_EditorClassIdentifier: Assembly-CSharp::ItemRewards
   rewards:
-  - {fileID: 11400000, guid: c300dcdedb4f35b49846a8b9c68887c4, type: 2}
-  - {fileID: 11400000, guid: 43dc71cf8d4c7954c85577a89e839bda, type: 2}
+  - amount: 1
+    item: {fileID: 11400000, guid: c300dcdedb4f35b49846a8b9c68887c4, type: 2}
+  - amount: 1
+    item: {fileID: 11400000, guid: 43dc71cf8d4c7954c85577a89e839bda, type: 2}

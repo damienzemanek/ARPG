@@ -13,7 +13,7 @@ public class Currency : ItemSO, IMultiItem
     public ItemSO Clone()
     {
         var clone = CreateInstance<Currency>();
-        clone.amountOwned = amountOwned;
+        clone.icon = icon;
         clone.currencyCurrencyType = currencyCurrencyType;
         clone.itemName = itemName;
         clone.description = description;
@@ -28,5 +28,16 @@ public class Currency : ItemSO, IMultiItem
     
     public CurrencyType currencyCurrencyType;
 
-    public override ItemSO ProvideReward() => this;
+    public override ItemSO ProvideReward(int amount)
+    {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        switch (currencyCurrencyType)
+        {
+            case  CurrencyType.Gold: data.goldAmount += amount ; break;
+            case CurrencyType.Crystals: data.crystalAmount += amount; break;
+            default: throw new ArgumentOutOfRangeException("ProvideReward()'d on unknown currencyType");
+        }
+        saver.Save();
+        return this;
+    }
 }

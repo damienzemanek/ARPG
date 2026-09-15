@@ -68,20 +68,42 @@ public class Saver : MonoBehaviour
     {
         var service = SaverService.Instance;
         var type = saveSOType.Type;
-        if (type == null) {
+
+        Debug.Log(
+            $"[{name}] Awake\n" +
+            $"Type: {type}\n" +
+            $"Service: {service}\n" +
+            $"Service type: {service.GetType().FullName}"
+        );
+
+        if (type == null)
+        {
             Debug.LogError($"{name}: No save type assigned.");
-            return; }
-
+            return;
+        }
+        
         if (service.TryGetService(type, out var existingSaver))
-            if (existingSaver != this) 
-            {
-                Destroy(gameObject);
-                return; 
-            }
+        {
+            Debug.Log(
+                $"[{name}] Found existing saver: " +
+                $"{existingSaver?.name ?? "NULL"} " +
+                $"({existingSaver})"
+            );
 
+            if (existingSaver != this)
+            {
+                Debug.Log($"[{name}] KILLING DUPLICATE");
+                Destroy(gameObject);
+                return;
+            }
+        }
+
+        Debug.Log($"[{name}] Registering");
         service.Register(this);
+
         transform.SetParent(null, true);
         DontDestroyOnLoad(gameObject);
+
         Load();
     }
     

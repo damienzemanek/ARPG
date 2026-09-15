@@ -191,10 +191,10 @@ MonoBehaviour:
     delayToStartFading: 0
   loadScreenIndx: 1
   scenesToLoad:
-  - name: Region1
+  - name: MainMenu
+    values: 00000000
+  - name: The Graveyard - Region 1
     values: 02000000
-  - name: Region2
-    values: 03000000
   - name: Battle
     values: 03000000
   LoadingScreenObjects: []

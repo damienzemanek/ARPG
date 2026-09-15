@@ -169,7 +169,7 @@ public class BattlemodeActionConfig : ItemSO
         return ctx;
     }
     
-    public override ItemSO ProvideReward() => this;
+    public override ItemSO ProvideReward(int _ = -1) => this;
 }
 
 public class BattlemodeActionCtx

@@ -1216,35 +1216,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7271509956265775447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &363432913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
-  m_Name: DefaultCharactersData(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
-  schemaInfo:
-    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
-    version: 0
-  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
-  charactersData:
-  - characterConfigName: Executioner
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Gunslinger
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Hospitalar
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Whisper
-    hasCharacter: 0
-    level: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2028,6 +1999,22 @@ Transform:
   - {fileID: 790498519}
   m_Father: {fileID: 7271509956265775447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &636949112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
+    version: 0
+  persistencies: []
 --- !u!1 &645001682
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,22 +2182,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2064839358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &700503326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
-  schemaInfo:
-    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
-    version: 0
-  persistencies: []
 --- !u!1001 &719620922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3686,6 +3657,35 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!114 &996700139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
+  m_Name: DefaultCharactersData(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
+  schemaInfo:
+    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
+    version: 0
+  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
+  charactersData:
+  - characterConfigName: Executioner
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Gunslinger
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Hospitalar
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Whisper
+    hasCharacter: 0
+    level: 1
 --- !u!1 &1036873469
 GameObject:
   m_ObjectHideFlags: 0
@@ -4245,22 +4245,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2064839358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1169564280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
-  schemaInfo:
-    hash: E9114CF28BD3CF062CBF6CFE6D1E2A06DFE722A1DF5F62938F72F93735F0F5F5
-    version: 0
-  returningPlayer: 0
 --- !u!1001 &1196540921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7706,6 +7690,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5523884150922036781, guid: 429ca87d569343b499097a924d9bce7e, type: 3}
   m_PrefabInstance: {fileID: 2029179801}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2056004594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
+  schemaInfo:
+    hash: 807F4E5497DE266158D99622DFC98A78CFCE38813F12B115649E4ECC7D657C98
+    version: 0
+  returningPlayer: 0
+  goldAmount: 0
+  crystalAmount: 0
 --- !u!1 &2064839357
 GameObject:
   m_ObjectHideFlags: 0
@@ -8051,7 +8053,7 @@ PrefabInstance:
     - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 700503326}
+      objectReference: {fileID: 636949112}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -8099,11 +8101,11 @@ PrefabInstance:
     - target: {fileID: 7325532966869568469, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1169564280}
+      objectReference: {fileID: 2056004594}
     - target: {fileID: 8543933820624678361, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 363432913}
+      objectReference: {fileID: 996700139}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

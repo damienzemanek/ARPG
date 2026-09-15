@@ -5806,7 +5806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 592.99994, y: -386.85925}
+  m_AnchoredPosition: {x: 593, y: -386.85925}
   m_SizeDelta: {x: 528.3999, y: 267.09998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191672653
@@ -16973,18 +16973,6 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Load, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 11400000, guid: 5bad835365943d14a8da5aba664a56c2, type: 2}
         m_TargetAssemblyTypeName: Load, Assembly-CSharp
         m_MethodName: LoadFade
@@ -16992,7 +16980,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -49317,6 +49305,8 @@ MonoBehaviour:
     hash: E9114CF28BD3CF062CBF6CFE6D1E2A06DFE722A1DF5F62938F72F93735F0F5F5
     version: 0
   returningPlayer: 0
+  goldAmount: 0
+  crystalAmount: 0
 --- !u!1 &2041366034
 GameObject:
   m_ObjectHideFlags: 0

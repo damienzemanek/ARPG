@@ -7,5 +7,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ARPG/SO/ItemRewards", fileName = "Item Rewards")]
 public class ItemRewards : ScriptableObject
 {
-    [SerializeField] public List<ItemSO> rewards;
+    [SerializeField] public List<RewardWrapper> rewards;
 }

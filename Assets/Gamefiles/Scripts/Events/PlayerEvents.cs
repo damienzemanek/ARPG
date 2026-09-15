@@ -28,8 +28,14 @@ public class PlayerEvents : MonoBehaviour
         player.gameObject.SetActive(false);
         StartCoroutine(C_Display());
         
-        IEnumerator C_Display() { yield return charDisplayWait.Delay;
-            characterSelectDisplay.SetActive(true); }
+        IEnumerator C_Display() 
+        { 
+            yield return charDisplayWait.Delay;
+            characterSelectDisplay.SetActive(true);
+            SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+            data.returningPlayer = true;
+            saver.Save();
+        }
     }
 
     public void BattlemodeWinSpawnEvent()

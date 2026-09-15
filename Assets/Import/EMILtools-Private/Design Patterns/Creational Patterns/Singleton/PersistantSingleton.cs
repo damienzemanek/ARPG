@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace EMILtools.Design_Patterns.Creational_Patterns {
 namespace CreationalPatterns{
+    
+        [DefaultExecutionOrder(-500)]
     //Destroy any NEW singletons that are made
         public class PersistantReplacerSingleton<T> : MonoBehaviour where T: Component 
         {
@@ -42,19 +44,14 @@ namespace CreationalPatterns{
             private void InitializeSingleton()
             {
                 if (!Application.isPlaying) return;
-
                 if (autoUnparentOnAwake) transform.SetParent(null);
-
                 if(!HasInstance)
                 {
                     instance = this as T;
                     DontDestroyOnLoad(gameObject);
+                    Debug.Log("ReplacerSingleton: Dont Destroy On Load");
                 }
-                else if (instance != this)
-                {
-                    Destroy(gameObject);
-                    return;
-                }
+                else if (instance != this) Destroy(gameObject);
             }
         }
 

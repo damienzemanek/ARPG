@@ -57,6 +57,7 @@ public class BattlemodeEndStateManagement : MonoBehaviour
             ? SessionData.Instance.currentBattlemodePotentialRewards.rewards
             : SessionData.Instance.defaultRewards.rewards;
         
+        
         foreach (var reward in rewards)
         {
             yield return distributionDelay.Delay;

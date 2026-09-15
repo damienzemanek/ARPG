@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class SaverService : Servicer<Type, Saver, SaverService>
 {
+    protected override void Awake()
+    {
+        base.Awake();
+        if(Instance == this) DontDestroyOnLoad(gameObject);
+        Debug.Log("WNAT");
+    }
+    
     public bool Register(Saver saver)
     {
         var type = saver.saveSOType.Type;
@@ -43,5 +50,11 @@ public class SaverService : Servicer<Type, Saver, SaverService>
     public Saver GetSaver<T>() where T : SavedDataSO
     {
         return services[typeof(T)];
+    }
+
+    public void GetSaverAndData<T>(out Saver saver, out T data) where T : SavedDataSO
+    {
+        saver = services[typeof(T)];
+        data = (T)saver.currentData;
     }
 }

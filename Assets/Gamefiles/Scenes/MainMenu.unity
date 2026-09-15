@@ -119,22 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &78595303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
-  schemaInfo:
-    hash: 
-    version: 0
-  returningPlayer: 0
 --- !u!1 &406158415
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,35 +252,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406158415}
   m_CullTransparentMesh: 1
---- !u!114 &485471815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
-  m_Name: DefaultCharactersData(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
-  schemaInfo:
-    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
-    version: 0
-  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
-  charactersData:
-  - characterConfigName: Executioner
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Gunslinger
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Hospitalar
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Whisper
-    hasCharacter: 0
-    level: 1
 --- !u!1 &714854073
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +696,24 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &973985967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
+  schemaInfo:
+    hash: 807F4E5497DE266158D99622DFC98A78CFCE38813F12B115649E4ECC7D657C98
+    version: 0
+  returningPlayer: 0
+  goldAmount: 0
+  crystalAmount: 0
 --- !u!1 &978612407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,6 +1154,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+      propertyPath: currentData
+      value: 
+      objectReference: {fileID: 1639131144}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -1225,30 +1202,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6856539697366774203, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: scenesToLoad.Array.data[0].name
-      value: MainMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 6856539697366774203, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: scenesToLoad.Array.data[1].name
-      value: The Graveyard - Region 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6856539697366774203, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: 'scenesToLoad.Array.data[0].values.Array.data[0]'
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6856539697366774203, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: 'scenesToLoad.Array.data[1].values.Array.data[0]'
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7325532966869568469, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 78595303}
+      objectReference: {fileID: 973985967}
     - target: {fileID: 8543933820624678361, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 485471815}
+      objectReference: {fileID: 2022098457}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1391,6 +1352,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199303680}
   m_CullTransparentMesh: 1
+--- !u!114 &1639131144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
+    version: 0
+  persistencies: []
 --- !u!1 &1962129440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,6 +1473,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2022098457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
+  m_Name: DefaultCharactersData(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
+  schemaInfo:
+    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
+    version: 0
+  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
+  charactersData:
+  - characterConfigName: Executioner
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Gunslinger
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Hospitalar
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Whisper
+    hasCharacter: 0
+    level: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
