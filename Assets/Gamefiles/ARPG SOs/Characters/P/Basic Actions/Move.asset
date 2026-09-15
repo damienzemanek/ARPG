@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Move
   description: Move your character into a different location
+  icon: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
   apCost: 1
   roleTarget: 6
   moveToSelectedEmptyTile: 1
@@ -22,8 +23,7 @@ MonoBehaviour:
   markStrategy: {fileID: 0}
   targetedBodyPart: 0
   useActionAnim: 0
-  useActionDelays: 1
-  icon: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
+  useActionDelays: 0
   hitCount: 1
   maxEocTargetingAttempts: 2
   dmgMultiplier: 0

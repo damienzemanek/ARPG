@@ -5,6 +5,7 @@ using EMILtools.Design_Patterns.Creational_Patterns.CreationalPatterns;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using static PlayerEvents;
 
 public class RegionTracker : Singleton<RegionTracker>
 {
@@ -17,17 +18,19 @@ public class RegionTracker : Singleton<RegionTracker>
     
     [Required] public RegionData regionData;
     public List<SpawnLocation> spawnLocations;
-    public EmilEvent<GameObject, PlayerEvents.SpawnEvent> OnSpawnPlayer;
+    public EmilEvent<GameObject, SpawnEvent> OnSpawnPlayer;
 
     void OnValidate() => ValidateSpawnLocations();
 
     public void Start()
     {
         ValidateSpawnLocations();
-        if (SessionData.Instance.currentSpawnEvent == PlayerEvents.SpawnEvent.None)
-            SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.NewPlayerSpawn;
+        SpawnEvent spawnEvent = SpawnEvent.MostRecentPosition;
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out _, out var data);
+        if (!data.returningPlayer) spawnEvent = SpawnEvent.NewPlayerSpawn;
         
-        SpawnPlayer(SessionData.Instance.currentSpawnEvent);
+        SessionData.Instance.currentSpawnEvent = spawnEvent;
+        SpawnPlayer(spawnEvent);
         RegionUI.Instance.DisplayRegionUI(regionData.regionName);
     }
 
@@ -42,7 +45,7 @@ public class RegionTracker : Singleton<RegionTracker>
         }
     }
 
-    void SpawnPlayer(PlayerEvents.SpawnEvent spawnEvent)
+    void SpawnPlayer(SpawnEvent spawnEvent)
     {
         var spawnID = SessionData.Instance.desiredSpawnLocationID;
         var spawn = spawnLocations.Find(x => x.id == spawnID);

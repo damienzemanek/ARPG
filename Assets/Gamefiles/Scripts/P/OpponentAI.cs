@@ -210,7 +210,7 @@ public class OpponentAI : MonoBehaviour
                 selectedTarget = SelectATargetUsingQueuedAction(orderCtx, queuedAction, grid);
             
             // If no target at all was found (nothing in range in any action), and were not already defending or moving
-            if (selectedTarget == null && altAction == AltAction.None)
+            if (selectedTarget == null)
                 { MoveOntoTryingNextAction(); continue; }
             
             var actingOccupantCtx = queuedAction.actingOccupantCtx;
@@ -345,7 +345,11 @@ public class OpponentAI : MonoBehaviour
                 queuedAction.targetTile = TryFindATarget();
                 queuedAction.targEnemySlot.enemyTile = queuedAction.targetTile;
                 if(queuedAction.targetTile != null) Debug.Log("[OPP AI] Tile to be attacked is :" + queuedAction.targEnemySlot.enemyTile.occupantCtx.cfg.occupantName + " at " + "position " + queuedAction.targEnemySlot.enemyTile.col + " , " +  queuedAction.targEnemySlot.enemyTile.row);
-                else Debug.Log("[OPP AI] No Tile to be attacked found");
+                else
+                {
+                    Debug.Log("[OPP AI] No Tile to be attacked found");
+                    return null;
+                }
                 return queuedAction.targEnemySlot;
             case BattlemodeActionConfig.Role.Team:
                 // queuedAction.targAllyTeam.tiles.Add(actorTile); 

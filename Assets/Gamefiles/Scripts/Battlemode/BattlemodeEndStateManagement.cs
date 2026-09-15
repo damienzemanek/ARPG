@@ -47,7 +47,7 @@ public class BattlemodeEndStateManagement : MonoBehaviour
     void Win()
     {
         dispWin.SetActive(true);
-        SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.BattlemodeWinSpawn;
+        SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.MostRecentPosition;
         winAnimator.PlayOnEnd(winStartAnimationName, () => StartCoroutine(C_DistributeRewards()));
     }
 
@@ -73,7 +73,7 @@ public class BattlemodeEndStateManagement : MonoBehaviour
     void Lose()
     {
         dispLose.SetActive(true);
-        SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.BattlemodeLoseSpawn;
+        SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.Death;
         loseAnimator.Play(loseStartAnimationName);
     }
 }

@@ -12,13 +12,9 @@ public class SessionData : PersistantReplacerSingleton<SessionData>
     [ReadOnly] public string desiredSpawnLocationID;
     [ReadOnly] public BattleConfig currentBattleConfig;
     [ReadOnly] public ItemRewards currentBattlemodePotentialRewards;
-    [ReadOnly] public Pose currentCharacterWorldLocation;
     [ReadOnly] public List<GameObject> inactives = new();
     
     public void SetDesiredSpawnLocation(string id) => desiredSpawnLocationID = id;
     
     [Button] public void SetCurrentBattleConfig(BattleConfig config) => currentBattleConfig = config;
-    
-        
-    
 }

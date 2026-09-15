@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Sirenix.OdinInspector;
 using Unity.Cinemachine;
@@ -120,13 +121,21 @@ public class PlayerInstance : MonoBehaviour
         {
             case PlayerEvents.SpawnEvent.NewPlayerSpawn:
                 playerEvents.NewPLayerSpawnEvent(); break;
-            case PlayerEvents.SpawnEvent.BattlemodeWinSpawn:
-                playerEvents.BattlemodeWinSpawnEvent(); break;
+            case PlayerEvents.SpawnEvent.MostRecentPosition:
+                playerEvents.MostRecentPositionSpawnEvent(); break;
             default:
                 Debug.LogError("Invalid Player Event: "  + spawnEvent);
                 break;
             
         }
+    }
+
+    // TODO: Adding in a manual quit UI for exploration to save location
+    private void BeforeQuitSave()
+    {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        data.currentCharacterWorldLocation = new Pose(transform);
+        saver.Save();
     }
 
     public void ToggleInputReading(bool v) => inputReader.enabled = v;

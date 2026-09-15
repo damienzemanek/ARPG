@@ -9,8 +9,8 @@ public class PlayerEvents : MonoBehaviour
     {
         None,
         NewPlayerSpawn,
-        BattlemodeWinSpawn,
-        BattlemodeLoseSpawn,
+        MostRecentPosition,
+        Death,
     }
 
     [Required] public Animator playerAnimator;
@@ -38,14 +38,15 @@ public class PlayerEvents : MonoBehaviour
         }
     }
 
-    public void BattlemodeWinSpawnEvent()
+    public void MostRecentPositionSpawnEvent()
     {
-        Debug.Log("BattlemodeWinSpawned");
+        Debug.Log("Most Recent Position Spawned");
         player.gameObject.SetActive(true);
         player.ToggleInputReading(true);
         characterSelectDisplay.SetActive(false);
-        player.gameObject.transform.position = SessionData.Instance.currentCharacterWorldLocation.position;
-        player.gameObject.transform.eulerAngles = SessionData.Instance.currentCharacterWorldLocation.rotation;
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        player.gameObject.transform.position = data.currentCharacterWorldLocation.position;
+        player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
 
     public void SelectedNewPlayerCharacter(CharacterConfig character)

@@ -413,7 +413,8 @@ public class BattleTile : MonoBehaviour
         previousTile.ResetTileOccupancy(false);
         grid.UpdateGrid();
         TryDisplayIntentions();
-        Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
+        if(occupantCtx != null && occupantCtx.cfg != null)
+            Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
     }
     
     public void SwapOccupants(BattleTile previousTile, GridWorld grid)

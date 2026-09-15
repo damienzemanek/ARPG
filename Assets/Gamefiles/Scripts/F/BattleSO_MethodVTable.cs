@@ -14,8 +14,10 @@ public class BattleSO_MethodVTable : SO_MethodVTable
         var fade = PlayerScreenFade.Instance.fadeTarg;
         SessionData.Instance.currentBattleConfig = battleConfig;
         SessionData.Instance.currentBattlemodePotentialRewards = rewards;
-        SessionData.Instance.currentCharacterWorldLocation = new Pose(playerObj.transform);
-
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        data.currentCharacterWorldLocation = new Pose(playerObj.transform);
+        saver.Save();
+        
         playerInstance.ToggleInputReading(false);
         playerInstance.faderAnimator.PlayOnEnd(startBattlemodeEncounterAnimName, () => 
         {

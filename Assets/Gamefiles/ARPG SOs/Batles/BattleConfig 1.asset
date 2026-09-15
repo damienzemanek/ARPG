@@ -31,7 +31,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 5
       row: 0
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: 130f94a25ed9e154c91e5acaf07ca1d5, type: 2}
     - col: 6
       row: 0
       occupant: {fileID: 0}
@@ -45,13 +45,13 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 2
       row: 1
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: e87a1760c12e56444812bd90e3472fca, type: 2}
     - col: 3
       row: 1
       occupant: {fileID: 0}
     - col: 4
       row: 1
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: 4cb517e5d1c347547b215f84b9f24b07, type: 2}
     - col: 5
       row: 1
       occupant: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
       occupant: {fileID: 0}
     - col: 1
       row: 2
-      occupant: {fileID: 0}
+      occupant: {fileID: 11400000, guid: f1a27083f0cbed04799c8c6e0051ef70, type: 2}
     - col: 2
       row: 2
       occupant: {fileID: 0}

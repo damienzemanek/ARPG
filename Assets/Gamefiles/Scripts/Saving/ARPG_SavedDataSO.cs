@@ -20,5 +20,5 @@ public class ARPG_SavedDataSO : SavedDataSO
     public bool returningPlayer;
     public int goldAmount;
     public int crystalAmount;
-    
+    public Pose currentCharacterWorldLocation;
 }
