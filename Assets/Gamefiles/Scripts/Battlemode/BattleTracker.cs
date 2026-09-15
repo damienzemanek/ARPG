@@ -81,6 +81,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     void InitializeBattle()
     {
+        player.ResetPos();
         grid.PopulateGrid(currentBattleConfig);
         grid.DesignateTileRanks();
         queuedPlayerAction.Init();
@@ -613,7 +614,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public IEnumerator C_StartBattle()
     {
+        player.ResetPos();
         yield return turnDisplay.StartBattle();
+        player.ResetPos();
         turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(true));
 
     }

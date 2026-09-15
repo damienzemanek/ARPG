@@ -14,4 +14,11 @@ public struct Pose
         rotation = Vector3.zero;
         scale = Vector3.one;
     }
+
+    public Pose(Transform t)
+    {
+        position = t.position;
+        rotation = t.rotation.eulerAngles;
+        scale = t.localScale;
+    }
 }

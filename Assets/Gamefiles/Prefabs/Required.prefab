@@ -246,8 +246,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   autoUnparentOnAwake: 1
+  defaultRewards: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
+  currentSpawnEvent: 0
   desiredSpawnLocationID: Original
-  currentBattleConfig: {fileID: 0}
+  currentBattleConfig: {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
+  currentBattlemodePotentialRewards: {fileID: 0}
+  currentCharacterWorldLocation:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 0, y: 0, z: 0}
+  inactives: []
 --- !u!1 &5753750286718836463
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +305,59 @@ MonoBehaviour:
   sceneLoadInMethod: {fileID: 11400000, guid: a7dbd7bba7be5064daf1d5a044d90663, type: 2}
   characterConfigs: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
   effectDict: {fileID: 11400000, guid: b2c08416de1d9e845b838a0cc8221f94, type: 2}
+--- !u!1 &8806312925009211635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1958261788982186696}
+  - component: {fileID: 975193510930968958}
+  m_Layer: 0
+  m_Name: Scene Persistency Saver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1958261788982186696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8806312925009211635}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4956783796328002418}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975193510930968958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8806312925009211635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee18ae68be81d2541a8aa8a09045cda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EMILtools::Saver
+  autoUnparentOnAwake: 1
+  saveSOType:
+    _type:
+      m_Name: ARPG_ScenePersistencySO
+      m_AssemblyQualifiedName: ARPG_ScenePersistencySO, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      m_AssemblyName: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  defaultData: {fileID: 0}
+  currentData: {fileID: 0}
 --- !u!1 &9026232929556391172
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,5 +389,6 @@ Transform:
   m_Children:
   - {fileID: 6100095936571214954}
   - {fileID: 4999354383272484616}
+  - {fileID: 1958261788982186696}
   m_Father: {fileID: 5125689693506605895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1216,6 +1216,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7271509956265775447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &347841422 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5125689693506605895, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+  m_PrefabInstance: {fileID: 1128471304961284109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,6 +1348,22 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &445014933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
+    version: 0
+  persistencies: []
 --- !u!1 &469714366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1701,6 +1722,7 @@ GameObject:
   - component: {fileID: 487946226}
   - component: {fileID: 487946225}
   - component: {fileID: 487946224}
+  - component: {fileID: 487946229}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1730,12 +1752,18 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     vTableEntries:
+    - vTable: {fileID: 11400000, guid: 6d577883d1c790949a66e60ee98857a2, type: 2}
+      methodName: PersistentMutate
+      parameters:
+      - rid: 1707157083533082719
+      - rid: 1707157083533082720
     - vTable: {fileID: 11400000, guid: 72c013637e0bcd34aab21be39c8c5642, type: 2}
       methodName: LoadBattle
       parameters:
-      - rid: 7614989175544348873
-      - rid: 7614989175544348874
-      - rid: 7614989175544348875
+      - rid: 1707157083533082715
+      - rid: 1707157083533082716
+      - rid: 1707157083533082717
+      - rid: 1707157083533082718
   OnUndetectINSP:
     useUnityEvent: 0
     useVTable: 0
@@ -1749,27 +1777,48 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 7614989175544348873
+    - rid: 1707157083533082715
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
         name: playerObj
         isAutoSupplied: 1
         autoValue: {fileID: 0}
         value: {fileID: 0}
-    - rid: 7614989175544348874
+    - rid: 1707157083533082716
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: triggerObj
+        isAutoSupplied: 0
+        autoValue: {fileID: 0}
+        value: {fileID: 487946223}
+    - rid: 1707157083533082717
       type: {class: 'EmilEventBase/TypedParameter`1[[BattleConfig, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: battleConfig
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
-    - rid: 7614989175544348875
+    - rid: 1707157083533082718
       type: {class: 'EmilEventBase/TypedParameter`1[[ItemRewards, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: rewards
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
+    - rid: 1707157083533082719
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: obj
+        isAutoSupplied: 0
+        autoValue: {fileID: 0}
+        value: {fileID: 487946223}
+    - rid: 1707157083533082720
+      type: {class: 'EmilEventBase/TypedParameter`1[[ARPG_ScenePersistencySO/PersistentMutation, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: mutation
+        isAutoSupplied: 0
+        autoValue: 0
+        value: 0
 --- !u!65 &487946225
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1816,7 +1865,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: da4959f2a64e80e4cb0a1ba10cc66bfd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1857,12 +1906,25 @@ Transform:
   m_GameObject: {fileID: 487946223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.6, y: 1.23, z: 56.3}
-  m_LocalScale: {x: 5.3542576, y: 3.602407, z: 3.602407}
+  m_LocalPosition: {x: 52.4, y: 1.23, z: 56.3}
+  m_LocalScale: {x: 3.5626695, y: 3.602407, z: 3.602407}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &487946229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487946223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e02a35e0cae942bc89bcddd614c67496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PersistentMutationHandle
+  id: 4896772480372576555
 --- !u!1001 &584511274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2871,23 +2933,23 @@ MonoBehaviour:
     - vTable: {fileID: 11400000, guid: 0bc43d32f751ff24695a22f918d2ce21, type: 2}
       methodName: CallPlayerEvent
       parameters:
-      - rid: 938394152919367825
-      - rid: 938394152919367826
+      - rid: 1707157083533082713
+      - rid: 1707157083533082714
   references:
     version: 2
     RefIds:
-    - rid: 938394152919367825
+    - rid: 1707157083533082713
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
         name: playerGO
         isAutoSupplied: 1
         autoValue: {fileID: 0}
         value: {fileID: 0}
-    - rid: 938394152919367826
-      type: {class: 'EmilEventBase/TypedParameter`1[[PlayerEvents/PlayerEvent, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+    - rid: 1707157083533082714
+      type: {class: 'EmilEventBase/TypedParameter`1[[PlayerEvents/SpawnEvent, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
-        name: playerEvent
-        isAutoSupplied: 0
+        name: spawnEvent
+        isAutoSupplied: 1
         autoValue: 0
         value: 0
 --- !u!4 &881710281
@@ -4021,6 +4083,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d27479bd71d3914ca074d972c1d4887, type: 3}
+--- !u!1 &1109816352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109816353}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109816353
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109816352}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 347841422}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1124544663
 GameObject:
   m_ObjectHideFlags: 0
@@ -5937,7 +6030,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1592391112
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5955,7 +6048,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &1592391113
 Transform:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5970,7 +6063,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!154 &1592391114
 TerrainCollider:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5990,7 +6083,7 @@ TerrainCollider:
   m_EnableTreeColliders: 1
 --- !u!218 &1592391115
 Terrain:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 8
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7991,6 +8084,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+      propertyPath: currentData
+      value: 
+      objectReference: {fileID: 445014933}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -8045,7 +8142,10 @@ PrefabInstance:
       objectReference: {fileID: 927199058}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5125689693506605895, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1109816353}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
 --- !u!114 &5088362967708516000

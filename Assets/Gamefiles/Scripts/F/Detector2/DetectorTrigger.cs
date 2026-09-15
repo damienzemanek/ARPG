@@ -6,7 +6,6 @@ using UnityEngine;
 public class DetectorTrigger : Detector
 {
     public override DetectorType type => DetectorType.Trigger;
-    
     public TagRequirement tagRequirement;
     
     public void OnTriggerEnter(Collider other)
@@ -26,7 +25,7 @@ public class DetectorTrigger : Detector
     public void OnTriggerStay(Collider other)
     {
         if(DoesntHandle(DetectionState.Stay)) return;
-        if (tagRequirement.NotMet(other)) return;
+        if(tagRequirement.NotMet(other)) return;
         Detect(other.gameObject);
     }
     

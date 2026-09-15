@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class SavedDataSO: ScriptableObject
+public abstract class SavedDataSO: SO_MethodVTable
 {
     public abstract TypeSerialized<Type> subType { get; }
     public abstract string pathName { get; }

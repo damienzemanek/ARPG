@@ -33,8 +33,13 @@ public class Loader : PersistantReplacerSingleton<Loader>
         void Load() => StartCoroutine(this.Load(indx, true));
     }
     
+    
     public void LoadSceneImmediate(int indx) => StartCoroutine(Load(indx, false));
-    public void LoadSceneAdditiveDisableCurrent(int sceneIndex) => StartCoroutine(C_LoadSceneAdditiveDisableCurrent(sceneIndex));
+
+    public void LoadSceneAdditiveUnloadCurrent(int sceneIndex)
+        => StartCoroutine(C_LoadSceneAdditive(sceneIndex, ChangeCurrent.Unload));
+    public void LoadSceneAdditiveDisableCurrent(int sceneIndex)
+        => StartCoroutine(C_LoadSceneAdditive(sceneIndex, ChangeCurrent.Disable));
 
     public GameObject[] LoadingScreenObjects;
     public GameObject[] disables;
@@ -86,7 +91,9 @@ public class Loader : PersistantReplacerSingleton<Loader>
         }
     }
     
-    public IEnumerator C_LoadSceneAdditiveDisableCurrent(int indx)
+    public enum ChangeCurrent { None, Disable, Unload }
+    
+    public IEnumerator C_LoadSceneAdditive(int indx, ChangeCurrent currentSceneChange)
     {
         var currentScene = SceneManager.GetActiveScene();
         List<AsyncOperation> loadOperations = new();
@@ -101,11 +108,26 @@ public class Loader : PersistantReplacerSingleton<Loader>
         // Wait for all scenes to finish loading
         foreach (AsyncOperation op in loadOperations)
             while (!op.isDone) yield return null;
+        
+        // Now deal with the old scene
+        switch (currentSceneChange)
+        {
+            case ChangeCurrent.Disable:
+            {
+                foreach (GameObject obj in currentScene.GetRootGameObjects())
+                    obj.SetActive(false);
 
+                break;
+            }
 
-
-        // Disable current scene
-        foreach (GameObject obj in currentScene.GetRootGameObjects()) obj.SetActive(false);
+            case ChangeCurrent.Unload:
+            {
+                foreach (GameObject obj in currentScene.GetRootGameObjects())
+                    obj.SetActive(false);
+                yield return SceneManager.UnloadSceneAsync(currentScene);
+                break;
+            }
+        }
         
         // Set first loaded scene as active
         Scene newActiveScene = SceneManager.GetSceneByBuildIndex(scenesToLoad[indx].values[0]);

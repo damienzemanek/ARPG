@@ -5797,7 +5797,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191672651}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00047253026}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0002756162}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5806,7 +5806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -440, y: 188.724}
+  m_AnchoredPosition: {x: 592.99994, y: -386.85925}
   m_SizeDelta: {x: 528.3999, y: 267.09998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191672653
@@ -13532,7 +13532,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500657203}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -251.00008}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.35520834, y: 0.35520834, z: 0.35520834}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13995,7 +13995,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!135 &532666747
@@ -16623,7 +16623,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646994800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000613448}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16633,7 +16633,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 871.99005, y: -416.89978}
+  m_AnchoredPosition: {x: 871.99005, y: -429}
   m_SizeDelta: {x: 450, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &646994802
@@ -16973,6 +16973,18 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Load, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11400000, guid: 5bad835365943d14a8da5aba664a56c2, type: 2}
         m_TargetAssemblyTypeName: Load, Assembly-CSharp
         m_MethodName: LoadFade
@@ -26891,22 +26903,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 204955387332401540, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: effectDict
+    - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+      propertyPath: currentData
       value: 
-      objectReference: {fileID: 11400000, guid: b2c08416de1d9e845b838a0cc8221f94, type: 2}
+      objectReference: {fileID: 11400000, guid: 6d577883d1c790949a66e60ee98857a2, type: 2}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
       objectReference: {fileID: 0}
-    - target: {fileID: 2022044230687286732, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: defaultRewards
-      value: 
-      objectReference: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
-    - target: {fileID: 2022044230687286732, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
-      propertyPath: currentBattleConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
     - target: {fileID: 5125689693506605895, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.34694
@@ -27532,7 +27536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1813, y: -1269}
+  m_AnchoredPosition: {x: 1806.2, y: -1272}
   m_SizeDelta: {x: 128.799, y: 88.936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1053979804
@@ -29054,7 +29058,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1149125108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000059108268}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00018021806}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29063,7 +29067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1950, y: -1269}
+  m_AnchoredPosition: {x: 1943.2, y: -1272}
   m_SizeDelta: {x: 128.799, y: 88.936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1149125110
@@ -42467,6 +42471,7 @@ MonoBehaviour:
   scrollSmoothingRate: 0.07
   ADsmoothingRate: 0.33
   zoomInSmoothingRate: 0.3
+  battlmodeCam: {fileID: 532666740}
   zoomState: 0
 --- !u!114 &1792127553
 MonoBehaviour:

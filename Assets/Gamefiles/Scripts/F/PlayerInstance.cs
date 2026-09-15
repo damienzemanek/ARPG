@@ -114,12 +114,17 @@ public class PlayerInstance : MonoBehaviour
     
     #endregion
 
-    public void CallPlayerEvent(PlayerEvents.PlayerEvent playerEvent)
+    public void CallPlayerEvent(PlayerEvents.SpawnEvent spawnEvent)
     {
-        switch (playerEvent)
+        switch (spawnEvent)
         {
-            case PlayerEvents.PlayerEvent.NewPlayerSpawn:
+            case PlayerEvents.SpawnEvent.NewPlayerSpawn:
                 playerEvents.NewPLayerSpawnEvent(); break;
+            case PlayerEvents.SpawnEvent.BattlemodeWinSpawn:
+                playerEvents.BattlemodeWinSpawnEvent(); break;
+            default:
+                Debug.LogError("Invalid Player Event: "  + spawnEvent);
+                break;
             
         }
     }

@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class PlayerEvents : MonoBehaviour
 {
-    public enum PlayerEvent
+    public enum SpawnEvent
     {
+        None,
         NewPlayerSpawn,
+        BattlemodeWinSpawn,
+        BattlemodeLoseSpawn,
     }
 
     [Required] public Animator playerAnimator;
@@ -27,6 +30,16 @@ public class PlayerEvents : MonoBehaviour
         
         IEnumerator C_Display() { yield return charDisplayWait.Delay;
             characterSelectDisplay.SetActive(true); }
+    }
+
+    public void BattlemodeWinSpawnEvent()
+    {
+        Debug.Log("BattlemodeWinSpawned");
+        player.gameObject.SetActive(true);
+        player.ToggleInputReading(true);
+        characterSelectDisplay.SetActive(false);
+        player.gameObject.transform.position = SessionData.Instance.currentCharacterWorldLocation.position;
+        player.gameObject.transform.eulerAngles = SessionData.Instance.currentCharacterWorldLocation.rotation;
     }
 
     public void SelectedNewPlayerCharacter(CharacterConfig character)

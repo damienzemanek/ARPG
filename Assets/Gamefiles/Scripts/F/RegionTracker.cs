@@ -17,14 +17,17 @@ public class RegionTracker : Singleton<RegionTracker>
     
     [Required] public RegionData regionData;
     public List<SpawnLocation> spawnLocations;
-    public EmilEvent<GameObject> OnSpawnPlayer;
+    public EmilEvent<GameObject, PlayerEvents.SpawnEvent> OnSpawnPlayer;
 
     void OnValidate() => ValidateSpawnLocations();
 
     public void Start()
     {
         ValidateSpawnLocations();
-        SpawnPlayer();
+        if (SessionData.Instance.currentSpawnEvent == PlayerEvents.SpawnEvent.None)
+            SessionData.Instance.currentSpawnEvent = PlayerEvents.SpawnEvent.NewPlayerSpawn;
+        
+        SpawnPlayer(SessionData.Instance.currentSpawnEvent);
         RegionUI.Instance.DisplayRegionUI(regionData.regionName);
     }
 
@@ -39,7 +42,7 @@ public class RegionTracker : Singleton<RegionTracker>
         }
     }
 
-    void SpawnPlayer()
+    void SpawnPlayer(PlayerEvents.SpawnEvent spawnEvent)
     {
         var spawnID = SessionData.Instance.desiredSpawnLocationID;
         var spawn = spawnLocations.Find(x => x.id == spawnID);
@@ -51,7 +54,7 @@ public class RegionTracker : Singleton<RegionTracker>
             .GetComponentInChildren<PlayerInstance>().gameObject;
 
         PersistentConfigurationDataHolder.Instance.sceneLoadInMethod.FadeInScreen();
-        OnSpawnPlayer?.Invoke(player);
+        OnSpawnPlayer?.Invoke(player, spawnEvent);
     }
     
     

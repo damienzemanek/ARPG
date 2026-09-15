@@ -21,6 +21,7 @@ public class BattlemodePlayerInstance : MonoBehaviour
     public float scrollSmoothingRate = 0.15f;
     public float ADsmoothingRate = 0.3f;
     public float zoomInSmoothingRate = 0.3f;
+    public GameObject battlmodeCam;
 
     [ReadOnly, ShowInInspector] Vector3 savedBattlefieldZoomPos;
     [ReadOnly, ShowInInspector] public ZoomState zoomState = ZoomState.Battlefield;
@@ -33,6 +34,13 @@ public class BattlemodePlayerInstance : MonoBehaviour
     {
         maxLeftPos = new Vector3(transform.position.x - maxLateralDelta, transform.position.y, transform.position.z);
         maxRightPos = new Vector3(transform.position.x + maxLateralDelta, transform.position.y, transform.position.z);
+    }
+
+    public void ResetPos()
+    {
+        battlmodeCam.transform.localPosition = Vector3.zero;
+        battlmodeCam.transform.localEulerAngles = Vector3.zero;
+        Debug.Log("AAA");
     }
 
     [Button]
