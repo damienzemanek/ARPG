@@ -8,11 +8,12 @@ public class BattleSO_MethodVTable : SO_MethodVTable
     public string startBattlemodeEncounterAnimName;
     public string camZoomAnimName;
     
-    public void LoadBattle(GameObject playerObj, BattleConfig battleConfig)
+    public void LoadBattle(GameObject playerObj, BattleConfig battleConfig, ItemRewards rewards)
     {
         if (!playerObj.Has(out PlayerInstance playerInstance)) return;
         var fade = PlayerScreenFade.Instance.fadeTarg;
         SessionData.Instance.currentBattleConfig = battleConfig;
+        SessionData.Instance.currentBattlemodePotentialRewards = rewards;
 
         playerInstance.ToggleInputReading(false);
         playerInstance.faderAnimator.PlayOnEnd(startBattlemodeEncounterAnimName, () => 

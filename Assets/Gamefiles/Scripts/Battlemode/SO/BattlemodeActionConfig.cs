@@ -112,7 +112,6 @@ public class BattlemodeActionConfig : ItemSO
     [BoxGroup("Settings")] public BodyPart targetedBodyPart;
     [BoxGroup("Settings")] public bool useActionAnim = true;
     [BoxGroup("Settings")] public bool useActionDelays = true;
-    [BoxGroup("Settings")] public Sprite icon;
     [BoxGroup("Settings")] public int hitCount = 1; 
     [BoxGroup("Settings")] public int maxEocTargetingAttempts = 2; // STRETCH GOAL (I think this already works tho)
     [BoxGroup("Settings")] [InfoBox("This is the percentage of DMG of SELF to be inflicted on TARGET")] public int dmgMultiplier = 100;
@@ -169,8 +168,8 @@ public class BattlemodeActionConfig : ItemSO
 
         return ctx;
     }
-
-    public override bool canOwnMultiple => false;
+    
+    public override ItemSO ProvideReward() => this;
 }
 
 public class BattlemodeActionCtx

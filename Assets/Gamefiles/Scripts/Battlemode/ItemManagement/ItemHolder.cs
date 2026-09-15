@@ -2,38 +2,64 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemHolder : MonoBehaviour
+public interface ISingleInspectingUI
 {
-    [ShowInInspector] public BattlemodeActionCtx actionCtx;
+    public void StopInspecting();
+}
+
+public class ItemHolder : MonoBehaviour, ISingleInspectingUI
+{
+    [ShowInInspector] public ItemSO heldItem;
     public bool useImage = true;
     [ShowIf("useImage")] public Image img;
-    [ReadOnly, ShowInInspector] public InjectableClass<BattlemodeActionsDisplay> actionsDisplay = new();
+    public bool showingInspectDisplay = false;
+    public GameObject dispInspectItem;
 
     public void Hide()
     {
-        actionCtx = null;
+        heldItem = null;
         img.sprite = null;
         gameObject.SetActive(false);
     }
 
-    public void InitAction(BattlemodeActionCtx actionCtx)
+    public void Init(ItemSO item)
     {
-        this.actionCtx = actionCtx;
-        if(!useImage) return;
-        img.sprite = actionCtx.cfg.icon;
+        heldItem = item;
+        dispInspectItem.gameObject.SetActive(false);
+        if (!useImage) return;
+        img.sprite = item.icon;
     }
 
-    public void HoverAction()
+    public void Hover()
     {
-        if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
-        if (actionCtx != null)
-            actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, actionCtx);
+        // low priority mabye slight anim
+    }
+    
+    public void StopHover()
+    {
+        // low priority mabye slight anim
     }
 
-    public void UseAction()
+    public void ToggleItemDisplay()
     {
-        if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
-        Debug.Log("Using Action: " + actionCtx.cfg.name + "");
-        actionsDisplay.Value.QueueAction();
+        showingInspectDisplay = !showingInspectDisplay;
+        dispInspectItem.gameObject.SetActive(showingInspectDisplay);
+        if (showingInspectDisplay)
+        {
+            if(SessionData.Instance.singleInspectingUI != null)
+                SessionData.Instance.singleInspectingUI.StopInspecting();
+            SessionData.Instance.singleInspectingUI = this;
+        }
+        else
+        {
+            SessionData.Instance.singleInspectingUI = null;
+            StopInspecting();
+        }
+    }
+
+    public void StopInspecting()
+    {
+        showingInspectDisplay = false;
+        dispInspectItem.gameObject.SetActive(false);
     }
 }

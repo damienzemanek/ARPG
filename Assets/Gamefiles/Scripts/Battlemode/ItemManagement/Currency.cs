@@ -1,12 +1,25 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-[CreateAssetMenu(fileName = "New Currency Storage", menuName = "ARPG/SO/Item", order = 0)]
-public class Currency : ItemSO
+public interface IMultiItem
 {
-    public override bool canOwnMultiple => true;
+    public abstract ItemSO Clone();
+}
 
+[Serializable]
+[CreateAssetMenu(fileName = "New Currency Storage", menuName = "ARPG/SO/Currency", order = 0)]
+public class Currency : ItemSO, IMultiItem
+{
+    public ItemSO Clone()
+    {
+        var clone = CreateInstance<Currency>();
+        clone.amountOwned = amountOwned;
+        clone.currencyCurrencyType = currencyCurrencyType;
+        clone.itemName = itemName;
+        clone.description = description;
+        return clone;    
+    }
+    
     public enum CurrencyType
     {
         Gold,       // Y-Currency: To upgrade characters & buy stuff from shopkeeper
@@ -14,4 +27,6 @@ public class Currency : ItemSO
     }
     
     public CurrencyType currencyCurrencyType;
+
+    public override ItemSO ProvideReward() => this;
 }

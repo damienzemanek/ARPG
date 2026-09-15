@@ -31,6 +31,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     [Required] public BattlemodePlayerInstance player;
     [Required] public BattlemodeActionsDisplay actionsDisplay;
     [Required] public ActionUserViewer actionUserViewer;
+    [Required] public BattlemodeEndStateManagement endStateManagement;
     [Required] public TurnDisplay turnDisplay;
     [Required] public OpponentAI opponentAI;
     [ReadOnly] public Turn currentTurn;
@@ -537,6 +538,14 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         actionsDisplay.ShowEndTurnBtn(true);
     }
 
+    void Won()
+    {
+        Debug.Log("All Enemies are dead or out of battle.");
+        endStateManagement.EndStateWith(BattlemodeEndStateManagement.EndStates.Win); 
+        actionsDisplay.endTurnBtn.SetActive(false);
+        actionsDisplay.GUI.SetActive(false);
+    }
+    
     public void StartPlayerTurn(bool firstTurn = false) 
     {
         Debug.Log("Starting player turn");
@@ -544,15 +553,15 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
         opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
         playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
-        actionsDisplay.ShowEndTurnBtn(true);
         
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
-        else
+        if (opponentTiles.Count <= 0)
         {
-            Debug.Log("All Enemies are dead or out of battle.");
+            Won();
             return;
         }
-
+        
+        actionsDisplay.ShowEndTurnBtn(true);
         if (!firstTurn) //----------------- Regular Turns
         {
             Debug.Log("[BattleTracker] Resolving End of Turn effects for opponents.");
@@ -582,7 +591,12 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public void EndPlayerTurn()
     {
-        grid.GetBattlerTiles(out _, out var playerTiles);
+        grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
+        if (opponentTiles.Count <= 0)
+        {
+            Won();
+            return;
+        }
         Debug.Log("[BattleTracker] Resolving End of Turn effects for players.");
         // Resolve End of Turn effects for player
         foreach (var plrTile in playerTiles)
