@@ -79,7 +79,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee18ae68be81d2541a8aa8a09045cda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EMILtools::Saver
-  autoUnparentOnAwake: 1
   saveSOType:
     _type:
       m_Name: ARPG_SavedDataSO
@@ -132,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee18ae68be81d2541a8aa8a09045cda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EMILtools::Saver
-  autoUnparentOnAwake: 1
   saveSOType:
     _type:
       m_Name: CharactersData_SavedDataSO
@@ -349,7 +347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee18ae68be81d2541a8aa8a09045cda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EMILtools::Saver
-  autoUnparentOnAwake: 1
   saveSOType:
     _type:
       m_Name: ARPG_ScenePersistencySO
@@ -367,6 +364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4956783796328002418}
+  - component: {fileID: 4652439505899273095}
   m_Layer: 0
   m_Name: Savers
   m_TagString: Untagged
@@ -392,3 +390,16 @@ Transform:
   - {fileID: 1958261788982186696}
   m_Father: {fileID: 5125689693506605895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4652439505899273095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9026232929556391172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ada83c64574a7d9953d092478ba9b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaverService
+  autoUnparentOnAwake: 1

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EMILtools.Extensions;
 using UnityEngine;
 
@@ -38,16 +39,24 @@ public class ARPG_ScenePersistencySO : SavedDataSO
     
     [SerializeField] public List<Persistancy> persistencies = new();
     
-    public void PersistentMutate(GameObject obj, PersistentMutation mutation)
+    public void PersistentMutate(
+        GameObject obj,
+        PersistentMutation mutation)
     {
         Mutate(obj, mutation);
         var handle = obj.Get<PersistentMutationHandle>();
-        var id = handle.id;
-        persistencies.Add(new Persistancy(id, mutation));
-        var persistencySaver = Saver.Instance.GetFirstSaver(persistentSceneSaverType);
+        ulong id = handle.id;
+        int index = persistencies.FindIndex(p => p.id == id);
+        if (index >= 0) persistencies[index] = new Persistancy(id, mutation);
+        else persistencies.Add(new Persistancy(id, mutation));
+
+        if (!SaverService.Instance.TryGetService(persistentSceneSaverType, out var persistencySaver)) {
+            Debug.LogError($"No Saver registered for {persistentSceneSaverType.Name}");
+            return; }
+
         persistencySaver.ManuallySave(this);
     }
-
+    
     public static void Mutate(GameObject obj, PersistentMutation mutation)
     {
         switch (mutation)

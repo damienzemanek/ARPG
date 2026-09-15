@@ -6,13 +6,15 @@ using UnityEngine;
 public class PersistentMutationHandle : MonoBehaviour
 {
     static readonly Type persistentSceneSaverType = typeof(ARPG_ScenePersistencySO);
-
     
     [ReadOnly] public ulong id;
 
     private void Start()
     {
-        var saver = Saver.Instance.GetFirstSaver(persistentSceneSaverType);
+        if (!SaverService.Instance.TryGetService(persistentSceneSaverType, out var saver)) {
+            Debug.LogError($"No Saver registered for {persistentSceneSaverType.Name}");
+            return; }
+
         var data = saver.currentData as ARPG_ScenePersistencySO;
         var matchExists = data.persistencies.Any(p => p.id == id);
         if (!matchExists) return;

@@ -30,7 +30,11 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void SelectCharacter()
     {
         playerEvents.SelectedNewPlayerCharacter(viewingCharacter);
-        var charSaver = Saver.Instance.GetFirstSaver(charSaverType);
+        
+        if (!SaverService.Instance.TryGetService(charSaverType, out var charSaver)) {
+            Debug.LogError($"No Saver registered for {charSaverType.Name}");
+            return; }
+
         var data = charSaver.currentData as CharactersData_SavedDataSO;
         if(data == null) Debug.LogError("No data found");
         Debug.Log("data character size: " + data.charactersData.Count);

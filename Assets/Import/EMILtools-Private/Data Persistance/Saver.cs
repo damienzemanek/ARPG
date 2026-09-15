@@ -2,45 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DesignPatterns.CreationalPatterns;
 using EMILtools.Design_Patterns.Creational_Patterns.CreationalPatterns;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 
-
-
-
 /// <summary>
 /// Singular Saver for a SavedDataSO subtype.
 /// </summary>
 [DefaultExecutionOrder(-500)]
-public class Saver : ConditionalPersistentReplacerSingleton<Saver>
+public class Saver : MonoBehaviour
 {
-    public List<Saver> GetSaver(Type saveSOType)
-    {
-        var list = FindObjectsByType<Saver>()
-            .Where(s => {
-                Debug.Log("Compare: " + s.saveSOType.Type + " | " + saveSOType + " |");
-                var ret = s.saveSOType.Type == saveSOType;
-                Debug.Log($"[GetSaver] Type: {saveSOType.Name} | Found: {ret}");
-                return ret; })
-            .ToList();
-
-        Debug.Log($"[GetSaver] Type: {saveSOType.Name} | Found {list.Count}: " 
-                  + string.Join(", ", list.Select(s => s.name)));
-
-        return list;
-    }
-
-    public Saver GetFirstSaver(Type saveSOType)
-    {
-        var ret = GetSaver(saveSOType).First();
-        Debug.Log($"[GetFirstSaver] Type: {saveSOType.Name} | Returning: {ret.name}");
-        return ret;
-    }
-
-public TypeSerialized<SavedDataSO> saveSOType;
+    public TypeSerialized<SavedDataSO> saveSOType;
 
     [Tooltip("Optional default save data used when no save exists.")]
     public SavedDataSO defaultData;
@@ -89,32 +64,33 @@ public TypeSerialized<SavedDataSO> saveSOType;
 #endif
     }
 
-    protected override bool ShouldReplace(Saver existingInstance)
+    protected void Awake()
     {
-        if(existingInstance == null) Debug.LogError("No existing instance");
-        if (existingInstance.currentData == null)
-        {
-            Debug.Log("No ExistingInstance current data");
-            return false;
-        }
-        if (currentData == null)
-        {
-            Debug.Log("No current data");
-            return false;
-        }
-        if(existingInstance.currentData.subType.Type == null) Debug.LogError("No existing instance subType");
-        if(currentData.subType.Type == null) Debug.LogError("No current data subType");
-        bool same = existingInstance.currentData.subType.Type == currentData.subType.Type;
-        return same;
-    }
+        var service = SaverService.Instance;
+        var type = saveSOType.Type;
+        if (type == null) {
+            Debug.LogError($"{name}: No save type assigned.");
+            return; }
 
-    protected override void Awake()
-    {
-        base.Awake();
-        if (HasInstance && Instance != this) return;
+        if (service.TryGetService(type, out var existingSaver))
+            if (existingSaver != this) 
+            {
+                Destroy(gameObject);
+                return; 
+            }
+
+        service.Register(this);
+        transform.SetParent(null, true);
+        DontDestroyOnLoad(gameObject);
         Load();
     }
-
+    
+    private void OnDestroy()
+    {
+        if (!Application.isPlaying) return;
+        SaverService.TryGetInstance()?.Unregister(this);
+    }
+    
     SavedDataSO CreateEmptyData()
     {
         if (saveSOType.Type == null) return null;
@@ -229,4 +205,5 @@ public TypeSerialized<SavedDataSO> saveSOType;
     }
 
     void OnApplicationQuit() => Save();
+
 }

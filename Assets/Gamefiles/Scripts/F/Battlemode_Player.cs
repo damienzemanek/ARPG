@@ -40,7 +40,6 @@ public class BattlemodePlayerInstance : MonoBehaviour
     {
         battlmodeCam.transform.localPosition = Vector3.zero;
         battlmodeCam.transform.localEulerAngles = Vector3.zero;
-        Debug.Log("AAA");
     }
 
     [Button]

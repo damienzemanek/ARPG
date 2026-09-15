@@ -5,6 +5,9 @@ namespace EMILtools.Extensions
 {
     public static class GOEX
     {
+        
+        public static T OrNull<T> (this T obj) where T : Object => obj ? obj : null;
+        
         public static GameObject SetActiveThen(this GameObject gameObject, bool val)
         {
             gameObject.SetActive(val);

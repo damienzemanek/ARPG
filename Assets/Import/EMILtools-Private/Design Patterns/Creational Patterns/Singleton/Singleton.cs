@@ -47,6 +47,4 @@ namespace CreationalPatterns{
                 instance = this as T;
             }
         }
-
-
 }}
