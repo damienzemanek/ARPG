@@ -1733,8 +1733,9 @@ MonoBehaviour:
     - vTable: {fileID: 11400000, guid: 72c013637e0bcd34aab21be39c8c5642, type: 2}
       methodName: LoadBattle
       parameters:
-      - rid: 9097403508282884194
-      - rid: 9097403508282884195
+      - rid: 7614989175544348873
+      - rid: 7614989175544348874
+      - rid: 7614989175544348875
   OnUndetectINSP:
     useUnityEvent: 0
     useVTable: 0
@@ -1748,20 +1749,27 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 9097403508282884194
+    - rid: 7614989175544348873
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
         name: playerObj
         isAutoSupplied: 1
         autoValue: {fileID: 0}
         value: {fileID: 0}
-    - rid: 9097403508282884195
+    - rid: 7614989175544348874
       type: {class: 'EmilEventBase/TypedParameter`1[[BattleConfig, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: battleConfig
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
+    - rid: 7614989175544348875
+      type: {class: 'EmilEventBase/TypedParameter`1[[ItemRewards, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: rewards
+        isAutoSupplied: 0
+        autoValue: {fileID: 0}
+        value: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
 --- !u!65 &487946225
 BoxCollider:
   m_ObjectHideFlags: 0
