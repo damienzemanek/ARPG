@@ -318,28 +318,6 @@ Transform:
   - {fileID: 732053996}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &149916952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
-  schemaInfo:
-    hash: D6A35E4A4FF50834809E45CDDFD1D87B1A5B97B0F2BC35CE7F6A794A86B799D6
-    version: 0
-  returningPlayer: 0
-  goldAmount: 0
-  crystalAmount: 0
-  currentCharacterWorldLocation:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
 --- !u!1 &152928084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1343,22 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &437549800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
+    version: 0
+  persistencies: []
 --- !u!1 &469714366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1725,7 +1719,7 @@ GameObject:
   - component: {fileID: 487946224}
   - component: {fileID: 487946229}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1756,8 +1750,8 @@ MonoBehaviour:
     - vTable: {fileID: 11400000, guid: 6d577883d1c790949a66e60ee98857a2, type: 2}
       methodName: PersistentMutate
       parameters:
-      - rid: 1707157083533082719
-      - rid: 1707157083533082720
+      - rid: 1707157083533082739
+      - rid: 1707157083533082740
     - vTable: {fileID: 11400000, guid: 72c013637e0bcd34aab21be39c8c5642, type: 2}
       methodName: LoadBattle
       parameters:
@@ -1806,20 +1800,20 @@ MonoBehaviour:
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
-    - rid: 1707157083533082719
-      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
-      data:
-        name: obj
-        isAutoSupplied: 0
-        autoValue: {fileID: 0}
-        value: {fileID: 487946223}
-    - rid: 1707157083533082720
+    - rid: 1707157083533082739
       type: {class: 'EmilEventBase/TypedParameter`1[[ARPG_ScenePersistencySO/PersistentMutation, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: mutation
         isAutoSupplied: 0
         autoValue: 0
         value: 0
+    - rid: 1707157083533082740
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: obj
+        isAutoSupplied: 0
+        autoValue: {fileID: 0}
+        value: {fileID: 487946223}
 --- !u!65 &487946225
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1907,7 +1901,7 @@ Transform:
   m_GameObject: {fileID: 487946223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.4, y: 1.23, z: 56.3}
+  m_LocalPosition: {x: 52.4, y: 2.02, z: 56.3}
   m_LocalScale: {x: 3.5626695, y: 3.602407, z: 3.602407}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1925,7 +1919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02a35e0cae942bc89bcddd614c67496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersistentMutationHandle
-  id: 4896772480372576555
+  id: 5145920424136593865
 --- !u!1001 &584511274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2582,6 +2576,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8658471646985862814, guid: 7690faade9c33834288961dae87c684f, type: 3}
   m_PrefabInstance: {fileID: 790498518}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &802189997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
+  m_Name: DefaultCharactersData(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
+  schemaInfo:
+    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
+    version: 0
+  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
+  charactersData:
+  - characterConfigName: Executioner
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Gunslinger
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Hospitalar
+    hasCharacter: 0
+    level: 1
+  - characterConfigName: Whisper
+    hasCharacter: 0
+    level: 1
 --- !u!1 &832202700
 GameObject:
   m_ObjectHideFlags: 8
@@ -4561,7 +4584,7 @@ GameObject:
   - component: {fileID: 1318979873}
   - component: {fileID: 1318979872}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4605,15 +4628,15 @@ MonoBehaviour:
     - vTable: {fileID: 11400000, guid: 6d577883d1c790949a66e60ee98857a2, type: 2}
       methodName: PersistentMutate
       parameters:
-      - rid: 1707157083533082719
-      - rid: 1707157083533082720
+      - rid: 1707157083533082741
+      - rid: 1707157083533082742
     - vTable: {fileID: 11400000, guid: 72c013637e0bcd34aab21be39c8c5642, type: 2}
       methodName: LoadBattle
       parameters:
-      - rid: 1707157083533082715
-      - rid: 1707157083533082716
-      - rid: 1707157083533082717
-      - rid: 1707157083533082718
+      - rid: 1707157083533082730
+      - rid: 1707157083533082731
+      - rid: 1707157083533082732
+      - rid: 1707157083533082733
   OnUndetectINSP:
     useUnityEvent: 0
     useVTable: 0
@@ -4627,48 +4650,48 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1707157083533082715
+    - rid: 1707157083533082730
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
         name: playerObj
         isAutoSupplied: 1
         autoValue: {fileID: 0}
         value: {fileID: 0}
-    - rid: 1707157083533082716
+    - rid: 1707157083533082731
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
         name: triggerObj
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 1318979871}
-    - rid: 1707157083533082717
+    - rid: 1707157083533082732
       type: {class: 'EmilEventBase/TypedParameter`1[[BattleConfig, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: battleConfig
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: 9d811f696da008f4883c04cdb83f2e5e, type: 2}
-    - rid: 1707157083533082718
+    - rid: 1707157083533082733
       type: {class: 'EmilEventBase/TypedParameter`1[[ItemRewards, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: rewards
         isAutoSupplied: 0
         autoValue: {fileID: 0}
         value: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
-    - rid: 1707157083533082719
-      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
-      data:
-        name: obj
-        isAutoSupplied: 0
-        autoValue: {fileID: 0}
-        value: {fileID: 1318979871}
-    - rid: 1707157083533082720
+    - rid: 1707157083533082741
       type: {class: 'EmilEventBase/TypedParameter`1[[ARPG_ScenePersistencySO/PersistentMutation, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         name: mutation
         isAutoSupplied: 0
         autoValue: 0
         value: 0
+    - rid: 1707157083533082742
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: obj
+        isAutoSupplied: 0
+        autoValue: {fileID: 0}
+        value: {fileID: 1318979871}
 --- !u!65 &1318979874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4756,7 +4779,7 @@ Transform:
   m_GameObject: {fileID: 1318979871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.4, y: 1.23, z: 70.43}
+  m_LocalPosition: {x: 52.4, y: 2.02, z: 70.43}
   m_LocalScale: {x: 3.5626695, y: 3.602407, z: 3.602407}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6611,22 +6634,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a5a2cb814fe98d4db4650445aa03bce, type: 3}
---- !u!114 &1683792223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
-  schemaInfo:
-    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
-    version: 0
-  persistencies: []
 --- !u!1 &1735306449
 GameObject:
   m_ObjectHideFlags: 0
@@ -7111,6 +7118,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1917477866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
+  schemaInfo:
+    hash: D6A35E4A4FF50834809E45CDDFD1D87B1A5B97B0F2BC35CE7F6A794A86B799D6
+    version: 0
+  returningPlayer: 0
+  goldAmount: 0
+  crystalAmount: 0
+  currentCharacterWorldLocation:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 0, y: 0, z: 0}
 --- !u!1001 &1922916734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7336,35 +7365,6 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!114 &1973606833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
-  m_Name: DefaultCharactersData(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
-  schemaInfo:
-    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
-    version: 0
-  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
-  charactersData:
-  - characterConfigName: Executioner
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Gunslinger
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Hospitalar
-    hasCharacter: 0
-    level: 1
-  - characterConfigName: Whisper
-    hasCharacter: 0
-    level: 1
 --- !u!1 &1980909098
 GameObject:
   m_ObjectHideFlags: 0
@@ -8273,7 +8273,7 @@ PrefabInstance:
     - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1683792223}
+      objectReference: {fileID: 437549800}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -8321,11 +8321,11 @@ PrefabInstance:
     - target: {fileID: 7325532966869568469, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 149916952}
+      objectReference: {fileID: 1917477866}
     - target: {fileID: 8543933820624678361, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1973606833}
+      objectReference: {fileID: 802189997}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

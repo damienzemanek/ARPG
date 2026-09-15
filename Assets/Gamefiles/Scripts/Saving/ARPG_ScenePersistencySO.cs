@@ -39,22 +39,17 @@ public class ARPG_ScenePersistencySO : SavedDataSO
     
     [SerializeField] public List<Persistancy> persistencies = new();
     
-    public void PersistentMutate(
-        GameObject obj,
-        PersistentMutation mutation)
+    public void PersistentMutate(PersistentMutation mutation, GameObject obj)
     {
+        Debug.Log("PERSISTENT MUTATION");
         Mutate(obj, mutation);
         var handle = obj.Get<PersistentMutationHandle>();
         ulong id = handle.id;
-        int index = persistencies.FindIndex(p => p.id == id);
-        if (index >= 0) persistencies[index] = new Persistancy(id, mutation);
-        else persistencies.Add(new Persistancy(id, mutation));
-
-        if (!SaverService.Instance.TryGetService(persistentSceneSaverType, out var persistencySaver)) {
-            Debug.LogError($"No Saver registered for {persistentSceneSaverType.Name}");
-            return; }
-
-        persistencySaver.ManuallySave(this);
+        SaverService.Instance.GetSaverAndData<ARPG_ScenePersistencySO>(out var saver, out var data);
+        int index = data.persistencies.FindIndex(p => p.id == id);
+        if (index >= 0) data.persistencies[index] = new Persistancy(id, mutation);
+        else data.persistencies.Add(new Persistancy(id, mutation));
+        saver.Save();
     }
     
     public static void Mutate(GameObject obj, PersistentMutation mutation)
