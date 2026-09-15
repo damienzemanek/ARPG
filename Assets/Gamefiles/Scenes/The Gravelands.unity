@@ -8084,14 +8084,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &5495686369589676404
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8420627811078912983}
-  m_Enabled: 0
 --- !u!114 &6603433132647770655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8267,7 +8259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7670556840183303924}
   - component: {fileID: 413025164499886677}
-  - component: {fileID: 5495686369589676404}
   - component: {fileID: 5088362967708516000}
   - component: {fileID: 6603433132647770655}
   m_Layer: 0

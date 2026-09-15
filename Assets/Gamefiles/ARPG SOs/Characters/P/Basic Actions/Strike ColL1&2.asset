@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Strike ColL1&2
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Strike ColL1&2
+  itemName: Strike ColL1&2
   description: Basic Attack
   apCost: 1
   roleTarget: 2

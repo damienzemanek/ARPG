@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4321952116654987315}
   - component: {fileID: 3010732168355103192}
   m_Layer: 0
-  m_Name: Action Btn
+  m_Name: Pr_UI_ActionBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 200}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5405250028645822649
 CanvasRenderer:

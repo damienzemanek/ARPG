@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Acid Web Cannon
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Acid Web Cannon
+  itemName: Acid Web Cannon
   description: Acid Web Cannon Description
   apCost: 1
   roleTarget: 2

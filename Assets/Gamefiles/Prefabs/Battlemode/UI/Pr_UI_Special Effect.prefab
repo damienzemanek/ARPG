@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 7534078070522637426}
   - component: {fileID: -4725028771531095674}
   m_Layer: 0
-  m_Name: Special Effect
+  m_Name: Pr_UI_Special Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

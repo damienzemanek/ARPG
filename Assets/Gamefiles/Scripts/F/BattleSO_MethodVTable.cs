@@ -14,6 +14,7 @@ public class BattleSO_MethodVTable : SO_MethodVTable
         var fade = PlayerScreenFade.Instance.fadeTarg;
         SessionData.Instance.currentBattleConfig = battleConfig;
 
+        playerInstance.ToggleInputReading(false);
         playerInstance.faderAnimator.PlayOnEnd(startBattlemodeEncounterAnimName, () => 
         {
             playerInstance.cameraSystemAnimator.PlayOnEnd(camZoomAnimName, () =>

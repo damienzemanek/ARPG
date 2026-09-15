@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Mutate Stats Mark Strategy", menuName = "SO/ARPG/Mark Strategy")]
+[CreateAssetMenu(fileName = "Mutate Stats Mark Strategy", menuName = "ARPG/SO/Mark Strategy")]
 public class MutateStats : MarkStrategy
 {
     public int dmgMultDelta;

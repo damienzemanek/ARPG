@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: HollowPoint
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Hollow Point
+  itemName: Hollow Point
   description: Hollow Point Description
   apCost: 2
   roleTarget: 2

@@ -34,6 +34,7 @@ namespace EMILtools.Extensions
         {
             switch (targ)
             {
+                case null: break;
                 case Graphic g:
                     g.color = c;
                     break;

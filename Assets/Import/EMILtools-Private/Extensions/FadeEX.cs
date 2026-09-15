@@ -97,6 +97,14 @@ namespace EMILtools.Extensions
 
             while (fadeVal > 0f)
             {
+                // Scene may have changed while this coroutine was waiting.
+                if (targ == null)
+                {
+                    Debug.LogWarning("Given a null target for FadeToTransparent.");
+                    postHook?.Invoke();
+                    yield break;
+                }
+
                 fadeVal -= fade.Step;
                 fadeVal = Mathf.Max(fadeVal, 0f);
 
@@ -104,6 +112,13 @@ namespace EMILtools.Extensions
                 fade.SetColor(currentColor, targ);
 
                 yield return new WaitForSeconds(fade.Delay);
+            }
+            
+            // Target could have been destroyed during the final wait.
+            if (targ != null)
+            {
+                currentColor.a = 0f;
+                fade.SetColor(currentColor, targ);
             }
 
             currentColor.a = 0f;

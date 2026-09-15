@@ -4,8 +4,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[Serializable]
 [CreateAssetMenu(fileName = "BattlemodeActionConfig", menuName = "ARPG/SO/BattlemodeActionConfig")]
-public class BattlemodeActionConfig : ScriptableObject
+public class BattlemodeActionConfig : ItemSO
 {
     bool isEmptyRoleTarget => roleTarget == Role.EmptyTile;
     bool isIncreasingArmor => armorIncreasePercentage > 0;
@@ -101,8 +102,7 @@ public class BattlemodeActionConfig : ScriptableObject
         ConsumeMark = 1 << 3,
     }
     
-    [BoxGroup("Settings")] public string actionName;
-    [BoxGroup("Settings")] public string description;
+    [BoxGroup("Settings")] public string actionName { get => itemName; set =>  itemName = value; }
     [BoxGroup("Settings")] public int apCost = 1;
     [BoxGroup("Settings")] public Role roleTarget;
     [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
@@ -169,6 +169,8 @@ public class BattlemodeActionConfig : ScriptableObject
 
         return ctx;
     }
+
+    public override bool canOwnMultiple => false;
 }
 
 public class BattlemodeActionCtx

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
-  m_Name: Ally Heal
+  m_Name: AllyHeal
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  actionName: Ally Heal
+  itemName: Ally Heal
   description: Ally Heal
   apCost: 1
   roleTarget: 3

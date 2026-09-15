@@ -84,7 +84,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         grid.DesignateTileRanks();
         queuedPlayerAction.Init();
         actionsDisplay.ShowEndTurnBtn(false);
-        EndEnemyTurnOrStartBattle(true);
+        StartCoroutine(C_StartBattle());
         FadeEX.ResetFade(usingActionFadeSettings, false, usingActionFadeTarg, 0);
     }
     
@@ -597,10 +597,17 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         turnDisplay.StartTurn(Turn.Enemy, EndPlayerTurnImplementation);
     }
 
-    public void EndEnemyTurnOrStartBattle(bool firstStart)
+    public IEnumerator C_StartBattle()
+    {
+        yield return turnDisplay.StartBattle();
+        turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(true));
+
+    }
+
+    public void EndEnemyTurn()
     {
         if (currentTurn == Turn.Transitioning) return;
-        turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(firstStart));
+        turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(false));
     }
     
     void EndPlayerTurnImplementation()
@@ -610,7 +617,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         currentTurn = Turn.Enemy;
         actionsDisplay.HideDisplay();
         actionsDisplay.ShowEndTurnBtn(false);
-        opponentAI.AttackAll(grid, () => EndEnemyTurnOrStartBattle(false));
+        opponentAI.AttackAll(grid, EndEnemyTurn);
     }
     
     

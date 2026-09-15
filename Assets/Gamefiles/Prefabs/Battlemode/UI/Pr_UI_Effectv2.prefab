@@ -1211,7 +1211,7 @@ GameObject:
   - component: {fileID: 1708793197799303946}
   - component: {fileID: 7846216487856365794}
   m_Layer: 0
-  m_Name: Effect v2
+  m_Name: Pr_UI_Effectv2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
