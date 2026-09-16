@@ -88,6 +88,7 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
             return actionCtx;
         }
 
+        if (stacksTotal >= 1) actionCtx.critChanceCalculatedAlready = true;
         if (stacksTotal == 1)
         {
             if (!actionCtx.critHit)
@@ -126,6 +127,7 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
             return actionCtx;
         }
         
+        if (stacksTotal >= 1) actionCtx.critChanceCalculatedAlready = true;
         if (stacksTotal == 1)
         {
             if (!actionCtx.critHit)

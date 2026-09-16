@@ -115,7 +115,12 @@ public abstract class EmilEventBase
                     suppliedIndex++;
                 }
 
-                var existing = parameters?.FirstOrDefault(x => x != null && x.name == p.Name && x.isAutoSupplied == isAuto && x.GetValue() != null && p.ParameterType.IsAssignableFrom(x.GetValue().GetType()));
+                var existing = parameters?.FirstOrDefault(
+                        x => x != null 
+                                         && x.name == p.Name 
+                                         && x.isAutoSupplied == isAuto 
+                                         && x.GetValue() != null 
+                                         && p.ParameterType.IsAssignableFrom(x.GetValue().GetType()));
                 if (existing != null)
                 {
                     newParams.Add(existing);
