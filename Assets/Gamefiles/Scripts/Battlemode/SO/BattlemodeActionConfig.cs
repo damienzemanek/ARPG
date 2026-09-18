@@ -168,6 +168,34 @@ public class BattlemodeActionConfig : ItemSO
 
         return ctx;
     }
+
+    public List<string> GetActionDetailTexts()
+    {
+        var ret = new List<string>();
+        
+        // DMG
+        if(dmgMultiplier > 0) ret.Add($"DMG %{dmgMultiplier}");
+        // HEAL 
+        if(healPercentage  > 0) ret.Add($"HEAL %{healPercentage}");
+        // ARMOR
+        if(armorIncreasePercentage > 0) ret.Add($"ARMOR %{armorIncreasePercentage}");
+        // Body Part
+        if (targetedBodyPart != BodyPart.None)
+        {
+            var bodyParts = new List<string>();
+            if (targetedBodyPart.HasFlag(BodyPart.Body)) bodyParts.Add("BODY");
+            if (targetedBodyPart.HasFlag(BodyPart.Head)) bodyParts.Add("HEAD");
+            if (targetedBodyPart.HasFlag(BodyPart.Legs)) bodyParts.Add("LEGS");
+            ret.Add($"Hits: [ {string.Join(" , ", bodyParts)} ]");
+        }
+        
+        // TARGET EFFECTS
+        foreach (var targEff in effectsToApplyToTarget)
+            ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+
+        return ret;
+        // Self effects are different targeting detail prefab
+    }
     
     public override ItemSO ProvideReward(int _ = -1) => this;
 }
@@ -211,11 +239,12 @@ public class BattlemodeActionCtx
     public BattlemodeActionConfig.MovementCfg targetMovementCfgInstanced;
     public BattlemodeActionConfig cfg;
     public MarkStrategy markStrategy;
-
     
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToActor;
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToTarget;
 
     public void SetHealViaTargetMaxHealth(BattlerOccupantCtx targetBatlerCtx)
         => heal = targetBatlerCtx?.maxHp ?? 0;
+    
+    
 }

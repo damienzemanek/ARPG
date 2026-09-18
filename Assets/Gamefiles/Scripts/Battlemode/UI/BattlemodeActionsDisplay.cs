@@ -18,12 +18,20 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     
     const string k_LevelFormat = "Lvl {0}/60";
     
-    [Required] public GameObject GUI;
-    
-    [Required] public GameObject actionDisplayPrefab;
-    [FormerlySerializedAs("actionDisplayParent")] [Required] public Transform actionsHandDisplayParent;
+    [BoxGroup("UI Refs")] [Required] public GameObject GUI;
+    [BoxGroup("UI Refs")] [Required] public GameObject actionDisplayPrefab;
+    [Required] public Transform actionsHandDisplayParent;
     [Required] public Transform actionsExhaustedDisplayParent;
     [Required] public GameObject displ_ActionInfo;
+    [Required] public TextMeshProUGUI txt_targetRole;
+    [Required] public TextMeshProUGUI txt_usableRowsNums;
+    [Required] public TextMeshProUGUI txt_usableColsNums;
+    [Required] public TextMeshProUGUI txt_targetRowsNums;
+    [Required] public TextMeshProUGUI txt_targetColsNums;
+    [Required] public Transform vlg_targetingInfoParent;
+    [Required] public GameObject pr_hlg_targetingDetail;
+
+
 
     
 
@@ -317,6 +325,20 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         ShowEffects(actionCtx?.cfg);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
         currentlySelectedAction = actionCtx;
+
+        // hardocoding this avoiding desctruction bc o well need to just ge it working
+        foreach (var child in vlg_targetingInfoParent.Children())
+        {
+            if(child.transform == vlg_targetingInfoParent.GetChild(0)) continue;
+            Destroy(child);
+        }
+        
+        var targetingDetails = actionCtx.cfg.GetActionDetailTexts();
+        foreach (var detail in targetingDetails)
+        {
+            var newDetail = Instantiate(pr_hlg_targetingDetail, vlg_targetingInfoParent);
+            newDetail.transform.GetChild(1).Get<TextMeshProUGUI>().text = detail; // hardoding this bc o well idc, its the second child
+        }
     }
 
 
@@ -324,6 +346,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     {
         txt_EnemyActionIntentionsNum.text = enemyConfig.intentions.ToString();
         txt_EnemyPredictedsNum.text = enemyConfig.defaultPredicted.ToString();
+        txt_targetRole.text = "Target: " + actionCtx.cfg.roleTarget;
+        
     }
     
     

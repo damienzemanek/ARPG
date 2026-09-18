@@ -72,3 +72,8 @@ MonoBehaviour:
         icon: {fileID: 0}
         name: Double Jeopardy
         description: 'On Consume Mark: Mark +2'
+    - Key: BattlemodeEffectStrategy_Bleed
+      Value:
+        icon: {fileID: 0}
+        name: Bleed
+        description: No description

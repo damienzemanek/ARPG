@@ -34,7 +34,16 @@ public class BattlemodeEffectConfigInstance
     
     [SerializeReference] public BattlemodeEffectStrategyInstance defaultEffectStrategyValues;
     public string typeKey => defaultEffectStrategyValues.GetType().Name;
-    public string effectName { get { var ret = effectData.GetValueOrDefault(typeKey).name; if (String.IsNullOrEmpty(ret)) ret = ""; return ret; } }
+
+    [ShowInInspector] public string effectName
+    {
+        get
+        {
+            Debug.Log("A");
+            var ret = effectData.GetValueOrDefault(typeKey).name; 
+            if (String.IsNullOrEmpty(ret)) ret = ""; return ret;
+        }
+    }
     public Sprite icon => effectData.GetValueOrDefault(typeKey).icon;
     public string description => effectData.GetValueOrDefault(typeKey).description;
     public BattlemodeEffectStrategyInstance CreateNewEffectInstance()
@@ -80,11 +89,37 @@ public abstract class BattlemodeEffectStrategyInstance
         }
         return instance;
     }
+
+    public string GetEffectDetailText()
+    {
+        var durations = new List<string>();
+
+        var turnStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn)
+            ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks
+            : 0;
+        var battleStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle)
+            ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks
+            : 0;
+        var permStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition)
+            ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks
+            : 0;
+
+        if (turnStacks > 0) durations.Add($"({turnStacks} Turns)");
+        if (battleStacks > 0) durations.Add($"({battleStacks} Battles)");
+        if (permStacks > 0) durations.Add($"({permStacks} Expeditions)");
+        Debug.Log(cfg);
+        Debug.Log(cfg.effectName);
+        var ret = cfg.effectName;
+        if (durations.Count > 0) ret += $" {string.Join(" ", durations)}";
+        
+        return ret;
+    }
     
     public abstract int priority { get; }
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);
-    public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime) => Array.Exists(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
+    public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime)
+        => Array.Exists(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
 
     public ref StackCtx GetStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime)
     {
