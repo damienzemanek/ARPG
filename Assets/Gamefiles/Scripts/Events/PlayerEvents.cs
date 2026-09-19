@@ -16,22 +16,23 @@ public class PlayerEvents : MonoBehaviour
     [Required] public Animator playerAnimator;
     [Required] public string awakenAnimName;
     
-    [Required] public GameObject characterSelectDisplay;
-    public CharacterInfoDisplay characterInfoDisplay;
-    public WaitSecondsRealtime charDisplayWait;
+    [Required] public GameObject GUI;
+    [Required] public CharacterInfoDisplay characterInfoDisplay;
+    public WaitSecondsRealtime charDisplayWait; // DELAY FOR REGION ANIM
     [Required] public PlayerInstance player;
 
     public void NewPLayerSpawnEvent()
     {
         Debug.Log("New Player Spawned");
-        characterSelectDisplay.SetActive(false);
+        GUI.SetActive(false);
         player.gameObject.SetActive(false);
         StartCoroutine(C_Display());
         
         IEnumerator C_Display() 
         { 
             yield return charDisplayWait.Delay;
-            characterSelectDisplay.SetActive(true);
+            characterInfoDisplay.InitChoseStarterCharacter(characterInfoDisplay.initallySelectedStarterCharacter);
+            GUI.SetActive(true);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
             data.returningPlayer = true;
             saver.Save();
@@ -43,18 +44,25 @@ public class PlayerEvents : MonoBehaviour
         Debug.Log("Most Recent Position Spawned");
         player.gameObject.SetActive(true);
         player.ToggleInputReading(true);
-        characterSelectDisplay.SetActive(false);
+        GUI.SetActive(false);
         SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
         player.gameObject.transform.position = data.currentCharacterWorldLocation.position;
         player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
 
-    public void ChoseNewCharacter()
+    public void ReEnablePlayerAndMovement()
     {
-        characterSelectDisplay.SetActive(false);
+        GUI.SetActive(false);
         player.gameObject.SetActive(true);
         player.ToggleInputReading(false);
         playerAnimator.PlayOnEnd(awakenAnimName, () => player.ToggleInputReading(true));
+    }
+
+    public void SaveCurrentPosition()
+    {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        data.currentCharacterWorldLocation = new Pose(player.gameObject.transform);
+        saver.Save();
     }
     
 }
