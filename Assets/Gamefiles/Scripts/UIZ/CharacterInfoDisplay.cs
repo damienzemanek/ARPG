@@ -16,8 +16,8 @@ public class CharacterInfoDisplay : MonoBehaviour
     
     public CharacterSelectState characterSelectState;
     [Required] public TextMeshProUGUI txt_Name;
-    [Required] public TextMeshProUGUI txt_spEffect;
     [Required] public TextMeshProUGUI txt_altName;
+    [Required] public TextMeshProUGUI txt_spEffect;
     [Required] public TextMeshProUGUI txt_healthNum;
     [Required] public TextMeshProUGUI txt_apNum;
     [Required] public TextMeshProUGUI txt_dmgNum;
@@ -34,14 +34,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         selectedCharacter = null;
         selectBtn.interactable = false;
     }
-
-    public void SelectACharacter(CharacterConfig character)
-    {
-        selectedCharacter = character;
-        txt_Name.text = character.occupantName;
-        selectBtn.interactable = true;
-    }
-
+    
     public void MainButtonPressed(CharacterSelectState state)
     {
         switch (state)
@@ -49,7 +42,31 @@ public class CharacterInfoDisplay : MonoBehaviour
             case CharacterSelectState.ChoseStarterCharacter: ChoseStarterCharacter(); break;
         }
     }
+    
+    #region ---------------------- Chose Starter Character ----------------------
 
+    public void InitChoseStarterCharacter(CharacterConfig defaultCharacter)
+    {
+        characterSelectState = CharacterSelectState.ChoseStarterCharacter;
+        selectedCharacter = defaultCharacter;
+        txt_buttonLabel.text = "Select Character";
+        SelectACharacter(defaultCharacter);
+    }
+    
+
+    public void SelectACharacter(CharacterConfig character)
+    {
+        selectedCharacter = character;
+        txt_Name.text = character.occupantName;
+        txt_altName.text = character.occupantName;
+        txt_spEffect.text = character.specialEffectName;
+        txt_healthNum.text = character.maxHP.ToString();
+        txt_apNum.text = character.maxAP.ToString();
+        txt_dmgNum.text = character.damage.ToString();
+        txt_armorNum.text = character.maxArmor.ToString();
+        selectBtn.interactable = true;
+    }
+    
     public void ChoseStarterCharacter()
     {
         playerEvents.ChoseNewCharacter();
@@ -60,4 +77,8 @@ public class CharacterInfoDisplay : MonoBehaviour
         if(charData == null) Debug.LogError("No character data found, search name was: " + selectedCharacter.occupantName + "");
         charData.hasCharacter = true;
     }
+    
+    #endregion ------------------------------------------------------------------
+    
+    
 }
