@@ -49,9 +49,8 @@ public class PlayerEvents : MonoBehaviour
         player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
 
-    public void SelectedNewPlayerCharacter(CharacterConfig character)
+    public void ChoseNewCharacter()
     {
-        Debug.Log("Selected New Player Character " + character.occupantName);
         characterSelectDisplay.SetActive(false);
         player.gameObject.SetActive(true);
         player.ToggleInputReading(false);

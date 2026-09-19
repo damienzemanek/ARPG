@@ -8,38 +8,56 @@ public class CharacterInfoDisplay : MonoBehaviour
 {
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
-    public TextMeshProUGUI txt_Name;
-    [ReadOnly] public CharacterConfig viewingCharacter;
+    public enum CharacterSelectState
+    {
+        None,
+        ChoseStarterCharacter,
+    }
+    
+    public CharacterSelectState characterSelectState;
+    [Required] public TextMeshProUGUI txt_Name;
+    [Required] public TextMeshProUGUI txt_spEffect;
+    [Required] public TextMeshProUGUI txt_altName;
+    [Required] public TextMeshProUGUI txt_healthNum;
+    [Required] public TextMeshProUGUI txt_apNum;
+    [Required] public TextMeshProUGUI txt_dmgNum;
+    [Required] public TextMeshProUGUI txt_armorNum;
+    [Required] public TextMeshProUGUI txt_buttonLabel;
+
+    
+    [ReadOnly] public CharacterConfig selectedCharacter;
     [Required] public PlayerEvents playerEvents;
     [Required] public Button selectBtn;
 
     public void OnEnable()
     {
-        txt_Name.text = "Select A Character";
-        viewingCharacter = null;
+        selectedCharacter = null;
         selectBtn.interactable = false;
     }
 
-    public void ViewCharacter(CharacterConfig character)
+    public void SelectACharacter(CharacterConfig character)
     {
-        viewingCharacter = character;
+        selectedCharacter = character;
         txt_Name.text = character.occupantName;
         selectBtn.interactable = true;
     }
 
-    public void SelectCharacter()
+    public void MainButtonPressed(CharacterSelectState state)
     {
-        playerEvents.SelectedNewPlayerCharacter(viewingCharacter);
-        
-        if (!SaverService.Instance.TryGetService(charSaverType, out var charSaver)) {
-            Debug.LogError($"No Saver registered for {charSaverType.Name}");
-            return; }
+        switch (state)
+        {
+            case CharacterSelectState.ChoseStarterCharacter: ChoseStarterCharacter(); break;
+        }
+    }
 
-        var data = charSaver.currentData as CharactersData_SavedDataSO;
+    public void ChoseStarterCharacter()
+    {
+        playerEvents.ChoseNewCharacter();
+
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
         if(data == null) Debug.LogError("No data found");
-        Debug.Log("data character size: " + data.charactersData.Count);
-        var charData = data.charactersData.Find(c => c.characterConfigName == viewingCharacter.occupantName);
-        if(charData == null) Debug.LogError("No character data found, search name was: " + viewingCharacter.occupantName + "");
+        var charData = data.charactersData.Find(c => c.characterConfigName == selectedCharacter.occupantName);
+        if(charData == null) Debug.LogError("No character data found, search name was: " + selectedCharacter.occupantName + "");
         charData.hasCharacter = true;
     }
 }

@@ -10,5 +10,5 @@ public class CharacterSelectPortrait : MonoBehaviour
     
     void OnEnable() => image.sprite = character.characterPortrait;
 
-    public void SelectNewCharacter() => infoDisplay.ViewCharacter(character);
+    public void SelectNewCharacter() => infoDisplay.SelectACharacter(character);
 }
