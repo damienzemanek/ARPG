@@ -34,8 +34,8 @@ namespace ProArchitecture.Data
     {
         public static implicit operator IntPtr(in RefToStatic<T> value) => (IntPtr)value.Ref.Ptr;
         internal Ref<T> Ref;
-        public ref T RefStatic => ref Ref.GetRef;
-        public T* PtrStatic => Ref.Ptr;
+        public ref T AsRefStatic => ref Ref.GetRef;
+        public T* AsPtrStatic => Ref.Ptr;
         public RefToStatic(ref T value) => Ref = new Ref<T>(ref value);
         public RefToStatic(T* pointer) => Ref = new Ref<T>(pointer);
     }

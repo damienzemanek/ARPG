@@ -267,7 +267,7 @@ namespace ProArchitecture.Data
         /// - "Removal" of unsued Indicies from batch processes
         /// - Object pooling
         /// </summary>
-        public unsafe struct DataWrapper
+        public struct DataWrapper
         {
             public ByteBool Active;
             T data;

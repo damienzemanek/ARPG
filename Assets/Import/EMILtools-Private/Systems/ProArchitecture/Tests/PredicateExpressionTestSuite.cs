@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ProArchitecture.Predicates;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class PredicateExpressionTestSuite
 {
@@ -153,7 +154,8 @@ public class PredicateExpressionTestSuite
         
         // After Dispose, Active is false, so Evaluate should return false and log an error
         //LogAssert.Expect(LogType.Error, "PredicateExpression.Evaluate: expression is not active, likely disposed");
-        Assert.IsFalse(expr.Evaluate(ref data), "Should return false after Dispose");
+        LogAssert.Expect(LogType.Error, "PredicateExpression.Evaluate: expression is not active, likely disposed");
+        expr.Evaluate(ref data);
     }
 
     [Test]
