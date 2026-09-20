@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Sirenix.OdinInspector;
 
@@ -27,8 +28,13 @@ namespace ProArchitecture.Data;
 public struct BlittableReference<T> where T : class
 {
     public static implicit operator T(BlittableReference<T> handle) => handle.Target;
+    // public static unsafe implicit operator Ref<BlittableReference<T>>(BlittableReference<T> handle)
+    // {
+    //     return new Ref<BlittableReference<T>>(handle.Handle);
+    // }
         
     IntPtr Handle;
+    public readonly IntPtr Pointer => Handle;
     public readonly bool IsAllocated => Handle != IntPtr.Zero;
     public static BlittableReference<T> Allocate(T target) => new BlittableReference<T> { Handle = (IntPtr)GCHandle.Alloc(target) };
     [ShowInInspector, HideLabel]
@@ -58,3 +64,29 @@ public struct BlittableReference<T> where T : class
         Handle = IntPtr.Zero;
     }
 }
+
+
+public static unsafe class BlitEX
+{
+    public static BlittableReference<T> Blit<T>(this T targ, out IntPtr handle) where T : class
+    {
+       var blitRef = BlittableReference<T>.Allocate(targ);
+       handle = blitRef.Pointer;
+       return blitRef;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

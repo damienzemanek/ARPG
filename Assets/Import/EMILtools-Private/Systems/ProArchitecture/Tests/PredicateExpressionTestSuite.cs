@@ -24,7 +24,7 @@ public class PredicateExpressionTestSuite
         static bool IsAOne(void* ptr) => ((TestData*)ptr)->a == 1;
 
         public static Predicate AIsZeroVRef() => new(&IsAZeroVRef);
-        static bool IsAZeroVRef(void* ptr) => PtrEX.VPtrToRef<TestData>(ptr).a == 0;
+        static bool IsAZeroVRef(void* ptr) => PtrEX.VoidPtrAsRef<TestData>(ptr).a == 0;
     }
 
     [Test]

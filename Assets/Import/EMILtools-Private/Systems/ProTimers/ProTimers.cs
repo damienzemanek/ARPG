@@ -1,9 +1,11 @@
 using System;
+using System.Runtime.InteropServices;
 using ProArchitecture.Data;
 using ProArchitecture.Logic;
 using ProArchitecture.Predicates;
 using Unity.Collections;
 using UnityEngine;
+using EMILtools.Extensions;
 using static ProArchitecture.Logic.LogicBuilder<ProTimers.ProTimer>;
 
 
@@ -19,6 +21,12 @@ namespace ProTimers
     {
         public float time;
         public float triggerTime;
+        
+        public TriggerCtx(float _time, float _triggerTime)
+        {
+            time = _time;
+            triggerTime = _triggerTime;
+        }
     }
     
     /// <summary>
@@ -67,13 +75,97 @@ namespace ProTimers
             math = _math;
             events = _events;
         }
+        
+        public ProTimer(TickMath _math, int eventsSize)
+        {
+            math = _math;
+            events = new Data<TimerEvent, NoMtd>(eventsSize, Allocator.Persistent, out _);
+        }
     }
-    
+
+    public static class ProTimerExtensions
+    {
+        public static ref ProTimer AddOp(this ref ProTimer timer,
+            float startTime,
+            float triggerTime,
+            RefToStatic<Operation<IntPtr>> _onFinished,
+            bool onEventStopTimer = true,
+            bool onEventStopEvent = true,
+            PredicateExpression? _additionalEventPredicates = null)
+        {
+             TimerEvent newTimerEvent = TimerEvent.NoData(
+                 new TriggerCtx(startTime, triggerTime), 
+                 _onFinished,
+                 onEventStopTimer, 
+                 onEventStopEvent,
+                _additionalEventPredicates);
+             timer.events.Allocate(ref newTimerEvent, out var id);
+             return ref timer;
+        }
+        
+        public static ref ProTimer AddOpWithData<TCtx>(this ref ProTimer timer,
+            float startTime, 
+            float triggerTime,
+            RefToStatic<Operation<IntPtr>> _onFinished,
+            ref TCtx data,
+            bool onEventStopTimer = true,
+            bool onEventStopEvent = true,
+            PredicateExpression? _additionalEventPredicates = null)
+        {
+            TimerEvent newTimerEvent = TimerEvent.WithData(
+                new TriggerCtx(startTime, triggerTime), 
+                _onFinished: _onFinished,
+                IntPtrEX.AsIntPtr(ref data),
+                onEventStopTimer, 
+                onEventStopEvent,
+                _additionalEventPredicates);
+            timer.events.Allocate(ref newTimerEvent, out var id);
+            return ref timer;
+        }
+        
+        public static ref ProTimer AddAction(this ref ProTimer timer,
+            float startTime, 
+            float triggerTime,
+            Action action,
+            bool onEventStopTimer = true,
+            PredicateExpression? _additionalEventPredicates = null)
+        {
+            action.Blit(out var handle);
+            RefToStatic<Operation<IntPtr>> _onFinished = OpExtensions.Action;
+            TimerEvent newTimerEvent = TimerEvent.WithData(
+                new TriggerCtx(startTime, triggerTime), 
+                _onFinished: _onFinished,
+                handle,
+                onEventStopTimer, 
+                stopThisTimerEventWhenTimerFinishes: true,
+                _additionalEventPredicates);
+            timer.events.Allocate(ref newTimerEvent, out var id);
+            return ref timer;
+        }
+        
+        public static void Start(this ref ProTimer timer) => TimerStack.StartTimer(TimerStack.AddTimer(ref timer));
+        public static void Resume(this ref ProTimer timer) => TimerStack.StartTimer(timer.myTimerStackIndex);
+        public static void Stop(this ref ProTimer timer) => TimerStack.StopTimer(timer.myTimerStackIndex);
+    }
+    public static unsafe class OpExtensions
+    {
+        public static void ActionExecuter(IntPtr* actionPtr)
+        {
+            var intPtr = (IntPtr)actionPtr;
+            var typed = IntPtrEX.To<BlittableReference<Action>>(intPtr);
+            Debug.Log(typed.Target);
+            typed.Target.Invoke();
+            typed.Free();
+        }
+        
+        public static Operation<IntPtr> Action = new(&ActionExecuter);
+    }
+
     
     public struct TimerEvent
     {
-        public ByteBool stopProTimerWhenTimeTriggeredAndMyPredicatePasses;
-        public ByteBool stopThisTimerEventWhenTimerFinishes;
+        public ByteBool onEventStopTimer;
+        public ByteBool onEventStopEvent;
 
         public TriggerCtx Ctx;
         public PredicateExpression additionalEventPredicates;
@@ -83,8 +175,8 @@ namespace ProTimers
         public static TimerEvent NoData(
             TriggerCtx ctx,
             RefToStatic<Operation<IntPtr>> _onFinished,
-            bool stopMyProTimerWhenTimeTriggeredAndMyPredicatePasses = true,
-            bool stopThisTimerEventWhenTimerFinishes = true,
+            bool onEventStopTimer = true,
+            bool onEventStopEvent = true,
             PredicateExpression? _additionalEventPredicates = null)
         {
             return new TimerEvent()
@@ -94,8 +186,8 @@ namespace ProTimers
                     ? (PredicateExpression)_additionalEventPredicates 
                     : new PredicateExpression(),
                 onFinishedOp = _onFinished,
-                stopThisTimerEventWhenTimerFinishes = stopThisTimerEventWhenTimerFinishes,
-                stopProTimerWhenTimeTriggeredAndMyPredicatePasses = stopMyProTimerWhenTimeTriggeredAndMyPredicatePasses,
+                onEventStopEvent = onEventStopEvent,
+                onEventStopTimer = onEventStopTimer,
                 finishedData = IntPtr.Zero
             };
         }
@@ -115,8 +207,8 @@ namespace ProTimers
                     ? (PredicateExpression)_additionalEventPredicates 
                     : new PredicateExpression(),               
                 onFinishedOp = _onFinished,
-                stopThisTimerEventWhenTimerFinishes = stopThisTimerEventWhenTimerFinishes,
-                stopProTimerWhenTimeTriggeredAndMyPredicatePasses = stopMyProTimerWhenTimeTriggeredAndMyPredicatePasses,
+                onEventStopEvent = stopThisTimerEventWhenTimerFinishes,
+                onEventStopTimer = stopMyProTimerWhenTimeTriggeredAndMyPredicatePasses,
                 finishedData = dataPtr
             };
         }
@@ -149,6 +241,7 @@ namespace ProTimers
         public static int AddTimer(ref ProTimer _timer)
         {
             timers.Allocate(ref _timer, out var id);
+            _timer.myTimerStackIndex = id;
             timers[id].myTimerStackIndex = id;
             StopTimer(id);
             Debug.Log($"Timer Added: {id}");
@@ -179,17 +272,20 @@ namespace ProTimers
             Debug.Log($"Ticked: {deltaTime}");
         }
     }
-
+    
+    
     // This is a nested operation call
     // TickOperation calls the delegate inside of TimerEvent if the timer event is triggered
     // for each `TimerEvent` in the ProTimer
     public static unsafe class TimerStackLogics
     {
+        
         public static bool isTesting = false;
         public static float CurrentDeltaTime; // Temporary storage for the batch process
 
+        public static Operation<ProTimer> tickTimerOperation = new(&TickTimerRun);       
         public static Logic<ProTimer> TickTimerLogic = Static.Add(tickTimerOperation).Build();
-        public static Operation<ProTimer> tickTimerOperation = new(&TickTimerRun);
+        
         static void TickTimerRun(ProTimer* timer)
         {
             float dt = isTesting ? CurrentDeltaTime : Time.deltaTime;
@@ -213,10 +309,10 @@ namespace ProTimers
                 if (timerEvent.onFinishedOp.AsRefStatic.ShouldRun(in timerEvent.finishedData)) 
                     timerEvent.onFinishedOp.AsRefStatic.Run(ref timerEvent.finishedData);
                 
-                if (timerEvent.stopProTimerWhenTimeTriggeredAndMyPredicatePasses)
+                if (timerEvent.onEventStopTimer)
                     timerStopping = true;
                 
-                if (timerEvent.stopThisTimerEventWhenTimerFinishes) 
+                if (timerEvent.onEventStopEvent) 
                     timer->events.GetWrapper(i).Active.Set(false);
             }
             

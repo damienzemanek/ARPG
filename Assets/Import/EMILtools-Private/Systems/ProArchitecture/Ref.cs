@@ -11,6 +11,7 @@ namespace ProArchitecture.Data
         public T* Ptr => ptr;
         public Ref(ref T value) => ptr = (T*)Unsafe.AsPointer(ref value);
         public Ref(T* pointer) => ptr = pointer;
+        public Ref(IntPtr inptr) => ptr = (T*)inptr;
     }
 
     public unsafe struct ImplicitConverter<T> where T : unmanaged
