@@ -1,8 +1,5 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using ProArchitecture.Logic;
-using Sirenix.OdinInspector;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
@@ -37,19 +34,7 @@ namespace ProArchitecture.Data
         }
     }
 
-    public static class PtrEX
-    {
-        public static unsafe T* AsPtr<T>(ref T value) where T : unmanaged =>
-            (T*)Unsafe.AsPointer(ref value);
-        
-        public static unsafe ref T AsRef<T>(T* ptr) where T : unmanaged =>
-            ref Unsafe.AsRef<T>(ptr);
-        
-        public static unsafe ref T VPtrToRef<T>(void* ptr) where T : unmanaged 
-            => ref Unsafe.AsRef<T>(ptr);
-    }
-    
-    
+
     public static unsafe class IntPtrPtrTo<T> where T : unmanaged
     {
         public static ref T GetRef(IntPtr* data)
@@ -61,181 +46,7 @@ namespace ProArchitecture.Data
         }
     }
 
-    public static unsafe class IntPtrTo<T> where T : unmanaged
-    {
-        public static ref T GetRef(ref IntPtr data)
-        {
-            T* tptr = (T*)data;
-            ref T t = ref *tptr;
-            return ref t;
-        }
-    }
-    
-    /// <summary>
-    /// A memory-aligned, 1-byte boolean for unmanaged and blittable contexts.
-    /// Solves the size ambiguity of the standard C# 'bool' (which can be 4 bytes) in structs.
-    ///
-    /// Features/Configuration:
-    /// - Memory Efficiency: Strictly 1 byte, allowing for predictable struct packing.
-    /// - Blittable: Safe for use in unmanaged memory, NativeLists, and across P/Invoke boundaries.
-    /// - Inspector Friendly: Custom drawer support via ByteBool (shows as a standard toggle).
-    ///
-    /// Usage:
-    /// - Replace 'bool' with 'ByteBool' in any struct destined for Data<T> or UnsafeList.
-    /// - Supports implicit conversion to and from standard 'bool'.
-    /// - Use .active for property access or .Set() for direct mutation.
-    /// </summary>
-    [Serializable, InlineProperty]
-    public struct ByteBool
-    {
-        [SerializeField, HideInInspector] byte value;
 
-        [ShowInInspector, HideLabel]
-        public bool active
-        {
-            get => value != 0;
-            set => this.value = (byte)(value ? 1 : 0);
-        }
-        
-        public void Set(bool _value) => value = (byte)(_value ? 1 : 0);
-        public static implicit operator bool(ByteBool b) => b.active;
-        public static implicit operator ByteBool(bool b) => new ByteBool { value = (byte)(b ? 1 : 0) };
-        public ByteBool(bool _value) => value = (byte)(_value ? 1 : 0);
-    }
-    
-    
-    
-
-    public struct OrTupled<T1, T2> where T1 : unmanaged where T2 : unmanaged
-    {
-        public static implicit operator T1(in OrTupled<T1, T2> tupled)
-        {
-            if(tupled.usingFirst) return tupled.Item1;
-            Debug.LogError("Tried to get the first item of a OrTupled<T1, T2> when using the second");
-            return default;
-        }
-
-        public static implicit operator T2(in OrTupled<T1, T2> tupled)
-        {
-            if(!tupled.usingFirst) return tupled.Item2;
-            Debug.LogError("Tried to get the second item of a OrTupled<T1, T2> when using the first");
-            return default;
-        }
-        
-        public ByteBool usingFirst;
-        public T1 Item1;
-        public T2 Item2;
-        public OrTupled(T1 item1)
-        {
-            Item1 = item1;
-            Item2 = default;
-            usingFirst = new ByteBool();
-            usingFirst.Set(true);
-        }
-        public OrTupled(T2 item2)
-        {
-            Item1 = default;
-            Item2 = item2;
-            usingFirst = new ByteBool();
-            usingFirst.Set(false);
-        }
-    }
-
-
-    /// <summary>
-    /// A handle that allows managed classes to be stored and mutated within unmanaged structs.
-    /// Bridges the gap between the GC-managed heap and unmanaged pointer logic.
-    ///
-    /// Features/Configuration:
-    /// - Pointer-based: Stores a GCHandle as an IntPtr, making the parent struct blittable.
-    /// - Zero GC Pressure: The handle itself is a value type; only the allocation/free calls impact the GC.
-    /// - Mutability: Allows updating the target reference without re-allocating the handle.
-    ///
-    /// Usage:
-    /// - Allocate: var handle = BlittableReference<MyClass>.Allocate(instance);
-    /// - Access: MyClass target = handle.Target;
-    /// - Mutate: handle.Target = newInstance;
-    /// - Cleanup: MUST call .Free() to release the GCHandle and prevent memory leaks.
-    ///
-    /// Validation / Exception Handling:
-    /// - IsAllocated check prevents null pointer access to the GCHandle.
-    /// - Free() is idempotent; checking against IntPtr.Zero before releasing.
-    /// </summary>
-    [Serializable, InlineProperty]
-    public struct BlittableReference<T> where T : class
-    {
-        public static implicit operator T(BlittableReference<T> handle) => handle.Target;
-        
-        IntPtr Handle;
-        public readonly bool IsAllocated => Handle != IntPtr.Zero;
-        public static BlittableReference<T> Allocate(T target) => new BlittableReference<T> { Handle = (IntPtr)GCHandle.Alloc(target) };
-        [ShowInInspector, HideLabel]
-        public T Target
-        {
-            get
-            {
-                if (!IsAllocated) return null;
-                return (T)((GCHandle)Handle).Target;
-            }
-            set
-            {
-                if (!IsAllocated)
-                {
-                    Handle = (IntPtr)GCHandle.Alloc(value);
-                    return;
-                }
-
-                GCHandle handle = (GCHandle)Handle;
-                handle.Target = value;
-            }
-        }
-        public void Free()
-        {
-            if (Handle == IntPtr.Zero) return;
-            ((GCHandle)Handle).Free();
-            Handle = IntPtr.Zero;
-        }
-    }
-
-    /// <summary>
-    /// A tiny handle for a single unmanaged value allocated on the unmanaged heap.
-    /// Provides stable pointer access that survives struct-copying (pass-by-value).
-    ///
-    /// Features/Configuration:
-    /// - Pointer Stability: The data resides at a fixed address; copying the handle does not copy the data.
-    /// - Life-cycle Sharing: Multiple handles point to the same ByteBool or state flag.
-    /// - Performance: Raw pointer access via .Ref or .Ptr; zero overhead beyond the allocation.
-    ///
-    /// Usage:
-    /// - Initialize: var handle = new MallocHandle<int>(10, Allocator.Persistent);
-    /// - Access: int val = handle.Ref; or *handle.Ptr = 20;
-    /// - Cleanup: MUST call .Free() when the last owner is finished.
-    ///
-    /// Validation / Exception Handling:
-    /// - Implicit conversion allows the handle to be used as the underlying type in many expressions.
-    /// - Requires manual memory management (Malloc/Free).
-    /// </summary>
-    public unsafe struct MallocHandle<T> where T : unmanaged
-    {
-        public static implicit operator T(MallocHandle<T> handle) => handle.Ref;
-        public static implicit operator MallocHandle<T>(in T value) => new(value);
-        
-        public ref T Ref => ref *Ptr;
-        public T* Ptr;
-        Allocator allocation;
-        public bool IsCreated => Ptr != null;
-        public MallocHandle(T initValue, Allocator allocator = Allocator.Persistent)
-        {
-            Ptr = (T*)UnsafeUtility.Malloc(
-                UnsafeUtility.SizeOf<T>(), 
-                UnsafeUtility.AlignOf<T>(),
-                allocation = allocator);
-            
-            UnsafeUtility.WriteArrayElement(Ptr, 0, initValue);
-        }
-        public void Free() => UnsafeUtility.Free(Ptr, allocation);
-    }
-    
     public struct NoMtd { }
     
     /// <summary>
