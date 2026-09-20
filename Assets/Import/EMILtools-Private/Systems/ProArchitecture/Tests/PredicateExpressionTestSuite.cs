@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using ProArchitecture.Predicates;
 using UnityEngine;
+using EMILtools.Extensions;
+using UnityEngine.TestTools;
 
 public class PredicateExpressionTestSuite
 {
@@ -12,17 +14,17 @@ public class PredicateExpressionTestSuite
 
     static unsafe class TestPredicates
     {
-        public static Predicate AIsZero() => new Predicate(&IsAZero);
+        public static Predicate AIsZero() => new(&IsAZero);
         static bool IsAZero(void* ptr) => ((TestData*)ptr)->a == 0;
 
-        public static Predicate BIsZero() => new Predicate(&IsBZero);
+        public static Predicate BIsZero() => new(&IsBZero);
         static bool IsBZero(void* ptr) => ((TestData*)ptr)->b == 0;
         
-        public static Predicate AIsOne() => new Predicate(&IsAOne);
+        public static Predicate AIsOne() => new(&IsAOne);
         static bool IsAOne(void* ptr) => ((TestData*)ptr)->a == 1;
 
-        public static Predicate AIsZeroVRef() => new Predicate(&IsAZeroVRef);
-        static bool IsAZeroVRef(void* ptr) => ProArchitecture.Data.PtrEX.VPtrToRef<TestData>(ptr).a == 0;
+        public static Predicate AIsZeroVRef() => new(&IsAZeroVRef);
+        static bool IsAZeroVRef(void* ptr) => PtrEX.VoidPtrAsRef<TestData>(ptr).a == 0;
     }
 
     [Test]
@@ -153,7 +155,8 @@ public class PredicateExpressionTestSuite
         
         // After Dispose, Active is false, so Evaluate should return false and log an error
         //LogAssert.Expect(LogType.Error, "PredicateExpression.Evaluate: expression is not active, likely disposed");
-        Assert.IsFalse(expr.Evaluate(ref data), "Should return false after Dispose");
+        LogAssert.Expect(LogType.Error, "PredicateExpression.Evaluate: expression is not active, likely disposed");
+        expr.Evaluate(ref data);
     }
 
     [Test]

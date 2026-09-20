@@ -171,7 +171,7 @@ namespace ProSM
             for (int i = 0; i < fsm.layers.currentSize; i++)
             {
     #if ENABLE_UNITY_COLLECTIONS_CHECKS // Hot path so im using the compiler directive to remove it in builds
-                // Check if layer has been entered (Sequential Input Validation)
+                // Sequential input validation: Entry() must be called before polling.
                 if (fsm.layers[i].currentState == -1) 
                     throw new InvalidOperationException($"Layer {i} has not been entered. Call Entry() before polling transitions.");
     #endif 
