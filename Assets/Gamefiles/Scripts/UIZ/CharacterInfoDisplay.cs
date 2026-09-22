@@ -60,7 +60,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         switch (uiOrchestration.currentExplorationUIState)
         {
-            case UiOrchestration.ExplorationUIState.FirstStart: SelectACharacter(selectedCharacter); return;
+            case UiOrchestration.ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
         }
 
         switch (uiOrchestration.currentCharacterUIState)
