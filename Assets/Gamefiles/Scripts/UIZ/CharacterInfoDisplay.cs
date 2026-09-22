@@ -10,13 +10,7 @@ public class CharacterInfoDisplay : MonoBehaviour
 {
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
-    public enum CharacterSelectState
-    {
-        None,
-        ChoseStarterCharacter,
-    }
-    
-    public CharacterSelectState characterSelectState;
+    [Required] public UiOrchestration uiOrchestration;
     [Required] public TextMeshProUGUI txt_Name;
     [Required] public TextMeshProUGUI txt_altName;
     [Required] public TextMeshProUGUI txt_spEffect;
@@ -49,19 +43,11 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterSelectPortraits = portraits;
     }
     
-    public void MainButtonPressed(CharacterSelectState state)
-    {
-        switch (state)
-        {
-            case CharacterSelectState.ChoseStarterCharacter: ChoseStarterCharacter(); break;
-        }
-    }
     
     #region ---------------------- Chose Starter Character ----------------------
 
     public void InitChoseStarterCharacter(CharacterConfig defaultCharacter)
     {
-        characterSelectState = CharacterSelectState.ChoseStarterCharacter;
         selectedCharacter = initallySelectedStarterCharacter;
         txt_buttonLabel.text = "Select Character";
         SelectACharacter(defaultCharacter);
@@ -69,13 +55,37 @@ public class CharacterInfoDisplay : MonoBehaviour
         rhs_characterInfoDisplay.SetActive(true);
         Debug.Log("Successfully chose starter character");
     }
+
+    public void MainButtonPressed()
+    {
+        switch (uiOrchestration.currentExplorationUIState)
+        {
+            case UiOrchestration.ExplorationUIState.FirstStart: SelectACharacter(selectedCharacter); return;
+        }
+
+        switch (uiOrchestration.currentCharacterUIState)
+        {
+            case UiOrchestration.CharacterUIState.None:
+                break;
+            case UiOrchestration.CharacterUIState.Overview:
+                break;
+            case UiOrchestration.CharacterUIState.Actions:
+                break;
+            case UiOrchestration.CharacterUIState.Equipment:
+                break;
+        }
+        
+        
+    }
     
 
     public void SelectACharacter(CharacterConfig character)
     {
+        // Unselect all portraits
         characterSelectPortraits.ForEach(p =>
         {
-            if(characterSelectState == CharacterSelectState.ChoseStarterCharacter)
+            // First start does not have locked portraits
+            if(uiOrchestration.currentExplorationUIState == UiOrchestration.ExplorationUIState.FirstStart)
                 p.UpdateState(CharacterSelectPortraitState.Unselected);
             else
             {
@@ -84,6 +94,7 @@ public class CharacterInfoDisplay : MonoBehaviour
                 p.UpdateState(charData.hasCharacter ? CharacterSelectPortraitState.Unselected : CharacterSelectPortraitState.Locked);
             }
         });
+        
         selectedCharacter = character;
         txt_Name.text = character.occupantName;
         txt_altName.text = character.occupantName;
