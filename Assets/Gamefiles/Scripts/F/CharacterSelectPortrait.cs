@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class CharacterSelectPortrait : MonoBehaviour
 {
+    public enum PortraitType
+    {
+        None,
+        InfoDisplay,
+        TeamGrid,
+    }
+    
     public enum CharacterSelectPortraitState
     {
         None,
@@ -17,7 +24,10 @@ public class CharacterSelectPortrait : MonoBehaviour
     public CharacterSelectPortraitState state;
     [Required] public CharacterConfig character;
     [Required] public Image image;
-    [Required] public CharacterInfoDisplay infoDisplay;
+    
+    public PortraitType portraitType;
+    public CharacterInfoDisplay infoDisplay;
+    public TeamGrid teamGrid;
 
     void OnEnable()
     {

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static CharacterSelectPortrait;
+using static UiOrchestration;
 
 public class CharacterInfoDisplay : MonoBehaviour
 {
@@ -60,18 +61,18 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         switch (uiOrchestration.currentExplorationUIState)
         {
-            case UiOrchestration.ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
+            case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
         }
 
         switch (uiOrchestration.currentCharacterUIState)
         {
-            case UiOrchestration.CharacterUIState.None:
+            case CharacterUIState.None:
                 break;
-            case UiOrchestration.CharacterUIState.Overview:
+            case CharacterUIState.Overview:
                 break;
-            case UiOrchestration.CharacterUIState.Actions:
+            case CharacterUIState.Actions:
                 break;
-            case UiOrchestration.CharacterUIState.Equipment:
+            case CharacterUIState.Equipment:
                 break;
         }
         
@@ -85,7 +86,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterSelectPortraits.ForEach(p =>
         {
             // First start does not have locked portraits
-            if(uiOrchestration.currentExplorationUIState == UiOrchestration.ExplorationUIState.FirstStart)
+            if(uiOrchestration.currentExplorationUIState == ExplorationUIState.FirstStart)
                 p.UpdateState(CharacterSelectPortraitState.Unselected);
             else
             {
@@ -111,6 +112,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         playerEvents.ReEnablePlayerAndMovement();
         playerEvents.SaveCurrentPosition();
+        uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
         
         // Save the starter character choice to JSON
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);

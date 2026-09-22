@@ -16,7 +16,8 @@ public class PlayerEvents : MonoBehaviour
 
     [Required] public Animator playerAnimator;
     [Required] public string awakenAnimName;
-    
+
+    [Required] public GameObject allUI;
     [Required] public UiOrchestration uiOrchestration;
     [Required] public CharacterInfoDisplay characterInfoDisplay;
     public WaitSecondsRealtime charDisplayWait; // DELAY FOR REGION ANIM
@@ -25,7 +26,8 @@ public class PlayerEvents : MonoBehaviour
     public void NewPLayerSpawnEvent()
     {
         Debug.Log("New Player Spawned");
-        uiOrchestration.gameObject.SetActive(false);
+        allUI.gameObject.SetActive(true);
+        uiOrchestration.HideAllUIs();
         player.gameObject.SetActive(false);
         StartCoroutine(C_Display());
         
@@ -33,7 +35,6 @@ public class PlayerEvents : MonoBehaviour
         { 
             yield return charDisplayWait.Delay;
             characterInfoDisplay.InitChoseStarterCharacter(characterInfoDisplay.initallySelectedStarterCharacter);
-            uiOrchestration.gameObject.SetActive(true);
             uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
             data.returningPlayer = true;
@@ -46,7 +47,6 @@ public class PlayerEvents : MonoBehaviour
         Debug.Log("Most Recent Position Spawned");
         player.gameObject.SetActive(true);
         player.ToggleInputReading(true);
-        uiOrchestration.gameObject.SetActive(false);
         // TODO: allow for dungeon ui to show here too with a simple check if the player is in either the dungeon or the exploration
         uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
         SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
@@ -56,7 +56,6 @@ public class PlayerEvents : MonoBehaviour
 
     public void ReEnablePlayerAndMovement()
     {
-        uiOrchestration.gameObject.SetActive(false);
         player.gameObject.SetActive(true);
         player.ToggleInputReading(false);
         playerAnimator.PlayOnEnd(awakenAnimName, () => player.ToggleInputReading(true));

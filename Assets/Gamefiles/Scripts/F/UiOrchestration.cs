@@ -56,6 +56,7 @@ public class UiOrchestration : MonoBehaviour
         explorationUIs[explorationUIState].ForEach(g => g.SetActive(true));
     }
     
+    public void ShowMainUIState(int state) => ShowMainUIState((MainUIState)state);
     public void ShowMainUIState(MainUIState mainUIState)
     {
         currentUIState = UIState.Main;
