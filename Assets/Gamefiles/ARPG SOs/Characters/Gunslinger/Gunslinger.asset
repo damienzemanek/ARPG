@@ -41,8 +41,11 @@ MonoBehaviour:
       rid: 3738701859942301841
   maxAP: 6
   maxHandSize: 6
-  characterSprite: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
-  characterPortrait: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
+  portraitArtSelected: {fileID: 21300000, guid: 7aca4f7ed91b801428676ad243d95084, type: 3}
+  portraitArtUnselected: {fileID: 21300000, guid: 51c921c8282cc9d4988180591c8c0ed3, type: 3}
+  portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
+  mainArt: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
+  specialEffectName: 
   references:
     version: 2
     RefIds:

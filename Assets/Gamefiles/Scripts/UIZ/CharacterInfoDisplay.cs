@@ -1,45 +1,130 @@
 using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static CharacterSelectPortrait;
+using static UiOrchestration;
 
 public class CharacterInfoDisplay : MonoBehaviour
 {
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
-    public TextMeshProUGUI txt_Name;
-    [ReadOnly] public CharacterConfig viewingCharacter;
+    [Required] public UiOrchestration uiOrchestration;
+    [Required] public TextMeshProUGUI txt_Name;
+    [Required] public TextMeshProUGUI txt_altName;
+    [Required] public TextMeshProUGUI txt_spEffect;
+    [Required] public TextMeshProUGUI txt_healthNum;
+    [Required] public TextMeshProUGUI txt_apNum;
+    [Required] public TextMeshProUGUI txt_dmgNum;
+    [Required] public TextMeshProUGUI txt_armorNum;
+    [Required] public TextMeshProUGUI txt_buttonLabel;
+
+    [Required] public GameObject lhs_ChoseYourCharacter;
+    [Required] public GameObject rhs_characterInfoDisplay;
+
+    [Required] public CharacterConfig initallySelectedStarterCharacter;
+    [ReadOnly] public CharacterConfig selectedCharacter;
     [Required] public PlayerEvents playerEvents;
     [Required] public Button selectBtn;
 
-    public void OnEnable()
+    public List<CharacterSelectPortrait> characterSelectPortraits = new();
+
+    public void Awake()
     {
-        txt_Name.text = "Select A Character";
-        viewingCharacter = null;
+        selectedCharacter = null;
         selectBtn.interactable = false;
+        lhs_ChoseYourCharacter.SetActive(false);
+        rhs_characterInfoDisplay.SetActive(false);
     }
 
-    public void ViewCharacter(CharacterConfig character)
+    public void ChangePortraits(List<CharacterSelectPortrait> portraits)
     {
-        viewingCharacter = character;
-        txt_Name.text = character.occupantName;
-        selectBtn.interactable = true;
+        characterSelectPortraits = portraits;
+    }
+    
+    
+    #region ---------------------- Chose Starter Character ----------------------
+
+    public void InitChoseStarterCharacter(CharacterConfig defaultCharacter)
+    {
+        selectedCharacter = initallySelectedStarterCharacter;
+        txt_buttonLabel.text = "Select Character";
+        SelectACharacter(defaultCharacter);
+        lhs_ChoseYourCharacter.SetActive(true);
+        rhs_characterInfoDisplay.SetActive(true);
+        Debug.Log("Successfully chose starter character");
     }
 
-    public void SelectCharacter()
+    public void MainButtonPressed()
     {
-        playerEvents.SelectedNewPlayerCharacter(viewingCharacter);
+        switch (uiOrchestration.currentExplorationUIState)
+        {
+            case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
+        }
+
+        switch (uiOrchestration.currentCharacterUIState)
+        {
+            case CharacterUIState.None:
+                break;
+            case CharacterUIState.Overview:
+                break;
+            case CharacterUIState.Actions:
+                break;
+            case CharacterUIState.Equipment:
+                break;
+        }
         
-        if (!SaverService.Instance.TryGetService(charSaverType, out var charSaver)) {
-            Debug.LogError($"No Saver registered for {charSaverType.Name}");
-            return; }
-
-        var data = charSaver.currentData as CharactersData_SavedDataSO;
-        if(data == null) Debug.LogError("No data found");
-        Debug.Log("data character size: " + data.charactersData.Count);
-        var charData = data.charactersData.Find(c => c.characterConfigName == viewingCharacter.occupantName);
-        if(charData == null) Debug.LogError("No character data found, search name was: " + viewingCharacter.occupantName + "");
-        charData.hasCharacter = true;
+        
     }
+    
+
+    public void SelectACharacter(CharacterConfig character)
+    {
+        // Unselect all portraits
+        characterSelectPortraits.ForEach(p =>
+        {
+            // First start does not have locked portraits
+            if(uiOrchestration.currentExplorationUIState == ExplorationUIState.FirstStart)
+                p.UpdateState(CharacterSelectPortraitState.Unselected);
+            else
+            {
+                SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+                var charData = data.GetCharacterData(character);
+                p.UpdateState(charData.hasCharacter ? CharacterSelectPortraitState.Unselected : CharacterSelectPortraitState.Locked);
+            }
+        });
+        
+        selectedCharacter = character;
+        txt_Name.text = character.occupantName;
+        txt_altName.text = character.occupantName;
+        txt_spEffect.text = character.specialEffectName;
+        txt_healthNum.text = character.maxHP.ToString();
+        txt_apNum.text = character.maxAP.ToString();
+        txt_dmgNum.text = character.damage.ToString();
+        txt_armorNum.text = character.maxArmor.ToString();
+        selectBtn.interactable = true;
+        Debug.Log("Successfully selected character: " + character.occupantName);
+    }
+    
+    public void ChoseStarterCharacter()
+    {
+        playerEvents.ReEnablePlayerAndMovement();
+        playerEvents.SaveCurrentPosition();
+        uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
+        
+        // Save the starter character choice to JSON
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+        if(data == null) Debug.LogError("No data found");
+        var charData = data.charactersData.Find(c => c.characterConfigName == selectedCharacter.occupantName);
+        if(charData == null) Debug.LogError("No character data found, search name was: " + selectedCharacter.occupantName + "");
+        charData.hasCharacter = true;
+        saver.Save();
+        
+    }
+    
+    #endregion ------------------------------------------------------------------
+    
+    
 }
