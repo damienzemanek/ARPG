@@ -368,7 +368,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         hlgTargCols.gameObject.SetActive(txt_targetColNum.text != "");
 
         txt_targAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive.ToString();
-        hlgTargAdds.gameObject.SetActive(txt_targAdd.text != "");
+        hlgTargAdds.gameObject.SetActive(txt_targAdd.text != "None");
         
         txt_useAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive == BattlemodeActionConfig.TargetingPattern.Self ? "Self" : "";
         hlgUseAdds.gameObject.SetActive(txt_useAdd.text != "");
@@ -400,7 +400,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // effect ctx holds state (stacks amount), could separate later. although locality of info is desired
         for (int i = 0; i < actionConfig.effectsToApplyToTarget.Count; i++)
             effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToTarget[i].CreateNewEffectInstance());
-        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     public void ShowCurrentStatusEffectsFromOccupantCtx(BattlerOccupantCtx battlerOccupantCtx)

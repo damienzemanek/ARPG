@@ -273,11 +273,11 @@ public class BattlemodeActionConfig : ItemSO
         var ret = new List<string>();
         
         // DMG
-        if(dmgMultiplier > 0) ret.Add($"DMG %{dmgMultiplier}");
+        if(dmgMultiplier > 0) ret.Add($"DMG {dmgMultiplier}%");
         // HEAL 
-        if(healPercentage  > 0) ret.Add($"HEAL %{healPercentage}");
+        if(healPercentage  > 0) ret.Add($"HEAL {healPercentage}%");
         // ARMOR
-        if(armorIncreasePercentage > 0) ret.Add($"ARMOR %{armorIncreasePercentage}");
+        if(armorIncreasePercentage > 0) ret.Add($"ARMOR {armorIncreasePercentage}%");
         // Body Part
         if (targetedBodyPart != BodyPart.None)
         {

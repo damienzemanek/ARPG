@@ -5,10 +5,10 @@ public static class LayoutEX
 {
     public static void RefreshLayoutGroupsImmediateAndRecursive(this RectTransform root)
     {
-        foreach (var layoutGroup in root.GetComponentsInChildren<LayoutGroup>())
+        var children = root.GetComponentsInChildren<RectTransform>();
+        for (int i = children.Length - 1; i >= 0; i--)
         {
-            if(layoutGroup.gameObject.activeInHierarchy)
-                LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+            if(children[i].gameObject.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate(children[i]);
         }
     }
 }
