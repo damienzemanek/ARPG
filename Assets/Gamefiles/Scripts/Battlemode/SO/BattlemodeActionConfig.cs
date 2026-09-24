@@ -169,6 +169,105 @@ public class BattlemodeActionConfig : ItemSO
         return ctx;
     }
 
+    public enum RowColUsableTargetNum
+    {
+        UsableRow,
+        UsableCol,
+        TargetRow,
+        TargetCol
+    }
+    
+    public string GetColOrRow(RowColUsableTargetNum get)
+    {
+        switch (get)
+        {
+            case RowColUsableTargetNum.UsableRow:
+            {
+                var ranks = targetingCfg.usableInRowRanks;
+                if (ranks == BattleTile.RowRank.None) return "";
+                int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
+                int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+            
+            case RowColUsableTargetNum.TargetRow:
+            {
+                var ranks = targetingCfg.targetRowRanks;
+                if(ranks == BattleTile.RowRank.None) return "";
+                int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
+                int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+
+            case RowColUsableTargetNum.UsableCol:
+            {
+                var ranks = targetingCfg.usableInColRanks;
+                if(ranks == BattleTile.ColRank.None)  return "";
+                bool center = ranks.HasFlag(BattleTile.ColRank.Center);
+
+                int min = 4;
+                int max = 0;
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left1) || ranks.HasFlag(BattleTile.ColRank.Right1))
+                {
+                    min = Mathf.Min(min, 1);
+                    max = Mathf.Max(max, 1);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left2) || ranks.HasFlag(BattleTile.ColRank.Right2))
+                {
+                    min = Mathf.Min(min, 2);
+                    max = Mathf.Max(max, 2);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left3) || ranks.HasFlag(BattleTile.ColRank.Right3))
+                {
+                    min = Mathf.Min(min, 3);
+                    max = Mathf.Max(max, 3);
+                }
+
+                if (center) return max == 0 ? "C" : $"C-{max}";
+
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+            case RowColUsableTargetNum.TargetCol:
+            {
+                var ranks = targetingCfg.targetColRanks;
+                if(ranks == BattleTile.ColRank.None) return "";
+
+                bool center = ranks.HasFlag(BattleTile.ColRank.Center);
+
+                int min = 4;
+                int max = 0;
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left1) || ranks.HasFlag(BattleTile.ColRank.Right1))
+                {
+                    min = Mathf.Min(min, 1);
+                    max = Mathf.Max(max, 1);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left2) || ranks.HasFlag(BattleTile.ColRank.Right2))
+                {
+                    min = Mathf.Min(min, 2);
+                    max = Mathf.Max(max, 2);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left3) || ranks.HasFlag(BattleTile.ColRank.Right3))
+                {
+                    min = Mathf.Min(min, 3);
+                    max = Mathf.Max(max, 3);
+                }
+
+                if (center) return max == 0 ? "C" : $"C-{max}";
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+
+            default: return "";
+        }
+    }
+    
+    
+
     public List<string> GetActionDetailTexts()
     {
         var ret = new List<string>();

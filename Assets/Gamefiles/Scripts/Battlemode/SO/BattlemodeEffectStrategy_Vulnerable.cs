@@ -7,6 +7,7 @@ using UnityEngine;
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Vulnerable";
     public override int priority => 1;
     public override bool isSpecial => false;
 
@@ -21,6 +22,7 @@ public sealed class BattlemodeEffectStrategy_Vulnerable : BattlemodeEffectStrate
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Swift";
     public override int priority => 1;
     public override bool isSpecial => false;
     public SwiftStrategyCtx swiftStrategyCtx;
@@ -68,6 +70,7 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
 [Serializable]
 public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Critical Avaliable";
     public override int priority => 3;
     public override bool isSpecial => false;
 
@@ -108,6 +111,8 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
 [Serializable]
 public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Critically Exposed";
+
     public override int priority => 2;
     public override bool isSpecial => false;
 
@@ -148,6 +153,8 @@ public sealed class BattlemodeEffectStrategy_CriticallyExposed : BattlemodeEffec
 [Serializable]
 public sealed class BattlemodeEffectStrategy_MoveLocked : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Move Locked";
+
     public override int priority => 1;
     public override bool isSpecial => false;
 
@@ -170,6 +177,8 @@ public sealed class BattlemodeEffectStrategy_MoveLocked : BattlemodeEffectStrate
 [Serializable ]
 public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Body Compromised";
+
     public override int priority => 0; // Last, should happen after critically exposed caluclates, to check if the crit hit
     public override bool isSpecial => false;
     
@@ -197,6 +206,8 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Piercing";
+
     public override int priority => 1; // Higher number, the higher priority, the earlier it goes
     public override bool isSpecial => false;
     BattlemodeEffectStrategy_Stagnation newStagnationEffect => CreateInstance<BattlemodeEffectStrategy_Stagnation>
@@ -219,6 +230,8 @@ public sealed class BattlemodeEffectStrategy_Piercing : BattlemodeEffectStrategy
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Stagnation : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Stagnation";
+
     public override int priority => 1; 
     public override bool isSpecial => false;
 
@@ -236,6 +249,8 @@ public sealed class BattlemodeEffectStrategy_Stagnation : BattlemodeEffectStrate
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Mark : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Mark";
+
     public override int priority => 1;  // Higher number, the higher priority, the earlier it goes
     public override bool isSpecial => false;
     
@@ -262,6 +277,8 @@ public sealed class BattlemodeEffectStrategy_Mark : BattlemodeEffectStrategyInst
 [Serializable]
 public sealed class BattlemodeEffectStrategy_Bleed : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Bleed";
+
     public override int priority => 1;
     public override bool isSpecial => false;
 

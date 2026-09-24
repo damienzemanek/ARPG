@@ -6,6 +6,9 @@ public static class LayoutEX
     public static void RefreshLayoutGroupsImmediateAndRecursive(this RectTransform root)
     {
         foreach (var layoutGroup in root.GetComponentsInChildren<LayoutGroup>())
-            LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+        {
+            if(layoutGroup.gameObject.activeInHierarchy)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+        }
     }
 }

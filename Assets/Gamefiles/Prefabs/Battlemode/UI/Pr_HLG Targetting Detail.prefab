@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19.965, y: -10.94}
-  m_SizeDelta: {x: 39.93, y: 0}
+  m_AnchoredPosition: {x: 25.885, y: -10.94}
+  m_SizeDelta: {x: 51.77, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &865395098644964318
 CanvasRenderer:
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 30, y: 2, z: 2, w: 2}
+  m_margin: {x: 45, y: 2, z: 2, w: 2}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
+  m_HorizontalFit: 0
   m_VerticalFit: 2
 --- !u!1 &8689444518726948126
 GameObject:
@@ -275,8 +275,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 223.43, y: -10.94}
-  m_SizeDelta: {x: 367, y: 0}
+  m_AnchoredPosition: {x: 251.95, y: -10.94}
+  m_SizeDelta: {x: 400.36, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4040678891187357106
 CanvasRenderer:
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 3, y: 2, z: 2, w: 2}
+  m_margin: {x: 10, y: 2, z: 2, w: 2}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

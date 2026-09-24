@@ -39,12 +39,15 @@ public class EffectDict : ScriptableObject
         }
     }
 
-    public void AddEffect(Type type)
+
+     void AddEffect(Type type)
     {
+        var tempInstance = Activator.CreateInstance(type) as BattlemodeEffectStrategyInstance;
+        
         data.Add(type.Name, new EffectData
         {
             icon = null,
-            name = type.Name,
+            name = tempInstance.effectName,
             description = "No description"
         });
     }

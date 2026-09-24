@@ -81,8 +81,23 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterDmgNum;
     
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionName;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionDescription;
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerAPnum;
+    
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseRows;
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseCols;
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargRows;
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargCols;
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseAdds;
+    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargAdds;
+    
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_usableRowNum;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_usableColNum;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targetRowNum;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targetColNum;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_useAdd;
+    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targAdd;
+
+    
     // Future: Button For Disabling Attacks
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionIntentionsNum;
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyPredictedsNum;
@@ -320,10 +335,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             UpdatePlayerActionInfo(actionCtx, cc, tile.occupantCtx);
 
         txt_ActionName.text = actionCtx.cfg.actionName;
-        txt_ActionDescription.text = actionCtx.cfg.description;
         
         ShowEffects(actionCtx?.cfg);
-        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
         currentlySelectedAction = actionCtx;
 
         // hardocoding this avoiding desctruction bc o well need to just ge it working
@@ -339,6 +352,28 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             var newDetail = Instantiate(pr_hlg_targetingDetail, vlg_targetingInfoParent);
             newDetail.transform.GetChild(1).Get<TextMeshProUGUI>().text = detail; // hardoding this bc o well idc, its the second child
         }
+        
+        txt_targetRole.text = "Target: " + actionCtx.cfg.roleTarget;
+        
+        txt_usableRowNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.UsableRow);
+        hlgUseRows.gameObject.SetActive(txt_usableRowNum.text != "");
+        
+        txt_usableColNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.UsableCol);
+        hlgUseCols.gameObject.SetActive(txt_usableColNum.text != "");
+        
+        txt_targetRowNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.TargetRow);
+        hlgTargRows.gameObject.SetActive(txt_targetRowNum.text != "");
+        
+        txt_targetColNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.TargetCol);
+        hlgTargCols.gameObject.SetActive(txt_targetColNum.text != "");
+
+        txt_targAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive.ToString();
+        hlgTargAdds.gameObject.SetActive(txt_targAdd.text != "");
+        
+        txt_useAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive == BattlemodeActionConfig.TargetingPattern.Self ? "Self" : "";
+        hlgUseAdds.gameObject.SetActive(txt_useAdd.text != "");
+        
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
 
@@ -346,10 +381,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     {
         txt_EnemyActionIntentionsNum.text = enemyConfig.intentions.ToString();
         txt_EnemyPredictedsNum.text = enemyConfig.defaultPredicted.ToString();
-        txt_targetRole.text = "Target: " + actionCtx.cfg.roleTarget;
-        
     }
-    
     
     public void UpdatePlayerActionInfo(BattlemodeActionCtx actionCtx, CharacterConfig characterConfig, OccupantCtx occupantCtx)
     {

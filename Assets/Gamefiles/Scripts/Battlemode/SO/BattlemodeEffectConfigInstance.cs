@@ -12,7 +12,6 @@ public class BattlemodeEffectConfigInstance
 {
     public SerializedDictionary<string, EffectDict.EffectData> effectData 
         => PersistentConfigurationDataHolder.Instance.effectDict.data;
-
     
     public enum EffectTime
     {
@@ -39,7 +38,6 @@ public class BattlemodeEffectConfigInstance
     {
         get
         {
-            Debug.Log("A");
             var ret = effectData.GetValueOrDefault(typeKey).name; 
             if (String.IsNullOrEmpty(ret)) ret = ""; return ret;
         }
@@ -48,12 +46,14 @@ public class BattlemodeEffectConfigInstance
     public string description => effectData.GetValueOrDefault(typeKey).description;
     public BattlemodeEffectStrategyInstance CreateNewEffectInstance()
         => defaultEffectStrategyValues.Clone(this);
+    
 }
 
 
 [Serializable]
 public abstract class BattlemodeEffectStrategyInstance
 {
+    public abstract string effectName { get; }
     public static TChild CreateInstance<TChild>(
         int turnStacks,
         int battleStacks,
@@ -93,7 +93,6 @@ public abstract class BattlemodeEffectStrategyInstance
     public string GetEffectDetailText()
     {
         var durations = new List<string>();
-
         var turnStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn)
             ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks
             : 0;
@@ -107,11 +106,8 @@ public abstract class BattlemodeEffectStrategyInstance
         if (turnStacks > 0) durations.Add($"({turnStacks} Turns)");
         if (battleStacks > 0) durations.Add($"({battleStacks} Battles)");
         if (permStacks > 0) durations.Add($"({permStacks} Expeditions)");
-        Debug.Log(cfg);
-        Debug.Log(cfg.effectName);
-        var ret = cfg.effectName;
+        var ret = effectName;
         if (durations.Count > 0) ret += $" {string.Join(" ", durations)}";
-        
         return ret;
     }
     
