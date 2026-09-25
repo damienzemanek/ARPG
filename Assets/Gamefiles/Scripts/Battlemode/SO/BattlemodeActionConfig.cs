@@ -187,6 +187,7 @@ public class BattlemodeActionConfig : ItemSO
                 if (ranks == BattleTile.RowRank.None) return "";
                 int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
                 int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                if(ranks.HasFlag(BattleTile.RowRank.Top) && ranks.HasFlag(BattleTile.RowRank.Bottom)) return "1,3";
                 return min == max ? $"{min}" : $"{min}-{max}";
             }
             
@@ -196,6 +197,7 @@ public class BattlemodeActionConfig : ItemSO
                 if(ranks == BattleTile.RowRank.None) return "";
                 int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
                 int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                if(ranks.HasFlag(BattleTile.RowRank.Top) && ranks.HasFlag(BattleTile.RowRank.Bottom)) return "1,3";
                 return min == max ? $"{min}" : $"{min}-{max}";
             }
 
@@ -225,6 +227,13 @@ public class BattlemodeActionConfig : ItemSO
                     min = Mathf.Min(min, 3);
                     max = Mathf.Max(max, 3);
                 }
+                
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
 
                 if (center) return max == 0 ? "C" : $"C-{max}";
 
@@ -257,6 +266,13 @@ public class BattlemodeActionConfig : ItemSO
                     min = Mathf.Min(min, 3);
                     max = Mathf.Max(max, 3);
                 }
+                
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
 
                 if (center) return max == 0 ? "C" : $"C-{max}";
                 return min == max ? $"{min}" : $"{min}-{max}";

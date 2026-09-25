@@ -29641,8 +29641,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1806.2, y: -1272}
-  m_SizeDelta: {x: 128.799, y: 88.936}
+  m_AnchoredPosition: {x: 1806.8, y: -1276.3}
+  m_SizeDelta: {x: 115.66, y: 88.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1053979804
 MonoBehaviour:
@@ -29656,7 +29656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0642f32d058ff4a418e36f6ae550025c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Btn
-  enter: 1
+  enter: 0
   exit: 0
   click: 1
   onEnter:
@@ -29668,7 +29668,7 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 451158997}
         m_TargetAssemblyTypeName: BattlemodeActionsDisplay, Assembly-CSharp
         m_MethodName: ShowHandActionsDisplay
         m_Mode: 1
@@ -31260,8 +31260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1943.2, y: -1272}
-  m_SizeDelta: {x: 128.799, y: 88.936}
+  m_AnchoredPosition: {x: 1929.8308, y: -1276.3002}
+  m_SizeDelta: {x: 115.66, y: 88.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1149125110
 MonoBehaviour:
@@ -31275,7 +31275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0642f32d058ff4a418e36f6ae550025c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Btn
-  enter: 1
+  enter: 0
   exit: 0
   click: 1
   onEnter:
@@ -31287,7 +31287,7 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 451158997}
         m_TargetAssemblyTypeName: BattlemodeActionsDisplay, Assembly-CSharp
         m_MethodName: ShowExhaustedActionsDisplay
         m_Mode: 1
