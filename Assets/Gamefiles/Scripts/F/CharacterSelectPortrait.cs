@@ -18,21 +18,27 @@ public class CharacterSelectPortrait : MonoBehaviour
         Locked,
         Unselected,
         Selected,
+        Equipped,
+        Empty
     }
 
     public bool useUnlockData = true;
     public CharacterSelectPortraitState state;
-    [Required] public CharacterConfig character;
+    public CharacterConfig character;
     [Required] public Image image;
     
     public PortraitType portraitType;
     public CharacterInfoDisplay infoDisplay;
     public TeamGrid teamGrid;
+    [Required] public GameObject equippedOverlay;
+    [Required] public GameObject lockedOverlay;
 
     void OnEnable()
     {
         RegisterPortraits();
-        UpdateState();
+        if (character == null) UpdateState(CharacterSelectPortraitState.Empty);
+        else UpdateState();
+        
     }
 
     void OnDisable()
@@ -40,8 +46,17 @@ public class CharacterSelectPortrait : MonoBehaviour
         UnRegisterPortraits();
     }
 
-    public void RegisterPortraits() => infoDisplay.characterSelectPortraits.Add(this);
-    public void UnRegisterPortraits() => infoDisplay.characterSelectPortraits.Remove(this);
+    public void RegisterPortraits()
+    {
+        if(portraitType == PortraitType.InfoDisplay)
+            infoDisplay.characterSelectPortraits.Add(this);
+    }
+
+    public void UnRegisterPortraits()
+    {
+        if(portraitType == PortraitType.InfoDisplay)
+            infoDisplay.characterSelectPortraits.Remove(this);
+    }
 
     public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None)
     {
@@ -58,15 +73,30 @@ public class CharacterSelectPortrait : MonoBehaviour
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:
-                image.sprite = character.portraitArtLocked;
+                image.sprite = character.portraitArtUnselected;
+                lockedOverlay.SetActive(true);
+                equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Unselected:
                 image.sprite = character.portraitArtUnselected;
+                lockedOverlay.SetActive(false);
+                equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Selected:
                 image.sprite = character.portraitArtSelected;
+                lockedOverlay.SetActive(false);
+                equippedOverlay.SetActive(false);
                 break;
-            default: Debug.LogError("Invalid Character Select Portrait State: " + state); break;
+            case CharacterSelectPortraitState.Equipped:
+                image.sprite = character.portraitArtUnselected;
+                lockedOverlay.SetActive(false);
+                equippedOverlay.SetActive(true);
+                break;
+            case CharacterSelectPortraitState.Empty:
+                image.sprite = null;
+                lockedOverlay.SetActive(false);
+                equippedOverlay.SetActive(false);
+                break;
         }
     }
 
@@ -75,6 +105,10 @@ public class CharacterSelectPortrait : MonoBehaviour
         Debug.Log("CharacterSelectPortrait " + name + " selected");
         infoDisplay.SelectACharacter(character);
         UpdateState(CharacterSelectPortraitState.Selected);
+    }
 
+    public void TeamUX_ClickOnCharacter()
+    {
+        teamGrid.InteractWithCharacterSelectPortrait(character);
     }
 }
