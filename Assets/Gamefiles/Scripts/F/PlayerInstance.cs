@@ -115,16 +115,20 @@ public class PlayerInstance : MonoBehaviour
     
     #endregion
 
-    public void CallPlayerEvent(PlayerEvents.SpawnEvent spawnEvent)
+    public void CallPlayerEvent(PlayerEvents.PlayerEvent playerEvent)
     {
-        switch (spawnEvent)
+        switch (playerEvent)
         {
-            case PlayerEvents.SpawnEvent.NewPlayerSpawn:
+            case PlayerEvents.PlayerEvent.NewPlayerSpawn:
                 playerEvents.NewPLayerSpawnEvent(); break;
-            case PlayerEvents.SpawnEvent.MostRecentPosition:
+            case PlayerEvents.PlayerEvent.MostRecentPosition:
                 playerEvents.MostRecentPositionSpawnEvent(); break;
+            case PlayerEvents.PlayerEvent.StopPlayerMovement:
+                playerEvents.player.ToggleInputReading(false); break;
+            case PlayerEvents.PlayerEvent.ReEnablePlayerMovement:
+                playerEvents.player.ToggleInputReading(true); break;
             default:
-                Debug.LogError("Invalid Player Event: "  + spawnEvent);
+                Debug.LogError("Invalid Player Event: "  + playerEvent);
                 break;
             
         }

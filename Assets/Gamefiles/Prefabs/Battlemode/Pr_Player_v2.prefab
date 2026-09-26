@@ -10435,6 +10435,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a885fd868ff40ca49977fb53632f3661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainUI
+  playerGO: {fileID: 3445478357490262452}
+  onUseMainUI:
+    useUnityEvent: 0
+    useVTable: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries:
+    - vTable: {fileID: 11400000, guid: 0bc43d32f751ff24695a22f918d2ce21, type: 2}
+      methodName: CallPlayerEvent
+      parameters:
+      - rid: 9097403796356857954
+      - rid: 9097403796356857955
+  onUseExplorationUI:
+    useUnityEvent: 0
+    useVTable: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries:
+    - vTable: {fileID: 11400000, guid: 0bc43d32f751ff24695a22f918d2ce21, type: 2}
+      methodName: CallPlayerEvent
+      parameters:
+      - rid: 9097403796356857957
+      - rid: 9097403796356857958
   currentUIState: 0
   currentMainUIState: 0
   currentCharacterUIState: 0
@@ -10473,6 +10498,37 @@ MonoBehaviour:
       - {fileID: 7493103877717041530}
   characterUIs:
     _serializedList: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 9097403796356857954
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: playerGO
+        isAutoSupplied: 1
+        autoValue: {fileID: 0}
+        value: {fileID: 0}
+    - rid: 9097403796356857955
+      type: {class: 'EmilEventBase/TypedParameter`1[[PlayerEvents/PlayerEvent, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: playerEvent
+        isAutoSupplied: 0
+        autoValue: 0
+        value: 4
+    - rid: 9097403796356857957
+      type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: playerGO
+        isAutoSupplied: 1
+        autoValue: {fileID: 0}
+        value: {fileID: 0}
+    - rid: 9097403796356857958
+      type: {class: 'EmilEventBase/TypedParameter`1[[PlayerEvents/PlayerEvent, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: playerEvent
+        isAutoSupplied: 0
+        autoValue: 0
+        value: 5
 --- !u!114 &2731519721788370793
 MonoBehaviour:
   m_ObjectHideFlags: 0

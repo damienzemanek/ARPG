@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using EMILtools.Design_Patterns.Creational_Patterns.CreationalPatterns;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SessionData : PersistantReplacerSingleton<SessionData>
 {
     public ItemRewards defaultRewards;
     public ISingleInspectingUI singleInspectingUI = null;
 
-    [ReadOnly] public PlayerEvents.SpawnEvent currentSpawnEvent;
+    [FormerlySerializedAs("currentSpawnEvent")] [ReadOnly] public PlayerEvents.PlayerEvent currentPlayerEvent;
     [ReadOnly] public string desiredSpawnLocationID;
     [ReadOnly] public BattleConfig currentBattleConfig;
     [ReadOnly] public ItemRewards currentBattlemodePotentialRewards;
