@@ -38,7 +38,6 @@ public class CharacterSelectPortrait : MonoBehaviour
         RegisterPortraits();
         if (character == null) UpdateState(CharacterSelectPortraitState.Empty);
         else UpdateState();
-        
     }
 
     void OnDisable()
@@ -51,7 +50,7 @@ public class CharacterSelectPortrait : MonoBehaviour
         if(portraitType == PortraitType.InfoDisplay)
             infoDisplay.characterSelectPortraits.Add(this);
     }
-
+    
     public void UnRegisterPortraits()
     {
         if(portraitType == PortraitType.InfoDisplay)
@@ -109,6 +108,7 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     public void TeamUX_ClickOnCharacter()
     {
-        teamGrid.InteractWithCharacterSelectPortrait(character);
+        if(state == CharacterSelectPortraitState.Unselected)
+            teamGrid.InteractWithCharacterSelectPortrait(this);
     }
 }

@@ -10,56 +10,75 @@ public class TeamGrid : MonoBehaviour
     public enum CurrentOperation
     {
         None,
-        Equipping
+        Equipping,
+        MovingOrDequipping,
     }
 
     [Required] public GameObject lbl_currentlyEquipping;
+    [Required] public GameObject lbl_moving;
     [Required] public GameObject lbl_selectAnOpenTile;
     [Required]  public Transform gridParent;
     public List<CharacterSelectPortraitSquare> allSquares = new();
     public CharacterSelectPortraitSquare currentlySelectedSquare = null;
+    public CharacterSelectPortrait currentlyEquippingPortrait = null;
     [ReadOnly] public CurrentOperation currentOperation = CurrentOperation.None;
-    [ReadOnly] public CharacterConfig currentEquippingCharacter = null;
-    
     
     [Button] public void InitGrid() => gridParent.GetComponentsInChildren(allSquares);
 
-    void OnEnable() => StopEquipping();
+    void OnEnable() => ResetState();
+    
+    // public void UnequipFromGrid(CharacterConfig cfg)
+    // {
+    //     var matchSquare = allSquares.First(s => s.character == cfg);
+    //     matchSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
+    // }
 
-    public void SelectPortrait(CharacterSelectPortraitSquare square)
+    public void InteractWithCharacterSelectPortrait(CharacterSelectPortrait portrait)
     {
-        currentlySelectedSquare = square;
+        if (currentOperation == CurrentOperation.None) StartEquipping(portrait);
+        else if(currentOperation == CurrentOperation.Equipping) ResetState();
     }
 
-
-    public void UnequipFromGrid(CharacterConfig cfg)
+    public void InteractWithCharacterSelectPortraitSquare(CharacterSelectPortraitSquare square)
     {
-        var matchSquare = allSquares.First(s => s.character == cfg);
-        matchSquare.UpdateState(CharacterSelectPortraitSquareState.None);
+        if (currentOperation == CurrentOperation.None) StartMovingOrDequipping(square);
+        else if (currentOperation == CurrentOperation.MovingOrDequipping) ResetState();
     }
-
-    public void InteractWithCharacterSelectPortrait(CharacterConfig cfg)
-    {
-        if (currentOperation == CurrentOperation.None) StartEquipping(cfg);
-        else if(currentOperation == CurrentOperation.Equipping) StopEquipping();
-
-    }
-
-    void StartEquipping(CharacterConfig cfg)
+    
+    public void StartEquipping(CharacterSelectPortrait portrait)
     {
         currentOperation = CurrentOperation.Equipping;
-        currentEquippingCharacter = cfg;
+        currentlyEquippingPortrait = portrait;
+        lbl_moving.SetActive(false);
         lbl_currentlyEquipping.SetActive(true);
         lbl_selectAnOpenTile.SetActive(true);
     }
 
-    void StopEquipping()
+    public void ResetState()
     {
         currentOperation = CurrentOperation.None;
-        currentEquippingCharacter = null;
+        currentlyEquippingPortrait = null;
+        currentlySelectedSquare = null;
+        lbl_moving.SetActive(false);
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
     }
+
+    public void StartMovingOrDequipping(CharacterSelectPortraitSquare square)
+    {
+        currentOperation = CurrentOperation.MovingOrDequipping;
+        currentlySelectedSquare = square;
+        lbl_moving.SetActive(true);
+        lbl_currentlyEquipping.SetActive(false);
+        lbl_selectAnOpenTile.SetActive(false);
+    }
+    
+    public void EquipCharacter()
+    {
+        currentlyEquippingPortrait.UpdateState(CharacterSelectPortrait.CharacterSelectPortraitState.Equipped);
+        ResetState();
+    }
+    
     
     
     

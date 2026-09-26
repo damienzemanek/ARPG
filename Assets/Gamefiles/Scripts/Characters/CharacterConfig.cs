@@ -8,6 +8,8 @@ public class CharacterConfig : BattlerConfig
     [BoxGroup("Stats")] public int maxHandSize = 6;
     [BoxGroup("Settings")] [Required] public Sprite portraitArtSelected;
     [BoxGroup("Settings")] [Required] public Sprite portraitArtUnselected;
+    [BoxGroup("Settings")] public Sprite portraitArtSquareSelected;
+    [BoxGroup("Settings")] public Sprite portraitArtSquareUnselected;
     [BoxGroup("Settings")] [Required] public Sprite portraitArtLocked;
     [BoxGroup("Settings")] [Required] public Sprite mainArt;
     public string specialEffectName; // Mabye later characters can have multiple sp effects
