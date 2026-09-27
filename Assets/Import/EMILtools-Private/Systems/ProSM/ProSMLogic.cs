@@ -103,29 +103,7 @@ namespace ProSM
             var transition = new Transition((short)toIndex, ref predicate, false, weight);
             fsm.layers[layerIndex].states[fromIndex].transitions.Allocate(ref transition, out int _);
         }
-
-        public static void AddDirectTransitions<TStates, TData>(this ref ProSM<TData> fsm, int layerIndex, TStates from, params (TStates to, PredicateExpression predicate, int weight)[] transitions)
-            where TData : unmanaged
-        {
-            // Valid Enum (Input Validation)
-            if (typeof(TStates).GetHashCode() != fsm.layers.GetWrapper(layerIndex).MetaDataVolatile.enumTypeId)
-                throw new ArgumentException($"Enum type '{typeof(TStates).Name}' does not match the type used to initialize layer {layerIndex}.");
-
-            // Valid From (Input Validation)
-            int fromIndex = Unsafe.As<TStates, int>(ref from);
-            if (fromIndex < 0 || fromIndex >= fsm.layers[layerIndex].states.currentSize)
-                throw new ArgumentOutOfRangeException(nameof(from), $"State {from} (index {fromIndex}) does not exist in layer {layerIndex}.");
-
-            for (int i = 0; i < transitions.Length; i++)
-            {
-                int toIndex = Unsafe.As<TStates, int>(ref transitions[i].to);
-                if (toIndex < 0 || toIndex >= fsm.layers[layerIndex].states.currentSize)
-                    throw new ArgumentOutOfRangeException(nameof(transitions), $"State {transitions[i].to} (index {toIndex}) does not exist in layer {layerIndex}.");
-
-                var transition = new Transition((short)toIndex, ref transitions[i].predicate, false, transitions[i].weight);
-                fsm.layers[layerIndex].states[fromIndex].transitions.Allocate(ref transition, out int _);
-            }
-        }
+        
 
         public static ref LogicGroup<TData> Update<TStates, TData>(this ref ProSM<TData> fsm, int layerIndex, TStates state)
             where TData : unmanaged    where TStates : Enum
@@ -237,62 +215,6 @@ namespace ProSM
             nextState = NO_NEW_LAYER_FOUND;
             return false;
         }
-        
-        public static bool TryPollDurationTransitionsOnLayer<TData>(this ref ProSM<TData> fsm, ref LayerData<TData> layerdata, out int nextState)
-            where TData : unmanaged
-        {
-            const int NO_NEW_LAYER_FOUND = -1;
-            
-            // 1. Any Transitions (Priority - First Match)
-            for(int i = 0; i < layerdata.anyTransitions.currentSize; i++)
-            {
-                ref var transition = ref layerdata.anyTransitions[i];
-                if(!transition.hasDurationCondition) continue;
-                if(!transition.durationMet) continue;
-                if(layerdata.currentState == transition.to) continue;
-                nextState = transition.to;
-                return true;
-            }
-            
-            // 2. Direct Transitions (Weighted Random)
-            ref var currentStateData = ref layerdata.states[layerdata.currentState];
-            int totalWeight = 0;
-
-            for(int i = 0; i < currentStateData.transitions.currentSize; i++)        
-            {
-                ref var transition = ref currentStateData.transitions[i];
-                if(!transition.hasDurationCondition) continue;
-                if(!transition.durationMet) continue;
-                if(layerdata.currentState == transition.to) continue;
-                
-                totalWeight += transition.weight;
-            }
-
-            if (totalWeight > 0)
-            {
-                int roll = UnityEngine.Random.Range(0, totalWeight);
-                int currentWeightSum = 0;
-
-                for(int i = 0; i < currentStateData.transitions.currentSize; i++)
-                {
-                    ref var transition = ref currentStateData.transitions[i];
-                    if(!transition.hasDurationCondition) continue;
-                    if(!transition.durationMet) continue;
-                    if(layerdata.currentState == transition.to) continue;
-
-                    currentWeightSum += transition.weight;
-                    if (roll < currentWeightSum)
-                    {
-                        nextState = transition.to;
-                        return true;
-                    }
-                }
-            }
-                
-            nextState = NO_NEW_LAYER_FOUND;
-            return false;
-        }
-        
 
         public static void TransitionOnLayer_CallExitEnter<TData>(this ref ProSM<TData> fsm, int layer, int nextState, ref TData data)
             where TData : unmanaged

@@ -5,6 +5,7 @@
 // using ProArchitecture.Logic;
 // using ProArchitecture.Predicates;
 // using ProSM;
+// using ProTimers;
 // using UnityEngine;
 // using Unity.Collections;
 //
@@ -47,6 +48,61 @@
 //         static unsafe Predicate AlwaysTruePredicate = new Predicate(&TrueCondition);
 //         static unsafe bool TrueCondition(void* ptr) => true;
 //
+//         public static bool TryPollDurationTransitionsOnLayer<TData>(this ref ProSM<TData> fsm, ref LayerData<TData> layerdata, out int nextState)
+//             where TData : unmanaged
+//         {
+//             const int NO_NEW_LAYER_FOUND = -1;
+//             
+//             // 1. Any Transitions (Priority - First Match)
+//             for(int i = 0; i < layerdata.anyTransitions.currentSize; i++)
+//             {
+//                 ref var transition = ref layerdata.anyTransitions[i];
+//                 if(!transition.hasDurationCondition) continue;
+//                 if(!transition.durationMet) continue;
+//                 if(layerdata.currentState == transition.to) continue;
+//                 nextState = transition.to;
+//                 return true;
+//             }
+//             
+//             // 2. Direct Transitions (Weighted Random)
+//             ref var currentStateData = ref layerdata.states[layerdata.currentState];
+//             int totalWeight = 0;
+//         
+//             for(int i = 0; i < currentStateData.transitions.currentSize; i++)        
+//             {
+//                 ref var transition = ref currentStateData.transitions[i];
+//                 if(!transition.hasDurationCondition) continue;
+//                 if(!transition.durationMet) continue;
+//                 if(layerdata.currentState == transition.to) continue;
+//                 
+//                 totalWeight += transition.weight;
+//             }
+//         
+//             if (totalWeight > 0)
+//             {
+//                 int roll = UnityEngine.Random.Range(0, totalWeight);
+//                 int currentWeightSum = 0;
+//         
+//                 for(int i = 0; i < currentStateData.transitions.currentSize; i++)
+//                 {
+//                     ref var transition = ref currentStateData.transitions[i];
+//                     if(!transition.hasDurationCondition) continue;
+//                     if(!transition.durationMet) continue;
+//                     if(layerdata.currentState == transition.to) continue;
+//         
+//                     currentWeightSum += transition.weight;
+//                     if (roll < currentWeightSum)
+//                     {
+//                         nextState = transition.to;
+//                         return true;
+//                     }
+//                 }
+//             }
+//                 
+//             nextState = NO_NEW_LAYER_FOUND;
+//             return false;
+//         }
+//         
 //         public static void AddDirectTimedTransition<TStates, TData>(
 //             this ref ProSM<TData> fsm, 
 //             int layerIndex,

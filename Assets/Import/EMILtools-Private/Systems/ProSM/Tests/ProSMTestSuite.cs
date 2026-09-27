@@ -1142,8 +1142,4 @@ public class ProSMTestSuite : MonoBehaviour
                                                             .Add(MultiplyByTwoOp)
                                                             .Build();
     }
-    
-
-    
-
 }
