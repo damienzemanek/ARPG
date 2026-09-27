@@ -20,9 +20,9 @@ public class PlayerSO_MethodVTable : SO_MethodVTable
         if (playerGO.Has(out PlayerInstance P)) P.ToggleRain(enable);
     }
 
-    public void CallPlayerEvent(GameObject playerGO, PlayerEvents.SpawnEvent spawnEvent)
+    public void CallPlayerEvent(GameObject playerGO, PlayerEvents.PlayerEvent playerEvent)
     {
-        if (playerGO.Has(out PlayerInstance P)) P.CallPlayerEvent(spawnEvent);
+        if (playerGO.Has(out PlayerInstance P)) P.CallPlayerEvent(playerEvent);
     }
     
 }

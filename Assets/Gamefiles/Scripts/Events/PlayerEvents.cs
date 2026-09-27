@@ -6,12 +6,14 @@ using static UiOrchestration;
 
 public class PlayerEvents : MonoBehaviour
 {
-    public enum SpawnEvent
+    public enum PlayerEvent
     {
         None,
         NewPlayerSpawn,
         MostRecentPosition,
         Death,
+        StopPlayerMovement,
+        ReEnablePlayerMovement,
     }
 
     [Required] public Animator playerAnimator;
@@ -53,7 +55,8 @@ public class PlayerEvents : MonoBehaviour
         player.gameObject.transform.position = data.currentCharacterWorldLocation.position;
         player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
-
+    
+    
     public void ReEnablePlayerAndMovement()
     {
         player.gameObject.SetActive(true);

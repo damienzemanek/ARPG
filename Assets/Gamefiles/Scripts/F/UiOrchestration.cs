@@ -35,7 +35,11 @@ public class UiOrchestration : MonoBehaviour
         Actions,
         Equipment
     }
-    
+
+    [Required] public GameObject playerGO;
+    public EmilEvent<GameObject> onUseMainUI;
+    public EmilEvent<GameObject> onUseExplorationUI;
+
     [ReadOnly] public UIState currentUIState = UIState.Exploration;
     [ReadOnly] public MainUIState currentMainUIState = MainUIState.None;
     [ReadOnly] public CharacterUIState currentCharacterUIState = CharacterUIState.None;
@@ -54,6 +58,7 @@ public class UiOrchestration : MonoBehaviour
         currentExplorationUIState = explorationUIState;
         HideAllUIs();
         explorationUIs[explorationUIState].ForEach(g => g.SetActive(true));
+        onUseExplorationUI?.Invoke(playerGO);
     }
     
     public void ShowMainUIState(int state) => ShowMainUIState((MainUIState)state);
@@ -63,6 +68,7 @@ public class UiOrchestration : MonoBehaviour
         currentMainUIState = mainUIState;
         HideAllUIs();
         mainUIs[mainUIState].ForEach(g => g.SetActive(true));
+        onUseMainUI?.Invoke(playerGO);
     }
     
     public void ShowCharacterUIState(CharacterUIState characterUIState)
