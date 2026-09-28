@@ -221,11 +221,17 @@ namespace ProArchitecture.Logic
             this.isStatic = isStatic;
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void TryRunAllSequentially(Ref<T> data) => TryRunAllSequentially(ref data.GetRef);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void TryRunAllSequentially(RefToStatic<T> data) => TryRunAllSequentially(ref data.AsRefStatic);
         
         /// <summary>
         /// Use if you want to call all operations sequentially
         /// </summary>
         /// <param name="data"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void TryRunAllSequentially(ref T data)
         {
             if (ops == null) return;
@@ -240,12 +246,33 @@ namespace ProArchitecture.Logic
             }
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RunAllRegarlessOfShouldRun(Ref<T> data) => RunAllRegarlessOfShouldRun(ref data.GetRef);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RunAllRegarlessOfShouldRun(RefToStatic<T> data) => RunAllRegarlessOfShouldRun(ref data.AsRefStatic);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RunAllRegarlessOfShouldRun(ref T data)
+        {
+            if (ops == null) return;
+            for (int i = 0; i < count; i++)
+            {
+                // Double De-Reference
+                var op = ops[i];
+                op->Run(ref data);
+            }
+        }
+        
+        
+        
         /// <summary>
         /// Use if you want to call operations individually
         /// </summary>
         /// <param name="data"></param>
         /// <param name="index"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void TryRun(ref T data, int index)
         {
             if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));

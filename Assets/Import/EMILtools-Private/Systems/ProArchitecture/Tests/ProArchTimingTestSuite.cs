@@ -1,37 +1,45 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
+using ProArchitecture.Data;
+using ProArchitecture.Logic;
 using Debug = UnityEngine.Debug;
 
 public unsafe class ProArchTimingTestSuite
 {
-    const int Iterations = 12000000;
+    const int Iterations = 5000000;
 
     interface IFoo
     {
-        int Bar(int x);
+        void Bar(int x);
     }
 	
     public class Foo : IFoo
     {
-        public int Bar(int x)
+        public void Bar(int x)
         {
-            return x * 3;
+            var res = x * 3;
         }
     }
 
-    static int Run(int* intptr)
+    static void Run(int* intptr)
     {
-        ref int refInt = ref *intptr;
-        return refInt * 3;
+        var res = *intptr * 3;
     }
-    readonly delegate*<int*, int> run = &Run;
+    readonly delegate*<int*, void> run = &Run;
+    
+    public static Operation<int> RunOp = new(&Run);
+    
+    static int _staticRefVar = 3;
+    static RefToStatic<int> staticRefVar = new(ref _staticRefVar);
+
+    public static Logic<int> RunLogic = RunOp;
+
 
     [Test]
     public void TimingTest()
     {
         // bla
-        int x = 3;
         Stopwatch sw;
 		
         // direct
@@ -41,7 +49,7 @@ public unsafe class ProArchTimingTestSuite
         IFoo ifoo = foo;
 		
         // delegate 1
-        Func<int, int> del = ifoo.Bar;
+        Action<int> del = ifoo.Bar;
 		
         // delegate 2
         Delegate del2 = del;
@@ -52,53 +60,96 @@ public unsafe class ProArchTimingTestSuite
         del2.DynamicInvoke(3);
         int something = 3;
         Run(&something);
+        RunOp.Run(ref something);
+        RunLogic.TryRunAllSequentially(ref something);
 
-        x = 3;
         sw = Stopwatch.StartNew();        
         for (int i = 0; i < Iterations; i++)
         {
-            x = (int) del2.DynamicInvoke(3);
+            del2.DynamicInvoke(3);
         }
         sw.Stop();
         Debug.Log($"Delegate: {sw.ElapsedMilliseconds}ms");		
-		
-        x = 3;
+        
         sw = Stopwatch.StartNew();        
         for (int i = 0; i < Iterations; i++)
         {
-            x = ifoo.Bar(x);
+            ifoo.Bar(3);
         }
         sw.Stop();
         Debug.Log($"Interface: {sw.ElapsedMilliseconds}ms");		
 
-        x = 3;
         sw = Stopwatch.StartNew();        
         for (int i = 0; i < Iterations; i++)
         {
-            x = del(x);
+            del(3);
         }
         sw.Stop();
-        Debug.Log($"Func<int, int>: {sw.ElapsedMilliseconds}ms");		
+        Debug.Log($"Action<int>: {sw.ElapsedMilliseconds}ms");		
 
-        x = 3;
         sw = Stopwatch.StartNew();        
         for (int i = 0; i < Iterations; i++)
         {
-            x = foo.Bar(x);
+            foo.Bar(3);
         }
         sw.Stop();
         Debug.Log($"Direct: {sw.ElapsedMilliseconds}ms");		
 		
         // Delegate*
-        x = 3;
         sw = Stopwatch.StartNew();
-
+        int somevar = 3;
+        for (int i = 0; i < Iterations; i++)
+        { 
+            Run(&somevar);
+        }
+        sw.Stop();
+        Debug.Log($"Delegate * : {sw.ElapsedMilliseconds}ms");		
+        
+        
+        sw = Stopwatch.StartNew();
         for (int i = 0; i < Iterations; i++)
         {
-            x = Run(&x);
+            RunOp.Run(ref somevar);
         }
-
         sw.Stop();
-        Debug.Log($"Delegate* : {sw.ElapsedMilliseconds}ms");		
+        Debug.Log($"Operation (w/ ref param) : {sw.ElapsedMilliseconds}ms");
+
+        
+        int refVar = 3;
+        Ref<int> someRef = new(ref refVar);
+        sw = Stopwatch.StartNew();
+        for (int i = 0; i < Iterations; i++)
+        {
+            RunOp.Run(someRef);
+        }
+        sw.Stop();
+        Debug.Log($"Operation (w/ Ref<T> param) : {sw.ElapsedMilliseconds}ms");	
+
+        
+        sw = Stopwatch.StartNew();
+        for (int i = 0; i < Iterations; i++)
+        {
+            RunOp.Run(staticRefVar);
+        }
+        sw.Stop();
+        Debug.Log($"Operation (w/ RefToStatic<T> param) : {sw.ElapsedMilliseconds}ms");
+
+        
+        sw = Stopwatch.StartNew();
+        for (int i = 0; i < Iterations; i++)
+        {
+            RunLogic.RunAllRegarlessOfShouldRun(ref refVar);
+        }
+        sw.Stop();
+        Debug.Log($"Logic (w/ Ref<T> param) : {sw.ElapsedMilliseconds}ms");
+        
+        sw = Stopwatch.StartNew();
+        for (int i = 0; i < Iterations; i++)
+        {
+            RunLogic.RunAllRegarlessOfShouldRun(staticRefVar);
+        }
+        sw.Stop();
+        Debug.Log($"Logic (w/ RefToStatic<T> param) : {sw.ElapsedMilliseconds}ms");
+
     }
 }

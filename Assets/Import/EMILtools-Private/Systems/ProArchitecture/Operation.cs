@@ -1,4 +1,5 @@
-﻿using ProArchitecture.Data;
+﻿using System.Runtime.CompilerServices;
+using ProArchitecture.Data;
 
 namespace ProArchitecture.Logic
 {
@@ -49,22 +50,30 @@ namespace ProArchitecture.Logic
             run = _run;
             shouldRun = _shouldRun;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Run(Ref<T> refOfType) => Run(ref refOfType.GetRef);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Run(RefToStatic<T> refStaticOfType) => Run(ref refStaticOfType.AsRefStatic);
 
         /// <summary>
         /// converts the ref T to a pointer, and calls the function
         /// </summary>
         /// <param name="data"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Run(ref T data)
         {
             fixed (T* ptr = &data) run(ptr);
         }
-
+        
 
         /// <summary>
         /// converst the in T to a pointer, and calls the function
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ShouldRun(in T data)
         {
             fixed (T* ptr = &data) return shouldRun(ptr);
