@@ -281,9 +281,6 @@ namespace ProArchitecture.Logic
                 op->Run(ref data);
         }
     }
-    
-    
-    
 }
 
 // Note another way to convert a ref struct into a pointer is by using

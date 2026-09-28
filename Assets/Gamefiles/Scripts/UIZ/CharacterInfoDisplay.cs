@@ -24,7 +24,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public GameObject lhs_ChoseYourCharacter;
     [Required] public GameObject rhs_characterInfoDisplay;
 
-    [Required] public CharacterConfig initallySelectedStarterCharacter;
+    [Required] public CharacterSelectPortrait initiallySelectedPortrait;
     [ReadOnly] public CharacterConfig selectedCharacter;
     [Required] public PlayerEvents playerEvents;
     [Required] public Button selectBtn;
@@ -47,11 +47,11 @@ public class CharacterInfoDisplay : MonoBehaviour
     
     #region ---------------------- Chose Starter Character ----------------------
 
-    public void InitChoseStarterCharacter(CharacterConfig defaultCharacter)
+    public void InitChoseStarterCharacter()
     {
-        selectedCharacter = initallySelectedStarterCharacter;
+        selectedCharacter = initiallySelectedPortrait.characterCfg;
         txt_buttonLabel.text = "Select Character";
-        SelectACharacter(defaultCharacter);
+        PreviewCharacter(initiallySelectedPortrait.characterCfg);
         lhs_ChoseYourCharacter.SetActive(true);
         rhs_characterInfoDisplay.SetActive(true);
         Debug.Log("Successfully chose starter character");
@@ -80,14 +80,14 @@ public class CharacterInfoDisplay : MonoBehaviour
     }
     
 
-    public void SelectACharacter(CharacterConfig character)
+    public void PreviewCharacter(CharacterConfig character)
     {
         // Unselect all portraits
         characterSelectPortraits.ForEach(p =>
         {
             // First start does not have locked portraits
             if(uiOrchestration.currentExplorationUIState == ExplorationUIState.FirstStart)
-                p.UpdateState(CharacterSelectPortraitState.Unselected);
+                p.UpdateState(CharacterSelectPortraitState.Selected);
             else
             {
                 SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
@@ -110,18 +110,20 @@ public class CharacterInfoDisplay : MonoBehaviour
     
     public void ChoseStarterCharacter()
     {
+        Debug.Log("CHARACTER WAS CHOSEN");
         playerEvents.ReEnablePlayerAndMovement();
         playerEvents.SaveCurrentPosition();
         uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
         
         // Save the starter character choice to JSON
-        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var data);
         if(data == null) Debug.LogError("No data found");
         var charData = data.charactersData.Find(c => c.characterConfigName == selectedCharacter.occupantName);
         if(charData == null) Debug.LogError("No character data found, search name was: " + selectedCharacter.occupantName + "");
         charData.hasCharacter = true;
-        saver.Save();
-        
+        charData.row = 1;
+        charData.col = 1;
+        charSaver.Save();
     }
     
     #endregion ------------------------------------------------------------------

@@ -18,6 +18,8 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
     [ReadOnly] public CharacterSelectPortraitSquareState state;
     [ReadOnly] public CharacterSelectPortrait currentlyEquippedPortrait;
 
+    public int row, col;
+    
     [Required] public TeamGrid teamGrid;
     [Required] public Image image;
     
@@ -29,29 +31,37 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         if(contested) state = CharacterSelectPortraitSquareState.Contested;
     }
 
-    void OnEnable()
-    {
-        UpdateSquareState(CharacterSelectPortraitSquareState.None);
-    }
+    public void InitFromTeamGrid() => UpdateSquareState(CharacterSelectPortraitSquareState.None);
 
-    public void UpdateSquareState(CharacterSelectPortraitSquareState optionalToState)
+    public void UpdateSquareState(CharacterSelectPortraitSquareState _state)
     {
         if (contested) {
             image.sprite = spr_contested;
             return; }
         
-        state = optionalToState;
+        state = _state;
         switch (state)
         {
             case CharacterSelectPortraitSquareState.None:
                 currentlyEquippedPortrait = null;
-                image.sprite = spr_none; break;
+                image.sprite = spr_none;
+                return;
+            
+            
             case CharacterSelectPortraitSquareState.Unselected:
-                image.sprite = currentlyEquippedPortrait.character.portraitArtUnselected; break;
+                image.sprite = currentlyEquippedPortrait.characterCfg.portraitArtUnselected; break;
             case CharacterSelectPortraitSquareState.Selected:
-                image.sprite = currentlyEquippedPortrait.character.portraitArtSelected; break;
+                image.sprite = currentlyEquippedPortrait.characterCfg.portraitArtSelected; break;
             default: Debug.LogError("Invalid Character Select Portrait Square State: " + state); break;
         }
+        
+        
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+        var matchingCharacterData = charData.charactersData.Find(c => c.characterConfigName == currentlyEquippedPortrait.characterCfg.occupantName);
+        if (matchingCharacterData == null) return;
+        matchingCharacterData.row = row;
+        matchingCharacterData.col = col;
+        charSaver.Save();
     }
 
     public void SelectSquare()

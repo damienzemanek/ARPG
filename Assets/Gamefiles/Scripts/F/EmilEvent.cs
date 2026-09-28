@@ -153,7 +153,7 @@ public abstract class EmilEventBase
             {
                 _cachedMethod = vTable.GetType().GetMethod(methodName);
 
-                Debug.Log($"[EmilEvent VTable] Searching method {methodName}. Found={_cachedMethod != null}");
+                // Debug.Log($"[EmilEvent VTable] Searching method {methodName}. Found={_cachedMethod != null}");
             }
 
             if (_cachedMethod == null)
@@ -165,8 +165,8 @@ public abstract class EmilEventBase
 
             var methodParams = _cachedMethod.GetParameters();
 
-            Debug.Log($"[EmilEvent VTable] Method params count={methodParams.Length}");
-            Debug.Log($"[EmilEvent VTable] Stored parameters count={parameters?.Length ?? 0}");
+            // Debug.Log($"[EmilEvent VTable] Method params count={methodParams.Length}");
+            // Debug.Log($"[EmilEvent VTable] Stored parameters count={parameters?.Length ?? 0}");
 
 
             object[] args = new object[methodParams.Length];
@@ -177,9 +177,9 @@ public abstract class EmilEventBase
             {
                 var param = methodParams[i];
 
-                Debug.Log(
-                    $"[EmilEvent VTable] Param {i}: {param.Name} Type={param.ParameterType} Auto={(parameters != null && parameters.Length > i ? parameters[i].isAutoSupplied : false)}"
-                );
+                // Debug.Log(
+                //     $"[EmilEvent VTable] Param {i}: {param.Name} Type={param.ParameterType} Auto={(parameters != null && parameters.Length > i ? parameters[i].isAutoSupplied : false)}"
+                // );
 
 
                 if (parameters[i].isAutoSupplied)
@@ -187,7 +187,7 @@ public abstract class EmilEventBase
                     if (suppliedArgs != null && suppliedIdx < suppliedArgs.Length)
                     {
                         args[i] = suppliedArgs[suppliedIdx++];
-                        Debug.Log($"[EmilEvent VTable] Auto supplied {args[i]}");
+                        // Debug.Log($"[EmilEvent VTable] Auto supplied {args[i]}");
                     }
                     else
                     {
@@ -198,17 +198,17 @@ public abstract class EmilEventBase
                 else
                 {
                     args[i] = parameters[i].GetValue();
-                    Debug.Log($"[EmilEvent VTable] Manual value {args[i]}");
+                    // Debug.Log($"[EmilEvent VTable] Manual value {args[i]}");
                 }
             }
 
 
             try
             {
-                Debug.Log($"[EmilEvent VTable] Invoking {_cachedMethod.Name}");
-
-                Debug.Log($"[EmilEvent VTable] Target: {vTable}");
-                Debug.Log($"[EmilEvent VTable] Method: {_cachedMethod.DeclaringType.FullName}.{_cachedMethod.Name}");
+                // Debug.Log($"[EmilEvent VTable] Invoking {_cachedMethod.Name}");
+                //
+                // Debug.Log($"[EmilEvent VTable] Target: {vTable}");
+                // Debug.Log($"[EmilEvent VTable] Method: {_cachedMethod.DeclaringType.FullName}.{_cachedMethod.Name}");
 
                 var invokeParams = _cachedMethod.GetParameters();
 
@@ -217,19 +217,19 @@ public abstract class EmilEventBase
                     var expectedType = invokeParams[i].ParameterType;
                     var value = args[i];
 
-                    Debug.Log(
-                        $"[EmilEvent VTable] Arg[{i}] " +
-                        $"Name={invokeParams[i].Name} " +
-                        $"ExpectedType={expectedType.FullName} " +
-                        $"ActualType={(value != null ? value.GetType().FullName : "NULL")} " +
-                        $"Value={value}"
-                    );
+                    // Debug.Log(
+                    //     $"[EmilEvent VTable] Arg[{i}] " +
+                    //     $"Name={invokeParams[i].Name} " +
+                    //     $"ExpectedType={expectedType.FullName} " +
+                    //     $"ActualType={(value != null ? value.GetType().FullName : "NULL")} " +
+                    //     $"Value={value}"
+                    // );
                 }
 
                 try
                 {
                     _cachedMethod.Invoke(vTable, args);
-                    Debug.Log($"[EmilEvent VTable] Invoke successful");
+                    // Debug.Log($"[EmilEvent VTable] Invoke successful");
                 }
                 catch (Exception e)
                 {

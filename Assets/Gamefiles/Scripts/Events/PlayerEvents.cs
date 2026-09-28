@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -36,9 +37,16 @@ public class PlayerEvents : MonoBehaviour
         IEnumerator C_Display() 
         { 
             yield return charDisplayWait.Delay;
-            characterInfoDisplay.InitChoseStarterCharacter(characterInfoDisplay.initallySelectedStarterCharacter);
+            characterInfoDisplay.InitChoseStarterCharacter();
             uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+            SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+            charData.charactersData.ForEach(c =>
+            {
+                c.row = -1;
+                c.col = -1;
+            });
+            charSaver.Save();
             data.returningPlayer = true;
             saver.Save();
         }

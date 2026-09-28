@@ -14,24 +14,69 @@ public class TeamGrid : MonoBehaviour
         MovingOrDequipping,
     }
 
+    [ReadOnly] public CurrentOperation currentOperation = CurrentOperation.None;
+    public CharacterSelectPortraitSquare currentlySelectedSquare = null;
+    public CharacterSelectPortrait currentlyEquippingPortrait = null;
+    
     [Required] public GameObject lbl_currentlyEquipping;
     [Required] public GameObject lbl_moving;
     [Required] public GameObject lbl_selectAnOpenTile;
     [Required]  public Transform gridParent;
-    public List<CharacterSelectPortraitSquare> allSquares = new();
-    public CharacterSelectPortraitSquare currentlySelectedSquare = null;
-    public CharacterSelectPortrait currentlyEquippingPortrait = null;
-    [ReadOnly] public CurrentOperation currentOperation = CurrentOperation.None;
+    [Required]  public Transform portraitsParent;
+    [Required] public List<CharacterSelectPortraitSquare> allSquares = new();
+    [Required] public List<CharacterSelectPortrait> allPortraits = new();
     
-    [Button] public void InitGrid() => gridParent.GetComponentsInChildren(allSquares);
 
-    void OnEnable() => ResetState();
+    [Button]
+    public void InitGrid()
+    {
+        gridParent.GetComponentsInChildren(allSquares);
+        portraitsParent.GetComponentsInChildren(allPortraits);
+    }
+    
+
+    void OnEnable()
+    {
+        allSquares.ForEach(s => s.InitFromTeamGrid());
+        ResetState();
+        OpenTeamGrid();
+    }
     
     // public void UnequipFromGrid(CharacterConfig cfg)
     // {
     //     var matchSquare = allSquares.First(s => s.character == cfg);
     //     matchSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
     // }
+
+    public void ResetState()
+    {
+        currentOperation = CurrentOperation.None;
+        currentlyEquippingPortrait = null;
+        currentlySelectedSquare = null;
+        lbl_moving.SetActive(false);
+        lbl_currentlyEquipping.SetActive(false);
+        lbl_selectAnOpenTile.SetActive(false);
+    }
+    
+    public void OpenTeamGrid()
+    {
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var charData);
+        foreach (var sqaure in allSquares)
+        {
+            var row = sqaure.row;
+            var col = sqaure.col;
+            Debug.Log("Team Grid Setting Tile: " + row + ", " + col + "");
+            var match = charData.charactersData.FirstOrDefault(c => c.row == row && c.col == col);
+            if (match == null || !match.hasCharacter) continue;
+            Debug.Log("Team Grid Found Match: " + match.characterConfigName + "");
+            var potentialCharacter = match.characterConfigName;
+            var matchingPortrait = allPortraits.First(p => p.characterCfg.occupantName == potentialCharacter); // has to have a match
+            Debug.Log("Team Grid Found Corrosponding Char Portrait: " + matchingPortrait.characterCfg.occupantName + "");
+            matchingPortrait.UpdateState(CharacterSelectPortrait.CharacterSelectPortraitState.Equipped);
+            sqaure.currentlyEquippedPortrait = matchingPortrait;
+            sqaure.UpdateSquareState(CharacterSelectPortraitSquareState.Unselected);
+        }
+    }
 
     public void InteractWithCharacterSelectPortrait(CharacterSelectPortrait portrait)
     {
@@ -53,16 +98,7 @@ public class TeamGrid : MonoBehaviour
         lbl_currentlyEquipping.SetActive(true);
         lbl_selectAnOpenTile.SetActive(true);
     }
-
-    public void ResetState()
-    {
-        currentOperation = CurrentOperation.None;
-        currentlyEquippingPortrait = null;
-        currentlySelectedSquare = null;
-        lbl_moving.SetActive(false);
-        lbl_currentlyEquipping.SetActive(false);
-        lbl_selectAnOpenTile.SetActive(false);
-    }
+    
 
     public void StartMovingOrDequipping(CharacterSelectPortraitSquare square)
     {

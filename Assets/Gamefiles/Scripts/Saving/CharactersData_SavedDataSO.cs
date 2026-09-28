@@ -26,9 +26,11 @@ public class CharactersData_SavedDataSO : SavedDataSO
     [Serializable]
     public class CharacterData
     {
-        public string characterConfigName;
-        public bool hasCharacter = false;
-        public int level = 1;
+        [ReadOnly] public string characterConfigName;
+        [ReadOnly] public bool hasCharacter = false;
+        [ReadOnly] public int level = 1;
+        [ReadOnly] public bool equipped;
+        public int col, row;
 
         public CharacterConfig GetConfig(string characterName)
         {
@@ -38,7 +40,7 @@ public class CharactersData_SavedDataSO : SavedDataSO
     }
 
     [ReadOnly, SerializeField] CharacterConfigurations currentCharacterConfigurations;
-    [ReadOnly] public List<CharacterData> charactersData = new();
+    public List<CharacterData> charactersData = new();
 
     public CharacterData GetCharacterData(CharacterConfig character) 
         => GetCharacterData(character.occupantName);

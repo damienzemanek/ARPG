@@ -1,6 +1,7 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CharacterSelectPortrait : MonoBehaviour
@@ -24,7 +25,7 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     public bool useUnlockData = true;
     public CharacterSelectPortraitState state;
-    public CharacterConfig character;
+    [FormerlySerializedAs("character")] public CharacterConfig characterCfg;
     [Required] public Image image;
     
     public PortraitType portraitType;
@@ -33,10 +34,11 @@ public class CharacterSelectPortrait : MonoBehaviour
     [Required] public GameObject equippedOverlay;
     [Required] public GameObject lockedOverlay;
 
+
     void OnEnable()
     {
         RegisterPortraits();
-        if (character == null) UpdateState(CharacterSelectPortraitState.Empty);
+        if (characterCfg == null) UpdateState(CharacterSelectPortraitState.Empty);
         else UpdateState();
     }
 
@@ -63,7 +65,7 @@ public class CharacterSelectPortrait : MonoBehaviour
         else if (useUnlockData) // is this is false, the portrait states are manual via inspector
         {
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var data);
-            var charData = data.GetCharacterData(character);
+            var charData = data.GetCharacterData(characterCfg);
             state = charData.hasCharacter 
                 ? CharacterSelectPortraitState.Unselected 
                 : CharacterSelectPortraitState.Locked;
@@ -72,22 +74,22 @@ public class CharacterSelectPortrait : MonoBehaviour
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:
-                image.sprite = character.portraitArtUnselected;
+                image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(true);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Unselected:
-                image.sprite = character.portraitArtUnselected;
+                image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Selected:
-                image.sprite = character.portraitArtSelected;
+                image.sprite = characterCfg.portraitArtSelected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Equipped:
-                image.sprite = character.portraitArtUnselected;
+                image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(true);
                 break;
@@ -102,7 +104,7 @@ public class CharacterSelectPortrait : MonoBehaviour
     public void SelectNewCharacter()
     {
         Debug.Log("CharacterSelectPortrait " + name + " selected");
-        infoDisplay.SelectACharacter(character);
+        infoDisplay.PreviewCharacter(characterCfg);
         UpdateState(CharacterSelectPortraitState.Selected);
     }
 
