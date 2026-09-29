@@ -37,26 +37,24 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     void OnEnable()
     {
-        RegisterPortraits();
+        InfoDisplayRegisterPortraits();
         if (characterCfg == null) UpdateState(CharacterSelectPortraitState.Empty);
         else UpdateState();
     }
 
     void OnDisable()
     {
-        UnRegisterPortraits();
+        InfoDisplayUnRegisterPortraits();
     }
 
-    public void RegisterPortraits()
+    public void InfoDisplayRegisterPortraits()
     {
-        if(portraitType == PortraitType.InfoDisplay)
-            infoDisplay.characterSelectPortraits.Add(this);
+        if(portraitType == PortraitType.InfoDisplay) infoDisplay.characterSelectPortraits.Add(this);
     }
     
-    public void UnRegisterPortraits()
+    public void InfoDisplayUnRegisterPortraits()
     {
-        if(portraitType == PortraitType.InfoDisplay)
-            infoDisplay.characterSelectPortraits.Remove(this);
+        if(portraitType == PortraitType.InfoDisplay) infoDisplay.characterSelectPortraits.Remove(this);
     }
 
     public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None)
@@ -69,6 +67,21 @@ public class CharacterSelectPortrait : MonoBehaviour
             state = charData.hasCharacter 
                 ? CharacterSelectPortraitState.Unselected 
                 : CharacterSelectPortraitState.Locked;
+
+            if (portraitType == PortraitType.TeamGrid)
+            {
+                Debug.Log($"{gameObject.name}: Is Team Grid");
+                var equipped = data.charactersData.Find(c => c.characterConfigName == characterCfg.occupantName);
+                if (equipped != null)
+                {
+                    Debug.Log($"{gameObject.name}: Found a match: {equipped.characterConfigName}");
+                    if (equipped.equipped)
+                    {
+                        Debug.Log($"{gameObject.name}: Is equipped");
+                        state = CharacterSelectPortraitState.Equipped;
+                    }
+                }
+            }
         }
         
         switch (state)
@@ -99,7 +112,9 @@ public class CharacterSelectPortrait : MonoBehaviour
                 equippedOverlay.SetActive(false);
                 break;
         }
+        Debug.Log("Char Portrait: State is now: " + state);
     }
+    
 
     public void SelectNewCharacter()
     {

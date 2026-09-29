@@ -123,6 +123,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.hasCharacter = true;
         charData.row = 1;
         charData.col = 1;
+        charData.equipped = true;
         charSaver.Save();
     }
     

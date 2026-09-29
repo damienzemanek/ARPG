@@ -3809,15 +3809,27 @@ MonoBehaviour:
   - characterConfigName: Executioner
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Gunslinger
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Hospitalar
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Whisper
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
 --- !u!1 &113949464
 GameObject:
   m_ObjectHideFlags: 0
@@ -9784,7 +9796,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 53.1, y: 70}
+  m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -31704,7 +31716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5.9000244, y: 0}
+  m_AnchoredPosition: {x: -5.8999023, y: 0}
   m_SizeDelta: {x: 3.2, y: 3.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1157244695

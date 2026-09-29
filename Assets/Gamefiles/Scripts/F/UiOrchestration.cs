@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 public class UiOrchestration : MonoBehaviour
@@ -36,6 +38,8 @@ public class UiOrchestration : MonoBehaviour
         Equipment
     }
 
+    [Required] public Animator alertAnimator;
+    [Required] public TextMeshProUGUI alertText;
     [Required] public GameObject playerGO;
     public EmilEvent<GameObject> onUseMainUI;
     public EmilEvent<GameObject> onUseExplorationUI;
@@ -49,7 +53,12 @@ public class UiOrchestration : MonoBehaviour
     [DrawWithUnity] public SerializedDictionary<ExplorationUIState, List<GameObject>> explorationUIs = new();
     [DrawWithUnity] public SerializedDictionary<MainUIState, List<GameObject>> mainUIs = new();
     [DrawWithUnity] public SerializedDictionary<CharacterUIState, List<GameObject>> characterUIs = new();
-    
+
+    private void Awake()
+    {
+        alertAnimator.gameObject.SetActive(false);
+    }
+
     public void HideAllUIs() => allUIs.ForEach(x => x.SetActive(false));
     
     public void ShowExplorationUIState(ExplorationUIState explorationUIState)
@@ -77,5 +86,17 @@ public class UiOrchestration : MonoBehaviour
         currentCharacterUIState = characterUIState;
         HideAllUIs();
         characterUIs[characterUIState].ForEach(g => g.SetActive(true));
+    }
+
+    public void Alert(string text, Action cb = null)
+    {
+        alertAnimator.gameObject.SetActive(true);
+        alertText.text = text;
+        alertAnimator.PlayOnEnd("AlertStart", () =>
+        {
+            alertText.text = string.Empty;
+            alertAnimator.gameObject.SetActive(false);
+            cb?.Invoke();
+        });
     }
 }
