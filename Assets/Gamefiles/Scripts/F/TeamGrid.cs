@@ -150,6 +150,14 @@ public class TeamGrid : MonoBehaviour
                 UiOrchestration.Alert(cannotRemoveFinalCharText);
                 return;
             }
+            
+            SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+            var data = charData.charactersData.Find(c =>
+                c.characterConfigName == currentlySelectedSquare.currentlyEquippedPortrait.characterCfg.occupantName);
+            data.row = -1;
+            data.col = -1;
+            data.equipped = false;
+            charSaver.Save();
             currentlySelectedSquare.currentlyEquippedPortrait.UpdateState(CharacterSelectPortraitState.Unselected);
             currentlySelectedSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
         }
