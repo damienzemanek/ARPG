@@ -88,8 +88,7 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         
         if (teamGrid.currentOperation == TeamGrid.CurrentOperation.None)
         {
-            if (currentlyEquippedPortrait == null)
-                return;
+            if (currentlyEquippedPortrait == null) return;
             teamGrid.InteractWithCharacterSelectPortraitSquare(this);
             return;
         }
@@ -99,7 +98,7 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         {
             currentlyEquippedPortrait = teamGrid.currentlyEquippingPortrait;
             UpdateSquareState(CharacterSelectPortraitSquareState.Selected);
-            teamGrid.EquipCharacter();
+            teamGrid.EquipCharacter(this);
         }
     }
 }

@@ -62,6 +62,7 @@ public class TeamGrid : MonoBehaviour
         lbl_moving.SetActive(false);
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
+        
         txt_btnLabel.text = string.Empty;
         go_btnTeamGrid.gameObject.SetActive(false);
     }
@@ -121,9 +122,16 @@ public class TeamGrid : MonoBehaviour
         txt_btnLabel.text = "Remove";
     }
     
-    public void EquipCharacter()
+    public void EquipCharacter(CharacterSelectPortraitSquare square)
     {
         currentlyEquippingPortrait.UpdateState(CharacterSelectPortraitState.Equipped);
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+        var matchingChar = charData.charactersData.Find(c =>
+            c.characterConfigName == currentlyEquippingPortrait.characterCfg.occupantName);
+        matchingChar.equipped = true;
+        matchingChar.row = square.row;
+        matchingChar.col = square.col;
+        charSaver.Save();
         ResetState();
     }
 
