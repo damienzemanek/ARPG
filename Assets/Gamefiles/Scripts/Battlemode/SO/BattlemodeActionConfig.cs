@@ -168,6 +168,149 @@ public class BattlemodeActionConfig : ItemSO
 
         return ctx;
     }
+
+    public enum RowColUsableTargetNum
+    {
+        UsableRow,
+        UsableCol,
+        TargetRow,
+        TargetCol
+    }
+    
+    public string GetColOrRow(RowColUsableTargetNum get)
+    {
+        switch (get)
+        {
+            case RowColUsableTargetNum.UsableRow:
+            {
+                var ranks = targetingCfg.usableInRowRanks;
+                if (ranks == BattleTile.RowRank.None) return "";
+                int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
+                int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                if(ranks.HasFlag(BattleTile.RowRank.Top) && ranks.HasFlag(BattleTile.RowRank.Bottom)) return "1,3";
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+            
+            case RowColUsableTargetNum.TargetRow:
+            {
+                var ranks = targetingCfg.targetRowRanks;
+                if(ranks == BattleTile.RowRank.None) return "";
+                int min = ranks.HasFlag(BattleTile.RowRank.Top) ? 1 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 3;
+                int max = ranks.HasFlag(BattleTile.RowRank.Bottom) ? 3 : ranks.HasFlag(BattleTile.RowRank.Middle) ? 2 : 1;
+                if(ranks.HasFlag(BattleTile.RowRank.Top) && ranks.HasFlag(BattleTile.RowRank.Bottom)) return "1,3";
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+
+            case RowColUsableTargetNum.UsableCol:
+            {
+                var ranks = targetingCfg.usableInColRanks;
+                if(ranks == BattleTile.ColRank.None)  return "";
+                bool center = ranks.HasFlag(BattleTile.ColRank.Center);
+
+                int min = 4;
+                int max = 0;
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left1) || ranks.HasFlag(BattleTile.ColRank.Right1))
+                {
+                    min = Mathf.Min(min, 1);
+                    max = Mathf.Max(max, 1);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left2) || ranks.HasFlag(BattleTile.ColRank.Right2))
+                {
+                    min = Mathf.Min(min, 2);
+                    max = Mathf.Max(max, 2);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left3) || ranks.HasFlag(BattleTile.ColRank.Right3))
+                {
+                    min = Mathf.Min(min, 3);
+                    max = Mathf.Max(max, 3);
+                }
+                
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+
+                if (center) return max == 0 ? "C" : $"C-{max}";
+
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+            case RowColUsableTargetNum.TargetCol:
+            {
+                var ranks = targetingCfg.targetColRanks;
+                if(ranks == BattleTile.ColRank.None) return "";
+
+                bool center = ranks.HasFlag(BattleTile.ColRank.Center);
+
+                int min = 4;
+                int max = 0;
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left1) || ranks.HasFlag(BattleTile.ColRank.Right1))
+                {
+                    min = Mathf.Min(min, 1);
+                    max = Mathf.Max(max, 1);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left2) || ranks.HasFlag(BattleTile.ColRank.Right2))
+                {
+                    min = Mathf.Min(min, 2);
+                    max = Mathf.Max(max, 2);
+                }
+
+                if (ranks.HasFlag(BattleTile.ColRank.Left3) || ranks.HasFlag(BattleTile.ColRank.Right3))
+                {
+                    min = Mathf.Min(min, 3);
+                    max = Mathf.Max(max, 3);
+                }
+                
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+
+                if (center) return max == 0 ? "C" : $"C-{max}";
+                return min == max ? $"{min}" : $"{min}-{max}";
+            }
+
+            default: return "";
+        }
+    }
+    
+    
+
+    public List<string> GetActionDetailTexts()
+    {
+        var ret = new List<string>();
+        
+        // DMG
+        if(dmgMultiplier > 0) ret.Add($"DMG {dmgMultiplier}%");
+        // HEAL 
+        if(healPercentage  > 0) ret.Add($"HEAL {healPercentage}%");
+        // ARMOR
+        if(armorIncreasePercentage > 0) ret.Add($"ARMOR {armorIncreasePercentage}%");
+        // Body Part
+        if (targetedBodyPart != BodyPart.None)
+        {
+            var bodyParts = new List<string>();
+            if (targetedBodyPart.HasFlag(BodyPart.Body)) bodyParts.Add("BODY");
+            if (targetedBodyPart.HasFlag(BodyPart.Head)) bodyParts.Add("HEAD");
+            if (targetedBodyPart.HasFlag(BodyPart.Legs)) bodyParts.Add("LEGS");
+            ret.Add($"Hits: [ {string.Join(" , ", bodyParts)} ]");
+        }
+        
+        // TARGET EFFECTS
+        foreach (var targEff in effectsToApplyToTarget)
+            ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+
+        return ret;
+        // Self effects are different targeting detail prefab
+    }
     
     public override ItemSO ProvideReward(int _ = -1) => this;
 }
@@ -211,11 +354,12 @@ public class BattlemodeActionCtx
     public BattlemodeActionConfig.MovementCfg targetMovementCfgInstanced;
     public BattlemodeActionConfig cfg;
     public MarkStrategy markStrategy;
-
     
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToActor;
     public List<BattlemodeEffectStrategyInstance> additionalEffectsToApplyToTarget;
 
     public void SetHealViaTargetMaxHealth(BattlerOccupantCtx targetBatlerCtx)
         => heal = targetBatlerCtx?.maxHp ?? 0;
+    
+    
 }

@@ -6,6 +6,7 @@
 // using ProTimers;
 // using UnityEngine;
 // using static ProArchitecture.Logic.ExampleLogic;
+// using static ProSMTestSuite;
 //
 //
 // public class ProSMIntegrationTestSuite : MonoBehaviour
@@ -23,7 +24,7 @@
 //         var data = new ExampleData() { x = 2 };
 //         fsm.AddDirectTimedTransition(0, TestLayerOne.L1S1, TestLayerOne.L1S2, ref data, 1);
 //         
-//         Assert.IsTrue(fsm.layers[0].states[0].transitions.Active);
+//         Assert.IsTrue(fsm.layers[0].states[0].transitions.DataIsActive);
 //         Assert.AreEqual(1, fsm.layers[0].states[0].transitions.currentSize);
 //
 //         fsm.Dispose();

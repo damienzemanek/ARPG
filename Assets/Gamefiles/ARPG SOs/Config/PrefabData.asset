@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344b65549f3499091478713c22fbe21, type: 3}
   m_Name: PrefabData
   m_EditorClassIdentifier: Assembly-CSharp::PrefabData
-  playerPrefab: {fileID: 2988329574054647621, guid: 835ae08c9d7e28043ada16ccd0a84c7e, type: 3}
+  playerPrefab: {fileID: 2539740542019917250, guid: 40c91de16335b514f94aa901a954b79a, type: 3}

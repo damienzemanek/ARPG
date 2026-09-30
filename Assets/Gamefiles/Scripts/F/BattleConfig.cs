@@ -6,6 +6,13 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "BattleConfig", menuName = "ARPG/SO/BattleConfig")]
 public class BattleConfig : ScriptableObject
 {
+    public enum ConfigureFor
+    {
+        Player,
+        Enemies,
+    }
+    
+    public ConfigureFor configureFor;
     [InfoBox("Left is Player side, Right is Enemy Side")]
     [TableList(ShowIndexLabels = false, AlwaysExpanded = true)]
     public Row[] rows = [new(0), new(1), new(2)];
@@ -14,6 +21,7 @@ public class BattleConfig : ScriptableObject
     [Serializable]
     public class Row
     {
+        public List<BattlePosition> cols => colPositions;
         [HideInInspector] public List<BattlePosition> colPositions = new();
         [HideInInspector] public int rowNum;
         [HideLabel] [ShowInInspector] [InlineProperty] public BattlePosition colPos0 { get => colPositions?[0]; set => colPositions[0] = value;}

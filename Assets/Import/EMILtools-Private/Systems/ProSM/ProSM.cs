@@ -3,12 +3,7 @@ using UnityEngine;
 
 namespace ProSM
 {
-
     
-    
-    // To Implement: Make Predicate static on the static implementation level
-    
-
     /// <summary>
     /// Instance Defined Procedural State Machine Handle
     /// Layer enums to be declared by the user

@@ -23,6 +23,7 @@ public static class AnimEX
             Debug.Log("State finished, calling callback");
             callback?.Invoke();
         }
+        
     }
     
     public static void CrossFadeOnEnd( this Animator animator, string stateName, float transitionDuration,

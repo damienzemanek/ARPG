@@ -1,38 +1,52 @@
 using System.Collections;
+using System.Linq;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using static UiOrchestration;
 
 public class PlayerEvents : MonoBehaviour
 {
-    public enum SpawnEvent
+    public enum PlayerEvent
     {
         None,
         NewPlayerSpawn,
         MostRecentPosition,
         Death,
+        StopPlayerMovement,
+        ReEnablePlayerMovement,
     }
 
     [Required] public Animator playerAnimator;
     [Required] public string awakenAnimName;
-    
-    [Required] public GameObject characterSelectDisplay;
-    public CharacterInfoDisplay characterInfoDisplay;
-    public WaitSecondsRealtime charDisplayWait;
+
+    [Required] public GameObject allUI;
+    [Required] public UiOrchestration uiOrchestration;
+    [Required] public CharacterInfoDisplay characterInfoDisplay;
+    public WaitSecondsRealtime charDisplayWait; // DELAY FOR REGION ANIM
     [Required] public PlayerInstance player;
 
     public void NewPLayerSpawnEvent()
     {
         Debug.Log("New Player Spawned");
-        characterSelectDisplay.SetActive(false);
+        allUI.gameObject.SetActive(true);
+        uiOrchestration.HideAllUIs();
         player.gameObject.SetActive(false);
         StartCoroutine(C_Display());
         
         IEnumerator C_Display() 
         { 
             yield return charDisplayWait.Delay;
-            characterSelectDisplay.SetActive(true);
+            characterInfoDisplay.InitChoseStarterCharacter();
+            uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+            SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+            charData.charactersData.ForEach(c =>
+            {
+                c.row = -1;
+                c.col = -1;
+            });
+            charSaver.Save();
             data.returningPlayer = true;
             saver.Save();
         }
@@ -43,19 +57,26 @@ public class PlayerEvents : MonoBehaviour
         Debug.Log("Most Recent Position Spawned");
         player.gameObject.SetActive(true);
         player.ToggleInputReading(true);
-        characterSelectDisplay.SetActive(false);
+        // TODO: allow for dungeon ui to show here too with a simple check if the player is in either the dungeon or the exploration
+        uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
         SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
         player.gameObject.transform.position = data.currentCharacterWorldLocation.position;
         player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
-
-    public void SelectedNewPlayerCharacter(CharacterConfig character)
+    
+    
+    public void ReEnablePlayerAndMovement()
     {
-        Debug.Log("Selected New Player Character " + character.occupantName);
-        characterSelectDisplay.SetActive(false);
         player.gameObject.SetActive(true);
         player.ToggleInputReading(false);
         playerAnimator.PlayOnEnd(awakenAnimName, () => player.ToggleInputReading(true));
+    }
+
+    public void SaveCurrentPosition()
+    {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        data.currentCharacterWorldLocation = new Pose(player.gameObject.transform);
+        saver.Save();
     }
     
 }

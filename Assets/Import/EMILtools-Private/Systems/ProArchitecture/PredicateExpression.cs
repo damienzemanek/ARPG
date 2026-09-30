@@ -92,8 +92,9 @@ namespace ProArchitecture.Predicates
     /// - Evaluation includes safety checks for disposed or uninitialized expressions.
     /// - Automatically registers with `DataActiveRegistry` for domain-reload safety.
     /// </summary>
-    public unsafe struct PredicateExpression
+    public struct PredicateExpression
     {
+        public static implicit operator RefToStatic<PredicateExpression>(in PredicateExpression predicate) => Implicit.Convert(predicate).ToStaticRef();
 
         internal Data<PredicateNode, NoMtd> nodes;
         
@@ -108,6 +109,8 @@ namespace ProArchitecture.Predicates
             nodes = new Data<PredicateNode, NoMtd>(_size, Allocator.Persistent, out _);
             nodes.Allocate(ref node, out int _);
         }
+
+        public PredicateExpression() { }
         
         public int NodeCount => nodes.currentSize;
         public void Dispose() => nodes.Dispose();
@@ -115,6 +118,12 @@ namespace ProArchitecture.Predicates
 
     public static unsafe partial class PredicateExtensions
     {
+        public static bool EvaluateIdempotent<T>(this ref PredicateExpression expr, ref T Data) 
+            where T: unmanaged
+        {
+            if ((expr.nodes.currentSize == 0 || !expr.nodes.DataIsActive)) return true;
+            return expr.Evaluate(ref Data);
+        }
 
         public static bool Evaluate<T>(this ref PredicateExpression expr, ref T Data) 
             where T: unmanaged
@@ -130,12 +139,12 @@ namespace ProArchitecture.Predicates
                 return false;
             }
             
-            ref var head = ref expr.nodes[0].predicate.RefStatic;
+            ref var head = ref expr.nodes[0].predicate.AsRefStatic;
             bool result = head.Evaluate(ref Data);
 
             for (int i = 1; i < expr.nodes.currentSize; i++)
             {
-                ref var p = ref expr.nodes[i].predicate.RefStatic;
+                ref var p = ref expr.nodes[i].predicate.AsRefStatic;
                 switch (expr.nodes[i].type)
                 {
                     case PredicateType.And:
@@ -158,7 +167,7 @@ namespace ProArchitecture.Predicates
         }
         public static ref PredicateExpression Or(this ref PredicateExpression expression, RefToStatic<Predicate> predicate)
         {
-            var ptr = predicate.PtrStatic;
+            var ptr = predicate.AsPtrStatic;
             var node = new PredicateNode(PredicateType.Or, predicate);
             expression.nodes.Allocate(ref node, out int _);
             return ref expression;
