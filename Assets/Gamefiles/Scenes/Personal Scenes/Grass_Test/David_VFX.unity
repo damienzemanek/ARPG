@@ -6861,15 +6861,27 @@ MonoBehaviour:
   - characterConfigName: Executioner
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Gunslinger
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Hospitalar
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Whisper
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
 --- !u!1 &832202700
 GameObject:
   m_ObjectHideFlags: 8
@@ -6998,10 +7010,12 @@ MonoBehaviour:
       methodName: CallPlayerEvent
       parameters:
       - rid: 1707157083533082713
-      - rid: 1707157083533082714
+      - rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 1707157083533082713
       type: {class: 'EmilEventBase/TypedParameter`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
       data:
@@ -7009,13 +7023,6 @@ MonoBehaviour:
         isAutoSupplied: 1
         autoValue: {fileID: 0}
         value: {fileID: 0}
-    - rid: 1707157083533082714
-      type: {class: 'EmilEventBase/TypedParameter`1[[PlayerEvents/SpawnEvent, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
-      data:
-        name: spawnEvent
-        isAutoSupplied: 1
-        autoValue: 0
-        value: 0
 --- !u!4 &881710281
 Transform:
   m_ObjectHideFlags: 0
