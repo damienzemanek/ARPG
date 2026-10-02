@@ -3789,47 +3789,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112612435}
   m_CullTransparentMesh: 1
---- !u!114 &113069827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
-  m_Name: DefaultCharactersData(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
-  schemaInfo:
-    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
-    version: 0
-  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
-  charactersData:
-  - characterConfigName: Executioner
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    col: 0
-    row: 0
-  - characterConfigName: Gunslinger
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    col: 0
-    row: 0
-  - characterConfigName: Hospitalar
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    col: 0
-    row: 0
-  - characterConfigName: Whisper
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    col: 0
-    row: 0
 --- !u!1 &113949464
 GameObject:
   m_ObjectHideFlags: 0
@@ -9796,7 +9755,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 0, y: 70}
+  m_SizeDelta: {x: 53.1, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -14478,6 +14437,22 @@ MonoBehaviour:
       created: {fileID: 611407864}
       x: 2
       y: 0
+--- !u!114 &483806164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
+    version: 0
+  persistencies: []
 --- !u!1 &485566209
 GameObject:
   m_ObjectHideFlags: 0
@@ -17985,6 +17960,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620966211}
   m_CullTransparentMesh: 1
+--- !u!114 &625227649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
+  schemaInfo:
+    hash: D6A35E4A4FF50834809E45CDDFD1D87B1A5B97B0F2BC35CE7F6A794A86B799D6
+    version: 0
+  returningPlayer: 0
+  goldAmount: 0
+  crystalAmount: 0
+  currentCharacterWorldLocation:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 0, y: 0, z: 0}
 --- !u!1 &625448861
 GameObject:
   m_ObjectHideFlags: 0
@@ -28871,7 +28868,7 @@ PrefabInstance:
     - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 11400000, guid: 6d577883d1c790949a66e60ee98857a2, type: 2}
+      objectReference: {fileID: 483806164}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -28919,11 +28916,11 @@ PrefabInstance:
     - target: {fileID: 7325532966869568469, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 2035524973}
+      objectReference: {fileID: 625227649}
     - target: {fileID: 8543933820624678361, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 113069827}
+      objectReference: {fileID: 1276036460}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34153,6 +34150,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254965012}
   m_CullTransparentMesh: 1
+--- !u!114 &1276036460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
+  m_Name: DefaultCharactersData(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
+  schemaInfo:
+    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
+    version: 0
+  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
+  charactersData:
+  - characterConfigName: Executioner
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    col: 0
+    row: 0
+  - characterConfigName: Gunslinger
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    col: 0
+    row: 0
+  - characterConfigName: Hospitalar
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    col: 0
+    row: 0
+  - characterConfigName: Whisper
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    col: 0
+    row: 0
 --- !u!1 &1276831139
 GameObject:
   m_ObjectHideFlags: 0
@@ -52239,28 +52277,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &2035524973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
-  schemaInfo:
-    hash: E9114CF28BD3CF062CBF6CFE6D1E2A06DFE722A1DF5F62938F72F93735F0F5F5
-    version: 0
-  returningPlayer: 0
-  goldAmount: 0
-  crystalAmount: 0
-  currentCharacterWorldLocation:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
 --- !u!1 &2041366034
 GameObject:
   m_ObjectHideFlags: 0

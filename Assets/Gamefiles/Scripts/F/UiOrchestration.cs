@@ -37,7 +37,7 @@ public class UiOrchestration : MonoBehaviour
         Actions,
         Equipment
     }
-
+    
     [Required] public Animator alertAnimator;
     [Required] public TextMeshProUGUI alertText;
     [Required] public GameObject playerGO;
@@ -54,11 +54,11 @@ public class UiOrchestration : MonoBehaviour
     [DrawWithUnity] public SerializedDictionary<MainUIState, List<GameObject>> mainUIs = new();
     [DrawWithUnity] public SerializedDictionary<CharacterUIState, List<GameObject>> characterUIs = new();
 
-    private void Awake()
+    void Awake()
     {
         alertAnimator.gameObject.SetActive(false);
     }
-
+    
     public void HideAllUIs() => allUIs.ForEach(x => x.SetActive(false));
     
     public void ShowExplorationUIState(ExplorationUIState explorationUIState)
@@ -98,5 +98,13 @@ public class UiOrchestration : MonoBehaviour
             alertAnimator.gameObject.SetActive(false);
             cb?.Invoke();
         });
+    }
+
+    public void Back()
+    {
+        if (currentUIState == UIState.Main)
+            ShowExplorationUIState(ExplorationUIState.Exploration);
+        else if (currentUIState == UIState.Character)
+            ShowMainUIState(MainUIState.Characters);
     }
 }

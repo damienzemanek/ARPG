@@ -6,13 +6,6 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "BattleConfig", menuName = "ARPG/SO/BattleConfig")]
 public class BattleConfig : ScriptableObject
 {
-    public enum ConfigureFor
-    {
-        Player,
-        Enemies,
-    }
-    
-    public ConfigureFor configureFor;
     [InfoBox("Left is Player side, Right is Enemy Side")]
     [TableList(ShowIndexLabels = false, AlwaysExpanded = true)]
     public Row[] rows = [new(0), new(1), new(2)];

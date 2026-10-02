@@ -40,7 +40,6 @@ public class TeamGrid : MonoBehaviour
         portraitsParent.GetComponentsInChildren(allPortraits);
     }
     
-
     void OnEnable()
     {
         allSquares.ForEach(s => s.InitFromTeamGrid());

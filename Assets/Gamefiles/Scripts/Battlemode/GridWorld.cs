@@ -90,10 +90,20 @@ public class GridWorld : MonoBehaviour
     public void PopulateGrid(BattleConfig battleConfig)
     {
         int populationCount = 0;
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var charData);
+        foreach (var equippedCharacter in charData.charactersData)
+        {
+            charData.currentCharacterConfigurations.characterConfigs.TryGetValue(equippedCharacter.characterConfigName, out var occupant);
+            if (occupant == null) Debug.LogError("Occupant not found for character: " + equippedCharacter.characterConfigName);
+            if (!equippedCharacter.equipped) continue;
+            Debug.Log("row: " + equippedCharacter.row + " col: " + equippedCharacter.col + " = " + occupant + ", Populating...");
+            gridRows[equippedCharacter.row].tiles[equippedCharacter.col].Init(equippedCharacter.col, equippedCharacter.row, occupant);
+            gridRows[equippedCharacter.row].tiles[equippedCharacter.col].Unhide();
+        }
         
         for (int row = 0; row < battleConfig.rows.Length; row++)
         {
-            for (int col = 0; col < battleConfig.rows[row].colPositions.Count; col++)
+            for (int col = 3; col < battleConfig.rows[row].colPositions.Count; col++)
             {
                 var occupant = battleConfig.rows[row].colPositions[col].occupant;
                 if (occupant == null) continue;

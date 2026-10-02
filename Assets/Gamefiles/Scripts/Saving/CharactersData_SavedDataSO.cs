@@ -39,7 +39,7 @@ public class CharactersData_SavedDataSO : SavedDataSO
         }
     }
 
-    [ReadOnly, SerializeField] CharacterConfigurations currentCharacterConfigurations;
+    [ReadOnly, SerializeField] public CharacterConfigurations currentCharacterConfigurations;
     public List<CharacterData> charactersData = new();
 
     public CharacterData GetCharacterData(CharacterConfig character) 
