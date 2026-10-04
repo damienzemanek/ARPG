@@ -28,16 +28,12 @@ public readonly unsafe struct LogicTwo<T>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void RunAll(ref T data)
+    public void RunAll(T* dataPtr)
     {
         if (ops == null) return;
-        fixed (T* dataPtr = &data)
+        for (int i = 0; i < Count; i++)
         {
-            for (int i = 0; i < Count; i++)
-            {
-                // Single contiguous memory read: 4 ops per 64B cache line
-                ops[i].run(dataPtr);
-            }
+            ops[i].run(dataPtr);
         }
     }
     
@@ -268,15 +264,81 @@ public unsafe class ProArchTimingTestSuiteTwo
     {
         SetupLogic();
         ComplexStruct data = default;
-        Logic.RunAll(ref data);
+        var dataPtr = (ComplexStruct*)(Unsafe.AsPointer(ref data));
+        Logic.RunAll(dataPtr);
 
         var sw = Stopwatch.StartNew();
         for (int i = 0; i < Iterations; i++)
         {
-            Logic.RunAll(ref data);
+            Logic.RunAll(dataPtr);
         }
         sw.Stop();
         Log($"LogicTwo<ComplexStruct> Given Logic and Data Ptr: {sw.ElapsedMilliseconds}ms, Result: {data.Result}");
+    }
+    [Test]
+    public void Test_LogicTwo_IncrementOnly()
+    {
+        SetupLogic();
+
+        // Replace the two operations with Increment operations.
+        LogicOps[0] = IncrementOperation;
+        LogicOps[1] = IncrementOperation;
+
+        var logic = Logic;
+
+        ComplexStruct data = default;
+        var dataPtr = (ComplexStruct*)(Unsafe.AsPointer(ref data));
+
+        // Warmup
+        Logic.RunAll(dataPtr);
+
+        var sw = Stopwatch.StartNew();
+        for (int i = 0; i < DispatchIterations; i++)
+        {
+            Logic.RunAll(dataPtr);
+        }
+
+        sw.Stop();
+
+        Log(
+            $"LogicTwo Increment x2: " +
+            $"{sw.ElapsedMilliseconds}ms, Result: {data.Result}");
+    }
+    const int DispatchIterations = 10_000_000;
+
+
+    [Test]
+    public void Test_ListOfActions_IncrementOnly()
+    {
+        var data = new ComplexClass();
+
+        var actions = new List<Action<ComplexClass>>
+        {
+            IncrementAction,
+            IncrementAction
+        };
+
+        // Warmup
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i](data);
+        }
+
+        var sw = Stopwatch.StartNew();
+
+        for (int iteration = 0; iteration < DispatchIterations; iteration++)
+        {
+            for (int i = 0; i < actions.Count; i++)
+            {
+                actions[i](data);
+            }
+        }
+
+        sw.Stop();
+
+        Log(
+            $"List<Action> Increment x2: " +
+            $"{sw.ElapsedMilliseconds}ms, Result: {data.Result}");
     }
 
 
