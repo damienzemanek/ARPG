@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class BattlemodeAction : MonoBehaviour
 {
     [ShowInInspector] public BattlemodeActionCtx actionCtx;
+    [SerializeField] GameObject disp_CannotUseInThisTile;
+    [SerializeField] GameObject disp_outOfRange;
     public bool useImage = true;
     [ShowIf("useImage")] public Image img;
     [ReadOnly, ShowInInspector] public InjectableClass<BattlemodeActionsDisplay> actionsDisplay = new();
@@ -14,6 +16,8 @@ public class BattlemodeAction : MonoBehaviour
         actionCtx = null;
         img.sprite = null;
         gameObject.SetActive(false);
+        disp_CannotUseInThisTile.SetActive(false);
+        disp_outOfRange.SetActive(false);
     }
 
     public void InitAction(BattlemodeActionCtx actionCtx)
@@ -21,6 +25,8 @@ public class BattlemodeAction : MonoBehaviour
         this.actionCtx = actionCtx;
         if(!useImage) return;
         img.sprite = actionCtx.cfg.icon;
+        disp_CannotUseInThisTile.SetActive(false);
+        disp_outOfRange.SetActive(false);
     }
 
     public void HoverAction()

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66147c31524048f7b6f3da482e24756a, type: 3}
   m_Name: Brutal Swing MS
   m_EditorClassIdentifier: Assembly-CSharp::MutateStats
+  markStratDescDetail: +%150 DMG
   dmgMultDelta: 150
   healMultDelta: 0
   armorMultDelta: 0

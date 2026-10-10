@@ -283,7 +283,7 @@ public class BattlemodeActionConfig : ItemSO
     }
     
     
-
+    // Creates a list of targetting details
     public List<string> GetActionDetailTexts()
     {
         var ret = new List<string>();
@@ -307,6 +307,11 @@ public class BattlemodeActionConfig : ItemSO
         // TARGET EFFECTS
         foreach (var targEff in effectsToApplyToTarget)
             ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+
+        if (actionQualifier.HasFlag(ActionQualifier.MarkHit)) ret.Add("On Mark Hit: " + markStrategy.markStratDescDetail);
+        if(actionQualifier.HasFlag(ActionQualifier.ConsumeMark)) ret.Add("Consumes Mark");
+        if(actionQualifier.HasFlag(ActionQualifier.Exhuast)) ret.Add("EXHAUST");
+        if(actionQualifier.HasFlag(ActionQualifier.UnExhuastAll)) ret.Add("Un-Exhuasts All Exhuasted Actions");
 
         return ret;
         // Self effects are different targeting detail prefab
