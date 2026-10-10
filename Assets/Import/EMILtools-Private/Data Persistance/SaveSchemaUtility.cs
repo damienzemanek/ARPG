@@ -19,7 +19,6 @@ public static class SaveSchemaUtility
             .Select(f => $"{f.Name}:{f.FieldType.FullName}");
 
         string schema = string.Join("|", fields);
-
         using var sha = SHA256.Create();
 
         byte[] bytes = Encoding.UTF8.GetBytes(schema);
