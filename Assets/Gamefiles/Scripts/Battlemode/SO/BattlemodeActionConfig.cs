@@ -228,15 +228,16 @@ public class BattlemodeActionConfig : ItemSO
                     max = Mathf.Max(max, 3);
                 }
                 
-                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
-                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
-                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3) && !ranks.HasFlag(BattleTile.ColRank.Right2)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3) && !ranks.HasFlag(BattleTile.ColRank.Left2)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center) && !ranks.HasFlag(BattleTile.ColRank.Right1)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center) && !ranks.HasFlag(BattleTile.ColRank.Left1)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center) 
+                    && !ranks.HasFlag(BattleTile.ColRank.Right1) && !ranks.HasFlag(BattleTile.ColRank.Right2)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)
+                    && !ranks.HasFlag(BattleTile.ColRank.Left1) && !ranks.HasFlag(BattleTile.ColRank.Left2)) return "C,3";
 
                 if (center) return max == 0 ? "C" : $"C-{max}";
-
                 return min == max ? $"{min}" : $"{min}-{max}";
             }
             case RowColUsableTargetNum.TargetCol:
