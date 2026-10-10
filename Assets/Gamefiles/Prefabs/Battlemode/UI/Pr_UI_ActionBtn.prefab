@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5938dfa2c14e9468a0975f057f395f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeAction
+  disp_CannotUseInThisTile: {fileID: 3536761913859620475}
+  disp_outOfRange: {fileID: 3965672413345885627}
   useImage: 1
   img: {fileID: 8962213162382355469}
 --- !u!114 &3010732168355103192

@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 public class BattlemodeAction : MonoBehaviour
 {
+    public enum RangeMutateActionDisplay
+    {
+        None,
+        Unusable,
+        OutOfRange
+    }
+
     [ShowInInspector] public BattlemodeActionCtx actionCtx;
     [SerializeField] GameObject disp_CannotUseInThisTile;
     [SerializeField] GameObject disp_outOfRange;
@@ -28,12 +35,27 @@ public class BattlemodeAction : MonoBehaviour
         disp_CannotUseInThisTile.SetActive(false);
         disp_outOfRange.SetActive(false);
     }
+    
+    public void RangeMutateAction(RangeMutateActionDisplay mutation)
+    {
+        switch (mutation)
+        {
+            case RangeMutateActionDisplay.OutOfRange: 
+                disp_outOfRange.SetActive(true);
+                disp_CannotUseInThisTile.SetActive(false);
+                break;
+            case RangeMutateActionDisplay.Unusable:
+                disp_outOfRange.SetActive(false);
+                disp_CannotUseInThisTile.SetActive(true);
+                break;
+        }
+    }
 
     public void HoverAction()
     {
         if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
         if (actionCtx != null)
-            actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, actionCtx);
+            actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, this);
     }
 
     public void UseAction()

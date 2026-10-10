@@ -302,24 +302,6 @@ public class GridWorld : MonoBehaviour
 
         foreach (var t in allTiles)
             t.HideAndMakeUnSelectable();
-        
-                       
-        if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank))
-        {
-            var targetRanks = targetingCfgInstance.targetRowRanks;
-
-            inRangeTiles.AddRange(
-                allTiles.Where(t => targetRanks.HasFlag(t.rowRank)));
-        }
-
-                
-        if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank))
-        {
-            var targetRanks = targetingCfgInstance.targetColRanks;
-
-            inRangeTiles.AddRange(
-                allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
-        }
     
         if (targetingCfgInstance.targetCurrentCol)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentColTile => potentialCurrentColTile.col == actingTile.col));

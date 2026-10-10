@@ -312,7 +312,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         
         // Recently Selected Action Setup
         if(firstAction != null && firstAction.actionCtx != null)
-            ShowAction(tile, firstAction.actionCtx);
+            ShowAction(tile, firstAction);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
@@ -323,8 +323,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         exhuastedActionSlots.Clear();
     }
 
-    public void ShowAction(BattleTile tile, BattlemodeActionCtx actionCtx)
+    public void ShowAction(BattleTile tile, BattlemodeAction actionSlot)
     {
+        var actionCtx = actionSlot.actionCtx;
         if (actionCtx == null) { Debug.Log("No action context provided"); return; }
         
         Debug.Log("Showing action: " + actionCtx.cfg.actionName);
@@ -372,6 +373,13 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         
         txt_useAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive == BattlemodeActionConfig.TargetingPattern.Self ? "Self" : "";
         hlgUseAdds.gameObject.SetActive(txt_useAdd.text != "");
+
+        if (BattleTracker.Instance.IsInUsableTile(actionCtx, tile))
+        {
+            if(!BattleTracker.Instance.IsInTargettableRange(actionCtx, tile)) 
+                actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.OutOfRange);
+        }
+        else actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.Unusable);
         
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
@@ -480,7 +488,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             if (actionSlots.Any(s => s.actionCtx != null))
             {
                 displ_ActionInfo.SetActive(true);
-                ShowAction(currentlySelectedTile, actionSlots.First(s => s.actionCtx != null).actionCtx);
+                ShowAction(currentlySelectedTile, actionSlots.First(s => s.actionCtx != null));
             }
             else 
                 displ_ActionInfo.SetActive(false);
@@ -493,7 +501,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             if (exhuastedActionSlots.Any(s => s.actionCtx != null))
             {
                 displ_ActionInfo.SetActive(true);
-                ShowAction(currentlySelectedTile, exhuastedActionSlots.First(s => s.actionCtx != null).actionCtx);
+                ShowAction(currentlySelectedTile, exhuastedActionSlots.First(s => s.actionCtx != null));
             }
             else 
                 displ_ActionInfo.SetActive(false);
