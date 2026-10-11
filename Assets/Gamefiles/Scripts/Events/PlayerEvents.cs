@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using EMILtools.Extensions;
@@ -11,8 +12,8 @@ public class PlayerEvents : MonoBehaviour
     {
         None,
         NewPlayerSpawn,
+        Respawn,
         MostRecentPosition,
-        Death,
         StopPlayerMovement,
         ReEnablePlayerMovement,
     }
@@ -36,7 +37,9 @@ public class PlayerEvents : MonoBehaviour
         
         IEnumerator C_Display() 
         { 
+            Debug.Log("Chosing Starter Character...");
             yield return charDisplayWait.Delay;
+            Debug.Log("Chose A Starter Character");
             characterInfoDisplay.InitChoseStarterCharacter();
             uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
@@ -52,6 +55,21 @@ public class PlayerEvents : MonoBehaviour
         }
     }
 
+    public void RespawnningPlayerEvent()
+    {
+        Debug.Log("Respawning PLayer");
+        allUI.gameObject.SetActive(true);
+        uiOrchestration.HideAllUIs();
+        player.gameObject.SetActive(false);
+        SaveCurrentPosition();
+        ReEnablePlayerAndMovement(() =>
+        {
+            uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
+        });
+    }
+
+
+    
     public void MostRecentPositionSpawnEvent()
     {
         Debug.Log("Most Recent Position Spawned");
@@ -59,17 +77,21 @@ public class PlayerEvents : MonoBehaviour
         player.ToggleInputReading(true);
         // TODO: allow for dungeon ui to show here too with a simple check if the player is in either the dungeon or the exploration
         uiOrchestration.ShowExplorationUIState(ExplorationUIState.Exploration);
-        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out _, out var data);
         player.gameObject.transform.position = data.currentCharacterWorldLocation.position;
         player.gameObject.transform.eulerAngles = data.currentCharacterWorldLocation.rotation;
     }
     
     
-    public void ReEnablePlayerAndMovement()
+    public void ReEnablePlayerAndMovement(Action cb = null)
     {
         player.gameObject.SetActive(true);
         player.ToggleInputReading(false);
-        playerAnimator.PlayOnEnd(awakenAnimName, () => player.ToggleInputReading(true));
+        playerAnimator.PlayOnEnd(awakenAnimName, () =>
+        {
+            player.ToggleInputReading(true);
+            cb?.Invoke();
+        });
     }
 
     public void SaveCurrentPosition()

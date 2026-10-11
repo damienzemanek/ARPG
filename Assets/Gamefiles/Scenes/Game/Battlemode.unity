@@ -9755,7 +9755,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 351.87997, y: -35}
-  m_SizeDelta: {x: 0, y: 70}
+  m_SizeDelta: {x: 53.1, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323464605
 MonoBehaviour:
@@ -18743,6 +18743,7 @@ GameObject:
   - component: {fileID: 657970015}
   - component: {fileID: 657970014}
   - component: {fileID: 657970013}
+  - component: {fileID: 657970016}
   m_Layer: 5
   m_Name: Btn Continue
   m_TagString: UI
@@ -18794,14 +18795,14 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 5bad835365943d14a8da5aba664a56c2, type: 2}
-        m_TargetAssemblyTypeName: Load, Assembly-CSharp
-        m_MethodName: LoadFade
-        m_Mode: 3
+      - m_Target: {fileID: 657970016}
+        m_TargetAssemblyTypeName: Btn_Continue, Assembly-CSharp
+        m_MethodName: BtnContinuePress
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -18844,6 +18845,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657970011}
   m_CullTransparentMesh: 1
+--- !u!114 &657970016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657970011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf11ddbeb4db2f4cbed5d9037a41aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Btn_Continue
+  loaderSo: {fileID: 11400000, guid: 5bad835365943d14a8da5aba664a56c2, type: 2}
 --- !u!1 &658247021
 GameObject:
   m_ObjectHideFlags: 0

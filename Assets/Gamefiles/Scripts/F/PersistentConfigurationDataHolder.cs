@@ -5,6 +5,7 @@ public class PersistentConfigurationDataHolder : PersistantReplacerSingleton<Per
 {
     [Required] public PrefabData prefabData;
     [Required] public LoadIn sceneLoadInMethod;
+    [Required] public Load load;
     [Required] public CharacterConfigurations characterConfigs;
     [Required] public EffectDict effectDict;
 }

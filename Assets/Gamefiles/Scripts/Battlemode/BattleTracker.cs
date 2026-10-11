@@ -546,21 +546,25 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         actionsDisplay.endTurnBtn.SetActive(false);
         actionsDisplay.GUI.SetActive(false);
     }
+
+    public void Lose()
+    {
+        Debug.Log("Player has lost.");
+        endStateManagement.EndStateWith(BattlemodeEndStateManagement.EndStates.Lose);
+        actionsDisplay.endTurnBtn.SetActive(false);
+        actionsDisplay.GUI.SetActive(false);
+    }
     
     public void StartPlayerTurn(bool firstTurn = false) 
     {
         Debug.Log("Starting player turn");
         currentTurn = Turn.Player;
+        if (IsBattleOver()) return;
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
         opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
         playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
-        
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
-        if (opponentTiles.Count <= 0)
-        {
-            Won();
-            return;
-        }
+
         
         actionsDisplay.ShowEndTurnBtn(true);
         if (!firstTurn) //----------------- Regular Turns
@@ -624,7 +628,24 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public void EndEnemyTurn()
     {
         if (currentTurn == Turn.Transitioning) return;
+        if (IsBattleOver()) return;
         turnDisplay.StartTurn(Turn.Player, () => StartPlayerTurn(false));
+    }
+
+    bool IsBattleOver()
+    {
+        grid.GetBattlerTiles(out var enemyTiles, out var playerTiles);
+        if(playerTiles.Count <= 0)
+        {
+            Lose();
+            return true;
+        }
+        if(enemyTiles.Count <= 0)
+        {
+            Won();
+            return true;
+        }
+        return false;
     }
     
     void EndPlayerTurnImplementation()

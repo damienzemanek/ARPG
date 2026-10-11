@@ -285,7 +285,7 @@ public class GridWorld : MonoBehaviour
 
     public bool IsTargetTargettable(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile)
     {
-        if(targetTile == null) Debug.LogError("TargetTile is null.");
+        if (targetTile == null) return false;
         bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
         bool rowTargeted = targetingCfgInstance.targetRowRanks.HasFlag(targetTile.rowRank);
         bool targetSelf = actingTile == targetTile

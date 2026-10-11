@@ -28,6 +28,7 @@ public class UiOrchestration : MonoBehaviour
         None,
         Characters,
         Team,
+        Pause,
     }
     
     public enum CharacterUIState
@@ -76,8 +77,13 @@ public class UiOrchestration : MonoBehaviour
         currentUIState = UIState.Main;
         currentMainUIState = mainUIState;
         HideAllUIs();
-        mainUIs[mainUIState].ForEach(g => g.SetActive(true));
+        mainUIs[mainUIState].ForEach(g =>
+        {
+            g.SetActive(true);
+            Debug.Log("Showing Main UI State on Obj " + g.name);
+        });
         onUseMainUI?.Invoke(playerGO);
+        Debug.Log("Showed Main UI State");
     }
     
     public void ShowCharacterUIState(CharacterUIState characterUIState)
@@ -102,9 +108,15 @@ public class UiOrchestration : MonoBehaviour
 
     public void Back()
     {
-        if (currentUIState == UIState.Main)
-            ShowExplorationUIState(ExplorationUIState.Exploration);
-        else if (currentUIState == UIState.Character)
-            ShowMainUIState(MainUIState.Characters);
+        Debug.Log("Back");
+        if (currentExplorationUIState == ExplorationUIState.FirstStart ||
+            currentExplorationUIState == ExplorationUIState.None) return;
+        switch (currentUIState)
+        {
+            case UIState.Main: ShowExplorationUIState(ExplorationUIState.Exploration); break;
+            case UIState.Character: ShowMainUIState(MainUIState.Characters); break;
+            case UIState.Exploration: ShowMainUIState(MainUIState.Pause); Debug.Log("Pausing! "); break;
+            default: Debug.Log("Did not move to a different UI State"); break;
+        }
     }
 }

@@ -51,6 +51,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         selectedCharacter = initiallySelectedPortrait.characterCfg;
         txt_buttonLabel.text = "Select Character";
+        uiOrchestration.currentExplorationUIState = ExplorationUIState.FirstStart;
         PreviewCharacter(initiallySelectedPortrait.characterCfg);
         lhs_ChoseYourCharacter.SetActive(true);
         rhs_characterInfoDisplay.SetActive(true);

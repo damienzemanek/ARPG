@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Load Out", menuName = "ARPG/SO/Method/Load Out")]
 public class Load : SO_Method<int>
 {
+    
     // With Fade
     public override void Invoke(int index)
     {
