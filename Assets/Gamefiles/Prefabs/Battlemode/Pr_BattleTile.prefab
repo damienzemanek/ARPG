@@ -352,7 +352,6 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     vTableEntries: []
-  eventSystemPointerOverGameObject: 1
   references:
     version: 2
     RefIds: []

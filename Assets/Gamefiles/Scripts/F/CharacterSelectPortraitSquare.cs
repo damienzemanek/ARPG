@@ -67,6 +67,11 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
     public void SelectSquare()
     {
         if (contested) return;
+
+        // TODO: Swapping when clicked on another occupied, this just makes it idempotent (tech debt)
+        if (teamGrid.currentOperation == TeamGrid.CurrentOperation.MovingOrDequipping &&
+            currentlyEquippedPortrait != null)
+            return;
         
         if (teamGrid.currentOperation == TeamGrid.CurrentOperation.MovingOrDequipping
             && teamGrid.currentlySelectedSquare != this)

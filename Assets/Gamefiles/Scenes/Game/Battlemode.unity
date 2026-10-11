@@ -14453,6 +14453,7 @@ MonoBehaviour:
     hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
     version: 0
   persistencies: []
+  something: 0
 --- !u!1 &485566209
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,6 +38,7 @@ public class ARPG_ScenePersistencySO : SavedDataSO
     public override void ResetDataOptionalInternal() { } // No op
     
     [SerializeField] public List<Persistancy> persistencies = new();
+    public bool something;
     
     public void PersistentMutate(PersistentMutation mutation, GameObject obj)
     {
