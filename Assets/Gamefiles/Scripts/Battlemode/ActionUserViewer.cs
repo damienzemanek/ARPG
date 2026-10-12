@@ -70,27 +70,36 @@ public class ActionUserViewer : MonoBehaviour
             Debug.LogError("No actor or target given to ActionUserViewer.");
             yield break;
         }
-        
+
         Sequence sequence = DOTween.Sequence();
 
         if (actor == target)
         {
             sequence
                 .Append(actor.transform.DOMove(actorFinishLoc, tweenDuration))
-                .Join(actor.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))
-                .JoinCallback(() => DefaultAll(actor.transform, null));
+                .Join(actor.transform.DORotate(Vector3.zero, tweenDuration))
+                .JoinCallback(() =>
+                {
+                    if (actor != null)
+                        DefaultAll(actor.transform, null);
+                });
         }
         else
         {
             sequence
-                // Move both back together
                 .Append(actor.transform.DOMove(actorFinishLoc, tweenDuration))
-                .Join(actor.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))
+                .Join(actor.transform.DORotate(Vector3.zero, tweenDuration))
                 .Join(target.transform.DOMove(targetFinishLoc, tweenDuration))
-                .Join(target.transform.DORotate(Quaternion.identity.eulerAngles, tweenDuration))
-                .JoinCallback(() => DefaultAll(actor.transform, target.transform));
-        }
+                .Join(target.transform.DORotate(Vector3.zero, tweenDuration))
+                .JoinCallback(() =>
+                {
+                    Transform actorTransform = actor != null ? actor.transform : null;
+                    Transform targetTransform = target != null ? target.transform : null;
 
+                    if (actorTransform != null || targetTransform != null)
+                        DefaultAll(actorTransform, targetTransform);
+                });
+        }
         yield return sequence.WaitForCompletion();
     }
 

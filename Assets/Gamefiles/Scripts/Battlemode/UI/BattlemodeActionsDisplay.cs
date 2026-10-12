@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -240,6 +241,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
             actionSlots[i].gameObject.SetActive(true);
             actionSlots[i].InitAction(actionCtx);
+            CheckRangeMutation(actionCtx, tile, actionSlots[i]);
 
             if (foundFirstHandAction) continue;
             foundFirstHandAction = true;
@@ -313,6 +315,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // Recently Selected Action Setup
         if(firstAction != null && firstAction.actionCtx != null)
             ShowAction(tile, firstAction);
+        
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
@@ -373,15 +376,20 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         
         txt_useAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive == BattlemodeActionConfig.TargetingPattern.Self ? "Self" : "";
         hlgUseAdds.gameObject.SetActive(txt_useAdd.text != "");
+        
+        CheckRangeMutation(actionCtx, tile, actionSlot);
+        
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+    }
 
+    public void CheckRangeMutation(BattlemodeActionCtx actionCtx, BattleTile tile, BattlemodeAction actionSlot)
+    {
         if (BattleTracker.Instance.IsInUsableTile(actionCtx, tile))
         {
             if(!BattleTracker.Instance.IsInTargettableRange(actionCtx, tile)) 
                 actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.OutOfRange);
         }
         else actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.Unusable);
-        
-        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
 

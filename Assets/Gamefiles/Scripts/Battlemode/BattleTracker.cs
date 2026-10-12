@@ -522,6 +522,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public bool IsInUsableTile(BattlemodeActionCtx actionCtx, BattleTile actingTile)
     {
+        Debug.Log("Actionctx: " + actionCtx);
         if(actionCtx.targetingCfgInstanced.usableInColRanks.HasFlag(actingTile.colRank)) return true;
         if(actionCtx.targetingCfgInstanced.usableInRowRanks.HasFlag(actingTile.rowRank)) return true;
         if(actionCtx.targetingCfgInstanced.targetingPatternAdditive == TargetingPattern.Self) return true;

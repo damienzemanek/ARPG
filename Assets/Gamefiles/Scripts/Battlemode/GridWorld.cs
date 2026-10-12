@@ -83,7 +83,6 @@ public class GridWorld : MonoBehaviour
                 gridRows[r].tiles.Add(tile);
                 tile.transform.parent = transform;
             }
-
         }
     }
 
@@ -302,6 +301,18 @@ public class GridWorld : MonoBehaviour
 
         foreach (var t in allTiles)
             t.HideAndMakeUnSelectable();
+        
+        if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank))
+        {
+            var targetRanks = targetingCfgInstance.targetRowRanks;
+            inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.rowRank)));
+        }
+        
+        if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank))
+        {
+            var targetRanks = targetingCfgInstance.targetColRanks;
+            inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
+        }
     
         if (targetingCfgInstance.targetCurrentCol)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentColTile => potentialCurrentColTile.col == actingTile.col));
@@ -309,10 +320,11 @@ public class GridWorld : MonoBehaviour
         if (targetingCfgInstance.targetCurrentRow)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentRowTile => potentialCurrentRowTile.row == actingTile.row));
         
-        Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
-        
+        Debug.Log("[Grid] GetInRangeTiles() Row & Col Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         int row = actingTile.row;
         int col = actingTile.col;
+        
         // Movement Patterns
         switch (targetingCfgInstance.targetingPatternAdditive)
         {
@@ -338,13 +350,16 @@ public class GridWorld : MonoBehaviour
                 break;
         }
         
+        Debug.Log("[Grid] GetInRangeTiles() + Pattern Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         // Null / Duplicate Handling
         inRangeTiles = inRangeTiles
             .Where(t => t != null)
             .Distinct()
             .ToList();
         
-        
+        Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         return inRangeTiles;
     }
 

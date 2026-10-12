@@ -23,6 +23,7 @@ public class BattlemodeAction : MonoBehaviour
         actionCtx = null;
         img.sprite = null;
         gameObject.SetActive(false);
+        if(disp_CannotUseInThisTile == null || disp_outOfRange == null) return;
         disp_CannotUseInThisTile.SetActive(false);
         disp_outOfRange.SetActive(false);
     }
@@ -31,13 +32,15 @@ public class BattlemodeAction : MonoBehaviour
     {
         this.actionCtx = actionCtx;
         if(!useImage) return;
-        img.sprite = actionCtx.cfg.icon;
+        if(actionCtx != null) img.sprite = actionCtx.cfg.icon;
+        if(disp_CannotUseInThisTile == null || disp_outOfRange == null) return;
         disp_CannotUseInThisTile.SetActive(false);
         disp_outOfRange.SetActive(false);
     }
     
     public void RangeMutateAction(RangeMutateActionDisplay mutation)
     {
+        if(disp_CannotUseInThisTile == null || disp_outOfRange == null) return;
         switch (mutation)
         {
             case RangeMutateActionDisplay.OutOfRange: 
