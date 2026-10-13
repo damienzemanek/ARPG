@@ -32,6 +32,7 @@ public class TopDownPlayer : MonoBehaviour
     ProSM<PlayerData> sm;
     
     public CharacterController controller;
+    public UiOrchestration uiOrchestration;
     
 
     public void Awake()

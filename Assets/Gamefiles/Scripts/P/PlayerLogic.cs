@@ -1,4 +1,5 @@
-﻿using ProArchitecture.Data;
+﻿using EMILtools.Extensions;
+using ProArchitecture.Data;
 using ProArchitecture.Logic;
 using ProArchitecture.Predicates;
 using UnityEngine;
@@ -9,7 +10,7 @@ public static unsafe class PlayerPredicates
     public static Predicate IsNotMoveInput = new(&isMoveInput, true);
     static bool isMoveInput(void* d)
     {
-        var data = PtrEX.VPtrToRef<PlayerData>(d);
+        var data = PtrEX.VoidPtrAsRef<PlayerData>(d);
         return data.walkInput.sqrMagnitude > 0.01f;
     }
 

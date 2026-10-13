@@ -83,17 +83,26 @@ public class GridWorld : MonoBehaviour
                 gridRows[r].tiles.Add(tile);
                 tile.transform.parent = transform;
             }
-
         }
     }
 
     public void PopulateGrid(BattleConfig battleConfig)
     {
         int populationCount = 0;
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var charData);
+        foreach (var equippedCharacter in charData.charactersData)
+        {
+            charData.currentCharacterConfigurations.characterConfigs.TryGetValue(equippedCharacter.characterConfigName, out var occupant);
+            if (occupant == null) Debug.LogError("Occupant not found for character: " + equippedCharacter.characterConfigName);
+            if (!equippedCharacter.equipped) continue;
+            Debug.Log("row: " + equippedCharacter.row + " col: " + equippedCharacter.col + " = " + occupant + ", Populating...");
+            gridRows[equippedCharacter.row].tiles[equippedCharacter.col].Init(equippedCharacter.col, equippedCharacter.row, occupant);
+            gridRows[equippedCharacter.row].tiles[equippedCharacter.col].Unhide();
+        }
         
         for (int row = 0; row < battleConfig.rows.Length; row++)
         {
-            for (int col = 0; col < battleConfig.rows[row].colPositions.Count; col++)
+            for (int col = 3; col < battleConfig.rows[row].colPositions.Count; col++)
             {
                 var occupant = battleConfig.rows[row].colPositions[col].occupant;
                 if (occupant == null) continue;
@@ -275,7 +284,7 @@ public class GridWorld : MonoBehaviour
 
     public bool IsTargetTargettable(TargetingCfg targetingCfgInstance, BattleTile actingTile, BattleTile targetTile)
     {
-        if(targetTile == null) Debug.LogError("TargetTile is null.");
+        if (targetTile == null) return false;
         bool colTargeted = targetingCfgInstance.targetColRanks.HasFlag(targetTile.colRank);
         bool rowTargeted = targetingCfgInstance.targetRowRanks.HasFlag(targetTile.rowRank);
         bool targetSelf = actingTile == targetTile
@@ -293,22 +302,16 @@ public class GridWorld : MonoBehaviour
         foreach (var t in allTiles)
             t.HideAndMakeUnSelectable();
         
-                       
         if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank))
         {
             var targetRanks = targetingCfgInstance.targetRowRanks;
-
-            inRangeTiles.AddRange(
-                allTiles.Where(t => targetRanks.HasFlag(t.rowRank)));
+            inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.rowRank)));
         }
-
-                
+        
         if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank))
         {
             var targetRanks = targetingCfgInstance.targetColRanks;
-
-            inRangeTiles.AddRange(
-                allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
+            inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
         }
     
         if (targetingCfgInstance.targetCurrentCol)
@@ -317,10 +320,11 @@ public class GridWorld : MonoBehaviour
         if (targetingCfgInstance.targetCurrentRow)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentRowTile => potentialCurrentRowTile.row == actingTile.row));
         
-        Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
-        
+        Debug.Log("[Grid] GetInRangeTiles() Row & Col Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         int row = actingTile.row;
         int col = actingTile.col;
+        
         // Movement Patterns
         switch (targetingCfgInstance.targetingPatternAdditive)
         {
@@ -346,13 +350,16 @@ public class GridWorld : MonoBehaviour
                 break;
         }
         
+        Debug.Log("[Grid] GetInRangeTiles() + Pattern Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         // Null / Duplicate Handling
         inRangeTiles = inRangeTiles
             .Where(t => t != null)
             .Distinct()
             .ToList();
         
-        
+        Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         return inRangeTiles;
     }
 

@@ -6,11 +6,6 @@ using Unity.Collections;
 
 namespace ProSM
 {
-
-    public static class StateDataExtensions<TData> where TData : unmanaged
-    {
-        
-    }
     
     public struct StateData<TData> where TData : unmanaged
     {
@@ -65,7 +60,7 @@ namespace ProSM
             weight = _weight;
         }
     }
-    public struct TransitionMtd { }
+    
     public struct ProTimersProSM_TransitionMtd
     {
         public int timerStackRemovalIndex;
@@ -107,7 +102,6 @@ namespace ProSM
             timeInState = 0;
         }
     }
-
     public struct LayerMetaData
     {
         public byte isInitialized;
@@ -121,7 +115,6 @@ namespace ProSM
         }
     }
     
-    // Basically the logic for ProSM
 }
 
     

@@ -433,7 +433,8 @@ public class OpponentAI : MonoBehaviour
 
     BattleTile FindLowestHealthCharacterTile(List<BattleTile> occupiedBattlerTiles)
     {
-        if (occupiedBattlerTiles.Count == 0) { Debug.Log("[OPP AI] No target tiles to select lowest health"); return null; }
+        if (occupiedBattlerTiles.Count == 0)
+            { Debug.Log("[OPP AI] No target tiles to select lowest health"); return null; }
         
         BattleTile lowestHealth = null;
         foreach (BattleTile compare in occupiedBattlerTiles)
@@ -450,7 +451,7 @@ public class OpponentAI : MonoBehaviour
     BattleTile FindHighestHealthCharacterTile(List<BattleTile> occupiedBattlerTiles)
     {
         if (occupiedBattlerTiles.Count == 0) {
-            Debug.LogError("[OPP AI] No Target Tiles to select highest health"); return null; }
+            Debug.Log("[OPP AI] No Target Tiles to select highest health"); return null; }
 
         BattleTile highestHealth = null;
         foreach (var compare in occupiedBattlerTiles)

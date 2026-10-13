@@ -6,6 +6,7 @@ using UnityEngine;
 [Serializable]
 public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Deadeye";
     public override int priority => 1;
     public override bool isSpecial => true;
 
@@ -36,6 +37,7 @@ public sealed class SE_Deadeye : BattlemodeEffectStrategyInstance
 [Serializable]
 public sealed class SE_DoubleJeopardy : BattlemodeEffectStrategyInstance
 {
+    public override string effectName => "Double Jeopardy";
     public override int priority => 1;
     public override bool isSpecial => true;
     BattlemodeEffectStrategy_Mark newMarkEffect => CreateInstance<BattlemodeEffectStrategy_Mark>

@@ -40,15 +40,16 @@ public class InputReader_TopDown : MonoBehaviour, IA_TopDown.IPlayerActions
         else if(context.canceled) receiver.data.interactionInput.Set(false);
     }
 
+    public void OnBack(InputAction.CallbackContext context)
+    {
+        Debug.Log("Pressed Back");
+        if(context.performed) receiver.uiOrchestration.Back();
+    }
+
     public void OnScroll(InputAction.CallbackContext context)
     {
         Debug.Log("Scroll: " + context.ReadValue<Vector2>());
     }
     
-    
-    public void OnJump(InputAction.CallbackContext context) { }
-    public void OnPrevious(InputAction.CallbackContext context) { }
-    public void OnNext(InputAction.CallbackContext context) { }
-    public void OnSprint(InputAction.CallbackContext context) { }
 
 }
