@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   occupantName: Arachnid Beast
   icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+  prefab: {fileID: 1493016372842288641, guid: 7524a29e151171d489d43a27fe5f18b9, type: 3}
   currentLevel: 1
   maxHP: 10
   maxArmor: 4
