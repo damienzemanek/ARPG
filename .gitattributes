@@ -6,6 +6,9 @@
 # This template is maintained from the gitattributes/gitattributes repository
 # and distributed under MIT License.
 
+# Force Unity Terrain Data to be treated as binary
+*.terrain.asset binary
+
 # Define macros (only works in top-level gitattributes files)
 [attr]lfs               filter=lfs diff=lfs merge=lfs -text
 [attr]unity-json        eol=lf linguist-language=json
@@ -61,6 +64,9 @@
 *.spriteatlasv2         unity-yaml
 *.terrainlayer          unity-yaml
 *.unity                 unity-yaml
+
+# Binary Unity assets — place AFTER the general .asset rule
+Assets/Terrain/TerrainData.asset binary
 
 # "physic" for 3D but "physics" for 2D
 *.physicMaterial        unity-yaml
