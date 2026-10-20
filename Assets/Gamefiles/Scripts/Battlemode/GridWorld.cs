@@ -350,8 +350,6 @@ public class GridWorld : MonoBehaviour
                 break;
         }
         
-        Debug.Log("[Grid] GetInRangeTiles() + Pattern Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
-
         // Null / Duplicate Handling
         inRangeTiles = inRangeTiles
             .Where(t => t != null)
