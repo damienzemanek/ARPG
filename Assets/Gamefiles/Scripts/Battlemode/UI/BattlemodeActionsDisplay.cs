@@ -405,7 +405,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         txt_PlayerAPnum.text = resolvedApCost.ToString();
     }
     
-    
+    // TO:DO Ordered Effects so the list is always in the same order
     public void ShowEffects(BattlemodeActionConfig actionConfig)
     {
         // Populate Effects
@@ -416,6 +416,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // effect ctx holds state (stacks amount), could separate later. although locality of info is desired
         for (int i = 0; i < actionConfig.effectsToApplyToTarget.Count; i++)
             effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToTarget[i].CreateNewEffectInstance());
+        
+        for (int i = 0; i < actionConfig.effectsToApplyToSelf.Count; i++)
+            effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToSelf[i].CreateNewEffectInstance());
     }
 
     public void ShowCurrentStatusEffectsFromOccupantCtx(BattlerOccupantCtx battlerOccupantCtx)

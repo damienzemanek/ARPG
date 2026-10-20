@@ -90,6 +90,7 @@ public class GridWorld : MonoBehaviour
     {
         int populationCount = 0;
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var charData);
+        if(charData == null) Debug.LogError("CharactersData_SavedDataSO is null.");
         foreach (var equippedCharacter in charData.charactersData)
         {
             charData.currentCharacterConfigurations.characterConfigs.TryGetValue(equippedCharacter.characterConfigName, out var occupant);
