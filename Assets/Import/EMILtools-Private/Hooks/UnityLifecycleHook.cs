@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
+
 public class UnityLifecycleHook : MonoBehaviour
 {
     public bool awake, onenable, ondisable, start, update, fixedupdate;
