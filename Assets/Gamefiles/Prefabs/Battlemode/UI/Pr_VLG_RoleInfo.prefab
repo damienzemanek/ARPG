@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 5280588739392004067}
   - component: {fileID: 1650157829910666846}
   m_Layer: 5
-  m_Name: Pr_VLG Targetting Info
+  m_Name: Pr_VLG_RoleInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
