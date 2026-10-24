@@ -492,7 +492,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         foreach(var spEffect in queuedPlayerAction.actingOccupantCtx.specialEffects)
             spEffect.ResolveEffectRightBeforeQueued(queuedPlayerAction.actingOccupantCtx, queuedPlayerAction.actionCtx);
         
-        var inRangeTiles = grid.GetInRangeTiles(actionCtx.targetingCfgInstanced, tile);
+        var inRangeTiles = grid.GetInRangeTiles(actionCtx, tile);
         
         if (actionCtx.cfg.moveToSelectedEmptyTile)
             inRangeTiles = grid.ExcludeSection(BattlefieldSection.Right, inRangeTiles);
@@ -519,6 +519,19 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             t.SpecialTargetConsiderations(queuedPlayerAction.lookingForTarget);
         }
     }
+    
+    public bool GetUsableTiles(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> usableTiles)
+    {
+        usableTiles = new List<BattleTile>();
+        foreach (var t in grid.GetAllTiles())
+        {
+            bool matchingRow = actionCtx.targetingCfgInstanced.usableInRowRanks.HasFlag(t.rowRank);
+            bool matchingCol = actionCtx.targetingCfgInstanced.usableInColRanks.HasFlag(t.colRank);
+            if (matchingRow || matchingCol) usableTiles.Add(t);
+        }
+        Debug.Log("[Grid] GetUsableTiles() Found: " + string.Join(", ", usableTiles.Select(t => $"[{t.row}, {t.col}]")));
+        return usableTiles.Count > 0;
+    }
 
     public bool IsInUsableTile(BattlemodeActionCtx actionCtx, BattleTile actingTile)
     {
@@ -529,9 +542,9 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         return false;
     }
 
-    public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile)
+    public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> allInRangeTiles)
     {
-        var allInRangeTiles = grid.GetInRangeTiles(actionCtx.targetingCfgInstanced, actingTile);
+        allInRangeTiles = grid.GetInRangeTiles(actionCtx, actingTile);
         return allInRangeTiles.Count > 0;
     }
 

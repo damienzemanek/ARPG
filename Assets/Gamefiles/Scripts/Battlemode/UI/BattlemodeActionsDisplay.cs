@@ -25,10 +25,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [Required] public Transform actionsExhaustedDisplayParent;
     [Required] public GameObject displ_ActionInfo;
     [Required] public TextMeshProUGUI txt_targetRole;
-    [Required] public TextMeshProUGUI txt_usableRowsNums;
-    [Required] public TextMeshProUGUI txt_usableColsNums;
-    [Required] public TextMeshProUGUI txt_targetRowsNums;
-    [Required] public TextMeshProUGUI txt_targetColsNums;
     [Required] public Transform vlg_targetingInfoParent;
     [Required] public GameObject pr_hlg_targetingDetail;
 
@@ -83,20 +79,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionName;
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerAPnum;
-    
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseRows;
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseCols;
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargRows;
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargCols;
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgUseAdds;
-    [BoxGroup("BattleInfo: Action")] [Required] public GameObject hlgTargAdds;
-    
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_usableRowNum;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_usableColNum;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targetRowNum;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targetColNum;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_useAdd;
-    [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_targAdd;
+    [BoxGroup("BattleInfo: Action")] [Required] public List<ActionRangeTile> actionRangeTiles = new();
 
     
     // Future: Button For Disabling Attacks
@@ -241,7 +224,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
             actionSlots[i].gameObject.SetActive(true);
             actionSlots[i].InitAction(actionCtx);
-            CheckRangeMutation(actionCtx, tile, actionSlots[i]);
+            CheckRangeMutation(actionCtx, tile, actionSlots[i], out _, out _);
 
             if (foundFirstHandAction) continue;
             foundFirstHandAction = true;
@@ -359,37 +342,46 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         
         txt_targetRole.text = "Target: " + actionCtx.cfg.roleTarget;
         
-        txt_usableRowNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.UsableRow);
-        hlgUseRows.gameObject.SetActive(txt_usableRowNum.text != "");
         
-        txt_usableColNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.UsableCol);
-        hlgUseCols.gameObject.SetActive(txt_usableColNum.text != "");
+        CheckRangeMutation(actionCtx, tile, actionSlot, 
+            out var allInRangeTiles, out var allInUsableTiles);
         
-        txt_targetRowNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.TargetRow);
-        hlgTargRows.gameObject.SetActive(txt_targetRowNum.text != "");
-        
-        txt_targetColNum.text = actionCtx.cfg.GetColOrRow(BattlemodeActionConfig.RowColUsableTargetNum.TargetCol);
-        hlgTargCols.gameObject.SetActive(txt_targetColNum.text != "");
-
-        txt_targAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive.ToString();
-        hlgTargAdds.gameObject.SetActive(txt_targAdd.text != "None");
-        
-        txt_useAdd.text = actionCtx.cfg.targetingCfg.targetingPatternAdditive == BattlemodeActionConfig.TargetingPattern.Self ? "Self" : "";
-        hlgUseAdds.gameObject.SetActive(txt_useAdd.text != "");
-        
-        CheckRangeMutation(actionCtx, tile, actionSlot);
+        foreach (var t in actionRangeTiles)
+        {
+            t.ResetTiles();
+            if (t.row == tile.row && t.col == tile.col) t.SetUserIndication(true);
+            if (t.col == 3) t.SetActionRangeTileState(ActionRangeTile.TileState.Contested);
+            if (allInUsableTiles.Any(usable => usable.row == t.row && usable.col == t.col))
+            {
+                t.SetActionRangeTileState(ActionRangeTile.TileState.Usable);
+                Debug.Log("Usable Tile: " + t.row + ", " + t.col);
+                continue;
+            }
+            if (allInRangeTiles.Any(inRange => inRange.row == t.row && inRange.col == t.col))
+            {
+                t.SetActionRangeTileState(ActionRangeTile.TileState.InRange);
+                Debug.Log("InRange Tile: " + t.row + ", " + t.col);
+                continue;
+            }
+        }
         
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
-    public void CheckRangeMutation(BattlemodeActionCtx actionCtx, BattleTile tile, BattlemodeAction actionSlot)
+    public void CheckRangeMutation(BattlemodeActionCtx actionCtx, BattleTile tile, BattlemodeAction actionSlot,
+        out List<BattleTile> allInRangeTiles,
+        out List<BattleTile> allInUsableTiles)
     {
+        bool inRange = BattleTracker.Instance.IsInTargettableRange(actionCtx, tile, out allInRangeTiles);
+        BattleTracker.Instance.GetUsableTiles(actionCtx, tile, out allInUsableTiles);
+        
         if (BattleTracker.Instance.IsInUsableTile(actionCtx, tile))
         {
-            if(!BattleTracker.Instance.IsInTargettableRange(actionCtx, tile)) 
+            if(!inRange) 
                 actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.OutOfRange);
         }
-        else actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.Unusable);
+        else 
+            actionSlot.RangeMutateAction(BattlemodeAction.RangeMutateActionDisplay.Unusable);
     }
 
 
