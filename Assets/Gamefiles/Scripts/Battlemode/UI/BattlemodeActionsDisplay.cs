@@ -24,9 +24,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [Required] public Transform actionsHandDisplayParent;
     [Required] public Transform actionsExhaustedDisplayParent;
     [Required] public GameObject displ_ActionInfo;
-    [Required] public TextMeshProUGUI txt_targetRole;
-    [Required] public Transform vlg_targetingInfoParent;
-    [Required] public GameObject pr_hlg_targetingDetail;
+    [BoxGroup("Action Info Display")] [Required] public Transform parent_roleTargetInfo;
+    [FormerlySerializedAs("pr_hlg_targetingDetail")] [BoxGroup("Action Info Display")] [Required] public GameObject pr_hlg_infoDetail;
+    [BoxGroup("Action Info Display")] [Required] public GameObject pr_vlg_roleTargetInfo;
 
 
 
@@ -327,20 +327,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         currentlySelectedAction = actionCtx;
 
         // hardocoding this avoiding desctruction bc o well need to just ge it working
-        foreach (var child in vlg_targetingInfoParent.Children())
-        {
-            if(child.transform == vlg_targetingInfoParent.GetChild(0)) continue;
-            Destroy(child);
-        }
-        
-        var targetingDetails = actionCtx.cfg.GetActionDetailTexts();
-        foreach (var detail in targetingDetails)
-        {
-            var newDetail = Instantiate(pr_hlg_targetingDetail, vlg_targetingInfoParent);
-            newDetail.transform.GetChild(1).Get<TextMeshProUGUI>().text = detail; // hardoding this bc o well idc, its the second child
-        }
-        
-        txt_targetRole.text = "Target: " + actionCtx.cfg.roleTarget;
+        foreach (var child in parent_roleTargetInfo.Children()) Destroy(child);
+        CreateRoleTargetInfoAndDetails();
         
         
         CheckRangeMutation(actionCtx, tile, actionSlot, 
@@ -366,6 +354,30 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         }
         
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+
+        void CreateRoleTargetInfoAndDetails()
+        {
+            var newRoleTargetInfo = Instantiate(pr_vlg_roleTargetInfo, parent_roleTargetInfo);
+            var stringTargetingDetails = actionCtx.cfg.GetTargetDetails();
+            foreach (var targDetail in stringTargetingDetails)
+            {
+                var newTargDetail = Instantiate(pr_hlg_infoDetail, newRoleTargetInfo.transform);
+                newTargDetail.transform.GetChild(1).Get<TextMeshProUGUI>().text = targDetail; // hardoding this bc o well idc, its the second child
+            }
+            newRoleTargetInfo.Get<BattlemodeRoleTargetInfo>().SetRoleName("Target: " + actionCtx.cfg.roleTarget);
+            
+            // Check if there is anything to self if not just ret
+            var stringSelfDetails = actionCtx.cfg.GetSelfDetails();
+            if(stringSelfDetails.Count == 0) return;
+            var newSelfInfo = Instantiate(pr_vlg_roleTargetInfo, parent_roleTargetInfo);
+            foreach (var selfDetail in stringSelfDetails)
+            {
+                var newSelfDetail = Instantiate(pr_hlg_infoDetail, newSelfInfo.transform);
+                newSelfDetail.transform.GetChild(1).Get<TextMeshProUGUI>().text = selfDetail;
+            }
+            newSelfInfo.Get<BattlemodeRoleTargetInfo>().SetRoleName("Self:");
+            
+        }
     }
 
     public void CheckRangeMutation(BattlemodeActionCtx actionCtx, BattleTile tile, BattlemodeAction actionSlot,

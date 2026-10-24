@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -282,10 +283,22 @@ public class BattlemodeActionConfig : ItemSO
             default: return "";
         }
     }
-    
+
+    public List<string> GetSelfDetails()
+    {
+        var ret = new List<string>();
+
+        if (movementCfg.amount > 0)
+            ret.Add("Moves Self: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
+        foreach (var targEff in effectsToApplyToSelf)
+            ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+        
+        return null;
+    }
     
     // Creates a list of targetting details
-    public List<string> GetActionDetailTexts()
+    public List<string> GetTargetDetails()
     {
         var ret = new List<string>();
         
@@ -314,6 +327,9 @@ public class BattlemodeActionConfig : ItemSO
         if(actionQualifier.HasFlag(ActionQualifier.Exhuast)) ret.Add("EXHAUST");
         if(actionQualifier.HasFlag(ActionQualifier.UnExhuastAll)) ret.Add("Un-Exhuasts All Exhuasted Actions");
 
+        if (targetMovementCfg.amount > 0)
+            ret.Add("Moves Target: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
         return ret;
         // Self effects are different targeting detail prefab
     }
