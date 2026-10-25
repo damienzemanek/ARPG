@@ -40,7 +40,7 @@ MonoBehaviour:
     - hpThreshold: 0
       linearDefaultTraversal: 0
       leadingZero: 0
-      actionOrder: 2210
+      actionOrder: 2201
   intentions: 2
   defaultPredicted: 1
   references:

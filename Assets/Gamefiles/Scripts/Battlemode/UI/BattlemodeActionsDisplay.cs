@@ -298,8 +298,6 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // Recently Selected Action Setup
         if(firstAction != null && firstAction.actionCtx != null)
             ShowAction(tile, firstAction);
-        
-        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     void ClearExhuastedActionSlots()
@@ -323,12 +321,18 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
         txt_ActionName.text = actionCtx.cfg.actionName;
         
+        // Note: Targeting Details before effects
+        // hardocoding this avoiding desctruction bc o well need to just ge it working
+        foreach (var child in parent_roleTargetInfo.Children())
+        {
+            child.gameObject.SetActive(false);
+            Destroy(child);
+        }
+        
+        CreateRoleTargetInfoAndDetails();
+        
         ShowEffects(actionCtx?.cfg);
         currentlySelectedAction = actionCtx;
-
-        // hardocoding this avoiding desctruction bc o well need to just ge it working
-        foreach (var child in parent_roleTargetInfo.Children()) Destroy(child);
-        CreateRoleTargetInfoAndDetails();
         
         
         CheckRangeMutation(actionCtx, tile, actionSlot, 
@@ -358,6 +362,13 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         void CreateRoleTargetInfoAndDetails()
         {
             var newRoleTargetInfo = Instantiate(pr_vlg_roleTargetInfo, parent_roleTargetInfo);
+            foreach (var targInfoChild in newRoleTargetInfo.transform.Children())
+            {
+                if (newRoleTargetInfo.transform.GetChild(0).gameObject == targInfoChild) continue;
+                targInfoChild.gameObject.SetActive(false);
+                Destroy(targInfoChild.gameObject);
+            }
+            
             var stringTargetingDetails = actionCtx.cfg.GetTargetDetails();
             foreach (var targDetail in stringTargetingDetails)
             {
@@ -370,6 +381,13 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             var stringSelfDetails = actionCtx.cfg.GetSelfDetails();
             if(stringSelfDetails.Count == 0) return;
             var newSelfInfo = Instantiate(pr_vlg_roleTargetInfo, parent_roleTargetInfo);
+            foreach (var selfInfoChild in newSelfInfo.transform.Children())
+            {
+                if(newSelfInfo.transform.GetChild(0).gameObject == selfInfoChild) continue;
+                selfInfoChild.gameObject.SetActive(false);
+                Destroy(selfInfoChild.gameObject);
+            }
+            
             foreach (var selfDetail in stringSelfDetails)
             {
                 var newSelfDetail = Instantiate(pr_hlg_infoDetail, newSelfInfo.transform);

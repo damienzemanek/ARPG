@@ -294,7 +294,7 @@ public class BattlemodeActionConfig : ItemSO
         foreach (var targEff in effectsToApplyToSelf)
             ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
         
-        return null;
+        return ret;
     }
     
     // Creates a list of targetting details

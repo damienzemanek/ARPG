@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 4717801488044611878}
   - component: {fileID: 5280588739392004067}
   - component: {fileID: 1650157829910666846}
+  - component: {fileID: 7268701662376540180}
   m_Layer: 5
   m_Name: Pr_VLG_RoleInfo
   m_TagString: Untagged
@@ -243,6 +244,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &7268701662376540180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7608697895985180121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f2fdf01881b99419f9bb5b582cca5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattlemodeRoleTargetInfo
+  roleName: {fileID: 4488305869991591663}
+  detailParent: {fileID: 2936016796811636590}
 --- !u!1001 &538563148888849204
 PrefabInstance:
   m_ObjectHideFlags: 0
