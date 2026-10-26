@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 236.255, y: -118.189995}
-  m_SizeDelta: {x: 472.51, y: 0}
+  m_AnchoredPosition: {x: 236.25, y: -118.189995}
+  m_SizeDelta: {x: 472.5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1239862963180322506
 CanvasRenderer:
@@ -491,8 +491,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 236.255, y: 0}
-  m_SizeDelta: {x: 472.51, y: 0}
+  m_AnchoredPosition: {x: 236.25, y: 0}
+  m_SizeDelta: {x: 472.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8152184169207960495
 CanvasRenderer:
@@ -750,8 +750,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 236.255, y: -331.91998}
-  m_SizeDelta: {x: 472.51, y: 0}
+  m_AnchoredPosition: {x: 236.25, y: -331.91998}
+  m_SizeDelta: {x: 472.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7494624224535388486
 MonoBehaviour:
@@ -769,7 +769,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 5
-    m_Bottom: 0
+    m_Bottom: 20
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -3147,8 +3147,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 236.255, y: -506.74}
-  m_SizeDelta: {x: 472.51, y: 0}
+  m_AnchoredPosition: {x: 236.25, y: -521.74}
+  m_SizeDelta: {x: 472.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4618289979353449991
 MonoBehaviour:
@@ -4031,6 +4031,7 @@ GameObject:
   - component: {fileID: 5615436406916892051}
   - component: {fileID: 6307834324642608804}
   - component: {fileID: 6958656380523406396}
+  - component: {fileID: 2977284207863400563}
   m_Layer: 5
   m_Name: SCRL Action Info
   m_TagString: Untagged
@@ -4109,6 +4110,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
+--- !u!114 &2977284207863400563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7618410839996291175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.003921569}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8110966096224814119
 GameObject:
   m_ObjectHideFlags: 0
@@ -5042,7 +5073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2936016796811636590, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 472.51
+      value: 472.5
       objectReference: {fileID: 0}
     - target: {fileID: 2936016796811636590, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_SizeDelta.y
@@ -5078,7 +5109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2936016796811636590, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 236.255
+      value: 236.25
       objectReference: {fileID: 0}
     - target: {fileID: 2936016796811636590, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5135,6 +5166,10 @@ PrefabInstance:
     - target: {fileID: 3029797709131613756, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -12.195
+      objectReference: {fileID: 0}
+    - target: {fileID: 5280588739392004067, guid: 4a793b684f102a34aaecca971032f656, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5861279629656879279, guid: 4a793b684f102a34aaecca971032f656, type: 3}
       propertyPath: m_AnchorMax.y

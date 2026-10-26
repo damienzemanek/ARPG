@@ -466,9 +466,16 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
     public void ShowSpecialEffects(BattlerOccupantCtx battlerOccupantCtx)
     {
+        bool hasSpecialEffects = battlerOccupantCtx.specialEffects.Count > 0;
         specialEffectDisplayPool.ReleaseAll();
-        foreach (var effect in battlerOccupantCtx.specialEffects)
-            specialEffectDisplayPool.Get().PopulateEffect(effect);
+        if (hasSpecialEffects)
+        {
+            specialEffectDisplayParent.gameObject.SetActive(true);
+            foreach (var effect in battlerOccupantCtx.specialEffects)
+                specialEffectDisplayPool.Get().PopulateEffect(effect);
+        }
+        else
+            specialEffectDisplayParent.gameObject.SetActive(false);
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 

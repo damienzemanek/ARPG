@@ -545,7 +545,18 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
     public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> allInRangeTiles)
     {
         allInRangeTiles = grid.GetInRangeTiles(actionCtx, actingTile);
-        return allInRangeTiles.Count > 0;
+        if (allInRangeTiles.Count <= 0)
+        {
+            Debug.Log("[BattleTracker] Action {actionCtx.cfg.name} is not in range of any tiles.");
+            return false;
+        }
+        bool canTargetSelf = actionCtx.cfg.roleTarget == Role.Self && allInRangeTiles.Any(t => t == actingTile);
+        bool canTargetEnemy = actionCtx.cfg.roleTarget == Role.Enemy && allInRangeTiles.Any(t => t.occupantCtx is EnemyOccupantCtx);
+        bool canTargetEmptyTile = actionCtx.cfg.roleTarget == Role.EmptyTile && allInRangeTiles.Any(t => t.occupantCtx == null);
+        bool canTargetAlly = actionCtx.cfg.roleTarget == Role.Ally && allInRangeTiles.Any(t => t.occupantCtx is CharacterOccupantCtx);
+        bool ret = canTargetSelf || canTargetEnemy || canTargetEmptyTile || canTargetAlly;
+        Debug.Log($"[BattleTracker] Action {actionCtx.cfg.name} is in range of {allInRangeTiles.Count} total tiles, Can Role Target at least 1? {ret}");;
+        return ret;
     }
 
 
