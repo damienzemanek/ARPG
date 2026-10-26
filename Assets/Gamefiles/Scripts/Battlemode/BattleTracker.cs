@@ -600,8 +600,19 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         currentTurn = Turn.Player;
         if (IsBattleOver()) return;
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
-        opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
-        playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
+        opponentTiles.ForEach(t =>
+        {
+            if (t.occupantCtx is BattlerOccupantCtx boc)
+            {
+                boc.hasFreeIntent = true;
+                boc.hasFreeRequeue = true;
+            }
+        });
+        playerTiles.ForEach(t =>
+        {
+            if (t.occupantCtx is BattlerOccupantCtx boc)
+                boc.hasFreeIntent = true;
+        });
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
 
         
