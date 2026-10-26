@@ -408,16 +408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3ec1331a8c47b4abb173f8f56f1a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeSpecialEffect
-  effect:
-    addOccurance: 0
-    resolveOccurance: 0
-    time: 0
-    stacks: 0
-    effectStrategy:
-      _type:
-        m_Name: 
-        m_AssemblyQualifiedName: 
-        m_AssemblyName: 
   txt_name: {fileID: 8209332792327676602}
   txt_description: {fileID: 3390081576110191801}
   txt_stackTotalNum: {fileID: 3850391290161323512}
@@ -456,7 +446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 225, y: -80.034}
+  m_AnchoredPosition: {x: 225, y: -51.894}
   m_SizeDelta: {x: 450, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8835605907515119410

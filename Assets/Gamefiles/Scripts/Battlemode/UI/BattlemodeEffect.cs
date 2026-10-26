@@ -13,7 +13,8 @@ public abstract class BattlemodeEffectBase : MonoBehaviour
 
 public class BattlemodeEffect : BattlemodeEffectBase
 {
-    const string k_StackCountFormat = "{0} stack(s)";
+    const string k_StackCountFormat = "{0}";
+    const string k_TotalStackCountFormat = "{0} stack(s)";
 
     
     [ReadOnly] public BattlemodeEffectStrategyInstance effectCtx;
@@ -52,7 +53,7 @@ public class BattlemodeEffect : BattlemodeEffectBase
         turnEffect.UpdateStackCount(turnStacks);
         battleEffect.UpdateStackCount(battleStacks);
         expeditionEffect.UpdateStackCount(expeditionStacks);
-        txt_stackTotalNum.text = string.Format(k_StackCountFormat, effect.stacksTotal);
+        txt_stackTotalNum.text = string.Format(k_TotalStackCountFormat, effect.stacksTotal);
     }
 
     [Serializable]
