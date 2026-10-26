@@ -93,29 +93,51 @@ public abstract class BattlemodeEffectStrategyInstance
     public string GetEffectDetailText()
     {
         var durations = new List<string>();
-        var turnStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn)
+
+        var turnStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn, out var turnSetStacksDirectly)
             ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Turn).stacks
             : 0;
-        var battleStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle)
+        var battleStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle, out var battleSetStacksDirectly)
             ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Battle).stacks
             : 0;
-        var permStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition)
+        var permStacks = HasStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition, out var permSetStacksDirectly)
             ? GetStackCtx(BattlemodeEffectConfigInstance.EffectTime.Expedition).stacks
             : 0;
+        
+        bool allZeros = turnStacks == 0 && battleStacks == 0 && permStacks == 0;
 
-        if (turnStacks > 0) durations.Add($"({turnStacks} Turns)");
-        if (battleStacks > 0) durations.Add($"({battleStacks} Battles)");
-        if (permStacks > 0) durations.Add($"({permStacks} Expeditions)");
-        var ret = effectName;
-        if (durations.Count > 0) ret += $" {string.Join(" ", durations)}";
-        return ret;
+        if (permSetStacksDirectly && battleSetStacksDirectly && turnSetStacksDirectly && allZeros)
+            return $"{effectName}: Reset All Stacks to 0";
+        
+        if (turnStacks > 0) durations.Add($"+{turnStacks} Turns");
+        else if(turnSetStacksDirectly) durations.Add($"Set to {turnStacks} Turns");
+        
+        if (battleStacks > 0) durations.Add($"+{battleStacks} Battles");
+        else if(battleSetStacksDirectly) durations.Add($"Set to {battleStacks} Battles");
+        
+        if (permStacks > 0) durations.Add($"+{permStacks} Expeditions");
+        else if(permSetStacksDirectly) durations.Add($"Set to {permStacks} Expeditions");
+        
+        return durations.Count > 0
+            ? $"{effectName}: {string.Join(", ", durations)}"
+            : effectName;
     }
     
     public abstract int priority { get; }
     static int effectValuesLength = Enum.GetValues(typeof(BattlemodeEffectConfigInstance.EffectTime)).Length;
     public int stacksTotal => ctx.stackCtxs.Sum(stackCtx => stackCtx.stacks);
-    public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime)
-        => Array.Exists(ctx.stackCtxs, s => s.instanceEffectTime == effectTime);
+
+    public bool HasStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime, out bool setsStacksDirectly)
+    {
+        foreach (var s in ctx.stackCtxs)
+        {
+            if (s.instanceEffectTime != effectTime) continue;
+            setsStacksDirectly = s.setStacksDirectly;
+            return true;
+        }
+        setsStacksDirectly = false;
+        return false;
+    }
 
     public ref StackCtx GetStackCtx(BattlemodeEffectConfigInstance.EffectTime effectTime)
     {
@@ -165,7 +187,7 @@ public abstract class BattlemodeEffectStrategyInstance
             };
 
             if (cont) continue;
-            if (cfg.defaultEffectStrategyValues.HasStackCtx(effectTime))
+            if (cfg.defaultEffectStrategyValues.HasStackCtx(effectTime, out _))
             {
                 var defaultStackCtx = cfg.defaultEffectStrategyValues.GetStackCtx(effectTime);
 
