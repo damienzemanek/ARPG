@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Disabling Shot
   description: Disabling Shot Description
+  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0
@@ -23,7 +24,6 @@ MonoBehaviour:
   targetedBodyPart: 4
   useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
   dmgMultiplier: 100
@@ -36,7 +36,7 @@ MonoBehaviour:
     targetRowRanks: 0
     targetCurrentRow: 1
     usableInColRanks: 6
-    targetColRanks: 48
+    targetColRanks: 16
     targetCurrentCol: 0
   movementCfg:
     direction: 0
