@@ -21,7 +21,8 @@ public class TeamGrid : MonoBehaviour
     [ReadOnly] public CharacterSelectPortraitSquare currentlySelectedSquare = null;
     [ReadOnly] public CharacterSelectPortrait currentlyEquippingPortrait = null;
 
-    [Required] public GameObject go_btnTeamGrid;
+    [Required] public GameObject go_btnRemove;
+    [Required] public GameObject go_btnStopMoving;
     [Required] public TextMeshProUGUI txt_btnLabel;
     [Required] public GameObject lbl_currentlyEquipping;
     [Required] public GameObject lbl_moving;
@@ -63,7 +64,8 @@ public class TeamGrid : MonoBehaviour
         lbl_selectAnOpenTile.SetActive(false);
         
         txt_btnLabel.text = string.Empty;
-        go_btnTeamGrid.gameObject.SetActive(false);
+        go_btnRemove.gameObject.SetActive(false);
+        go_btnStopMoving.gameObject.SetActive(false);
     }
     
     public void OpenTeamGrid()
@@ -136,32 +138,33 @@ public class TeamGrid : MonoBehaviour
     }
 
     private List<CharacterSelectPortrait> characterPortraitsBuffer = new List<CharacterSelectPortrait>();
-    public void Btn_RemoveOrStop()
+    public void Btn_Remove()
     {
-        if (currentOperation == CurrentOperation.MovingOrDequipping)
+        characterPortraitsBuffer.Clear();
+        characterPortraitsBuffer = allPortraits
+            .Where(p => p.state == CharacterSelectPortraitState.Equipped)
+            .ToList();
+        if (characterPortraitsBuffer.Count <= 1)
         {
-            characterPortraitsBuffer.Clear();
-            characterPortraitsBuffer = allPortraits
-                .Where(p => p.state == CharacterSelectPortraitState.Equipped)
-                .ToList();
-            if (characterPortraitsBuffer.Count <= 1)
-            {
-                // alert
-                UiOrchestration.Alert(cannotRemoveFinalCharText);
-                return;
-            }
-            
-            SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
-            var data = charData.charactersData.Find(c =>
-                c.characterConfigName == currentlySelectedSquare.currentlyEquippedPortrait.characterCfg.occupantName);
-            data.row = -1;
-            data.col = -1;
-            data.equipped = false;
-            charSaver.Save();
-            currentlySelectedSquare.currentlyEquippedPortrait.UpdateState(CharacterSelectPortraitState.Unselected);
-            currentlySelectedSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
+            // alert
+            UiOrchestration.Alert(cannotRemoveFinalCharText);
+            return;
         }
-        
+            
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+        var data = charData.charactersData.Find(c =>
+            c.characterConfigName == currentlySelectedSquare.currentlyEquippedPortrait.characterCfg.occupantName);
+        data.row = -1;
+        data.col = -1;
+        data.equipped = false;
+        charSaver.Save();
+        currentlySelectedSquare.currentlyEquippedPortrait.UpdateState(CharacterSelectPortraitState.Unselected);
+        currentlySelectedSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
+        ResetState();
+    }
+
+    public void Btn_StopMoving()
+    {
         ResetState();
     }
     

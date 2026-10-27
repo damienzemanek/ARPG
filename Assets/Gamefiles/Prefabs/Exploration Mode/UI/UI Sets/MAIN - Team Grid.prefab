@@ -2344,7 +2344,7 @@ PrefabInstance:
       objectReference: {fileID: 5034742347879525785}
     - target: {fileID: 184471425421549575, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Btn_RemoveOrStop
+      value: Btn_Remove
       objectReference: {fileID: 0}
     - target: {fileID: 184471425421549575, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
