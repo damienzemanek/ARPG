@@ -28,21 +28,16 @@ public class CharacterInfoDisplay : MonoBehaviour
     [ReadOnly] public CharacterConfig selectedCharacter;
     [Required] public PlayerEvents playerEvents;
     [Required] public Button selectBtn;
+    [Required] public TeamGrid teamGrid;
 
-    public List<CharacterSelectPortrait> characterSelectPortraits = new();
+    [ReadOnly] public List<CharacterSelectPortrait> characterSelectPortraits = new();
+    public List<CharacterSelectPortrait> glgCharacterSelectPortraits = new();
 
     public void Awake()
     {
         selectedCharacter = null;
         lhs_ChoseYourCharacter.SetActive(false);
         rhs_characterInfoDisplay.SetActive(false);
-    }
-
-    [Button]
-    public void RetrievePortraits(Transform parent)
-    {
-        characterSelectPortraits.Clear();
-        characterSelectPortraits.AddRange(parent.GetComponentsInChildren<CharacterSelectPortrait>());
     }
     
     
@@ -62,6 +57,9 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ViewCharacterScreen()
     {
+        teamGrid.ResetState();
+        characterSelectPortraits.Clear();
+        characterSelectPortraits.AddRange(glgCharacterSelectPortraits);
         txt_buttonLabel.text = "DETAILS";
         characterSelectPortraits.ForEach(p =>
         {
@@ -72,6 +70,8 @@ public class CharacterInfoDisplay : MonoBehaviour
     
     public void ViewManageTeamScreen()
     {
+        characterSelectPortraits.Clear();
+        characterSelectPortraits.AddRange(glgCharacterSelectPortraits);
         characterSelectPortraits.ForEach(p =>
         {
             p.portraitType = PortraitType.TeamGrid;

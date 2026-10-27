@@ -59,17 +59,24 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None)
     {
-        if(optionalToState != CharacterSelectPortraitState.None) state = optionalToState;
-        else if (useUnlockData) // is this is false, the portrait states are manual via inspector
+        if (optionalToState != CharacterSelectPortraitState.None)
+        {
+            state = optionalToState;
+            SwitchState();
+            return;
+        }
+        
+        if (useUnlockData) // is this is false, the portrait states are manual via inspector
         {
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var data);
+            if(data == null) Debug.LogError("No Character Save Data found");
+            if (characterCfg == null) return;
             var charData = data.GetCharacterData(characterCfg);
-           
+            
             // this auto handles InfoDisplayPortraitType
             state = charData.hasCharacter 
                 ? CharacterSelectPortraitState.Unselected 
                 : CharacterSelectPortraitState.Locked;
-            
             
             if (portraitType == PortraitType.TeamGrid)
             {
@@ -85,9 +92,12 @@ public class CharacterSelectPortrait : MonoBehaviour
                     }
                 }
             }
-            
+            SwitchState();
         }
-        
+    }
+
+    void SwitchState()
+    {
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:
@@ -129,7 +139,17 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     public void TeamUX_ClickOnCharacter()
     {
-        if(state == CharacterSelectPortraitState.Unselected)
-            teamGrid.InteractWithCharacterSelectPortrait(this);
+        if (portraitType == PortraitType.TeamGrid)
+        {
+            if(state == CharacterSelectPortraitState.Unselected)
+                teamGrid.InteractWithCharacterSelectPortrait(this);
+        }
+        else if(portraitType == PortraitType.InfoDisplay)
+        {
+            if(characterCfg == null) return;
+            if(state == CharacterSelectPortraitState.Locked) return;
+            infoDisplay.PreviewCharacter(characterCfg);
+        }
+
     }
 }
