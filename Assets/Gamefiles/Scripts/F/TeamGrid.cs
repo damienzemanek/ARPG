@@ -23,6 +23,8 @@ public class TeamGrid : MonoBehaviour
 
     [Required] public GameObject go_btnRemove;
     [Required] public GameObject go_btnStopMoving;
+    [Required] public GameObject go_btnStopEquipping;
+
     [Required] public TextMeshProUGUI txt_btnLabel;
     [Required] public GameObject lbl_currentlyEquipping;
     [Required] public GameObject lbl_moving;
@@ -66,6 +68,7 @@ public class TeamGrid : MonoBehaviour
         txt_btnLabel.text = string.Empty;
         go_btnRemove.gameObject.SetActive(false);
         go_btnStopMoving.gameObject.SetActive(false);
+        go_btnStopEquipping.SetActive(false);
     }
     
     public void OpenTeamGrid()
@@ -107,7 +110,9 @@ public class TeamGrid : MonoBehaviour
         lbl_moving.SetActive(false);
         lbl_currentlyEquipping.SetActive(true);
         lbl_selectAnOpenTile.SetActive(true);
-        go_btnTeamGrid.gameObject.SetActive(true);
+        go_btnStopMoving.gameObject.SetActive(false);
+        go_btnRemove.SetActive(false);
+        go_btnStopEquipping.SetActive(true);
         txt_btnLabel.text = "Stop";
     }
     
@@ -119,7 +124,9 @@ public class TeamGrid : MonoBehaviour
         lbl_moving.SetActive(true);
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
-        go_btnTeamGrid.gameObject.SetActive(true);
+        go_btnStopMoving.gameObject.SetActive(true);
+        go_btnRemove.SetActive(true);     
+        go_btnStopEquipping.SetActive(false);
         txt_btnLabel.text = "Remove";
     }
     
