@@ -102,6 +102,7 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         if (teamGrid.currentOperation == TeamGrid.CurrentOperation.Equipping &&
             teamGrid.currentlyEquippingPortrait != null)
         {
+            Debug.Log("Selected Square Portrait with currently equipping: " + teamGrid.currentlyEquippingPortrait.name + "");
             currentlyEquippedPortrait = teamGrid.currentlyEquippingPortrait;
             UpdateSquareState(CharacterSelectPortraitSquareState.Selected);
             teamGrid.EquipCharacter(this);

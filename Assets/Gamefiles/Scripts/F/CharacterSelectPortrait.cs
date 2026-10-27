@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class CharacterSelectPortrait : MonoBehaviour
 {
@@ -57,20 +59,19 @@ public class CharacterSelectPortrait : MonoBehaviour
         if(portraitType == PortraitType.InfoDisplay) infoDisplay.characterSelectPortraits.Remove(this);
     }
 
-    public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None)
+    public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None,
+        bool setDirectly = false)
     {
-        if (optionalToState != CharacterSelectPortraitState.None)
-        {
-            state = optionalToState;
-            SwitchState();
-            return;
-        }
-        
-        if (useUnlockData) // is this is false, the portrait states are manual via inspector
+        if (optionalToState != CharacterSelectPortraitState.None) state = optionalToState;
+        if (useUnlockData && !setDirectly) // is this is false, the portrait states are manual via inspector
         {
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var data);
             if(data == null) Debug.LogError("No Character Save Data found");
-            if (characterCfg == null) return;
+            if (characterCfg == null)
+            {
+                SwitchState();
+                return;
+            }
             var charData = data.GetCharacterData(characterCfg);
             
             // this auto handles InfoDisplayPortraitType
@@ -92,12 +93,14 @@ public class CharacterSelectPortrait : MonoBehaviour
                     }
                 }
             }
-            SwitchState();
         }
+        
+        SwitchState();
     }
 
     void SwitchState()
     {
+        if (characterCfg == null) state = CharacterSelectPortraitState.Empty;
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:

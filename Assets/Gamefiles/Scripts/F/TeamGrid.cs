@@ -123,7 +123,8 @@ public class TeamGrid : MonoBehaviour
     
     public void EquipCharacter(CharacterSelectPortraitSquare square)
     {
-        currentlyEquippingPortrait.UpdateState(CharacterSelectPortraitState.Equipped);
+        Debug.Log("Equipping Character" + currentlyEquippingPortrait.characterCfg.occupantName + " to square " + square.row + ", " + square.col + "");
+        currentlyEquippingPortrait.UpdateState(CharacterSelectPortraitState.Equipped, true);
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
         var matchingChar = charData.charactersData.Find(c =>
             c.characterConfigName == currentlyEquippingPortrait.characterCfg.occupantName);

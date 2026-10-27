@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deadeye
+  m_text: DEADYE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3dce3e80d0506cc4ea256c4c8899bf33, type: 2}
   m_sharedMaterial: {fileID: 6144668520599837227, guid: 3dce3e80d0506cc4ea256c4c8899bf33, type: 2}
