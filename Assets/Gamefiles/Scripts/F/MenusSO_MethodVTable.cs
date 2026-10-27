@@ -9,4 +9,16 @@ public class MenusSO_MethodVTable : SO_MethodVTable
     {
         Time.timeScale = val ? 0f : 1f;
     }
+    
+    public void ShowMainUIState(UiOrchestration orch, UiOrchestration.MainUIState state)
+    {
+        orch.ShowMainUIState(state);
+
+        switch (state)
+        {
+            case UiOrchestration.MainUIState.Characters:
+                
+                break;
+        }
+    }
 }

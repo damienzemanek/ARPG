@@ -34,21 +34,23 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void Awake()
     {
         selectedCharacter = null;
-        selectBtn.interactable = false;
         lhs_ChoseYourCharacter.SetActive(false);
         rhs_characterInfoDisplay.SetActive(false);
     }
 
-    public void ChangePortraits(List<CharacterSelectPortrait> portraits)
+    [Button]
+    public void RetrievePortraits(Transform parent)
     {
-        characterSelectPortraits = portraits;
+        characterSelectPortraits.Clear();
+        characterSelectPortraits.AddRange(parent.GetComponentsInChildren<CharacterSelectPortrait>());
     }
     
     
     #region ---------------------- Chose Starter Character ----------------------
 
-    public void InitChoseStarterCharacter()
+    public void ViewChoseStarterCharacterScreen()
     {
+        selectBtn.interactable = false;
         selectedCharacter = initiallySelectedPortrait.characterCfg;
         txt_buttonLabel.text = "Select Character";
         uiOrchestration.currentExplorationUIState = ExplorationUIState.FirstStart;
@@ -58,8 +60,35 @@ public class CharacterInfoDisplay : MonoBehaviour
         Debug.Log("Successfully chose starter character");
     }
 
+    public void ViewCharacterScreen()
+    {
+        txt_buttonLabel.text = "DETAILS";
+        characterSelectPortraits.ForEach(p =>
+        {
+            p.portraitType = PortraitType.InfoDisplay;
+            p.UpdateState();
+        });
+    }
+    
+    public void ViewManageTeamScreen()
+    {
+        characterSelectPortraits.ForEach(p =>
+        {
+            p.portraitType = PortraitType.TeamGrid;
+            p.UpdateState();
+        });
+    }
+
     public void MainButtonPressed()
     {
+        switch (uiOrchestration.currentMainUIState)
+        {
+            case MainUIState.Characters:
+                Debug.Log("Clicked Detail");
+                return;
+                break;
+        }
+        
         switch (uiOrchestration.currentExplorationUIState)
         {
             case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;

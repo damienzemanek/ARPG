@@ -64,10 +64,13 @@ public class CharacterSelectPortrait : MonoBehaviour
         {
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var data);
             var charData = data.GetCharacterData(characterCfg);
+           
+            // this auto handles InfoDisplayPortraitType
             state = charData.hasCharacter 
                 ? CharacterSelectPortraitState.Unselected 
                 : CharacterSelectPortraitState.Locked;
-
+            
+            
             if (portraitType == PortraitType.TeamGrid)
             {
                 Debug.Log($"{gameObject.name}: Is Team Grid");
@@ -82,6 +85,7 @@ public class CharacterSelectPortrait : MonoBehaviour
                     }
                 }
             }
+            
         }
         
         switch (state)

@@ -40,7 +40,7 @@ public class PlayerEvents : MonoBehaviour
             Debug.Log("Chosing Starter Character...");
             yield return charDisplayWait.Delay;
             Debug.Log("Chose A Starter Character");
-            characterInfoDisplay.InitChoseStarterCharacter();
+            characterInfoDisplay.ViewChoseStarterCharacterScreen();
             uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
             SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
