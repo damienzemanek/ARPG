@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
+  m_Name: Surgical Precision
+  m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
+  itemName: Surgical Precision
+  description: Surgical Precision Description
+  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  apCost: 3
+  roleTarget: 2
+  moveToSelectedEmptyTile: 0
+  actionIdentifier: 2
+  actionQualifier: 12
+  markStrategy: {fileID: 0}
+  targetedBodyPart: 1
+  useActionAnim: 1
+  useActionDelays: 1
+  hitCount: 1
+  maxEocTargetingAttempts: 2
+  dmgMultiplier: 50
+  healPercentage: 0
+  armorIncreasePercentage: 0
+  capArmorIncrease: 0
+  targetingCfg:
+    targetingPatternAdditive: 0
+    usableInRowRanks: 0
+    targetRowRanks: 0
+    targetCurrentRow: 1
+    usableInColRanks: 0
+    targetColRanks: 0
+    targetCurrentCol: 0
+  movementCfg:
+    direction: 0
+    amount: 0
+  targetMovementCfg:
+    direction: 0
+    amount: 0
+  effectsToApplyToTarget: []
+  effectsToApplyToSelf: []
+  aoe: 0
+  references:
+    version: 2
+    RefIds: []
