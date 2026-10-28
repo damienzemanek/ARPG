@@ -66,7 +66,9 @@ public class BattlemodeAction : MonoBehaviour
         if (actionCtx != null)
         {
             actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, this);
-            bgImg.sprite = hoverSprite;
+            if(bgImg != null)
+                if(hoverSprite != null)
+                     bgImg.sprite = hoverSprite;
         }
     }
 

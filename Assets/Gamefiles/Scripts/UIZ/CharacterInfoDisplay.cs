@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -122,12 +123,12 @@ public class CharacterInfoDisplay : MonoBehaviour
         if (onCharacterScreen) // already on
             return;
         
-
         
         // if not, play the animation (Newly inspected character)
         txt_descTactics.text = selectedCharacter.desc_tactics;
         txt_descAbout.text = selectedCharacter.desc_about;
         onCharacterScreen = true;
+        characterInfoPanelAnimator.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
     }
     
 
