@@ -19,7 +19,6 @@ public class MenuBar : MonoBehaviour
     public Color unselected;
     
     public List<MenuOption> menuOptions = new();
-    
 
     public void SelectOption(string optionName)
     {

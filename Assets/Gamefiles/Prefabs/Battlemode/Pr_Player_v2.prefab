@@ -1293,7 +1293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5898346145560683869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1313,7 +1313,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2.7, y: 488.24}
-  m_SizeDelta: {x: 524.95, y: 115.53}
+  m_SizeDelta: {x: 0, y: 115.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8068630115320063740
 MonoBehaviour:
@@ -7981,10 +7981,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7205520370236113147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.89, y: -80.740074}
-  m_SizeDelta: {x: 223.78, y: 5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &345454901630287868
 CanvasRenderer:
@@ -8342,7 +8342,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 389.365, y: -2.7649994}
-  m_SizeDelta: {x: 271.17, y: 110}
+  m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7253804791080415842
 CanvasRenderer:
@@ -8584,6 +8584,8 @@ MonoBehaviour:
   - {fileID: 1485175642963522638}
   - {fileID: 2188271994849318338}
   - {fileID: 5873647421220437867}
+  - {fileID: 2597358840736482410}
+  - {fileID: 9218762591357459437}
   explorationUIs:
     _serializedList:
     - Key: 0
@@ -8692,6 +8694,9 @@ MonoBehaviour:
       Value:
         uiObjects:
         - {fileID: 8180892421060168292}
+        - {fileID: 2597358840736482410}
+        - {fileID: 9218762591357459437}
+        - {fileID: 1297117120362979521}
         - {fileID: 9218762591357459437}
         - {fileID: 8487192752135307984}
         - {fileID: 1503868500342618254}
@@ -8703,13 +8708,19 @@ MonoBehaviour:
             m_Calls: []
     - Key: 2
       Value:
-        uiObjects: []
+        uiObjects:
+        - {fileID: 2597358840736482410}
+        - {fileID: 430606451866156235}
+        - {fileID: 1297117120362979521}
         onDisplay:
           m_PersistentCalls:
             m_Calls: []
     - Key: 3
       Value:
-        uiObjects: []
+        uiObjects:
+        - {fileID: 2597358840736482410}
+        - {fileID: 430606451866156235}
+        - {fileID: 1297117120362979521}
         onDisplay:
           m_PersistentCalls:
             m_Calls: []
@@ -8757,6 +8768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterInfoDisplay
   uiOrchestration: {fileID: 5234021868747728400}
+  menuBarDetails: {fileID: 7518024576330455131}
   txt_Name: {fileID: 8706418820082367159}
   txt_altName: {fileID: 5045124370169656853}
   txt_spEffect: {fileID: 2569349632387829455}
@@ -9481,7 +9493,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 111.89, y: -2.7649994}
-  m_SizeDelta: {x: 223.78, y: 110}
+  m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6357892585230428771
 CanvasRenderer:
@@ -15358,10 +15370,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2100763853788682736}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 135.585, y: -80.740074}
-  m_SizeDelta: {x: 271.17, y: 5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7421067255890005701
 CanvasRenderer:
@@ -20788,6 +20800,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8103831545574953585}
     m_Modifications:
+    - target: {fileID: 685845043174782485, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
+      propertyPath: m_Color.a
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 685845043174782485, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 685845043174782485, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 685845043174782485, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 685845043174782485, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1023834512343027243, guid: a2dba04def876e0458eb7805cc598ab7, type: 3}
       propertyPath: teamGrid
       value: 

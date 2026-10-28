@@ -12,6 +12,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
     [Required] public UiOrchestration uiOrchestration;
+    [Required] public MenuBar menuBarDetails;
     [Required] public TextMeshProUGUI txt_Name;
     [Required] public TextMeshProUGUI txt_altName;
     [Required] public TextMeshProUGUI txt_spEffect;
@@ -87,7 +88,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         switch (uiOrchestration.currentMainUIState)
         {
-            case MainUIState.Characters: uiOrchestration.ShowCharacterUIState(CharacterUIState.Overview); return;
+            case MainUIState.Characters: menuBarDetails.SelectOption("Overview"); return;
         }
         
         switch (uiOrchestration.currentExplorationUIState)
