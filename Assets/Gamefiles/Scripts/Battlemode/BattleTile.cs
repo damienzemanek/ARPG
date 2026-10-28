@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static BattlemodeActionConfig;
+using static BattlerOccupantObject;
 
 
 public class BattleTile : MonoBehaviour
@@ -54,10 +55,11 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("References")] [Required] public GameObject display;
     [BoxGroup("References")] [Required] public GameObject hpBar;
     [BoxGroup("References")] [Required] public GameObject display_AP;
+    [BoxGroup("References")] [Required] public GameObject display_Armor;
     [BoxGroup("References")] [Required] public TextMeshPro lblTxt_ApOrIntention;
     [BoxGroup("References")] [Required] public TextMeshPro txt_AP;
     [BoxGroup("References")] [Required] public TextMeshPro txt_remainingHP;
-
+    [BoxGroup("References")] [Required] public TextMeshPro txt_remainingArmor;
 
     [BoxGroup("References")] [Required] public Grid3D intentionsGrid;
     [BoxGroup("References")] [Required] public DetectorMouseClick mouseClickDetector;
@@ -125,6 +127,7 @@ public class BattleTile : MonoBehaviour
         alreadySelected = false;
         tileCanBeSelectedOveride = false;
         display.SetActive(occupantCtx != null);
+        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Regular);
     }
     
     public void HideDisplay() => display.SetActive(false);
@@ -135,6 +138,7 @@ public class BattleTile : MonoBehaviour
         DefaultOrContestedSetActive(false);
         contested.SetActive(false);
         unselectable = true;
+        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Faded);
     }
     
     public void SetUnselectable(bool v) => unselectable = v;
@@ -209,12 +213,7 @@ public class BattleTile : MonoBehaviour
         isInRange = true;
         inRange.SetActive(true);
     }
-
-    public void NotInRange()
-    {
-        if (unselectable) return; // if already unselectable just return
-        HideAndMakeUnSelectable();
-    }
+    
 
     #region Display Stats
 
@@ -223,9 +222,9 @@ public class BattleTile : MonoBehaviour
         if (!occupied) return;
         if (occupantCtx is not BattlerOccupantCtx battlerCtx) return;
         SetHealth(battlerCtx.currentHp, battlerCtx.maxHp);
+        SetArmor(battlerCtx.currentArmor);
         if (occupantCtx is not CharacterOccupantCtx characterCtx) return;
         SetAP(characterCtx.currentAP);
-
     }
 
     public void SetHealth(int current, float max)
@@ -240,6 +239,18 @@ public class BattleTile : MonoBehaviour
             txt_remainingHP.text = "0";
             TestKill();
         }
+    }
+
+    public void SetArmor(int current)
+    {
+        if (current <= 0)
+        {
+            display_Armor.SetActive(false);
+            txt_remainingArmor.text = "0";
+            return;
+        }
+        display_Armor.SetActive(true);
+        txt_remainingArmor.text = current.ToString();
     }
 
     public void SetAP(int current)
@@ -333,9 +344,8 @@ public class BattleTile : MonoBehaviour
             transform.position + occupantSpawnOffset,
             Quaternion.identity);
         occupantCtx.obj.name = config.name;
-        SetHealth(battlerConfig.maxHP, battlerConfig.maxHP);
         display.SetActive(true);
-
+        UpdateTransientStats();
         Debug.Log("Spawned " + config.name + " at [" + col + ", " + row + "]");
     }
     

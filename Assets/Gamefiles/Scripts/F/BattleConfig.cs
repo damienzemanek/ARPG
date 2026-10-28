@@ -14,6 +14,7 @@ public class BattleConfig : ScriptableObject
     [Serializable]
     public class Row
     {
+        public List<BattlePosition> cols => colPositions;
         [HideInInspector] public List<BattlePosition> colPositions = new();
         [HideInInspector] public int rowNum;
         [HideLabel] [ShowInInspector] [InlineProperty] public BattlePosition colPos0 { get => colPositions?[0]; set => colPositions[0] = value;}

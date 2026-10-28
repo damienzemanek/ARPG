@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSO
   occupantName: Gunslinger
   icon: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
-  prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+  prefab: {fileID: 1493016372842288641, guid: c969a3144fa7082409b24d9b74edd0ee, type: 3}
   currentLevel: 1
   maxHP: 14
   maxArmor: 2
@@ -41,8 +41,23 @@ MonoBehaviour:
       rid: 3738701859942301841
   maxAP: 6
   maxHandSize: 6
-  characterSprite: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
-  characterPortrait: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
+  portraitArtSelected: {fileID: 21300000, guid: 7aca4f7ed91b801428676ad243d95084, type: 3}
+  portraitArtUnselected: {fileID: 21300000, guid: 51c921c8282cc9d4988180591c8c0ed3, type: 3}
+  portraitArtSquareSelected: {fileID: 0}
+  portraitArtSquareUnselected: {fileID: 0}
+  portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
+  mainArt: {fileID: 21300000, guid: f4ea13354adabdd4fa844d8e2794c051, type: 3}
+  specialEffectName: DEADEYE
+  desc_tactics: "Gunslinger pressures his enemies from the backline with high speed
+    and high damage from his Deadeye. His Deadeye gets stronger after each use and
+    doesn\u2019t Exhaust, but also consumes more AP. Using Quick Draw will help lower
+    its cost, or Reload to reset its cost as well as damage. Reload also returns
+    all Exhausted action back to his hand. Combo Quick Draw and Reload to let him
+    unleash a barrage of Deadeye the next turn. Combo Deadeye with Disabling Shot
+    to open the opportunity for devastating damage. He can even Bone Break his enemy
+    if he can manage to use Hollow Point before it."
+  desc_about: 'Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger
+    Lore Gunslinger Lore Gunslinger Lore '
   references:
     version: 2
     RefIds:

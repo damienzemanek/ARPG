@@ -5,7 +5,8 @@
         "Unity.Collections",
         "Unity.Collections.BurstCompatibilityGen",
         "Unity.Mathematics",
-        "ProArchitecture"
+        "ProArchitecture",
+        "EMILtools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

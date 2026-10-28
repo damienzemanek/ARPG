@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   occupantName: Arachnid Beast
   icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  prefab: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+  prefab: {fileID: 1493016372842288641, guid: 7524a29e151171d489d43a27fe5f18b9, type: 3}
   currentLevel: 1
   maxHP: 10
   maxArmor: 4
@@ -24,7 +24,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bc00902c8ee2c4549bfc898ec8cac04f, type: 2}
   - {fileID: 11400000, guid: fc4f9855e3f4e974f91d036664138d14, type: 2}
   - {fileID: 11400000, guid: 55dff97fb28976a469a32291eda64582, type: 2}
-  AllAvaliableActions: []
+  AllAvaliableActions:
+  - {fileID: 11400000, guid: bc00902c8ee2c4549bfc898ec8cac04f, type: 2}
+  - {fileID: 11400000, guid: fc4f9855e3f4e974f91d036664138d14, type: 2}
+  - {fileID: 11400000, guid: 55dff97fb28976a469a32291eda64582, type: 2}
   ForcedActions: []
   specialEffects: []
   attackOrder: 1
@@ -37,7 +40,7 @@ MonoBehaviour:
     - hpThreshold: 0
       linearDefaultTraversal: 0
       leadingZero: 0
-      actionOrder: 2210
+      actionOrder: 2201
   intentions: 2
   defaultPredicted: 1
   references:

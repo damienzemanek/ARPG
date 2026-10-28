@@ -7,7 +7,6 @@ public class SaverService : Servicer<Type, Saver, SaverService>
     {
         base.Awake();
         if(Instance == this) DontDestroyOnLoad(gameObject);
-        Debug.Log("WNAT");
     }
     
     public bool Register(Saver saver)

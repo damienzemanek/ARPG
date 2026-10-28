@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SetSpawnLocPreset", menuName = "ARPG/SO/Method/SetSpawnLocPreset")]
-public class SetSpawnLocPreset : SO_Method_Preset
+public class SetSpawnLocPreset : SO_MethodVTable
 {
     [Required] public RegionData goingToRegion;
     [ValueDropdown(nameof(GetSpawnLocations))] public string spawnLocation;
@@ -12,9 +12,5 @@ public class SetSpawnLocPreset : SO_Method_Preset
         if (goingToRegion == null) yield break;
         foreach (string tag in goingToRegion.regionSpawnLocationTags) yield return tag;
     }
-
-    public override void Invoke()
-    {
-        SessionData.Instance.SetDesiredSpawnLocation(spawnLocation);
-    }
+    public void SetSpawnLocation() => SessionData.Instance.SetDesiredSpawnLocation(spawnLocation);
 }
