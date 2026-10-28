@@ -71,7 +71,7 @@ public class TeamGrid : MonoBehaviour
         foreach (var sq in allSquares)
         {
             if(sq.currentlyEquippedPortrait == null)
-                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Unselected);
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.None);
         }
     }
     
