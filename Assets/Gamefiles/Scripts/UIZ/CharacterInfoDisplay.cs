@@ -21,6 +21,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public TextMeshProUGUI txt_dmgNum;
     [Required] public TextMeshProUGUI txt_armorNum;
     [Required] public TextMeshProUGUI txt_buttonLabel;
+    [Required] public Image img_mainArt;
 
     [Required] public GameObject lhs_ChoseYourCharacter;
     [Required] public GameObject rhs_characterInfoDisplay;
@@ -34,6 +35,16 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public Animator characterInfoPanelAnimator;
     public string openCharInfoPanelAnimName = "Open";
     public string closeCharInfoPanelAnimName = "Close";
+    
+    [Required] public Animator mainArtAnimator;
+    public string toDefaultMainArtAnimName = "ToDefault";
+    public string toActionsOrEquipmentAnimName = "ActionsOrEquipment";
+    public string defaultActionsOrEquipmentAnimName = "ActionsOrEquipmentDefault";
+
+
+    [Required] public TextMeshProUGUI txt_descTactics;
+    [Required] public TextMeshProUGUI txt_descAbout;
+
 
     [ReadOnly] public List<CharacterSelectPortrait> characterSelectPortraits = new();
     public List<CharacterSelectPortrait> glgCharacterSelectPortraits = new();
@@ -71,6 +82,7 @@ public class CharacterInfoDisplay : MonoBehaviour
             p.portraitType = PortraitType.InfoDisplay;
             p.UpdateState();
         });
+        characterSelectPortraits[0].SelectNewCharacter();
     }
     
     public void ViewManageTeamScreen()
@@ -84,34 +96,80 @@ public class CharacterInfoDisplay : MonoBehaviour
         });
     }
 
+    public void ResetDetailsMenus()
+    {
+        if (onActionsOrEquipmentScreen)
+            mainArtAnimator.Play(toDefaultMainArtAnimName);
+
+        
+        onCharacterScreen = false;
+        onActionsOrEquipmentScreen = false;
+    }
+    
+    public bool onCharacterScreen;
+    public bool onActionsOrEquipmentScreen;
+
+    public void ViewOverviewScreen()
+    {
+        Debug.Log("OVERVIEW SCREEN");
+
+        // If already had started to inspect this character
+        if (onActionsOrEquipmentScreen)
+            mainArtAnimator.Play(toDefaultMainArtAnimName);
+        
+        onActionsOrEquipmentScreen = false;
+
+        if (onCharacterScreen) // already on
+            return;
+        
+
+        
+        // if not, play the animation (Newly inspected character)
+        txt_descTactics.text = selectedCharacter.desc_tactics;
+        txt_descAbout.text = selectedCharacter.desc_about;
+        onCharacterScreen = true;
+    }
+    
+
+    
+    public void ViewActionsOrEquipmentScreen()
+    {
+        Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
+        
+        if (onCharacterScreen)
+            mainArtAnimator.Play(toActionsOrEquipmentAnimName);
+        
+        onCharacterScreen = false;
+        
+        if (onActionsOrEquipmentScreen) // already on
+            return;
+        
+        
+        onActionsOrEquipmentScreen = true;
+    }
+
     public void MainButtonPressed()
     {
         switch (uiOrchestration.currentMainUIState)
         {
-            case MainUIState.Characters: menuBarDetails.SelectOption("Overview"); return;
+            case MainUIState.Characters:
+                ResetDetailsMenus();
+                menuBarDetails.SelectOption("Overview");
+                return;
         }
         
         switch (uiOrchestration.currentExplorationUIState)
         {
             case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
         }
-
-        switch (uiOrchestration.currentCharacterUIState)
-        {
-            case CharacterUIState.None:
-                break;
-            case CharacterUIState.Overview:
-                break;
-            case CharacterUIState.Actions:
-                break;
-            case CharacterUIState.Equipment:
-                break;
-        }
-        
         
     }
     
 
+    /// <summary>
+    /// Call p.UpdateState(CharacterSelectPortraitState.Selected) Afterword
+    /// </summary>
+    /// <param name="character"></param>
     public void PreviewCharacter(CharacterConfig character)
     {
         // Unselect all portraits
@@ -136,6 +194,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_apNum.text = character.maxAP.ToString();
         txt_dmgNum.text = character.damage.ToString();
         txt_armorNum.text = character.maxArmor.ToString();
+        img_mainArt.sprite = character.mainArt;
         selectBtn.interactable = true;
         Debug.Log("Successfully selected character: " + character.occupantName);
     }
@@ -169,7 +228,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterInfoPanelAnimator.Play(closeCharInfoPanelAnimName);
     }
 
-    }
+}
     
 #endregion ------------------------------------------------------------------
     

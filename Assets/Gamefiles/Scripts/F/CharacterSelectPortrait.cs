@@ -159,7 +159,7 @@ public class CharacterSelectPortrait : MonoBehaviour
         {
             if(characterCfg == null) return;
             if(state == CharacterSelectPortraitState.Locked) return;
-            infoDisplay.PreviewCharacter(characterCfg);
+            SelectNewCharacter();
         }
 
     }
