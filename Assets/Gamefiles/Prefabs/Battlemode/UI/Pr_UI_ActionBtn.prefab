@@ -96,7 +96,10 @@ MonoBehaviour:
   disp_CannotUseInThisTile: {fileID: 3536761913859620475}
   disp_outOfRange: {fileID: 3965672413345885627}
   useImage: 1
+  bgImg: {fileID: 9059818431160555973}
   img: {fileID: 8962213162382355469}
+  defaultSprite: {fileID: 21300000, guid: b4fac09b42f5f04499d88209cce296da, type: 3}
+  hoverSprite: {fileID: 21300000, guid: 374494bb614902f4299650391ba8c8b6, type: 3}
 --- !u!114 &3010732168355103192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Btn
   enter: 1
-  exit: 0
+  exit: 1
   click: 1
   onEnter:
     m_PersistentCalls:
@@ -129,7 +132,19 @@ MonoBehaviour:
         m_CallState: 2
   onExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4321952116654987315}
+        m_TargetAssemblyTypeName: BattlemodeAction, Assembly-CSharp
+        m_MethodName: DefaultAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -407,8 +422,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 100, y: 110.52203}
-  m_SizeDelta: {x: 207.3401, y: 221.0441}
+  m_AnchoredPosition: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7182248218252915508
 CanvasRenderer:
@@ -438,7 +453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c37cf0bc46c842d4ca34588757965759, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4fac09b42f5f04499d88209cce296da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

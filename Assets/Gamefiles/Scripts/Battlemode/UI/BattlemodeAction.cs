@@ -12,10 +12,13 @@ public class BattlemodeAction : MonoBehaviour
     }
 
     [ShowInInspector] public BattlemodeActionCtx actionCtx;
-    [SerializeField] GameObject disp_CannotUseInThisTile;
-    [SerializeField] GameObject disp_outOfRange;
+    [Required] [SerializeField] GameObject disp_CannotUseInThisTile;
+    [Required] [SerializeField] GameObject disp_outOfRange;
     public bool useImage = true;
-    [ShowIf("useImage")] public Image img;
+    [Required] [ShowIf("useImage")] public Image bgImg;
+    [Required] [ShowIf("useImage")] public Image img;
+    [Required] public Sprite defaultSprite;
+    [Required] public Sprite hoverSprite;
     [ReadOnly, ShowInInspector] public InjectableClass<BattlemodeActionsDisplay> actionsDisplay = new();
 
     public void Hide()
@@ -26,6 +29,7 @@ public class BattlemodeAction : MonoBehaviour
         if(disp_CannotUseInThisTile == null || disp_outOfRange == null) return;
         disp_CannotUseInThisTile.SetActive(false);
         disp_outOfRange.SetActive(false);
+        DefaultAction();
     }
 
     public void InitAction(BattlemodeActionCtx actionCtx)
@@ -36,6 +40,7 @@ public class BattlemodeAction : MonoBehaviour
         if(disp_CannotUseInThisTile == null || disp_outOfRange == null) return;
         disp_CannotUseInThisTile.SetActive(false);
         disp_outOfRange.SetActive(false);
+        DefaultAction();
     }
     
     public void RangeMutateAction(RangeMutateActionDisplay mutation)
@@ -53,12 +58,16 @@ public class BattlemodeAction : MonoBehaviour
                 break;
         }
     }
-
+    
+    public void DefaultAction() => bgImg.sprite = defaultSprite;
     public void HoverAction()
     {
         if (BattleTracker.Instance.currentTurn != BattleTracker.Turn.Player) return;
         if (actionCtx != null)
+        {
             actionsDisplay.Value.ShowAction(actionsDisplay.Value.currentlySelectedTile, this);
+            bgImg.sprite = hoverSprite;
+        }
     }
 
     public void UseAction()
