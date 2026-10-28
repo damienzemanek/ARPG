@@ -98,32 +98,40 @@ public class CharacterSelectPortrait : MonoBehaviour
         SwitchState();
     }
 
+    Color clear = new Color(0,  0, 0, 0); 
+    Color reg = Color.white;
+    
     void SwitchState()
     {
         if (characterCfg == null) state = CharacterSelectPortraitState.Empty;
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(true);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Unselected:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Selected:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtSelected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Equipped:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(true);
                 break;
             case CharacterSelectPortraitState.Empty:
+                image.color = clear;
                 image.sprite = null;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);

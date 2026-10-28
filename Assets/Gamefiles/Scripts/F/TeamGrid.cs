@@ -131,9 +131,8 @@ public class TeamGrid : MonoBehaviour
         currentOperation = CurrentOperation.MovingOrDequipping;
         currentlySelectedSquare = square;
         lbl_moving.SetActive(true);
-        lbl_selectAnOpenTile.SetActive(false);
+        lbl_selectAnOpenTile.SetActive(true);
         lbl_currentlyEquipping.SetActive(false);
-        lbl_selectAnOpenTile.SetActive(false);
         go_btnStopMoving.gameObject.SetActive(true);
         go_btnRemove.SetActive(true);     
         go_btnStopEquipping.SetActive(false);
