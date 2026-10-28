@@ -544,7 +544,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
     public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> allInRangeTiles)
     {
-        allInRangeTiles = grid.GetInRangeTiles(actionCtx, actingTile);
+        allInRangeTiles = grid.GetInRangeTiles(actionCtx, actingTile, false);
         if (allInRangeTiles.Count <= 0)
         {
             Debug.Log("[BattleTracker] Action {actionCtx.cfg.name} is not in range of any tiles.");
