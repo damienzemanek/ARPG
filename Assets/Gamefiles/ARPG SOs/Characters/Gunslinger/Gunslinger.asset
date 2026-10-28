@@ -46,8 +46,18 @@ MonoBehaviour:
   portraitArtSquareSelected: {fileID: 0}
   portraitArtSquareUnselected: {fileID: 0}
   portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
-  mainArt: {fileID: 21300000, guid: 7c0123b44bfbbbb4ab5629d64491e4b9, type: 3}
-  specialEffectName: 
+  mainArt: {fileID: 21300000, guid: f4ea13354adabdd4fa844d8e2794c051, type: 3}
+  specialEffectName: DEADEYE
+  desc_tactics: "Gunslinger pressures his enemies from the backline with high speed
+    and high damage from his Deadeye. His Deadeye gets stronger after each use and
+    doesn\u2019t Exhaust, but also consumes more AP. Using Quick Draw will help lower
+    its cost, or Reload to reset its cost as well as damage. Reload also returns
+    all Exhausted action back to his hand. Combo Quick Draw and Reload to let him
+    unleash a barrage of Deadeye the next turn. Combo Deadeye with Disabling Shot
+    to open the opportunity for devastating damage. He can even Bone Break his enemy
+    if he can manage to use Hollow Point before it."
+  desc_about: 'Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger
+    Lore Gunslinger Lore Gunslinger Lore '
   references:
     version: 2
     RefIds:

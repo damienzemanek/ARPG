@@ -295,21 +295,24 @@ public class GridWorld : MonoBehaviour
     }
     
     // Actor to Target
-    public List<BattleTile> GetInRangeTiles(TargetingCfg targetingCfgInstance, BattleTile actingTile)
+    public List<BattleTile> GetInRangeTiles(BattlemodeActionCtx actionCtx, BattleTile actingTile, bool requireUsableCheck = true)
     {
         var inRangeTiles = new List<BattleTile>();
+        var targetingCfgInstance = actionCtx.targetingCfgInstanced;
         var allTiles = GetAllTiles();
 
         foreach (var t in allTiles)
             t.HideAndMakeUnSelectable();
         
-        if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank))
+        actingTile.occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(BattlerOccupantObject.SpriteColorType.Regular);
+        
+        if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank) || requireUsableCheck == false)
         {
             var targetRanks = targetingCfgInstance.targetRowRanks;
             inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.rowRank)));
         }
         
-        if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank))
+        if (targetingCfgInstance.usableInColRanks.HasFlag(actingTile.colRank) || requireUsableCheck == false)
         {
             var targetRanks = targetingCfgInstance.targetColRanks;
             inRangeTiles.AddRange(allTiles.Where(t => targetRanks.HasFlag(t.colRank)));
@@ -321,7 +324,9 @@ public class GridWorld : MonoBehaviour
         if (targetingCfgInstance.targetCurrentRow)
             inRangeTiles.AddRange(allTiles.Where(potentialCurrentRowTile => potentialCurrentRowTile.row == actingTile.row));
         
-        Debug.Log("[Grid] GetInRangeTiles() Row & Col Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+        //Debug.Log("[Grid] GetInRangeTiles() Found (SO FAR 1): " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
+        //Debug.Log("[Grid] GetInRangeTiles() Row & Col Comparison: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
 
         int row = actingTile.row;
         int col = actingTile.col;
@@ -351,11 +356,29 @@ public class GridWorld : MonoBehaviour
                 break;
         }
         
+        //Debug.Log("[Grid] GetInRangeTiles() Found (SO FAR 2): " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
+
         // Null / Duplicate Handling
         inRangeTiles = inRangeTiles
             .Where(t => t != null)
             .Distinct()
             .ToList();
+        
+        
+        if (actingTile.occupantCtx is CharacterOccupantCtx characterOccupantCtx && actionCtx.cfg.roleTarget == Role.Enemy)
+        {
+            inRangeTiles = inRangeTiles
+                .Where(t => t.colRank != BattleTile.ColRank.Left1 && t.colRank != BattleTile.ColRank.Left2 && t.colRank != BattleTile.ColRank.Left3 && t.colRank != BattleTile.ColRank.Center)
+                .ToList();
+        }
+
+        if (actingTile.occupantCtx is EnemyOccupantCtx eoc && actionCtx.cfg.roleTarget == Role.Enemy)
+        {
+            inRangeTiles = inRangeTiles
+                .Where(t => t.colRank != BattleTile.ColRank.Right1 && t.colRank != BattleTile.ColRank.Right2 && t.colRank != BattleTile.ColRank.Right3)
+                .ToList();
+        }
+
         
         Debug.Log("[Grid] GetInRangeTiles() Found: " + string.Join(", ", inRangeTiles.Select(t => $"[{t.row}, {t.col}]")));
 

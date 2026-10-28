@@ -139,15 +139,27 @@ MonoBehaviour:
   - characterConfigName: Executioner
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Gunslinger
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Hospitalar
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
   - characterConfigName: Whisper
     hasCharacter: 0
     level: 1
+    equipped: 0
+    col: 0
+    row: 0
 --- !u!1 &406158415
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +247,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: MenusSO_MethodVTable, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 406158417}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -568,6 +592,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 898472172}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1195,6 +1231,7 @@ MonoBehaviour:
     hash: CF17C394CEF81652FA841954F7D5DC11DC2F51A04E264E667CDA9AE090F627E5
     version: 0
   persistencies: []
+  something: 0
 --- !u!1001 &1185506848
 PrefabInstance:
   m_ObjectHideFlags: 0

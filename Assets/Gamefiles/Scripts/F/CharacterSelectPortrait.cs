@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class CharacterSelectPortrait : MonoBehaviour
 {
@@ -57,17 +59,26 @@ public class CharacterSelectPortrait : MonoBehaviour
         if(portraitType == PortraitType.InfoDisplay) infoDisplay.characterSelectPortraits.Remove(this);
     }
 
-    public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None)
+    public void UpdateState(CharacterSelectPortraitState optionalToState = CharacterSelectPortraitState.None,
+        bool setDirectly = false)
     {
-        if(optionalToState != CharacterSelectPortraitState.None) state = optionalToState;
-        else if (useUnlockData) // is this is false, the portrait states are manual via inspector
+        if (optionalToState != CharacterSelectPortraitState.None) state = optionalToState;
+        if (useUnlockData && !setDirectly) // is this is false, the portrait states are manual via inspector
         {
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var data);
+            if(data == null) Debug.LogError("No Character Save Data found");
+            if (characterCfg == null)
+            {
+                SwitchState();
+                return;
+            }
             var charData = data.GetCharacterData(characterCfg);
+            
+            // this auto handles InfoDisplayPortraitType
             state = charData.hasCharacter 
                 ? CharacterSelectPortraitState.Unselected 
                 : CharacterSelectPortraitState.Locked;
-
+            
             if (portraitType == PortraitType.TeamGrid)
             {
                 Debug.Log($"{gameObject.name}: Is Team Grid");
@@ -84,29 +95,43 @@ public class CharacterSelectPortrait : MonoBehaviour
             }
         }
         
+        SwitchState();
+    }
+
+    Color clear = new Color(0,  0, 0, 0); 
+    Color reg = Color.white;
+    
+    void SwitchState()
+    {
+        if (characterCfg == null) state = CharacterSelectPortraitState.Empty;
         switch (state)
         {
             case CharacterSelectPortraitState.Locked:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(true);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Unselected:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Selected:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtSelected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;
             case CharacterSelectPortraitState.Equipped:
+                image.color = reg;
                 image.sprite = characterCfg.portraitArtUnselected;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(true);
                 break;
             case CharacterSelectPortraitState.Empty:
+                image.color = clear;
                 image.sprite = null;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
@@ -125,7 +150,17 @@ public class CharacterSelectPortrait : MonoBehaviour
 
     public void TeamUX_ClickOnCharacter()
     {
-        if(state == CharacterSelectPortraitState.Unselected)
-            teamGrid.InteractWithCharacterSelectPortrait(this);
+        if (portraitType == PortraitType.TeamGrid)
+        {
+            if(state == CharacterSelectPortraitState.Unselected)
+                teamGrid.InteractWithCharacterSelectPortrait(this);
+        }
+        else if(portraitType == PortraitType.InfoDisplay)
+        {
+            if(characterCfg == null) return;
+            if(state == CharacterSelectPortraitState.Locked) return;
+            SelectNewCharacter();
+        }
+
     }
 }

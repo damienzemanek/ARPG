@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BattlemodeSpecialEffect : BattlemodeEffectBase
 {
-    const string k_EffectNameFormat = "Special: {0}";
     const string k_StackCountFormat = "{0} stack(s)";
     
     [ReadOnly] public BattlemodeEffectStrategyInstance effectCtx;
@@ -24,7 +23,7 @@ public class BattlemodeSpecialEffect : BattlemodeEffectBase
     public override void PopulateEffect(BattlemodeEffectStrategyInstance effect)
     {
         this.effectCtx = effect;
-        txt_name.text = string.Format(k_EffectNameFormat, effect.cfg.effectName);
+        txt_name.text = effect.cfg.effectName;
         txt_description.text = effect.cfg.description;
         txt_stackTotalNum.text = string.Format(k_StackCountFormat, effect.stacksTotal);
     }

@@ -24,6 +24,7 @@
 
     public class BattlerOccupantCtx : OccupantCtx
     {
+        public bool hasFreeRequeue;
         public bool hasFreeIntent;
         
         public int maxHp;

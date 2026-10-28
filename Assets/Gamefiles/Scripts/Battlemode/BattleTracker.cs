@@ -492,7 +492,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         foreach(var spEffect in queuedPlayerAction.actingOccupantCtx.specialEffects)
             spEffect.ResolveEffectRightBeforeQueued(queuedPlayerAction.actingOccupantCtx, queuedPlayerAction.actionCtx);
         
-        var inRangeTiles = grid.GetInRangeTiles(actionCtx.targetingCfgInstanced, tile);
+        var inRangeTiles = grid.GetInRangeTiles(actionCtx, tile);
         
         if (actionCtx.cfg.moveToSelectedEmptyTile)
             inRangeTiles = grid.ExcludeSection(BattlefieldSection.Right, inRangeTiles);
@@ -519,6 +519,19 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             t.SpecialTargetConsiderations(queuedPlayerAction.lookingForTarget);
         }
     }
+    
+    public bool GetUsableTiles(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> usableTiles)
+    {
+        usableTiles = new List<BattleTile>();
+        foreach (var t in grid.GetAllTiles())
+        {
+            bool matchingRow = actionCtx.targetingCfgInstanced.usableInRowRanks.HasFlag(t.rowRank);
+            bool matchingCol = actionCtx.targetingCfgInstanced.usableInColRanks.HasFlag(t.colRank);
+            if (matchingRow || matchingCol) usableTiles.Add(t);
+        }
+        Debug.Log("[Grid] GetUsableTiles() Found: " + string.Join(", ", usableTiles.Select(t => $"[{t.row}, {t.col}]")));
+        return usableTiles.Count > 0;
+    }
 
     public bool IsInUsableTile(BattlemodeActionCtx actionCtx, BattleTile actingTile)
     {
@@ -529,10 +542,21 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         return false;
     }
 
-    public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile)
+    public bool IsInTargettableRange(BattlemodeActionCtx actionCtx, BattleTile actingTile, out List<BattleTile> allInRangeTiles)
     {
-        var allInRangeTiles = grid.GetInRangeTiles(actionCtx.targetingCfgInstanced, actingTile);
-        return allInRangeTiles.Count > 0;
+        allInRangeTiles = grid.GetInRangeTiles(actionCtx, actingTile, false);
+        if (allInRangeTiles.Count <= 0)
+        {
+            Debug.Log("[BattleTracker] Action {actionCtx.cfg.name} is not in range of any tiles.");
+            return false;
+        }
+        bool canTargetSelf = actionCtx.cfg.roleTarget == Role.Self && allInRangeTiles.Any(t => t == actingTile);
+        bool canTargetEnemy = actionCtx.cfg.roleTarget == Role.Enemy && allInRangeTiles.Any(t => t.occupantCtx is EnemyOccupantCtx);
+        bool canTargetEmptyTile = actionCtx.cfg.roleTarget == Role.EmptyTile && allInRangeTiles.Any(t => t.occupantCtx == null);
+        bool canTargetAlly = actionCtx.cfg.roleTarget == Role.Ally && allInRangeTiles.Any(t => t.occupantCtx is CharacterOccupantCtx);
+        bool ret = canTargetSelf || canTargetEnemy || canTargetEmptyTile || canTargetAlly;
+        Debug.Log($"[BattleTracker] Action {actionCtx.cfg.name} is in range of {allInRangeTiles.Count} total tiles, Can Role Target at least 1? {ret}");;
+        return ret;
     }
 
 
@@ -576,8 +600,19 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         currentTurn = Turn.Player;
         if (IsBattleOver()) return;
         grid.GetBattlerTiles(out var opponentTiles, out var playerTiles);
-        opponentTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
-        playerTiles.ForEach(t => { if (t.occupantCtx is BattlerOccupantCtx boc) boc.hasFreeIntent = true; });
+        opponentTiles.ForEach(t =>
+        {
+            if (t.occupantCtx is BattlerOccupantCtx boc)
+            {
+                boc.hasFreeIntent = true;
+                boc.hasFreeRequeue = true;
+            }
+        });
+        playerTiles.ForEach(t =>
+        {
+            if (t.occupantCtx is BattlerOccupantCtx boc)
+                boc.hasFreeIntent = true;
+        });
         if(opponentTiles.Count > 0) opponentAI.QueueOpponentActionsAtTurnStart(opponentTiles);
 
         

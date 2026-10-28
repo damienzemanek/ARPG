@@ -156,6 +156,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8661479948693237625, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 2048633366172006903}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
