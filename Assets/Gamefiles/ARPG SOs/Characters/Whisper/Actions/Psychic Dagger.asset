@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Psychic Dagger
   description: Psychic Dagger Description
-  icon: {fileID: 21300000, guid: 2cd8263cfbcd7b0419c07c702d51e1be, type: 3}
-  apCost: 5
-  roleTarget: 3
+  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  apCost: 1
+  roleTarget: 2
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 7
-  actionQualifier: 1
+  actionIdentifier: 2
+  actionQualifier: 0
   markStrategy: {fileID: 0}
   targetedBodyPart: 0
   useActionAnim: 1
   useActionDelays: 1
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 0
-  healPercentage: 10
+  dmgMultiplier: 100
+  healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
@@ -35,8 +35,8 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 0
-    targetColRanks: 0
+    usableInColRanks: 6
+    targetColRanks: 16
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -44,17 +44,9 @@ MonoBehaviour:
   targetMovementCfg:
     direction: 0
     amount: 0
-  effectsToApplyToTarget:
-  - addOccurance: 2
-    defaultEffectStrategyValues:
-      rid: 5090622939719008375
+  effectsToApplyToTarget: []
   effectsToApplyToSelf: []
   aoe: 0
   references:
     version: 2
-    RefIds:
-    - rid: 5090622939719008375
-      type: {class: BattlemodeEffectStrategy_CriticalAvaliable, ns: , asm: Assembly-CSharp}
-      data:
-        ctx:
-          stackCtxs: []
+    RefIds: []

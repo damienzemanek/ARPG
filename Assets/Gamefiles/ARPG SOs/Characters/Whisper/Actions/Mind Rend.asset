@@ -14,29 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Mind Rend
   description: Mind Rend Description
-  icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
-  apCost: 2
-  roleTarget: 3
+  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  apCost: 3
+  roleTarget: 2
   moveToSelectedEmptyTile: 0
-  actionIdentifier: 15
+  actionIdentifier: 4
   actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 0
+  targetedBodyPart: 1
   useActionAnim: 1
   useActionDelays: 1
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 0
+  dmgMultiplier: 150
   healPercentage: 0
-  armorIncreasePercentage: 2
+  armorIncreasePercentage: 0
   capArmorIncrease: 0
   targetingCfg:
     targetingPatternAdditive: 0
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 0
-    targetColRanks: 0
+    usableInColRanks: 7
+    targetColRanks: 48
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -45,16 +45,8 @@ MonoBehaviour:
     direction: 0
     amount: 0
   effectsToApplyToTarget: []
-  effectsToApplyToSelf:
-  - addOccurance: 2
-    defaultEffectStrategyValues:
-      rid: 5090622939719008376
+  effectsToApplyToSelf: []
   aoe: 0
   references:
     version: 2
-    RefIds:
-    - rid: 5090622939719008376
-      type: {class: BattlemodeEffectStrategy_CriticalAvaliable, ns: , asm: Assembly-CSharp}
-      data:
-        ctx:
-          stackCtxs: []
+    RefIds: []

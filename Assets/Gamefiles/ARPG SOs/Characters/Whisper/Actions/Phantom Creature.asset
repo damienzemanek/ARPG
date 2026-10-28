@@ -15,18 +15,18 @@ MonoBehaviour:
   itemName: Phantom Creature
   description: Phantom Creature Description
   icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
-  apCost: 2
+  apCost: 3
   roleTarget: 2
   moveToSelectedEmptyTile: 0
   actionIdentifier: 3
   actionQualifier: 0
   markStrategy: {fileID: 0}
-  targetedBodyPart: 3
+  targetedBodyPart: 7
   useActionAnim: 1
   useActionDelays: 1
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 100
+  dmgMultiplier: 50
   healPercentage: 0
   armorIncreasePercentage: 0
   capArmorIncrease: 0
@@ -35,8 +35,8 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 3
-    targetColRanks: 96
+    usableInColRanks: 4
+    targetColRanks: 48
     targetCurrentCol: 0
   movementCfg:
     direction: 0
@@ -45,8 +45,13 @@ MonoBehaviour:
     direction: 0
     amount: 0
   effectsToApplyToTarget: []
-  effectsToApplyToSelf: []
+  effectsToApplyToSelf:
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: -2
   aoe: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
