@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Pounce
   description: Pounce Description
+  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
   apCost: 1
   roleTarget: 2
   moveToSelectedEmptyTile: 0
@@ -23,7 +24,6 @@ MonoBehaviour:
   targetedBodyPart: 4
   useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
   dmgMultiplier: 100
@@ -35,8 +35,8 @@ MonoBehaviour:
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0
-    usableInColRanks: 96
-    targetColRanks: 12
+    usableInColRanks: 64
+    targetColRanks: 3
     targetCurrentCol: 0
   movementCfg:
     direction: 2

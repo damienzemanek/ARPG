@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -39,14 +40,23 @@ public class CharactersData_SavedDataSO : SavedDataSO
         }
     }
 
-    [ReadOnly, SerializeField] CharacterConfigurations currentCharacterConfigurations;
+    [ReadOnly, SerializeField] public CharacterConfigurations currentCharacterConfigurations;
     public List<CharacterData> charactersData = new();
 
-    public CharacterData GetCharacterData(CharacterConfig character) 
-        => GetCharacterData(character.occupantName);
+    public CharacterData GetCharacterData(CharacterConfig character)
+    {
+        if(character == null) Debug.LogError("No character config provided");
+        var ret = GetCharacterData(character.occupantName);
+        if(ret == null) Debug.LogError($"No character data found for {character.occupantName}");
+        return ret;
+    }
 
     public CharacterData GetCharacterData(string characterName)
-        => charactersData.Find(c => c.characterConfigName == characterName);
+    {
+        var ret = charactersData.FirstOrDefault(c => c.characterConfigName == characterName);
+        if(ret == null) Debug.LogError($"No character data found for {characterName}");
+        return ret;
+    }
 
     [Button] public void AddCharacterFromConfigurations(CharacterConfigurations configs)
     {

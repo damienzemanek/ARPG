@@ -127,6 +127,8 @@ public class PlayerInstance : MonoBehaviour
                 playerEvents.player.ToggleInputReading(false); break;
             case PlayerEvents.PlayerEvent.ReEnablePlayerMovement:
                 playerEvents.player.ToggleInputReading(true); break;
+            case PlayerEvents.PlayerEvent.Respawn:
+                playerEvents.RespawnningPlayerEvent(); break;
             default:
                 Debug.LogError("Invalid Player Event: "  + playerEvent);
                 break;
@@ -134,12 +136,12 @@ public class PlayerInstance : MonoBehaviour
         }
     }
 
-    // TODO: Adding in a manual quit UI for exploration to save location
-    private void BeforeQuitSave()
+    public void SaveAndGoToMenu()
     {
         SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
         data.currentCharacterWorldLocation = new Pose(transform);
         saver.Save();
+        PersistentConfigurationDataHolder.Instance.load.LoadFade(0);
     }
 
     public void ToggleInputReading(bool v) => inputReader.enabled = v;

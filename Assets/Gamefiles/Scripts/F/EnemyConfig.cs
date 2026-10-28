@@ -160,7 +160,7 @@ public class IntentPhase
 
     [Tooltip("Treat the order as starting with action 0.")]
     [HideIf("linearDefaultTraversal")]
-    public bool leadingZero; // Displaces, doe not replace
+    public int leadingZeros; // Displaces, doe not replace
 
     [Tooltip("Each decimal digit represents an action index. Example: 2314 = 2 -> 3 -> 1 -> 4.")]
     [HideIf("linearDefaultTraversal")]
@@ -179,7 +179,7 @@ public class IntentPhase
                 temp /= 10;
             }
 
-            if (leadingZero) length++;
+            if (leadingZeros > 0) length += leadingZeros;
 
             return length;
         }
@@ -208,14 +208,14 @@ public class IntentPhase
             temp /= 10;
         }
 
-        if (leadingZero) digitCount++;
+        if (leadingZeros > 0) digitCount += leadingZeros;
         if (digitCount == 0) return -1;
 
         // Loop back to the beginning of the custom order.
         position %= digitCount;
 
         // The leading zero occupies position 0.
-        if (leadingZero && position == 0) return 0;
+        if (position <= leadingZeros) return 0;
 
         int digitsFromRight = digitCount - position - 1;
         while (digitsFromRight-- > 0)
@@ -246,9 +246,9 @@ public class IntentPhase
         // whenever at least one action is available.
         ulong order = actionOrder;
 
-        if (order == 0 && !leadingZero)
+        if (order == 0 && leadingZeros == 0)
         {
-            Debug.LogError("IntentPhase has a custom traversal enabled, but no action order was provided.");
+            Debug.LogError("IntentPhase has a custom traversal enabled, but no action order was provided, specify at least something");
             return false;
         }
 

@@ -245,14 +245,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   autoUnparentOnAwake: 1
   defaultRewards: {fileID: 11400000, guid: 9705f3a57f9f90a4782811d0bd0ed660, type: 2}
-  currentSpawnEvent: 0
+  currentPlayerEvent: 0
   desiredSpawnLocationID: Original
   currentBattleConfig: {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
   currentBattlemodePotentialRewards: {fileID: 0}
-  currentCharacterWorldLocation:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
   inactives: []
 --- !u!1 &5753750286718836463
 GameObject:
@@ -301,6 +297,7 @@ MonoBehaviour:
   autoUnparentOnAwake: 1
   prefabData: {fileID: 11400000, guid: 679e20fd9a6796245acf714600351d12, type: 2}
   sceneLoadInMethod: {fileID: 11400000, guid: a7dbd7bba7be5064daf1d5a044d90663, type: 2}
+  load: {fileID: 11400000, guid: 5bad835365943d14a8da5aba664a56c2, type: 2}
   characterConfigs: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
   effectDict: {fileID: 11400000, guid: b2c08416de1d9e845b838a0cc8221f94, type: 2}
 --- !u!1 &8806312925009211635

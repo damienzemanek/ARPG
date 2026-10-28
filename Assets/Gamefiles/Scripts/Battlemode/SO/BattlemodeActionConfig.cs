@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -228,15 +229,16 @@ public class BattlemodeActionConfig : ItemSO
                     max = Mathf.Max(max, 3);
                 }
                 
-                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3)) return "1,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3)) return "1,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
-                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,2";
-                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
-                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right1) && ranks.HasFlag(BattleTile.ColRank.Right3) && !ranks.HasFlag(BattleTile.ColRank.Right2)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left1) && ranks.HasFlag(BattleTile.ColRank.Left3) && !ranks.HasFlag(BattleTile.ColRank.Left2)) return "1,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Right2) && ranks.HasFlag(BattleTile.ColRank.Center) && !ranks.HasFlag(BattleTile.ColRank.Right1)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Left2) && ranks.HasFlag(BattleTile.ColRank.Center) && !ranks.HasFlag(BattleTile.ColRank.Left1)) return "C,2";
+                if(ranks.HasFlag(BattleTile.ColRank.Right3) && ranks.HasFlag(BattleTile.ColRank.Center) 
+                    && !ranks.HasFlag(BattleTile.ColRank.Right1) && !ranks.HasFlag(BattleTile.ColRank.Right2)) return "C,3";
+                if(ranks.HasFlag(BattleTile.ColRank.Left3) && ranks.HasFlag(BattleTile.ColRank.Center)
+                    && !ranks.HasFlag(BattleTile.ColRank.Left1) && !ranks.HasFlag(BattleTile.ColRank.Left2)) return "C,3";
 
                 if (center) return max == 0 ? "C" : $"C-{max}";
-
                 return min == max ? $"{min}" : $"{min}-{max}";
             }
             case RowColUsableTargetNum.TargetCol:
@@ -281,10 +283,22 @@ public class BattlemodeActionConfig : ItemSO
             default: return "";
         }
     }
-    
-    
 
-    public List<string> GetActionDetailTexts()
+    public List<string> GetSelfDetails()
+    {
+        var ret = new List<string>();
+
+        if (movementCfg.amount > 0)
+            ret.Add("Moves Self: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
+        foreach (var targEff in effectsToApplyToSelf)
+            ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+        
+        return ret;
+    }
+    
+    // Creates a list of targetting details
+    public List<string> GetTargetDetails()
     {
         var ret = new List<string>();
         
@@ -308,6 +322,14 @@ public class BattlemodeActionConfig : ItemSO
         foreach (var targEff in effectsToApplyToTarget)
             ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
 
+        if (actionQualifier.HasFlag(ActionQualifier.MarkHit)) ret.Add("On Mark Hit: " + markStrategy.markStratDescDetail);
+        if(actionQualifier.HasFlag(ActionQualifier.ConsumeMark)) ret.Add("Consumes Mark");
+        if(actionQualifier.HasFlag(ActionQualifier.Exhuast)) ret.Add("EXHAUST");
+        if(actionQualifier.HasFlag(ActionQualifier.UnExhuastAll)) ret.Add("Un-Exhuasts All Exhuasted Actions");
+
+        if (targetMovementCfg.amount > 0)
+            ret.Add("Moves Target: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
         return ret;
         // Self effects are different targeting detail prefab
     }

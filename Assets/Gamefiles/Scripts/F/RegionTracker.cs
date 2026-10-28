@@ -25,12 +25,12 @@ public class RegionTracker : Singleton<RegionTracker>
     public void Start()
     {
         ValidateSpawnLocations();
-        PlayerEvent playerEvent = PlayerEvent.MostRecentPosition;
         SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out _, out var data);
-        if (!data.returningPlayer) playerEvent = PlayerEvent.NewPlayerSpawn;
+        if (!data.returningPlayer) SessionData.Instance.currentPlayerEvent = PlayerEvent.NewPlayerSpawn;
+        else if(SessionData.Instance.currentPlayerEvent == PlayerEvent.None)
+            SessionData.Instance.currentPlayerEvent = PlayerEvent.MostRecentPosition;
         
-        SessionData.Instance.currentPlayerEvent = playerEvent;
-        SpawnPlayer(playerEvent);
+        SpawnPlayer(SessionData.Instance.currentPlayerEvent);
         RegionUI.Instance.DisplayRegionUI(regionData.regionName);
     }
 

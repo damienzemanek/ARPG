@@ -8,7 +8,6 @@ using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-
 /// <summary>
 /// Singular Saver for a SavedDataSO subtype.
 /// </summary>

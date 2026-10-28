@@ -13,6 +13,7 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         Contested,
         Unselected,
         Selected,
+        Selectable,
     }
 
     [ReadOnly] public CharacterSelectPortraitSquareState state;
@@ -22,7 +23,8 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
     
     [Required] public TeamGrid teamGrid;
     [Required] public Image image;
-    
+
+    [Required] public Sprite spr_selectable;
     [Required] public Sprite spr_contested;
     [Required] public Sprite spr_none;
 
@@ -47,15 +49,20 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
                 image.sprite = spr_none;
                 return;
             
+            case CharacterSelectPortraitSquareState.Selectable:
+                image.sprite = spr_selectable;
+                return;
             
             case CharacterSelectPortraitSquareState.Unselected:
                 image.sprite = currentlyEquippedPortrait.characterCfg.portraitArtUnselected; break;
             case CharacterSelectPortraitSquareState.Selected:
                 image.sprite = currentlyEquippedPortrait.characterCfg.portraitArtSelected; break;
+
+            
             default: Debug.LogError("Invalid Character Select Portrait Square State: " + state); break;
         }
-        
-        
+
+
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
         var matchingCharacterData = charData.charactersData.Find(c => c.characterConfigName == currentlyEquippedPortrait.characterCfg.occupantName);
         if (matchingCharacterData == null) return;
@@ -67,6 +74,12 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
     public void SelectSquare()
     {
         if (contested) return;
+
+        // TODO: Swapping when clicked on another occupied, this just makes it idempotent (tech debt)
+        if ((teamGrid.currentOperation == TeamGrid.CurrentOperation.MovingOrDequipping || teamGrid.currentOperation == TeamGrid.CurrentOperation.Equipping)
+            && currentlyEquippedPortrait != null)
+            return;
+        
         
         if (teamGrid.currentOperation == TeamGrid.CurrentOperation.MovingOrDequipping
             && teamGrid.currentlySelectedSquare != this)
@@ -96,6 +109,7 @@ public class CharacterSelectPortraitSquare : MonoBehaviour
         if (teamGrid.currentOperation == TeamGrid.CurrentOperation.Equipping &&
             teamGrid.currentlyEquippingPortrait != null)
         {
+            Debug.Log("Selected Square Portrait with currently equipping: " + teamGrid.currentlyEquippingPortrait.name + "");
             currentlyEquippedPortrait = teamGrid.currentlyEquippingPortrait;
             UpdateSquareState(CharacterSelectPortraitSquareState.Selected);
             teamGrid.EquipCharacter(this);

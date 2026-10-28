@@ -24,5 +24,4 @@ public class PlayerSO_MethodVTable : SO_MethodVTable
     {
         if (playerGO.Has(out PlayerInstance P)) P.CallPlayerEvent(playerEvent);
     }
-    
 }

@@ -52,6 +52,7 @@ public class Loader : PersistantReplacerSingleton<Loader>
         yield return null;
         StartCoroutine(LoadSceneAsync(indx));
     }
+    
     IEnumerator LoadSceneAsync(int indx, bool unlockMouse = true)
     {
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(loadScreenIndx, LoadSceneMode.Additive);
@@ -60,7 +61,7 @@ public class Loader : PersistantReplacerSingleton<Loader>
             yield return null;
         
         
-        yield return new WaitForSeconds(minTimeLoading);
+        yield return new WaitForSecondsRealtime(minTimeLoading);
         
         List<AsyncOperation> otherSceneOps = new();
         AsyncOperation mainOp = SceneManager.LoadSceneAsync(scenesToLoad[indx].values[0], LoadSceneMode.Single);
