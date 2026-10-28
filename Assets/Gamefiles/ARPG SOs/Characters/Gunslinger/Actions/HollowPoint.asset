@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Hollow Point
   description: Hollow Point Description
+  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0
@@ -23,15 +24,14 @@ MonoBehaviour:
   targetedBodyPart: 1
   useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
-  dmgMultiplier: 200
+  dmgMultiplier: 0
   healPercentage: 0
-  armorIncreasePercentage: 0
+  armorIncreasePercentage: 100
   capArmorIncrease: 0
   targetingCfg:
-    targetingPatternAdditive: 0
+    targetingPatternAdditive: 1
     usableInRowRanks: 0
     targetRowRanks: 0
     targetCurrentRow: 0

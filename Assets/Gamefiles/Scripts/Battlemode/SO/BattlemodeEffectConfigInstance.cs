@@ -32,7 +32,15 @@ public class BattlemodeEffectConfigInstance
     
     
     [SerializeReference] public BattlemodeEffectStrategyInstance defaultEffectStrategyValues;
-    public string typeKey => defaultEffectStrategyValues.GetType().Name;
+
+    public string typeKey
+    {
+        get
+        {
+            if(defaultEffectStrategyValues != null) return defaultEffectStrategyValues.GetType().Name;
+            return "NULL STRAT INSTANCE";
+        }
+    }
 
     [ShowInInspector] public string effectName
     {
