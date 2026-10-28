@@ -96,8 +96,9 @@ MonoBehaviour:
   col: 3
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 6619763636370747297}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &4918155598743372230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,8 +251,9 @@ MonoBehaviour:
   col: 2
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 6800640182471525583}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &7677984288806665688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,8 +615,9 @@ MonoBehaviour:
   currentOperation: 0
   currentlySelectedSquare: {fileID: 0}
   currentlyEquippingPortrait: {fileID: 0}
-  go_btnTeamGrid: {fileID: 8534073352314814448}
-  txt_btnLabel: {fileID: 5156751363699884464}
+  go_btnRemove: {fileID: 0}
+  go_btnStopMoving: {fileID: 0}
+  go_btnStopEquipping: {fileID: 0}
   lbl_currentlyEquipping: {fileID: 0}
   lbl_moving: {fileID: 6308406880435562375}
   lbl_selectAnOpenTile: {fileID: 978806059281682402}
@@ -741,8 +744,9 @@ MonoBehaviour:
   col: 2
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 561225435702959879}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &3592421963179171355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -895,8 +899,9 @@ MonoBehaviour:
   col: 0
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 5948006697796965621}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &8785009968422486988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,8 +1054,9 @@ MonoBehaviour:
   col: 3
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 337068547875516395}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &5516170851672129561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,8 +1209,9 @@ MonoBehaviour:
   col: 2
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 2947186224818061703}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &60821518673016641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,8 +1364,9 @@ MonoBehaviour:
   col: 3
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 5769807873779887442}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &4091092771824103353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1511,8 +1519,9 @@ MonoBehaviour:
   col: 1
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 4337265154467579340}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &5119607746425375147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1665,8 +1674,9 @@ MonoBehaviour:
   col: 1
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 2545955223965408438}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &7181881941998640705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1819,8 +1829,9 @@ MonoBehaviour:
   col: 0
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 2237547056015787155}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &5585658192109383245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,8 +2121,9 @@ MonoBehaviour:
   col: 0
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 703409566067547030}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &1510589400217904976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2264,8 +2276,9 @@ MonoBehaviour:
   col: 1
   teamGrid: {fileID: 5034742347879525785}
   image: {fileID: 5040901123665987560}
-  spr_contested: {fileID: 21300000, guid: 2cbe7594374da754d84d9c9ba074a5a8, type: 3}
-  spr_none: {fileID: 21300000, guid: d062477bf618d344d970d2fb426caf3b, type: 3}
+  spr_selectable: {fileID: 21300000, guid: c379fbff2c86af445856924959374bdf, type: 3}
+  spr_contested: {fileID: 21300000, guid: e5211c46c51a7464a8b8e9e9104f6e44, type: 3}
+  spr_none: {fileID: 21300000, guid: 3cb928b6d2e4cd9478d3da2b4eb39974, type: 3}
 --- !u!114 &6370939225164866791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2458,21 +2471,5 @@ PrefabInstance:
 --- !u!224 &3105172408081965164 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5607567233232005505, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
-  m_PrefabInstance: {fileID: 7405568610975353325}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5156751363699884464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2402014411464099933, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
-  m_PrefabInstance: {fileID: 7405568610975353325}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!1 &8534073352314814448 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1200986749017388573, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
   m_PrefabInstance: {fileID: 7405568610975353325}
   m_PrefabAsset: {fileID: 0}

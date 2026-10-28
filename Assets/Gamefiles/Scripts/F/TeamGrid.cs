@@ -25,7 +25,6 @@ public class TeamGrid : MonoBehaviour
     [Required] public GameObject go_btnStopMoving;
     [Required] public GameObject go_btnStopEquipping;
 
-    [Required] public TextMeshProUGUI txt_btnLabel;
     [Required] public GameObject lbl_currentlyEquipping;
     [Required] public GameObject lbl_moving;
     [Required] public GameObject lbl_selectAnOpenTile;
@@ -65,10 +64,15 @@ public class TeamGrid : MonoBehaviour
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
         
-        txt_btnLabel.text = string.Empty;
         go_btnRemove.gameObject.SetActive(false);
         go_btnStopMoving.gameObject.SetActive(false);
         go_btnStopEquipping.SetActive(false);
+        
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Unselected);
+        }
     }
     
     public void OpenTeamGrid()
@@ -113,7 +117,12 @@ public class TeamGrid : MonoBehaviour
         go_btnStopMoving.gameObject.SetActive(false);
         go_btnRemove.SetActive(false);
         go_btnStopEquipping.SetActive(true);
-        txt_btnLabel.text = "Stop";
+
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Selectable);
+        }
     }
     
 
@@ -122,12 +131,18 @@ public class TeamGrid : MonoBehaviour
         currentOperation = CurrentOperation.MovingOrDequipping;
         currentlySelectedSquare = square;
         lbl_moving.SetActive(true);
+        lbl_selectAnOpenTile.SetActive(false);
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
         go_btnStopMoving.gameObject.SetActive(true);
         go_btnRemove.SetActive(true);     
         go_btnStopEquipping.SetActive(false);
-        txt_btnLabel.text = "Remove";
+        
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Selectable);
+        }
     }
     
     public void EquipCharacter(CharacterSelectPortraitSquare square)
@@ -170,10 +185,8 @@ public class TeamGrid : MonoBehaviour
         ResetState();
     }
 
-    public void Btn_StopMoving()
-    {
-        ResetState();
-    }
+    public void Btn_StopMoving() => ResetState();
+    public void Btn_StopEquipping() => ResetState();
     
     
     
