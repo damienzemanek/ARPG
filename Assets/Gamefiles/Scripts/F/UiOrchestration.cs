@@ -96,6 +96,7 @@ public class UiOrchestration : MonoBehaviour
         Debug.Log("Showed Main UI State");
     }
     
+    public void ShowCharacterUIState(int state) => ShowCharacterUIState((CharacterUIState)state);
     public void ShowCharacterUIState(CharacterUIState characterUIState)
     {
         currentUIState = UIState.Character;

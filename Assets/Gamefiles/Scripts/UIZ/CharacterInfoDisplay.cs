@@ -30,6 +30,10 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public Button selectBtn;
     [Required] public TeamGrid teamGrid;
 
+    [Required] public Animator characterInfoPanelAnimator;
+    public string openCharInfoPanelAnimName = "Open";
+    public string closeCharInfoPanelAnimName = "Close";
+
     [ReadOnly] public List<CharacterSelectPortrait> characterSelectPortraits = new();
     public List<CharacterSelectPortrait> glgCharacterSelectPortraits = new();
 
@@ -83,10 +87,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         switch (uiOrchestration.currentMainUIState)
         {
-            case MainUIState.Characters:
-                Debug.Log("Clicked Detail");
-                return;
-                break;
+            case MainUIState.Characters: uiOrchestration.ShowCharacterUIState(CharacterUIState.Overview); return;
         }
         
         switch (uiOrchestration.currentExplorationUIState)
@@ -156,8 +157,20 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.equipped = true;
         charSaver.Save();
     }
+
+    public void OpenCharacterInfoPanel()
+    {
+        characterInfoPanelAnimator.Play(openCharInfoPanelAnimName);
+    }
+
+    public void CloseCharacterInfoPanel()
+    {
+        characterInfoPanelAnimator.Play(closeCharInfoPanelAnimName);
+    }
+
+    }
     
-    #endregion ------------------------------------------------------------------
+#endregion ------------------------------------------------------------------
     
     
-}
+
