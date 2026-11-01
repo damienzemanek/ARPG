@@ -28,7 +28,16 @@ public class ActionsMenuActionBtn : MonoBehaviour
     {
         this.actionCfg = actionCfg;
         img.sprite = actionCfg.icon;
-        Default();
+        ForceDefault();
+    }
+
+    public void LockAction()
+    {
+        state = ActionBtnMenuUIState.Locked;
+        img.color = darkened;
+        bgImg.sprite = defaultSprite;
+        go_check.SetActive(false);
+        go_lock.SetActive(true);
     }
 
     public void ResetActionBtn()

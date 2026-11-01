@@ -24,26 +24,40 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
     public void DisplayActionsFor(CharacterConfig cfg)
     {
         if(actionBtns == null || actionBtns.Count <= 0) this.Log("No ActionBtns are saved to actionsBtn list");
-        
+        if(cfg.AllAvaliableActions.Count > actionBtns.Count) Debug.LogError("Max equippable actions greater than action btns amount");
+
+        this.Log("Displaying actions for: " + cfg.occupantName + "");
+        actionBtns.ForEach(b => b.ResetActionBtn());
         currentlySelectedActionBtn = null;
         inspectingCharacterActions = cfg;
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out _, out var charData);
-        var equippedActions = charData.charactersData.Find(c => c.characterConfigName == inspectingCharacterActions.occupantName).equippedActions;
+        SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out _, out var itemData);
+        var currEquippedActions = charData.charactersData.Find(c => c.characterConfigName == inspectingCharacterActions.occupantName).equippedActions;
+        this.Log("Current equipped actions: " + string.Join(", ", currEquippedActions));
         
-        
-        actionBtns.ForEach(b => b.ResetActionBtn());
-        if(inspectingCharacterActions.AllAvaliableActions.Count > actionBtns.Count) Debug.LogError("Max equippable actions greater than action btns amount");
-        for (int i = 0; i < cfg.AllAvaliableActions.Count; i++)
+        for (int i = 0; i < inspectingCharacterActions.AllAvaliableActions.Count; i++)
         {
             actionBtns[i].gameObject.SetActive(true);
-            actionBtns[i].InjectActionAndSetup(cfg.AllAvaliableActions[i]);
+            actionBtns[i].InjectActionAndSetup(inspectingCharacterActions.AllAvaliableActions[i]);
             
             var thisActionsName = inspectingCharacterActions.AllAvaliableActions[i].actionName;
-            if(equippedActions.Contains(thisActionsName)) 
+            if (currEquippedActions.Contains(thisActionsName))
+            {
+                this.Log("Equipping action: " + thisActionsName);
                 actionBtns[i].EquipAction();
-            else 
+            }
+            else
+            {
+                this.Log("Dequipping action: " + thisActionsName);
                 actionBtns[i].DequipAction();
-;
+            }
+            
+            if(itemData.GetItemData(thisActionsName).amount <= 0)
+            {
+                this.Log("Disabling action: " + thisActionsName);
+                actionBtns[i].LockAction();
+            }
+            
         }
     }
 

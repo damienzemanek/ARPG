@@ -27,17 +27,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 99f9dd62824881341a2ecc45ff95b42b, type: 2}
-  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
+  allAvaliableActions:
   - {fileID: 11400000, guid: 71ce58a25efa0184ab39173f1405e3f5, type: 2}
   - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
-  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
+  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
   - {fileID: 11400000, guid: 4cea34da8d400bf429623cb761ac44de, type: 2}
+  - {fileID: 11400000, guid: 342e562508852e44fb8a1b713aec01dc, type: 2}
+  - {fileID: 11400000, guid: 99f9dd62824881341a2ecc45ff95b42b, type: 2}
   specialEffects:
   - addOccurance: 0
     defaultEffectStrategyValues:
       rid: 3738701859942301841
+  allAvaliableActionNames: []
   maxAP: 6
   maxHandSize: 6
   portraitArtSelected: {fileID: 21300000, guid: 7aca4f7ed91b801428676ad243d95084, type: 3}
@@ -57,6 +58,9 @@ MonoBehaviour:
     if he can manage to use Hollow Point before it."
   desc_about: 'Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger Lore Gunslinger
     Lore Gunslinger Lore Gunslinger Lore '
+  startingKitActions:
+  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
+  - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
   references:
     version: 2
     RefIds:

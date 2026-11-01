@@ -221,7 +221,13 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.row = 1;
         charData.col = 1;
         charData.equipped = true;
+        foreach (var action in selectedCharacter.startingKitActions)
+            charData.equippedActions.Add(action.actionName);
         charSaver.Save();
+        
+        SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);
+        foreach (var startingKitAction in selectedCharacter.startingKitActions)
+            itemData.AddItemDataAndSave(startingKitAction.actionName, 1);
     }
 
     public void OpenCharacterInfoPanel()

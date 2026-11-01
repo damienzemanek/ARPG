@@ -103,7 +103,7 @@ public class BattlemodeActionConfig : ItemSO
         ConsumeMark = 1 << 3,
     }
     
-    [BoxGroup("Settings")] public string actionName { get => itemName; set =>  itemName = value; }
+    [BoxGroup("Settings")] public string actionName { get => itemData.itemName; set => itemData.itemName = value; }
     [BoxGroup("Settings")] public int apCost = 1;
     [BoxGroup("Settings")] public Role roleTarget;
     [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
@@ -334,7 +334,7 @@ public class BattlemodeActionConfig : ItemSO
         // Self effects are different targeting detail prefab
     }
     
-    public override ItemSO ProvideReward(int _ = -1) => this;
+   // public override ItemSO ProvideItem(int _ = -1) => this;
 }
 
 public class BattlemodeActionCtx
