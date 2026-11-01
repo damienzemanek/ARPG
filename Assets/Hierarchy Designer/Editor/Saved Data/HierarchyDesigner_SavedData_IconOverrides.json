@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "globalId": "GlobalObjectId_V1-2-64baa10866644fe49b09c3ed572c3aad-1538907044936776551-1244850336",
+            "source": "builtin",
+            "value": "d_SphereCollider Icon"
+        },
+        {
+            "globalId": "GlobalObjectId_V1-2-64baa10866644fe49b09c3ed572c3aad-919132149155446097-1719372772",
+            "source": "builtin",
+            "value": "d_scrolldown_uielements@2x"
+        }
+    ]
+}

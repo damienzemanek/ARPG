@@ -8,27 +8,27 @@ LightingSettings:
   m_PrefabAsset: {fileID: 0}
   m_Name: TheIllustratedNature_FreeDemoSettings
   serializedVersion: 10
-  m_EnableBakedLightmaps: 0
+  m_EnableBakedLightmaps: 1
   m_EnableRealtimeLightmaps: 0
   m_RealtimeEnvironmentLighting: 1
   m_BounceScale: 1
   m_AlbedoBoost: 1
   m_IndirectOutputScale: 1
   m_UsingShadowmask: 1
-  m_BakeBackend: 1
-  m_LightmapMaxSize: 1024
-  m_LightmapSizeFixed: 0
+  m_BakeBackend: 2
+  m_LightmapMaxSize: 512
+  m_LightmapSizeFixed: 1
   m_UseMipmapLimits: 1
   m_BakeResolution: 40
   m_Padding: 2
-  m_LightmapCompression: 3
+  m_LightmapCompression: 2
   m_LightmapPackingMode: 1
   m_LightmapPackingMethod: 0
   m_XAtlasPackingAttempts: 16384
   m_XAtlasBruteForce: 0
   m_XAtlasBlockAlign: 0
   m_XAtlasRepackUnderutilizedLightmaps: 1
-  m_AO: 0
+  m_AO: 1
   m_AOMaxDistance: 1
   m_CompAOExponent: 1
   m_CompAOExponentDirect: 0
@@ -54,15 +54,15 @@ LightingSettings:
   m_PVRMinBounces: 2
   m_PVREnvironmentImportanceSampling: 0
   m_PVRFilteringMode: 2
-  m_PVRDenoiserTypeDirect: 0
-  m_PVRDenoiserTypeIndirect: 0
-  m_PVRDenoiserTypeAO: 0
+  m_PVRDenoiserTypeDirect: 1
+  m_PVRDenoiserTypeIndirect: 1
+  m_PVRDenoiserTypeAO: 1
   m_PVRFilterTypeDirect: 0
   m_PVRFilterTypeIndirect: 0
   m_PVRFilterTypeAO: 0
-  m_PVRFilteringGaussRadiusDirect: 1
-  m_PVRFilteringGaussRadiusIndirect: 1
-  m_PVRFilteringGaussRadiusAO: 1
+  m_PVRFilteringGaussRadiusDirect: 2.4
+  m_PVRFilteringGaussRadiusIndirect: 2.4
+  m_PVRFilteringGaussRadiusAO: 2.4
   m_PVRFilteringAtrousPositionSigmaDirect: 0.5
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
