@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Quick Draw
   description: Quick Draw Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 0a7c3b8e14ef5034abdc394897a63cbd, type: 3}
   apCost: 3
   roleTarget: 2
   moveToSelectedEmptyTile: 0

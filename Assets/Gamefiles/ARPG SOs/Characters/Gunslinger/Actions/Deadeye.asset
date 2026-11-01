@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Deadeye
   description: Deadeye Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 4861dc41a5ab3c54f955949aff057bbf, type: 3}
   apCost: 1
   roleTarget: 2
   moveToSelectedEmptyTile: 0

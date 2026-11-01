@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
   itemName: Disabling Shot
   description: Disabling Shot Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 7566b13f79d15604baee86e1afee78ed, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0

@@ -24,8 +24,24 @@ public class ActionsMenuActionBtn : MonoBehaviour
     [Required] public GameObject go_lock;
     [Required] public GameObject go_check;
 
+    public void InjectActionAndSetup(BattlemodeActionConfig actionCfg)
+    {
+        this.actionCfg = actionCfg;
+        img.sprite = actionCfg.icon;
+        Default();
+    }
+
+    public void ResetActionBtn()
+    {
+        img.sprite = null;
+        actionCfg = null;
+        gameObject.SetActive(false);
+    }
+
     public void Default()
     {
+        if (actionsDisplay.currentlySelectedActionBtn == this) return;
+        
         bgImg.sprite = defaultSprite;
         img.color = darkened;
     }

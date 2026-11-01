@@ -14,6 +14,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     
     [Required] public UiOrchestration uiOrchestration;
     [Required] public MenuBar menuBarDetails;
+    [Required] public ActionsMenuActionsDisplay menuActionsDisplay;
     [Required] public TextMeshProUGUI txt_Name;
     [Required] public TextMeshProUGUI txt_altName;
     [Required] public TextMeshProUGUI txt_spEffect;
@@ -101,7 +102,6 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         if (onActionsOrEquipmentScreen)
             mainArtAnimator.Play(toDefaultMainArtAnimName);
-
         
         onCharacterScreen = false;
         onActionsOrEquipmentScreen = false;
@@ -131,7 +131,6 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterInfoPanelAnimator.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
     }
     
-
     
     public void ViewActionsOrEquipmentScreen()
     {
@@ -145,8 +144,14 @@ public class CharacterInfoDisplay : MonoBehaviour
         if (onActionsOrEquipmentScreen) // already on
             return;
         
-        
         onActionsOrEquipmentScreen = true;
+    }
+
+    public void ViewActionsScreen()
+    {
+        ViewActionsOrEquipmentScreen();
+        if(selectedCharacter == null) this.Error("Selected Character is null when viewing actions display menu");
+        menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
 
     public void MainButtonPressed()

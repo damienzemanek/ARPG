@@ -324,9 +324,9 @@ MonoBehaviour:
   onEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattlemodeAction, Assembly-CSharp
-        m_MethodName: HoverAction
+      - m_Target: {fileID: 236259375184592622}
+        m_TargetAssemblyTypeName: ActionsMenuActionBtn, Assembly-CSharp
+        m_MethodName: Hover
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -339,9 +339,9 @@ MonoBehaviour:
   onExit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattlemodeAction, Assembly-CSharp
-        m_MethodName: DefaultAction
+      - m_Target: {fileID: 236259375184592622}
+        m_TargetAssemblyTypeName: ActionsMenuActionBtn, Assembly-CSharp
+        m_MethodName: Default
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -354,9 +354,9 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattlemodeAction, Assembly-CSharp
-        m_MethodName: UseAction
+      - m_Target: {fileID: 236259375184592622}
+        m_TargetAssemblyTypeName: ActionsMenuActionBtn, Assembly-CSharp
+        m_MethodName: Select
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
