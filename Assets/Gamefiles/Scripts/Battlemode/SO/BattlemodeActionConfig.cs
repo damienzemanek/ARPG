@@ -366,6 +366,7 @@ public class BattlemodeActionCtx
     public bool hasCritChance;
     public bool critHit;
     public bool critChanceCalculatedAlready;
+    public bool isBodyCompromisingAttack;
     public bool isArmorPiercing;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;
