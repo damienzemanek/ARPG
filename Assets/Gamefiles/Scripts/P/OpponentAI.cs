@@ -146,6 +146,7 @@ public class OpponentAI : MonoBehaviour
             grid.RefreshAllApsAndIntentions();
             Debug.Log($"{orderCtx.eoc.cfg.occupantName} finished all attacks");
             yield return new WaitForSeconds(proto_delayBetweenAttackers);
+            orderCtx.eoc.currentIntentUsageCtx.removedIntentions = 0;
         }
         grid.UpdateGrid();
         onAttacksComplete?.Invoke();
@@ -239,11 +240,11 @@ public class OpponentAI : MonoBehaviour
             void MoveOntoTryingNextAction()
             {
                 eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
-                if (eoc.hasFreeIntent) 
+                if (eoc.hasFreeRequeue) 
                 //if the enemy cannot target anything at all, it has 1 free re-queue, if it hasn't already repostioned once
                 {
                     QueueNewAction();
-                    eoc.hasFreeIntent = false;
+                    eoc.hasFreeRequeue = false;
                     Debug.Log($"[OPP AI] Free Intent Used: Re-Queued A new move: {eoc.queuedActions.Last().actionCtx.cfg.actionName} for last action");
                 }
                 else

@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static BattlemodeActionConfig;
+using static BattlerOccupantObject;
 
 
 public class BattleTile : MonoBehaviour
@@ -126,6 +127,7 @@ public class BattleTile : MonoBehaviour
         alreadySelected = false;
         tileCanBeSelectedOveride = false;
         display.SetActive(occupantCtx != null);
+        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Regular);
     }
     
     public void HideDisplay() => display.SetActive(false);
@@ -136,6 +138,7 @@ public class BattleTile : MonoBehaviour
         DefaultOrContestedSetActive(false);
         contested.SetActive(false);
         unselectable = true;
+        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Faded);
     }
     
     public void SetUnselectable(bool v) => unselectable = v;
@@ -210,12 +213,7 @@ public class BattleTile : MonoBehaviour
         isInRange = true;
         inRange.SetActive(true);
     }
-
-    public void NotInRange()
-    {
-        if (unselectable) return; // if already unselectable just return
-        HideAndMakeUnSelectable();
-    }
+    
 
     #region Display Stats
 

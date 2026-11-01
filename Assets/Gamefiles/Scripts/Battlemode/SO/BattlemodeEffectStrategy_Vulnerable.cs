@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -67,6 +68,10 @@ public sealed class BattlemodeEffectStrategy_Swift : BattlemodeEffectStrategyIns
     }
 }
 
+
+/// <summary>
+/// Inteded Behaviour: The only situation where stacks survive is when an attack successfully crits AND applies Body Compromised.
+/// </summary>
 [Serializable]
 public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffectStrategyInstance
 {
@@ -76,6 +81,7 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
 
     public override BattlemodeActionCtx ResolveEffectRightBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
+        
         // Crits cannot target the self or allys
         switch (actionCtx.cfg.roleTarget) {
             case BattlemodeActionConfig.Role.Self: return actionCtx; 
@@ -83,11 +89,14 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
             case BattlemodeActionConfig.Role.Team: return actionCtx; }
 
         if(stacksTotal == 0) return actionCtx;
+        
+        bool appliedBodyCompromiseAttack = actionCtx.cfg.effectsToApplyToTarget.Any(e => e.defaultEffectStrategyValues is BattlemodeEffectStrategy_BodyCompromised);
         actionCtx.hasCritChance = true;
 
         if (actionCtx.critChanceCalculatedAlready)
         {
-            RemoveAllStacksOnLastHit(actionCtx);
+            if (!appliedBodyCompromiseAttack || !actionCtx.critHit)
+                RemoveAllStacksOnLastHit(actionCtx);
             return actionCtx;
         }
 
@@ -103,7 +112,8 @@ public sealed class BattlemodeEffectStrategy_CriticalAvaliable : BattlemodeEffec
         if(actionCtx.critHit) Debug.Log("[Critical Avaliable] Crit hit!");
         else Debug.Log("[Critical Avaliable] Crit missed!");
         
-        RemoveAllStacksOnLastHit(actionCtx);
+        if (!appliedBodyCompromiseAttack || !actionCtx.critHit)
+            RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
     }
 }
@@ -178,7 +188,6 @@ public sealed class BattlemodeEffectStrategy_MoveLocked : BattlemodeEffectStrate
 public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectStrategyInstance
 {
     public override string effectName => "Body Compromised";
-
     public override int priority => 0; // Last, should happen after critically exposed caluclates, to check if the crit hit
     public override bool isSpecial => false;
     
@@ -196,9 +205,14 @@ public sealed class BattlemodeEffectStrategy_BodyCompromised : BattlemodeEffectS
             actionCtx.brokenBodyPart = actionCtx.cfg.targetedBodyPart;
             Debug.Log("[Body Compromised] BONE BREAK! : " + actionCtx.brokenBodyPart + " is broken");
         }
-        else Debug.Log("[Body Compromised] No bone break : " + actionCtx.brokenBodyPart + " is not broken");
+        else
+            Debug.Log("[Body Compromised] No bone break : " + actionCtx.brokenBodyPart + " is not broken");
+        
+        
         RemoveAllStacksOnLastHit(actionCtx);
         return actionCtx;
+        
+        
     }
 }
 
@@ -285,9 +299,25 @@ public sealed class BattlemodeEffectStrategy_Bleed : BattlemodeEffectStrategyIns
     public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
     {
         if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
         boc.currentHp -= stacksTotal;
         tile.UpdateTransientStats();
-        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
     }
-    
+}
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Decay : BattlemodeEffectStrategyInstance
+{
+    public override string effectName => "Decay";
+
+    public override int priority => 1;
+    public override bool isSpecial => false;
+
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
+    {
+        if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
+        boc.currentHp -= stacksTotal;
+        tile.UpdateTransientStats();
+    }
 }

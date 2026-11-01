@@ -13,12 +13,7 @@ namespace EMILtools.Extensions
             Object targ)
         {
             ResetFade(fade, true, targ, 1f);
-
-            FadeToTransparent(
-                fade,
-                targ,
-                () => ResetFade(fade, false, targ, 0f)
-            );
+            FadeToTransparent(fade, targ, () => ResetFade(fade, false, targ, 0f));
         }
 
         public static void ResetFade(
@@ -39,9 +34,7 @@ namespace EMILtools.Extensions
             Object targ,
             Action postHook = null)
         {
-            CoroutineRunner.Instance.StartCoroutine(
-                C_FadeToTransparent(fade, targ, postHook)
-            );
+            CoroutineRunner.Instance.StartCoroutine(C_FadeToTransparent(fade, targ, postHook));
         }
 
         public static void FadeToOpaque(
@@ -49,9 +42,7 @@ namespace EMILtools.Extensions
             Object targ,
             Action postHook = null)
         {
-            CoroutineRunner.Instance.StartCoroutine(
-                C_FadeToOpaque(fade, targ, postHook)
-            );
+            CoroutineRunner.Instance.StartCoroutine(C_FadeToOpaque(fade, targ, postHook));
         }
 
         public static void FadeToAlphaValueOf(
@@ -75,17 +66,11 @@ namespace EMILtools.Extensions
             Object targ,
             Action postHook = null)
         {
-            if (fade.delayToStartFading > 0)
-                yield return new WaitForSeconds(
-                    fade.delayToStartFading
-                );
+            if (fade.delayToStartFading > 0) yield return new WaitForSecondsRealtime(fade.delayToStartFading);
 
             if (targ == null)
             {
-                Debug.LogError(
-                    "Given a null target for FadeToTransparent."
-                );
-
+                Debug.LogError("Given a null target for FadeToTransparent.");
                 postHook?.Invoke();
                 yield break;
             }
@@ -132,17 +117,10 @@ namespace EMILtools.Extensions
             Object targ,
             Action postHook = null)
         {
-            if (fade.delayToStartFading > 0)
-                yield return new WaitForSeconds(
-                    fade.delayToStartFading
-                );
-
+            if (fade.delayToStartFading > 0) yield return new WaitForSecondsRealtime(fade.delayToStartFading);
             if (targ == null)
             {
-                Debug.LogError(
-                    "Given a null target for FadeToOpaque."
-                );
-
+                Debug.LogError("Given a null target for FadeToOpaque.");
                 postHook?.Invoke();
                 yield break;
             }
@@ -160,7 +138,7 @@ namespace EMILtools.Extensions
                 currentColor.a = fadeVal;
                 fade.SetColor(currentColor, targ);
 
-                yield return new WaitForSeconds(fade.Delay);
+                yield return new WaitForSecondsRealtime(fade.Delay);
             }
 
             currentColor.a = 1f;
@@ -175,17 +153,11 @@ namespace EMILtools.Extensions
             float targetAlpha,
             Action postHook = null)
         {
-            if (fade.delayToStartFading > 0)
-                yield return new WaitForSeconds(
-                    fade.delayToStartFading
-                );
+            if (fade.delayToStartFading > 0) yield return new WaitForSecondsRealtime(fade.delayToStartFading);
 
             if (targ == null)
             {
-                Debug.LogError(
-                    "Given a null target for FadeToAlphaValueOf."
-                );
-
+                Debug.LogError("Given a null target for FadeToAlphaValueOf.");
                 postHook?.Invoke();
                 yield break;
             }
@@ -201,16 +173,10 @@ namespace EMILtools.Extensions
 
             while (!Mathf.Approximately(fadeVal, targetAlpha))
             {
-                fadeVal = Mathf.MoveTowards(
-                    fadeVal,
-                    targetAlpha,
-                    step
-                );
-
+                fadeVal = Mathf.MoveTowards(fadeVal, targetAlpha, step);
                 currentColor.a = fadeVal;
                 fade.SetColor(currentColor, targ);
-
-                yield return new WaitForSeconds(fade.Delay);
+                yield return new WaitForSecondsRealtime(fade.Delay);
             }
 
             currentColor.a = targetAlpha;

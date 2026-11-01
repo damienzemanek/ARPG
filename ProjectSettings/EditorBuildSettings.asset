@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Gamefiles/Scenes/Game/LoadingScene.unity
     guid: a134154d9f1807541b5eef7f19ae3952
   - enabled: 1
-    path: Assets/Gamefiles/Scenes/Game/Gym World.unity
-    guid: 5a1647a404cbd4c4fae9594b05dd14a0
+    path: Assets/Gamefiles/Scenes/Game/The Gravelands.unity
+    guid: 9a597a3b397b8714e9ca01eff79b4423
   - enabled: 1
     path: Assets/Gamefiles/Scenes/Game/Battlemode.unity
     guid: bf332e937587c2d468214802f74efd99

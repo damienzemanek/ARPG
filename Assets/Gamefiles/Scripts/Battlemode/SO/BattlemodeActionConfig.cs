@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -102,7 +103,7 @@ public class BattlemodeActionConfig : ItemSO
         ConsumeMark = 1 << 3,
     }
     
-    [BoxGroup("Settings")] public string actionName { get => itemName; set =>  itemName = value; }
+    [BoxGroup("Settings")] public string actionName { get => itemData.itemName; set => itemData.itemName = value; }
     [BoxGroup("Settings")] public int apCost = 1;
     [BoxGroup("Settings")] public Role roleTarget;
     [BoxGroup("Settings")] [ShowIf("isEmptyRoleTarget")] public bool moveToSelectedEmptyTile = false;
@@ -282,10 +283,22 @@ public class BattlemodeActionConfig : ItemSO
             default: return "";
         }
     }
-    
+
+    public List<string> GetSelfDetails()
+    {
+        var ret = new List<string>();
+
+        if (movementCfg.amount > 0)
+            ret.Add("Moves Self: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
+        foreach (var targEff in effectsToApplyToSelf)
+            ret.Add(targEff.defaultEffectStrategyValues.GetEffectDetailText());
+        
+        return ret;
+    }
     
     // Creates a list of targetting details
-    public List<string> GetActionDetailTexts()
+    public List<string> GetTargetDetails()
     {
         var ret = new List<string>();
         
@@ -314,11 +327,14 @@ public class BattlemodeActionConfig : ItemSO
         if(actionQualifier.HasFlag(ActionQualifier.Exhuast)) ret.Add("EXHAUST");
         if(actionQualifier.HasFlag(ActionQualifier.UnExhuastAll)) ret.Add("Un-Exhuasts All Exhuasted Actions");
 
+        if (targetMovementCfg.amount > 0)
+            ret.Add("Moves Target: " + movementCfg.direction.ToString().ToUpper() + " " + movementCfg.amount);
+        
         return ret;
         // Self effects are different targeting detail prefab
     }
     
-    public override ItemSO ProvideReward(int _ = -1) => this;
+   // public override ItemSO ProvideItem(int _ = -1) => this;
 }
 
 public class BattlemodeActionCtx
@@ -350,6 +366,7 @@ public class BattlemodeActionCtx
     public bool hasCritChance;
     public bool critHit;
     public bool critChanceCalculatedAlready;
+    public bool isBodyCompromisingAttack;
     public bool isArmorPiercing;
     
     public bool bodyPartAlreadyBrokenThisAction => brokenBodyPart != BattlemodeActionConfig.BodyPart.None;

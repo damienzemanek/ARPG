@@ -21,8 +21,10 @@ public class TeamGrid : MonoBehaviour
     [ReadOnly] public CharacterSelectPortraitSquare currentlySelectedSquare = null;
     [ReadOnly] public CharacterSelectPortrait currentlyEquippingPortrait = null;
 
-    [Required] public GameObject go_btnTeamGrid;
-    [Required] public TextMeshProUGUI txt_btnLabel;
+    [Required] public GameObject go_btnRemove;
+    [Required] public GameObject go_btnStopMoving;
+    [Required] public GameObject go_btnStopEquipping;
+
     [Required] public GameObject lbl_currentlyEquipping;
     [Required] public GameObject lbl_moving;
     [Required] public GameObject lbl_selectAnOpenTile;
@@ -62,8 +64,15 @@ public class TeamGrid : MonoBehaviour
         lbl_currentlyEquipping.SetActive(false);
         lbl_selectAnOpenTile.SetActive(false);
         
-        txt_btnLabel.text = string.Empty;
-        go_btnTeamGrid.gameObject.SetActive(false);
+        go_btnRemove.gameObject.SetActive(false);
+        go_btnStopMoving.gameObject.SetActive(false);
+        go_btnStopEquipping.SetActive(false);
+        
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.None);
+        }
     }
     
     public void OpenTeamGrid()
@@ -105,8 +114,15 @@ public class TeamGrid : MonoBehaviour
         lbl_moving.SetActive(false);
         lbl_currentlyEquipping.SetActive(true);
         lbl_selectAnOpenTile.SetActive(true);
-        go_btnTeamGrid.gameObject.SetActive(true);
-        txt_btnLabel.text = "Stop";
+        go_btnStopMoving.gameObject.SetActive(false);
+        go_btnRemove.SetActive(false);
+        go_btnStopEquipping.SetActive(true);
+
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Selectable);
+        }
     }
     
 
@@ -115,15 +131,23 @@ public class TeamGrid : MonoBehaviour
         currentOperation = CurrentOperation.MovingOrDequipping;
         currentlySelectedSquare = square;
         lbl_moving.SetActive(true);
+        lbl_selectAnOpenTile.SetActive(true);
         lbl_currentlyEquipping.SetActive(false);
-        lbl_selectAnOpenTile.SetActive(false);
-        go_btnTeamGrid.gameObject.SetActive(true);
-        txt_btnLabel.text = "Remove";
+        go_btnStopMoving.gameObject.SetActive(true);
+        go_btnRemove.SetActive(true);     
+        go_btnStopEquipping.SetActive(false);
+        
+        foreach (var sq in allSquares)
+        {
+            if(sq.currentlyEquippedPortrait == null)
+                sq.UpdateSquareState(CharacterSelectPortraitSquareState.Selectable);
+        }
     }
     
     public void EquipCharacter(CharacterSelectPortraitSquare square)
     {
-        currentlyEquippingPortrait.UpdateState(CharacterSelectPortraitState.Equipped);
+        Debug.Log("Equipping Character" + currentlyEquippingPortrait.characterCfg.occupantName + " to square " + square.row + ", " + square.col + "");
+        currentlyEquippingPortrait.UpdateState(CharacterSelectPortraitState.Equipped, true);
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
         var matchingChar = charData.charactersData.Find(c =>
             c.characterConfigName == currentlyEquippingPortrait.characterCfg.occupantName);
@@ -135,34 +159,33 @@ public class TeamGrid : MonoBehaviour
     }
 
     private List<CharacterSelectPortrait> characterPortraitsBuffer = new List<CharacterSelectPortrait>();
-    public void Btn_RemoveOrStop()
+    public void Btn_Remove()
     {
-        if (currentOperation == CurrentOperation.MovingOrDequipping)
+        characterPortraitsBuffer.Clear();
+        characterPortraitsBuffer = allPortraits
+            .Where(p => p.state == CharacterSelectPortraitState.Equipped)
+            .ToList();
+        if (characterPortraitsBuffer.Count <= 1)
         {
-            characterPortraitsBuffer.Clear();
-            characterPortraitsBuffer = allPortraits
-                .Where(p => p.state == CharacterSelectPortraitState.Equipped)
-                .ToList();
-            if (characterPortraitsBuffer.Count <= 1)
-            {
-                // alert
-                UiOrchestration.Alert(cannotRemoveFinalCharText);
-                return;
-            }
-            
-            SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
-            var data = charData.charactersData.Find(c =>
-                c.characterConfigName == currentlySelectedSquare.currentlyEquippedPortrait.characterCfg.occupantName);
-            data.row = -1;
-            data.col = -1;
-            data.equipped = false;
-            charSaver.Save();
-            currentlySelectedSquare.currentlyEquippedPortrait.UpdateState(CharacterSelectPortraitState.Unselected);
-            currentlySelectedSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
+            // alert
+            UiOrchestration.Alert(cannotRemoveFinalCharText);
+            return;
         }
-        
+            
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
+        var data = charData.charactersData.Find(c =>
+            c.characterConfigName == currentlySelectedSquare.currentlyEquippedPortrait.characterCfg.occupantName);
+        data.row = -1;
+        data.col = -1;
+        data.equipped = false;
+        charSaver.Save();
+        currentlySelectedSquare.currentlyEquippedPortrait.UpdateState(CharacterSelectPortraitState.Unselected);
+        currentlySelectedSquare.UpdateSquareState(CharacterSelectPortraitSquareState.None);
         ResetState();
     }
+
+    public void Btn_StopMoving() => ResetState();
+    public void Btn_StopEquipping() => ResetState();
     
     
     

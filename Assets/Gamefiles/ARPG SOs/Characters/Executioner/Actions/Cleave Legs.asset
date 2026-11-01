@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Cleave Legs
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Cleave Legs
+  itemData:
+    itemName: Cleave Legs
+    amount: 0
   description: Cleave Legs Description
-  apCost: 3
+  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0
   actionIdentifier: 4
@@ -23,7 +26,6 @@ MonoBehaviour:
   targetedBodyPart: 4
   useActionAnim: 1
   useActionDelays: 1
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   hitCount: 1
   maxEocTargetingAttempts: 2
   dmgMultiplier: 150
