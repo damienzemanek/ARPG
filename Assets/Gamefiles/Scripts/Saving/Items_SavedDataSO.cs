@@ -42,8 +42,10 @@ public class Items_SavedDataSO : SavedDataSO
         if (existing != null)
             existing.amount += amount;
         else
-            itemDatas.Add(existing = new ItemData { itemName = itemName, amount = amount });
-
+        {
+            existing = new ItemData { itemName = itemName, amount = amount };
+            itemDatas.Add(existing);
+        }
         SaverService.Instance.GetSaver<Items_SavedDataSO>().Save();
         return existing;
     }

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Disabling Shot
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Disabling Shot
+  itemData:
+    itemName: Disabling Shot
+    amount: 0
   description: Disabling Shot Description
   icon: {fileID: 21300000, guid: 7566b13f79d15604baee86e1afee78ed, type: 3}
   apCost: 2

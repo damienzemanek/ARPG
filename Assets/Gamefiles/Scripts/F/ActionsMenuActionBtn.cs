@@ -76,8 +76,6 @@ public class ActionsMenuActionBtn : MonoBehaviour
 
     public void EquipAction()
     {
-        img.color = defaultColor;
-        bgImg.sprite = defaultSprite;
         state = ActionBtnMenuUIState.Equipped;
         go_check.SetActive(true);
         go_lock.SetActive(false);
@@ -85,8 +83,6 @@ public class ActionsMenuActionBtn : MonoBehaviour
 
     public void DequipAction()
     {
-        img.color = defaultColor;
-        bgImg.sprite = defaultSprite;
         state = ActionBtnMenuUIState.Default;
         go_check.SetActive(false);
         go_lock.SetActive(false);
