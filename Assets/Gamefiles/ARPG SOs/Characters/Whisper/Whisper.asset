@@ -19,15 +19,27 @@ MonoBehaviour:
   maxHP: 17
   maxArmor: 1
   damage: 2
-  _maxEquippableActions: 1
+  _maxEquippableActions: 6
   equippedActions:
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  ForcedActions: []
-  specialEffects: []
-  maxAP: 555
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  allAvaliableActions:
+  - {fileID: 11400000, guid: 126667b918aa30f42b0d9a33230bb8e3, type: 2}
+  - {fileID: 11400000, guid: 1819e7f244b628648b08d1dd0e8f5a06, type: 2}
+  - {fileID: 11400000, guid: 411ca56112615084aa3046e194cb75d8, type: 2}
+  - {fileID: 11400000, guid: d37294b43317c234b9434193c9643bbf, type: 2}
+  - {fileID: 11400000, guid: a79492a83d9b8bc4b94ba5ae8687f57b, type: 2}
+  - {fileID: 11400000, guid: ca325b337537bcd4aa6d427d7b89b2fe, type: 2}
+  specialEffects:
+  - addOccurance: 0
+    defaultEffectStrategyValues:
+      rid: 9034069160052916333
+  allAvaliableActionNames: []
+  maxAP: 5
   maxHandSize: 6
   portraitArtSelected: {fileID: 21300000, guid: 7aca4f7ed91b801428676ad243d95084, type: 3}
   portraitArtUnselected: {fileID: 21300000, guid: 51c921c8282cc9d4988180591c8c0ed3, type: 3}
@@ -35,7 +47,33 @@ MonoBehaviour:
   portraitArtSquareUnselected: {fileID: 0}
   portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
   mainArt: {fileID: 21300000, guid: 6df5abed00455234bb2a7daeb2c568e9, type: 3}
-  specialEffectName: 
+  specialEffectName: Piosis
+  desc_tactics: 'Whisper likes to stay on the frontline, countering attacks, applying
+    damage over time with his Decay, as well as dealing burst damage to his enemies.
+    Most of his actions - including his starter Psychic Dagger - grant him a stack
+    of Psiosis, which Mind Rend will consume to apply more Decay stacks. Whisper
+    makes himself a target to avoid with Phantom Creature, which Riposte enemy attacks
+    with a chance to Stun his attackers. Or he can make an enemy Vulnerable with
+    Dark Passover to be focused by his allies. He also has Void Push to clear enemies
+    from the frontline, and put them in range for Necrotic Eruption. Necrotic Eruption
+    consumes all Decay stacks and deals damage to the enemy while healing himself,
+    based on the amount of stacks it had. It also applies Critical Exposed to the
+    enemy afterward, opening opportunities for his allies to do even more damage.
+    He can be a powerful opponent for bosses and captains if he had the time to set
+    up. '
+  desc_about: 'Whisper Lore Whisper Lore Whisper Lore Whisper Lore Whisper Lore Whisper
+    Lore Whisper Lore Whisper Lore Whisper Lore Whisper Lore Whisper Lore '
+  startingKitActions:
+  - {fileID: 11400000, guid: 1819e7f244b628648b08d1dd0e8f5a06, type: 2}
+  - {fileID: 11400000, guid: a79492a83d9b8bc4b94ba5ae8687f57b, type: 2}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 9034069160052916333
+      type: {class: SE_Psiosis, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs:
+          - instanceEffectTime: 0
+            stacks: 0
+            setStacksDirectly: 0

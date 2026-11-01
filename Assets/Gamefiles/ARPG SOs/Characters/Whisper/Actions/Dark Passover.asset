@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Dark Passover
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Dark Passover
+  itemData:
+    itemName: Dark Passover
+    amount: 0
   description: Dark Passover Description
   icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
   apCost: 2

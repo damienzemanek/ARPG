@@ -228,6 +228,8 @@ public class CharacterInfoDisplay : MonoBehaviour
         SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);
         foreach (var startingKitAction in selectedCharacter.startingKitActions)
             itemData.AddItemDataAndSave(startingKitAction.actionName, 1);
+        
+        menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
 
     public void OpenCharacterInfoPanel()

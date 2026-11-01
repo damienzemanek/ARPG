@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Mind Rend
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Mind Rend
+  itemData:
+    itemName: Mind Rend
+    amount: 0
   description: Mind Rend Description
   icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
   apCost: 3

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using static ActionsMenuActionBtn;
@@ -34,6 +35,9 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
         SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out _, out var itemData);
         var currEquippedActions = charData.charactersData.Find(c => c.characterConfigName == inspectingCharacterActions.occupantName).equippedActions;
         this.Log("Current equipped actions: " + string.Join(", ", currEquippedActions));
+
+        for (int i = 0; i < inspectingCharacterActions.equippedActions.Length; i++)
+            inspectingCharacterActions.equippedActions[i] = null;
         
         for (int i = 0; i < inspectingCharacterActions.AllAvaliableActions.Count; i++)
         {
@@ -45,11 +49,13 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
             {
                 this.Log("Equipping action: " + thisActionsName);
                 actionBtns[i].EquipAction();
+                TryEquipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
             }
             else
             {
                 this.Log("Dequipping action: " + thisActionsName);
                 actionBtns[i].DequipAction();
+                DequipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
             }
             
             if(itemData.GetItemData(thisActionsName).amount <= 0)
@@ -79,17 +85,41 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
 
     public void TryEquipSelected()
     {
-        this.Log("Trying to equip action: " + currentlySelectedActionBtn.actionCfg.name);
-        bool successfullyEquipped = inspectingCharacterActions.TryEquipActionOnNextAvaliableSlot(currentlySelectedActionBtn.actionCfg);
+        TryEquipActionOnBtn(currentlySelectedActionBtn.actionCfg, currentlySelectedActionBtn);
+        
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var charData);
+        charData.charactersData.Find(c => c.characterConfigName == inspectingCharacterActions.occupantName)
+            .equippedActions
+            .Add(currentlySelectedActionBtn.actionCfg.actionName);
+        
+        saver.Save();
+    }
+    
+    public void TryEquipActionOnBtn(BattlemodeActionConfig actionCfg, ActionsMenuActionBtn actionBtn)
+    {
+        this.Log("Trying to equip action: " + actionCfg.name);
+        bool successfullyEquipped = inspectingCharacterActions.TryEquipActionOnNextAvaliableSlot(actionCfg);
         if (!successfullyEquipped) return;
-        currentlySelectedActionBtn.EquipAction();
-        this.Log("Equipped action: " + currentlySelectedActionBtn.actionCfg.name);
+        actionBtn.EquipAction();
+        this.Log("Equipped action: " + actionCfg.name);
     }
 
     public void DequipSelected()
     {
-        inspectingCharacterActions.DequipAction(currentlySelectedActionBtn.actionCfg);
-        currentlySelectedActionBtn.DequipAction();
-        this.Log("Dequipped action: " + currentlySelectedActionBtn.actionCfg.name);
+        DequipActionOnBtn(currentlySelectedActionBtn.actionCfg, currentlySelectedActionBtn);
+        
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var charData);
+        charData.charactersData.Find(c => c.characterConfigName == inspectingCharacterActions.occupantName)
+            .equippedActions
+            .Remove(currentlySelectedActionBtn.actionCfg.actionName);
+        
+        saver.Save();
+    }
+    
+    public void DequipActionOnBtn(BattlemodeActionConfig actionCfg, ActionsMenuActionBtn actionBtn)
+    {
+        inspectingCharacterActions.DequipAction(actionCfg);
+        actionBtn.DequipAction();
+        this.Log("Dequipped action: " + actionCfg.name);
     }
 }

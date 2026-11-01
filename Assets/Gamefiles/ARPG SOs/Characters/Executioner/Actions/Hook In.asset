@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Hook In
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Hook In
+  itemData:
+    itemName: Hook In
+    amount: 0
   description: Hook In Description
   icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
   apCost: 1

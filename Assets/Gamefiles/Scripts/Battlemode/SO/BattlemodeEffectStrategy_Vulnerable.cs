@@ -303,5 +303,21 @@ public sealed class BattlemodeEffectStrategy_Bleed : BattlemodeEffectStrategyIns
         tile.UpdateTransientStats();
         boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
     }
-    
+}
+
+[Serializable]
+public sealed class BattlemodeEffectStrategy_Decay : BattlemodeEffectStrategyInstance
+{
+    public override string effectName => "Decay";
+
+    public override int priority => 1;
+    public override bool isSpecial => false;
+
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
+    {
+        if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.currentHp -= stacksTotal;
+        tile.UpdateTransientStats();
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
+    }
 }

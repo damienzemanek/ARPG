@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -54,6 +55,8 @@ public class BattlerConfig : OccupantCfg
 
     public bool TryEquipActionOnNextAvaliableSlot(BattlemodeActionConfig actionCfg)
     {
+        if(equippedActions.Contains(actionCfg)) return false;
+        
         for (int i = 0; i < equippedActions.Length; i++)
         {
             if(equippedActions[i] == null)
