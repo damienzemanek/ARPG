@@ -22,6 +22,14 @@ public class Items_SavedDataSO : SavedDataSO
     {
         
     }
+    
+    public enum ItemType
+    {
+        None,
+        CharacterAction,
+        Equipment,
+        Currency,
+    }
 
     [Serializable]
     public class ItemData
@@ -31,31 +39,55 @@ public class Items_SavedDataSO : SavedDataSO
     }
 
     [ReadOnly, SerializeField] public CharacterConfigurations currentCharacterConfigurations;
-    public List<ItemData> itemDatas = new();
+    
+    public List<ItemData> characterActionsData = new();
+    public List<ItemData> equipmentData = new();
+    public List<ItemData> currencyData = new();
 
-    public ItemData AddItemDataAndSave(string itemName, int amount)
+    
+    List<ItemData> saveCache = new();
+    public ItemData AddItemDataAndSave(string itemName, ItemType itemType, int amount)
     {
         if (string.IsNullOrWhiteSpace(itemName)) throw new ArgumentException("Item name cannot be null or empty.", nameof(itemName));
+        saveCache.Clear();
 
-        var existing = itemDatas.FirstOrDefault(c => c.itemName == itemName);
+        saveCache = itemType switch
+        {
+            ItemType.CharacterAction => characterActionsData,
+            ItemType.Equipment => equipmentData,
+            ItemType.Currency => currencyData,
+            _ => throw new ArgumentOutOfRangeException(nameof(itemType), $"Unsupported item type: {itemType}")
+        };
+        
+        var existing = saveCache.FirstOrDefault(c => c.itemName == itemName);
         
         if (existing != null)
             existing.amount += amount;
         else
         {
-            existing = new ItemData { itemName = itemName, amount = amount };
-            itemDatas.Add(existing);
+            existing = new ItemData { itemName = itemName, amount = amount};
+            saveCache.Add(existing);
         }
+        
         SaverService.Instance.GetSaver<Items_SavedDataSO>().Save();
         return existing;
     }
 
-    public ItemData GetItemData(string itemName)
+    List<ItemData> searchCache = new();
+    public ItemData GetItemData(ItemType itemType, string itemName)
     {
         if(String.IsNullOrEmpty(itemName)) Debug.LogError("No item name provided");
-        var ret = itemDatas.FirstOrDefault(c => c.itemName == itemName);
-        return ret ?? AddItemDataAndSave(itemName, 0);
+        searchCache.Clear();
+        searchCache = itemType switch
+        {
+            ItemType.CharacterAction => characterActionsData,
+            ItemType.Equipment => equipmentData,
+            ItemType.Currency => currencyData, 
+            _ => throw new ArgumentOutOfRangeException(nameof(itemType), $"Unsupported item type: {itemType}")
+        };
+        var ret = searchCache.FirstOrDefault(c => c.itemName == itemName);
+        return ret ?? AddItemDataAndSave(itemName, itemType, 0);
     }
 
-    public ItemData GetItemData(ItemData itemData) => GetItemData(itemData.itemName);
+    public ItemData GetItemData(ItemType itemType, ItemData itemData) => GetItemData(itemType, itemData.itemName);
 }

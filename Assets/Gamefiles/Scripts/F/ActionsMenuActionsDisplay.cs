@@ -58,7 +58,7 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
                 DequipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
             }
             
-            if(itemData.GetItemData(thisActionsName).amount <= 0)
+            if(itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, thisActionsName).amount <= 0)
             {
                 this.Log("Disabling action: " + thisActionsName);
                 actionBtns[i].LockAction();

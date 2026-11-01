@@ -84,7 +84,9 @@ public class CharacterInfoDisplay : MonoBehaviour
             p.portraitType = PortraitType.InfoDisplay;
             p.UpdateState();
         });
-        characterSelectPortraits[0].SelectNewCharacter();
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+        string firstUnlockedChar = data.charactersData.Find(c => c.hasCharacter).characterConfigName;
+        characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
     }
     
     public void ViewManageTeamScreen()
@@ -227,7 +229,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         
         SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);
         foreach (var startingKitAction in selectedCharacter.startingKitActions)
-            itemData.AddItemDataAndSave(startingKitAction.actionName, 1);
+            itemData.AddItemDataAndSave(startingKitAction.actionName, Items_SavedDataSO.ItemType.CharacterAction, 1);
         
         menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
