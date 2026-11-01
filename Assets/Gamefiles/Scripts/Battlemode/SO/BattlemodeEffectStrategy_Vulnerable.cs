@@ -299,9 +299,9 @@ public sealed class BattlemodeEffectStrategy_Bleed : BattlemodeEffectStrategyIns
     public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
     {
         if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
         boc.currentHp -= stacksTotal;
         tile.UpdateTransientStats();
-        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
     }
 }
 
@@ -316,8 +316,8 @@ public sealed class BattlemodeEffectStrategy_Decay : BattlemodeEffectStrategyIns
     public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
     {
         if (occupantCtx is not BattlerOccupantCtx boc) return;
+        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
         boc.currentHp -= stacksTotal;
         tile.UpdateTransientStats();
-        boc.battlerDisplayGenerator.GenerateNumberDisplay(stacksTotal, false, BattlemodeActionConfig.ActionIdentifier.Attack);
     }
 }

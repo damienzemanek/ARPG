@@ -46,20 +46,20 @@ MonoBehaviour:
   targetMovementCfg:
     direction: 0
     amount: 0
-  effectsToApplyToTarget:
+  effectsToApplyToTarget: []
+  effectsToApplyToSelf:
   - addOccurance: 2
     defaultEffectStrategyValues:
-      rid: 9034069160052916354
-  effectsToApplyToSelf: []
+      rid: 9034069160052916356
   aoe: 0
   references:
     version: 2
     RefIds:
-    - rid: 9034069160052916354
+    - rid: 9034069160052916356
       type: {class: SE_Psiosis, ns: , asm: Assembly-CSharp}
       data:
         ctx:
           stackCtxs:
-          - instanceEffectTime: 0
+          - instanceEffectTime: 1
             stacks: 1
             setStacksDirectly: 0
