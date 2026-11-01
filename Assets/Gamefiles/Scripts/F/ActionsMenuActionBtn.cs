@@ -58,6 +58,7 @@ public class ActionsMenuActionBtn : MonoBehaviour
 
     public void Select()
     {
+        if (actionsDisplay.currentlySelectedActionBtn == this) return;
         if (state == ActionBtnMenuUIState.Locked) return;
         bgImg.sprite = hoverSprite;
         img.color = defaultColor;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "BattlerConfig", menuName = "ARPG/SO/BattlerConfig")]
 public class BattlerConfig : OccupantCfg
@@ -27,15 +28,52 @@ public class BattlerConfig : OccupantCfg
     }
 
     [ReadOnly] public BattlemodeActionConfig[] equippedActions = Array.Empty<BattlemodeActionConfig>();
-    public List<BattlemodeActionConfig> AllAvaliableActions = new();
-    public List<BattlemodeActionConfig> ForcedActions = new();
-    
+    [SerializeField, ShowInInspector] List<BattlemodeActionConfig> allAvaliableActions = new();
+    public List<BattlemodeActionConfig> AllAvaliableActions
+    {
+        get => allAvaliableActions;
+        set
+        {
+            allAvaliableActions = value;
+            allAvaliableActionNames = new List<string>(allAvaliableActions.Count);
+            foreach (var action in allAvaliableActions)
+                allAvaliableActionNames.Add(action.name);
+        }
+    }
+
     public List<BattlemodeEffectConfigInstance> specialEffects = new();
+    [ReadOnly] public List<string> allAvaliableActionNames = new();
+    
     
     [Button]
     public void EquipAction(int slotIndex, BattlemodeActionConfig action)
     {
         if(slotIndex < 0 || slotIndex >= equippedActions.Length) return;
         equippedActions[slotIndex] = action;
+    }
+
+    public bool TryEquipActionOnNextAvaliableSlot(BattlemodeActionConfig actionCfg)
+    {
+        for (int i = 0; i < equippedActions.Length; i++)
+        {
+            if(equippedActions[i] == null)
+            {
+                equippedActions[i] = actionCfg;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void DequipAction(BattlemodeActionConfig actionCfg)
+    {
+        for (int i = 0; i < equippedActions.Length; i++)
+        {
+            if(equippedActions[i] == actionCfg)
+            {
+                equippedActions[i] = null;
+                return;
+            }
+        }
     }
 }
