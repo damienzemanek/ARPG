@@ -38,12 +38,16 @@ public class ActionsMenuActionBtn : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void ForceDefault()
+    {
+        bgImg.sprite = defaultSprite;
+        img.color = darkened;
+    }
+    
     public void Default()
     {
         if (actionsDisplay.currentlySelectedActionBtn == this) return;
-        
-        bgImg.sprite = defaultSprite;
-        img.color = darkened;
+        ForceDefault();
     }
 
     public void Hover()

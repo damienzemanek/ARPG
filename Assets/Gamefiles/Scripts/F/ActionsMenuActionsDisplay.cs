@@ -37,7 +37,9 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
     
     public void SelectAction(ActionsMenuActionBtn actionBtn)
     {
+        if(currentlySelectedActionBtn != null) currentlySelectedActionBtn.ForceDefault();
         currentlySelectedActionBtn = actionBtn;
+        go_equipDequipBtn.gameObject.SetActive(true);
         if (currentlySelectedActionBtn.state == ActionBtnMenuUIState.Equipped) text_buttonLabelEquipDequip.text = "Dequip";
         else if(currentlySelectedActionBtn.state == ActionBtnMenuUIState.Default) text_buttonLabelEquipDequip.text = "Equip";
     }
