@@ -223,13 +223,22 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.row = 1;
         charData.col = 1;
         charData.equipped = true;
-        foreach (var action in selectedCharacter.startingKitActions)
-            charData.equippedActions.Add(action.actionName);
-        charSaver.Save();
         
         SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);
         foreach (var startingKitAction in selectedCharacter.startingKitActions)
-            itemData.AddItemDataAndSave(startingKitAction.actionName, Items_SavedDataSO.ItemType.CharacterAction, 1);
+        {
+            itemData.AddItemData(startingKitAction.actionName, Items_SavedDataSO.ItemType.CharacterAction, 1);
+            charData.equippedActions.Add(startingKitAction.actionName);
+        }
+        
+        charSaver.Save();
+        itemSaver.Save();
+        
+        foreach (var newStartingKitAction in selectedCharacter.startingKitActions)
+        {
+            Debug.Log("Added starting kit action: " + newStartingKitAction.actionName + " to character: " + selectedCharacter.occupantName + " amount is " 
+                      + itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, newStartingKitAction.actionName).amount);
+        }
         
         menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }

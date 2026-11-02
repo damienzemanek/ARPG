@@ -58,9 +58,10 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
                 DequipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
             }
             
-            if(itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, thisActionsName).amount <= 0)
+            var actionData = itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, thisActionsName);
+            if(actionData.amount <= 0)
             {
-                this.Log("Disabling action: " + thisActionsName);
+                this.Log("Locking action: " + thisActionsName + " its value is " + actionData.amount);
                 actionBtns[i].LockAction();
             }
             

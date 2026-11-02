@@ -45,40 +45,35 @@ public class Items_SavedDataSO : SavedDataSO
     public List<ItemData> currencyData = new();
 
     
-    List<ItemData> saveCache = new();
-    public ItemData AddItemDataAndSave(string itemName, ItemType itemType, int amount)
+    public ItemData AddItemData(string itemName, ItemType itemType, int amount)
     {
         if (string.IsNullOrWhiteSpace(itemName)) throw new ArgumentException("Item name cannot be null or empty.", nameof(itemName));
-        saveCache.Clear();
 
-        saveCache = itemType switch
+        var data = itemType switch
         {
             ItemType.CharacterAction => characterActionsData,
             ItemType.Equipment => equipmentData,
             ItemType.Currency => currencyData,
-            _ => throw new ArgumentOutOfRangeException(nameof(itemType), $"Unsupported item type: {itemType}")
+            _ => throw new ArgumentOutOfRangeException(nameof(itemType))
         };
-        
-        var existing = saveCache.FirstOrDefault(c => c.itemName == itemName);
-        
+
+        var existing = data.FirstOrDefault(c => c.itemName == itemName);
+
         if (existing != null)
             existing.amount += amount;
         else
         {
-            existing = new ItemData { itemName = itemName, amount = amount};
-            saveCache.Add(existing);
+            existing = new ItemData { itemName = itemName, amount = amount };
+            data.Add(existing);
         }
-        
-        SaverService.Instance.GetSaver<Items_SavedDataSO>().Save();
+
         return existing;
     }
 
-    List<ItemData> searchCache = new();
     public ItemData GetItemData(ItemType itemType, string itemName)
     {
         if(String.IsNullOrEmpty(itemName)) Debug.LogError("No item name provided");
-        searchCache.Clear();
-        searchCache = itemType switch
+        var searchCache = itemType switch
         {
             ItemType.CharacterAction => characterActionsData,
             ItemType.Equipment => equipmentData,
@@ -86,7 +81,7 @@ public class Items_SavedDataSO : SavedDataSO
             _ => throw new ArgumentOutOfRangeException(nameof(itemType), $"Unsupported item type: {itemType}")
         };
         var ret = searchCache.FirstOrDefault(c => c.itemName == itemName);
-        return ret ?? AddItemDataAndSave(itemName, itemType, 0);
+        return ret ?? AddItemData(itemName, itemType, 0);
     }
 
     public ItemData GetItemData(ItemType itemType, ItemData itemData) => GetItemData(itemType, itemData.itemName);
