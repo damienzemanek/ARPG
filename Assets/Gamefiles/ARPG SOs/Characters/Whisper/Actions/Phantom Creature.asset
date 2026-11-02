@@ -50,10 +50,13 @@ MonoBehaviour:
   effectsToApplyToSelf:
   - addOccurance: 2
     defaultEffectStrategyValues:
-      rid: -2
+      rid: 189241388021055490
   aoe: 0
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 189241388021055490
+      type: {class: SE_Psiosis, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs: []

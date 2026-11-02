@@ -47,8 +47,16 @@ MonoBehaviour:
     direction: 1
     amount: 2
   effectsToApplyToTarget: []
-  effectsToApplyToSelf: []
+  effectsToApplyToSelf:
+  - addOccurance: 0
+    defaultEffectStrategyValues:
+      rid: 189241388021055492
   aoe: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 189241388021055492
+      type: {class: SE_Psiosis, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs: []
