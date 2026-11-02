@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -38,10 +39,12 @@ public class CharacterInfoDisplay : MonoBehaviour
     public string openCharInfoPanelAnimName = "Open";
     public string closeCharInfoPanelAnimName = "Close";
     
-    [Required] public Animator mainArtAnimator;
-    public string toDefaultMainArtAnimName = "ToDefault";
-    public string toActionsOrEquipmentAnimName = "ActionsOrEquipment";
-    public string defaultActionsOrEquipmentAnimName = "ActionsOrEquipmentDefault";
+    [Required] public Transform mainArtTransform;
+    public float mainArtMoveDuration = 0.3f;
+    [Required] public Transform overviewMainArtPos;
+    [Required] public Transform actionsOrEquipmentMainArtPos;
+    [Required] public Transform characterSelectMainArtPos;
+
 
 
     [Required] public TextMeshProUGUI txt_descTactics;
@@ -87,6 +90,8 @@ public class CharacterInfoDisplay : MonoBehaviour
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
         string firstUnlockedChar = data.charactersData.Find(c => c.hasCharacter).characterConfigName;
         characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
+        
+        mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
     }
     
     public void ViewManageTeamScreen()
@@ -102,14 +107,11 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ResetDetailsMenus()
     {
-        if (onActionsOrEquipmentScreen)
-            mainArtAnimator.Play(toDefaultMainArtAnimName);
-        
-        onCharacterScreen = false;
+        onOverviewScreen = false;
         onActionsOrEquipmentScreen = false;
     }
     
-    public bool onCharacterScreen;
+    public bool onOverviewScreen;
     public bool onActionsOrEquipmentScreen;
 
     public void ViewOverviewScreen()
@@ -117,19 +119,18 @@ public class CharacterInfoDisplay : MonoBehaviour
         Debug.Log("OVERVIEW SCREEN");
 
         // If already had started to inspect this character
-        if (onActionsOrEquipmentScreen)
-            mainArtAnimator.Play(toDefaultMainArtAnimName);
+        mainArtTransform.DOMove(overviewMainArtPos.position, mainArtMoveDuration);
         
         onActionsOrEquipmentScreen = false;
 
-        if (onCharacterScreen) // already on
+        if (onOverviewScreen) // already on
             return;
         
         
         // if not, play the animation (Newly inspected character)
         txt_descTactics.text = selectedCharacter.desc_tactics;
         txt_descAbout.text = selectedCharacter.desc_about;
-        onCharacterScreen = true;
+        onOverviewScreen = true;
         characterInfoPanelAnimator.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
     }
     
@@ -138,10 +139,9 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
         
-        if (onCharacterScreen)
-            mainArtAnimator.Play(toActionsOrEquipmentAnimName);
+        mainArtTransform.DOMove(actionsOrEquipmentMainArtPos.position, mainArtMoveDuration);
         
-        onCharacterScreen = false;
+        onOverviewScreen = false;
         
         if (onActionsOrEquipmentScreen) // already on
             return;
