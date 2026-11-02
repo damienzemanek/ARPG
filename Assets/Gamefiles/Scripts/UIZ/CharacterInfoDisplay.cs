@@ -13,21 +13,19 @@ public class CharacterInfoDisplay : MonoBehaviour
 {
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
-    [Required] public UiOrchestration uiOrchestration;
-    [Required] public MenuBar menuBarDetails;
-    [Required] public ActionsMenuActionsDisplay menuActionsDisplay;
-    [Required] public TextMeshProUGUI txt_Name;
-    [Required] public TextMeshProUGUI txt_altName;
-    [Required] public TextMeshProUGUI txt_spEffect;
-    [Required] public TextMeshProUGUI txt_healthNum;
-    [Required] public TextMeshProUGUI txt_apNum;
-    [Required] public TextMeshProUGUI txt_dmgNum;
-    [Required] public TextMeshProUGUI txt_armorNum;
-    [Required] public TextMeshProUGUI txt_buttonLabel;
-    [Required] public Image img_mainArt;
-
-    [Required] public GameObject lhs_ChoseYourCharacter;
-    [Required] public GameObject rhs_characterInfoDisplay;
+    [BoxGroup("Dependencies")] [Required] public UiOrchestration uiOrchestration;
+    [BoxGroup("Dependencies")] [Required] public MenuBar menuBarDetails;
+    [BoxGroup("Dependencies")] [Required] public ActionsMenuActionsDisplay menuActionsDisplay;
+    
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_Name;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_altName;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_spEffect;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_healthNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_apNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_dmgNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_armorNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_buttonLabel;
+    [BoxGroup("Character Info")] [Required] public Image img_mainArt;
 
     [Required] public CharacterSelectPortrait initiallySelectedPortrait;
     [ReadOnly] public CharacterConfig selectedCharacter;
@@ -35,15 +33,15 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public Button selectBtn;
     [Required] public TeamGrid teamGrid;
 
-    [Required] public Animator characterInfoPanelAnimator;
-    public string openCharInfoPanelAnimName = "Open";
-    public string closeCharInfoPanelAnimName = "Close";
+    [BoxGroup("Character Info Panel")] [Required] public Transform characterInfoPanelTransform;
+    [BoxGroup("Character Info Panel")] [Required] public Transform openCharInfoPanelPos;
+    [BoxGroup("Character Info Panel")] [Required] public Transform closeCharInfoPanelPos;
     
-    [Required] public Transform mainArtTransform;
-    public float mainArtMoveDuration = 0.3f;
-    [Required] public Transform overviewMainArtPos;
-    [Required] public Transform actionsOrEquipmentMainArtPos;
-    [Required] public Transform characterSelectMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform mainArtTransform;
+    [BoxGroup("Main Art")] public float mainArtMoveDuration = 0.3f;
+    [BoxGroup("Main Art")] [Required] public Transform overviewMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform actionsOrEquipmentMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform characterSelectMainArtPos;
 
 
 
@@ -57,8 +55,6 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void Awake()
     {
         selectedCharacter = null;
-        lhs_ChoseYourCharacter.SetActive(false);
-        rhs_characterInfoDisplay.SetActive(false);
     }
     
     
@@ -71,8 +67,6 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_buttonLabel.text = "Select Character";
         uiOrchestration.currentExplorationUIState = ExplorationUIState.FirstStart;
         PreviewCharacter(initiallySelectedPortrait.characterCfg);
-        lhs_ChoseYourCharacter.SetActive(true);
-        rhs_characterInfoDisplay.SetActive(true);
         Debug.Log("Successfully chose starter character");
     }
 
@@ -109,6 +103,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         onOverviewScreen = false;
         onActionsOrEquipmentScreen = false;
+        CloseCharacterInfoPanel();
     }
     
     public bool onOverviewScreen;
@@ -119,6 +114,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         Debug.Log("OVERVIEW SCREEN");
 
         // If already had started to inspect this character
+        CloseCharacterInfoPanel();
         mainArtTransform.DOMove(overviewMainArtPos.position, mainArtMoveDuration);
         
         onActionsOrEquipmentScreen = false;
@@ -131,7 +127,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_descTactics.text = selectedCharacter.desc_tactics;
         txt_descAbout.text = selectedCharacter.desc_about;
         onOverviewScreen = true;
-        characterInfoPanelAnimator.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
+        characterInfoPanelTransform.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
     }
     
     
@@ -139,6 +135,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
         
+        CloseCharacterInfoPanel();
         mainArtTransform.DOMove(actionsOrEquipmentMainArtPos.position, mainArtMoveDuration);
         
         onOverviewScreen = false;
@@ -243,16 +240,8 @@ public class CharacterInfoDisplay : MonoBehaviour
         menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
 
-    public void OpenCharacterInfoPanel()
-    {
-        characterInfoPanelAnimator.Play(openCharInfoPanelAnimName);
-    }
-
-    public void CloseCharacterInfoPanel()
-    {
-        characterInfoPanelAnimator.Play(closeCharInfoPanelAnimName);
-    }
-
+    public void OpenCharacterInfoPanel() => characterInfoPanelTransform.DOMove(openCharInfoPanelPos.position, mainArtMoveDuration);
+    public void CloseCharacterInfoPanel() => characterInfoPanelTransform.DOMove(closeCharInfoPanelPos.position, mainArtMoveDuration);
 }
     
 #endregion ------------------------------------------------------------------
