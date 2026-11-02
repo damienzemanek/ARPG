@@ -50,11 +50,19 @@ MonoBehaviour:
   - addOccurance: 2
     defaultEffectStrategyValues:
       rid: 5090622939719008377
-  effectsToApplyToSelf: []
+  effectsToApplyToSelf:
+  - addOccurance: 2
+    defaultEffectStrategyValues:
+      rid: 189241388021055491
   aoe: 0
   references:
     version: 2
     RefIds:
+    - rid: 189241388021055491
+      type: {class: SE_Psiosis, ns: , asm: Assembly-CSharp}
+      data:
+        ctx:
+          stackCtxs: []
     - rid: 5090622939719008377
       type: {class: BattlemodeEffectStrategy_Vulnerable, ns: , asm: Assembly-CSharp}
       data:
