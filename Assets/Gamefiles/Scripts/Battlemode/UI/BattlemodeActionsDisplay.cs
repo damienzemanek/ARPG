@@ -25,7 +25,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [Required] public Transform actionsExhaustedDisplayParent;
     [Required] public GameObject displ_ActionInfo;
     [BoxGroup("Action Info Display")] [Required] public Transform parent_roleTargetInfo;
-    [FormerlySerializedAs("pr_hlg_targetingDetail")] [BoxGroup("Action Info Display")] [Required] public GameObject pr_hlg_infoDetail;
+    [BoxGroup("Action Info Display")] [Required] public GameObject pr_hlg_infoDetail;
     [BoxGroup("Action Info Display")] [Required] public GameObject pr_vlg_roleTargetInfo;
 
 
@@ -99,51 +99,56 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     void Awake()
     {
         // Status Effects Setup
-        effectDisplayPool = new(() => {
-                var ret = Instantiate(effectDisplayPrefab, effectDisplayParent).Get<BattlemodeEffect>();
-                ret.gameObject.SetActive(false);
-                return ret;
-            },
-            (effect) => effect.gameObject.SetActive(true),
-            effectDisplay => effectDisplay.Hide(),
-            12);
+        effectDisplayPool = new(
+            createFunc:    () => 
+                            {
+                                var ret = Instantiate(effectDisplayPrefab, effectDisplayParent).Get<BattlemodeEffect>();
+                                ret.gameObject.SetActive(false);
+                                return ret;
+                            },
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    12);
         effectDisplayPool.Prewarm(5);
         effectDisplayPool.ReleaseAll();
 
         // Special Effects Setup
-        specialEffectDisplayPool = new(() => {
+        specialEffectDisplayPool = new(
+            createFunc:    () => {
                 var ret = Instantiate(specialEffectDisplayPrefab, specialEffectDisplayParent)
                     .Get<BattlemodeSpecialEffect>();
                 ret.gameObject.SetActive(false);
                 return ret;
             },
-            (effect) => effect.gameObject.SetActive(true),
-            specialEffectDisplay => specialEffectDisplay.Hide(),
-            3);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    3);
         specialEffectDisplayPool.Prewarm(3);
         specialEffectDisplayPool.ReleaseAll();
         
         // Status Effect HP Bar Setup
-        statusEffectHPBarDisplayPool = new(() => {
-            var ret = Instantiate(statusEffectHPBarDisplayPrefab, statusEffectHPBarDisplayParent).Get<BattlemodeStatusEffectHPBar>();
-            ret.gameObject.SetActive(false);
-            return ret; 
+        statusEffectHPBarDisplayPool = new(
+            createFunc:    () => {
+                var ret = Instantiate(statusEffectHPBarDisplayPrefab, statusEffectHPBarDisplayParent).Get<BattlemodeStatusEffectHPBar>();
+                ret.gameObject.SetActive(false);
+                return ret; 
             },
-            (effect) => effect.gameObject.SetActive(true),
-            statusEffectHPBarDisplay => statusEffectHPBarDisplay.Hide(),
-            8);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    8);
         statusEffectHPBarDisplayPool.Prewarm(3);
         statusEffectHPBarDisplayPool.ReleaseAll();
         
         // Status Effect Current Display Setup
-        statusEffectCurrentDisplayPool = new(() => {
-            var ret = Instantiate(statusEffectCurrentDisplayPrefab, statusEffectCurrentDisplayParentTransform).Get<BattlemodeEffect>();
-            ret.gameObject.SetActive(false);
-            return ret; 
+        statusEffectCurrentDisplayPool = new(
+            createFunc:    () => {
+                var ret = Instantiate(statusEffectCurrentDisplayPrefab, statusEffectCurrentDisplayParentTransform).Get<BattlemodeEffect>();
+                ret.gameObject.SetActive(false);
+                return ret; 
             },
-            (effect) => effect.gameObject.SetActive(true),
-            statusEffectCurrentDisplay => statusEffectCurrentDisplay.Hide(),
-            8);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    8);
         statusEffectCurrentDisplayPool.Prewarm(5);
         statusEffectCurrentDisplayPool.ReleaseAll();
         
