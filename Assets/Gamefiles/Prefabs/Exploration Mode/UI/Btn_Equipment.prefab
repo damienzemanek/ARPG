@@ -526,3 +526,4 @@ MonoBehaviour:
   selectSprite: {fileID: 21300000, guid: 613654c9020296148999a78172a3b68b, type: 3}
   go_lock: {fileID: 2064847731489656842}
   go_check: {fileID: 5394796233679924058}
+  txt_name: {fileID: 3621345243683725611}

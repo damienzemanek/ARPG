@@ -34,25 +34,42 @@ public class EquipmentMenuActionsDisplay : MonoBehaviour
         currentlySelectedBtn = btn;
         go_equipDequipBtn.gameObject.SetActive(true);
         go_infoDisplay.SetActive(true);
-        if (currentlySelectedBtn.state == BtnMenuUIState.Equipped) text_buttonLabelEquipDequip.text = "Dequip";
-        else if(currentlySelectedBtn.state == BtnMenuUIState.Default) text_buttonLabelEquipDequip.text = "Equip";
+        equippedDisplaySlots.ForEach(s => s.Default());
+        if (currentlySelectedBtn.state == BtnMenuUIState.Equipped)
+        {
+            text_buttonLabelEquipDequip.text = "Dequip";
+            equippedDisplaySlots
+                .Find(e => e.currentlyEquippedBtn == currentlySelectedBtn)
+                .SelectSlot();
+        }
+        else if (currentlySelectedBtn.state == BtnMenuUIState.Default)
+        {
+            text_buttonLabelEquipDequip.text = "Equip";
+            equippedDisplaySlots.ForEach(s => s.Default());
+        }
         ShowEquipment(currentlySelectedBtn);
     }
 
     public void PressedEquipDequip()
     {
+        Debug.Log("Pressed Equip Dequip");
         if (currentlySelectedBtn.state != BtnMenuUIState.Equipped)
         {
-            if(equippedDisplaySlots.All(s => s != null)) return;
-            equippedDisplaySlots.First(e => e == null)
-                .EquipOnSlot(currentlySelectedBtn);
+            if(equippedDisplaySlots.All(s => s.isEquipped)) return;
+            
+            Debug.Log("Equipping : " + currentlySelectedBtn.cfg.name + "");
+            var slot = equippedDisplaySlots.First(e => !e.isEquipped);
+            slot.EquipOnSlot(currentlySelectedBtn);
+            slot.SelectSlot();
             currentlySelectedBtn.Equip();
         }
         else
         {
+            Debug.Log("Dequipping : " + currentlySelectedBtn.cfg.name + "");
             currentlySelectedBtn.Dequip();
             equippedDisplaySlots.Find(e => e.currentlyEquippedBtn == currentlySelectedBtn)
-                .UnequipFromSlot();
+                .UnequipFromSlot()
+                .Default();
         }
     }
 

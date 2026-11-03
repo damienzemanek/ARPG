@@ -1034,18 +1034,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0642f32d058ff4a418e36f6ae550025c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Btn
-  enter: 0
-  exit: 0
-  click: 0
+  enter: 1
+  exit: 1
+  click: 1
   onEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034087520393600511}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: Hover
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034087520393600511}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: Default
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034087520393600511}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: SelectFromBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2034087520393600511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,10 +1097,12 @@ MonoBehaviour:
   dependancy: {fileID: 7510103461739200351}
   currentlyEquippedBtn: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  darkenedColor: {r: 1, g: 1, b: 1, a: 1}
+  darkenedColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   bgImg: {fileID: 299234935205805558}
   sprImg: {fileID: 3951759261339221640}
   defaultSprite: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 613654c9020296148999a78172a3b68b, type: 3}
+  txt_name: {fileID: 3874380646026518297}
 --- !u!1 &7444273121277260470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,18 +1194,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0642f32d058ff4a418e36f6ae550025c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Btn
-  enter: 0
-  exit: 0
-  click: 0
+  enter: 1
+  exit: 1
+  click: 1
   onEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 348317872453008035}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: Hover
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 348317872453008035}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: Default
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 348317872453008035}
+        m_TargetAssemblyTypeName: EquipmentDisplaySlot, Assembly-CSharp
+        m_MethodName: SelectFromBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &348317872453008035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,10 +1257,12 @@ MonoBehaviour:
   dependancy: {fileID: 7510103461739200351}
   currentlyEquippedBtn: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  darkenedColor: {r: 1, g: 1, b: 1, a: 1}
+  darkenedColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   bgImg: {fileID: 1409009573955228192}
   sprImg: {fileID: 5620028281680314317}
   defaultSprite: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 613654c9020296148999a78172a3b68b, type: 3}
+  txt_name: {fileID: 4881059277195510724}
 --- !u!1 &7914606039831398681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,9 +1529,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.b
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.g
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.r
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: dependancy
       value: 
       objectReference: {fileID: 7510103461739200351}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
     - target: {fileID: 6889944242298825394, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: m_Name
       value: Btn_Equipment
@@ -1749,9 +1841,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 024770c924423e145835931d709247a0, type: 2}
     - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.b
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.g
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.r
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: dependancy
       value: 
       objectReference: {fileID: 7510103461739200351}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
     - target: {fileID: 6889944242298825394, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: m_Name
       value: Btn_Equipment (3)
@@ -1859,9 +1967,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 16acb370168c82c4e90cbb231d316df4, type: 2}
     - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.b
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.g
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.r
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: dependancy
       value: 
       objectReference: {fileID: 7510103461739200351}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
     - target: {fileID: 6889944242298825394, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: m_Name
       value: Btn_Equipment (2)
@@ -1969,9 +2093,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 1bfd591de02876946a03e4eae25e656f, type: 2}
     - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.b
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.g
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: darkened.r
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: dependancy
       value: 
       objectReference: {fileID: 7510103461739200351}
+    - target: {fileID: 2689287865390585146, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c8f0306b6db94f42a6f7b38e063f01e, type: 3}
     - target: {fileID: 6889944242298825394, guid: 6a9ab517ba0c4c642a82d677a649f7a3, type: 3}
       propertyPath: m_Name
       value: Btn_Equipment (1)

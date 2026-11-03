@@ -57,6 +57,7 @@ public abstract class MenuUISlot<TDependancy, TConfig> : MonoBehaviour
     public void ForceDefault()
     {
         bgImg.sprite = defaultSprite;
+        bgImg.color = darkened;
         img.color = darkened;
     }
 
