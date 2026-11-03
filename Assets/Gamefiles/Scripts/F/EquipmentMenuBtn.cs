@@ -9,12 +9,12 @@ public class EquipmentMenuBtn : MenuUISlot<EquipmentMenuActionsDisplay, Equipmen
     protected override void InjectAndSetupImplementation(EquipmentConfig equipCfg)
     {
         img.sprite = equipCfg.icon;
-        txt_name.text = equipCfg.name;
     }
 
     void OnEnable()
     {
         Default();
+        if(cfg != null) txt_name.text = cfg.name;
     }
 
     public override void Default()
