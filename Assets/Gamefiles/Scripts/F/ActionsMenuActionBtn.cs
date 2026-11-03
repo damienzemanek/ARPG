@@ -2,90 +2,32 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionsMenuActionBtn : MonoBehaviour
+public class ActionsMenuActionBtn : MenuUISlot<ActionsMenuActionsDisplay, BattlemodeActionConfig>
 {
-    public enum ActionBtnMenuUIState
+    protected override void InjectAndSetupImplementation(BattlemodeActionConfig actionCfg)
     {
-        Default,
-        Locked,
-        Equipped
+        img.sprite = actionCfg.icon;
     }
 
-    public Color darkened;
-    public Color defaultColor;
-
-    public ActionBtnMenuUIState state;
-    [ShowInInspector] public BattlemodeActionConfig actionCfg;
-    [Required] public Image bgImg;
-    [Required] public Image img;
-    [Required] public Sprite defaultSprite;
-    [Required] public Sprite hoverSprite;
-    [Required] public ActionsMenuActionsDisplay actionsDisplay;
-    [Required] public GameObject go_lock;
-    [Required] public GameObject go_check;
-
-    public void InjectActionAndSetup(BattlemodeActionConfig actionCfg)
+    public override void Default()
     {
-        this.actionCfg = actionCfg;
-        img.sprite = actionCfg.icon;
+        if (dependancy.currentlySelectedActionBtn == this) return;
         ForceDefault();
     }
 
-    public void LockAction()
+    public override void Hover()
     {
-        state = ActionBtnMenuUIState.Locked;
-        img.color = darkened;
-        bgImg.sprite = defaultSprite;
-        go_check.SetActive(false);
-        go_lock.SetActive(true);
+        if (state == BtnMenuUIState.Locked) return;
+        img.color = defaultColor;
     }
 
-    public void ResetActionBtn()
+    public override void Select()
     {
-        img.sprite = null;
-        actionCfg = null;
-        gameObject.SetActive(false);
-    }
-
-    public void ForceDefault()
-    {
-        bgImg.sprite = defaultSprite;
-        img.color = darkened;
+        if (dependancy.currentlySelectedActionBtn == this) return;
+        if (state == BtnMenuUIState.Locked) return;
+        bgImg.sprite = selectSprite;
+        img.color = defaultColor;
+        dependancy.SelectAction(this);
     }
     
-    public void Default()
-    {
-        if (actionsDisplay.currentlySelectedActionBtn == this) return;
-        ForceDefault();
-    }
-
-    public void Hover()
-    {
-        if (state == ActionBtnMenuUIState.Locked) return;
-        img.color = defaultColor;
-    }
-
-    public void Select()
-    {
-        if (actionsDisplay.currentlySelectedActionBtn == this) return;
-        if (state == ActionBtnMenuUIState.Locked) return;
-        bgImg.sprite = hoverSprite;
-        img.color = defaultColor;
-        actionsDisplay.SelectAction(this);
-    }
-
-    public void EquipAction()
-    {
-        state = ActionBtnMenuUIState.Equipped;
-        go_check.SetActive(true);
-        go_lock.SetActive(false);
-    }
-
-    public void DequipAction()
-    {
-        state = ActionBtnMenuUIState.Default;
-        go_check.SetActive(false);
-        go_lock.SetActive(false);
-    }
-
 }
