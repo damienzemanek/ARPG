@@ -65,8 +65,15 @@ public class CharacterInfoDisplay : MonoBehaviour
         selectBtn.interactable = false;
         selectedCharacter = initiallySelectedPortrait.characterCfg;
         txt_buttonLabel.text = "Select Character";
+        txt_altName.text = "";
+        txt_Name.text = "";
+        txt_spEffect.text = "";
+        txt_healthNum.text = "";
+        txt_apNum.text = "";
+        txt_dmgNum.text = "";
+        txt_armorNum.text = "";
         uiOrchestration.currentExplorationUIState = ExplorationUIState.FirstStart;
-        PreviewCharacter(initiallySelectedPortrait.characterCfg);
+        mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
         Debug.Log("Successfully chose starter character");
     }
 
@@ -81,6 +88,7 @@ public class CharacterInfoDisplay : MonoBehaviour
             p.portraitType = PortraitType.InfoDisplay;
             p.UpdateState();
         });
+        
         SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
         string firstUnlockedChar = data.charactersData.Find(c => c.hasCharacter).characterConfigName;
         characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
@@ -200,12 +208,18 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_dmgNum.text = character.damage.ToString();
         txt_armorNum.text = character.maxArmor.ToString();
         img_mainArt.sprite = character.mainArt;
+        img_mainArt.gameObject.SetActive(true);
         selectBtn.interactable = true;
         Debug.Log("Successfully selected character: " + character.occupantName);
     }
     
     public void ChoseStarterCharacter()
     {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var gameSaver, out var gameData);
+        gameData.returningPlayer = true;
+        gameSaver.Save();
+        
+        
         Debug.Log("CHARACTER WAS CHOSEN");
         playerEvents.ReEnablePlayerAndMovement();
         playerEvents.SaveCurrentPosition();

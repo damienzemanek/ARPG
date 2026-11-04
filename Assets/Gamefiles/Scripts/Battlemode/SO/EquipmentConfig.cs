@@ -6,5 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ARPG/SO/EquipmentConfig", fileName = "Equipment Config")]
 public class EquipmentConfig : ItemSO
 {
-    
+    public BattlemodeEffectConfigInstance equipmentEffect;
 }

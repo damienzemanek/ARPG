@@ -32,6 +32,7 @@ public class CharactersData_SavedDataSO : SavedDataSO
         [ReadOnly] public int level = 1;
         [ReadOnly] public bool equipped;
         [ReadOnly] public List<string> equippedActions;
+        [ReadOnly] public List<string> equippedEquipment;
         public int col, row;
 
         public CharacterConfig GetConfig(string characterName)

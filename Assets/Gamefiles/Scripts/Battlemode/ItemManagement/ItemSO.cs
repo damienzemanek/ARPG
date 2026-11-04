@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 [InlineEditor]
 public class ItemSO : ScriptableObject
-{
+{ 
     public Items_SavedDataSO.ItemData itemData;
     [BoxGroup("Settings")] public string description;
     [BoxGroup("Settings")] public Sprite icon;

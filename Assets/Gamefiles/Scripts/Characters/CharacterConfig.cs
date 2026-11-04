@@ -17,6 +17,7 @@ public class CharacterConfig : BattlerConfig
     public string desc_tactics;
     public string desc_about;
     public List<BattlemodeActionConfig> startingKitActions = new();
+    public List<EquipmentConfig> equippedEquipments;
     // i would have to make the char info display sp effect multi scalable tho
 }
 
