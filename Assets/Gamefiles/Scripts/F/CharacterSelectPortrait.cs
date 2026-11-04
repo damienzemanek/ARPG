@@ -35,8 +35,8 @@ public class CharacterSelectPortrait : MonoBehaviour
     public TeamGrid teamGrid;
     [Required] public GameObject equippedOverlay;
     [Required] public GameObject lockedOverlay;
-
-
+    [Required] public Sprite spr_unknownCharacter;
+    
     void OnEnable()
     {
         InfoDisplayRegisterPortraits();
@@ -131,8 +131,8 @@ public class CharacterSelectPortrait : MonoBehaviour
                 equippedOverlay.SetActive(true);
                 break;
             case CharacterSelectPortraitState.Empty:
-                image.color = clear;
-                image.sprite = null;
+                image.color = reg;
+                image.sprite = spr_unknownCharacter;
                 lockedOverlay.SetActive(false);
                 equippedOverlay.SetActive(false);
                 break;

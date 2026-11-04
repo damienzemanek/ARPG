@@ -316,8 +316,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 39.9824}
+  m_AnchoredPosition: {x: 0, y: -9.995605}
+  m_SizeDelta: {x: 0, y: 19.991}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3739937739066947350
 CanvasRenderer:
@@ -368,13 +368,14 @@ GameObject:
   - component: {fileID: 6805322721782667727}
   - component: {fileID: 4442613342689372413}
   - component: {fileID: 255725850004749210}
+  - component: {fileID: 1455810529745559896}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6805322721782667727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -435,6 +436,91 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1455810529745559896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8944941733808271145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3951e369ae164186803e8b4e96b43659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityLifecycleHookEmilEvent
+  awake: 0
+  onenable: 1
+  ondisable: 1
+  start: 0
+  update: 0
+  fixedupdate: 0
+  OnAwake:
+    useUnityEvent: 0
+    useVTable: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries: []
+  OnEnabled:
+    useUnityEvent: 0
+    useVTable: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries:
+    - vTable: {fileID: 11400000, guid: e765a5c364b1294489da579e0ece9f7c, type: 2}
+      methodName: Pause
+      parameters:
+      - rid: 7902588653758054519
+  OnDisabled:
+    useUnityEvent: 0
+    useVTable: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries:
+    - vTable: {fileID: 11400000, guid: e765a5c364b1294489da579e0ece9f7c, type: 2}
+      methodName: Pause
+      parameters:
+      - rid: 7902588653758054520
+  OnStart:
+    useUnityEvent: 0
+    useVTable: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries: []
+  OnUpdate:
+    useUnityEvent: 0
+    useVTable: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries: []
+  OnFixedUpdate:
+    useUnityEvent: 0
+    useVTable: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    vTableEntries: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 7902588653758054519
+      type: {class: 'EmilEventBase/TypedParameter`1[[System.Boolean, mscorlib]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: val
+        isAutoSupplied: 0
+        autoValue: 0
+        value: 1
+    - rid: 7902588653758054520
+      type: {class: 'EmilEventBase/TypedParameter`1[[System.Boolean, mscorlib]]', ns: , asm: Assembly-CSharp}
+      data:
+        name: val
+        isAutoSupplied: 0
+        autoValue: 0
+        value: 0
 --- !u!1001 &1748899196543910509
 PrefabInstance:
   m_ObjectHideFlags: 0

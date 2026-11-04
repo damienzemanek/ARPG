@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -12,20 +13,19 @@ public class CharacterInfoDisplay : MonoBehaviour
 {
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
-    [Required] public UiOrchestration uiOrchestration;
-    [Required] public MenuBar menuBarDetails;
-    [Required] public TextMeshProUGUI txt_Name;
-    [Required] public TextMeshProUGUI txt_altName;
-    [Required] public TextMeshProUGUI txt_spEffect;
-    [Required] public TextMeshProUGUI txt_healthNum;
-    [Required] public TextMeshProUGUI txt_apNum;
-    [Required] public TextMeshProUGUI txt_dmgNum;
-    [Required] public TextMeshProUGUI txt_armorNum;
-    [Required] public TextMeshProUGUI txt_buttonLabel;
-    [Required] public Image img_mainArt;
-
-    [Required] public GameObject lhs_ChoseYourCharacter;
-    [Required] public GameObject rhs_characterInfoDisplay;
+    [BoxGroup("Dependencies")] [Required] public UiOrchestration uiOrchestration;
+    [BoxGroup("Dependencies")] [Required] public MenuBar menuBarDetails;
+    [BoxGroup("Dependencies")] [Required] public ActionsMenuActionsDisplay menuActionsDisplay;
+    
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_Name;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_altName;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_spEffect;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_healthNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_apNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_dmgNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_armorNum;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_buttonLabel;
+    [BoxGroup("Character Info")] [Required] public Image img_mainArt;
 
     [Required] public CharacterSelectPortrait initiallySelectedPortrait;
     [ReadOnly] public CharacterConfig selectedCharacter;
@@ -33,14 +33,16 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public Button selectBtn;
     [Required] public TeamGrid teamGrid;
 
-    [Required] public Animator characterInfoPanelAnimator;
-    public string openCharInfoPanelAnimName = "Open";
-    public string closeCharInfoPanelAnimName = "Close";
+    [BoxGroup("Character Info Panel")] [Required] public Transform characterInfoPanelTransform;
+    [BoxGroup("Character Info Panel")] [Required] public Transform openCharInfoPanelPos;
+    [BoxGroup("Character Info Panel")] [Required] public Transform closeCharInfoPanelPos;
     
-    [Required] public Animator mainArtAnimator;
-    public string toDefaultMainArtAnimName = "ToDefault";
-    public string toActionsOrEquipmentAnimName = "ActionsOrEquipment";
-    public string defaultActionsOrEquipmentAnimName = "ActionsOrEquipmentDefault";
+    [BoxGroup("Main Art")] [Required] public Transform mainArtTransform;
+    [BoxGroup("Main Art")] public float mainArtMoveDuration = 0.3f;
+    [BoxGroup("Main Art")] [Required] public Transform overviewMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform actionsOrEquipmentMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform characterSelectMainArtPos;
+
 
 
     [Required] public TextMeshProUGUI txt_descTactics;
@@ -53,8 +55,6 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void Awake()
     {
         selectedCharacter = null;
-        lhs_ChoseYourCharacter.SetActive(false);
-        rhs_characterInfoDisplay.SetActive(false);
     }
     
     
@@ -65,10 +65,15 @@ public class CharacterInfoDisplay : MonoBehaviour
         selectBtn.interactable = false;
         selectedCharacter = initiallySelectedPortrait.characterCfg;
         txt_buttonLabel.text = "Select Character";
+        txt_altName.text = "";
+        txt_Name.text = "";
+        txt_spEffect.text = "";
+        txt_healthNum.text = "";
+        txt_apNum.text = "";
+        txt_dmgNum.text = "";
+        txt_armorNum.text = "";
         uiOrchestration.currentExplorationUIState = ExplorationUIState.FirstStart;
-        PreviewCharacter(initiallySelectedPortrait.characterCfg);
-        lhs_ChoseYourCharacter.SetActive(true);
-        rhs_characterInfoDisplay.SetActive(true);
+        mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
         Debug.Log("Successfully chose starter character");
     }
 
@@ -83,7 +88,12 @@ public class CharacterInfoDisplay : MonoBehaviour
             p.portraitType = PortraitType.InfoDisplay;
             p.UpdateState();
         });
-        characterSelectPortraits[0].SelectNewCharacter();
+        
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+        string firstUnlockedChar = data.charactersData.Find(c => c.hasCharacter).characterConfigName;
+        characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
+        
+        mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
     }
     
     public void ViewManageTeamScreen()
@@ -99,15 +109,12 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ResetDetailsMenus()
     {
-        if (onActionsOrEquipmentScreen)
-            mainArtAnimator.Play(toDefaultMainArtAnimName);
-
-        
-        onCharacterScreen = false;
+        onOverviewScreen = false;
         onActionsOrEquipmentScreen = false;
+        CloseCharacterInfoPanel();
     }
     
-    public bool onCharacterScreen;
+    public bool onOverviewScreen;
     public bool onActionsOrEquipmentScreen;
 
     public void ViewOverviewScreen()
@@ -115,38 +122,43 @@ public class CharacterInfoDisplay : MonoBehaviour
         Debug.Log("OVERVIEW SCREEN");
 
         // If already had started to inspect this character
-        if (onActionsOrEquipmentScreen)
-            mainArtAnimator.Play(toDefaultMainArtAnimName);
+        CloseCharacterInfoPanel();
+        mainArtTransform.DOMove(overviewMainArtPos.position, mainArtMoveDuration);
         
         onActionsOrEquipmentScreen = false;
 
-        if (onCharacterScreen) // already on
+        if (onOverviewScreen) // already on
             return;
         
         
         // if not, play the animation (Newly inspected character)
         txt_descTactics.text = selectedCharacter.desc_tactics;
         txt_descAbout.text = selectedCharacter.desc_about;
-        onCharacterScreen = true;
-        characterInfoPanelAnimator.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
+        onOverviewScreen = true;
+        characterInfoPanelTransform.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
     }
     
-
     
     public void ViewActionsOrEquipmentScreen()
     {
         Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
         
-        if (onCharacterScreen)
-            mainArtAnimator.Play(toActionsOrEquipmentAnimName);
+        CloseCharacterInfoPanel();
+        mainArtTransform.DOMove(actionsOrEquipmentMainArtPos.position, mainArtMoveDuration);
         
-        onCharacterScreen = false;
+        onOverviewScreen = false;
         
         if (onActionsOrEquipmentScreen) // already on
             return;
         
-        
         onActionsOrEquipmentScreen = true;
+    }
+
+    public void ViewActionsScreen()
+    {
+        ViewActionsOrEquipmentScreen();
+        if(selectedCharacter == null) this.Error("Selected Character is null when viewing actions display menu");
+        menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
 
     public void MainButtonPressed()
@@ -196,12 +208,18 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_dmgNum.text = character.damage.ToString();
         txt_armorNum.text = character.maxArmor.ToString();
         img_mainArt.sprite = character.mainArt;
+        img_mainArt.gameObject.SetActive(true);
         selectBtn.interactable = true;
         Debug.Log("Successfully selected character: " + character.occupantName);
     }
     
     public void ChoseStarterCharacter()
     {
+        SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var gameSaver, out var gameData);
+        gameData.returningPlayer = true;
+        gameSaver.Save();
+        
+        
         Debug.Log("CHARACTER WAS CHOSEN");
         playerEvents.ReEnablePlayerAndMovement();
         playerEvents.SaveCurrentPosition();
@@ -216,19 +234,28 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.row = 1;
         charData.col = 1;
         charData.equipped = true;
+        
+        SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);
+        foreach (var startingKitAction in selectedCharacter.startingKitActions)
+        {
+            itemData.AddItemData(startingKitAction.actionName, Items_SavedDataSO.ItemType.CharacterAction, 1);
+            charData.equippedActions.Add(startingKitAction.actionName);
+        }
+        
         charSaver.Save();
+        itemSaver.Save();
+        
+        foreach (var newStartingKitAction in selectedCharacter.startingKitActions)
+        {
+            Debug.Log("Added starting kit action: " + newStartingKitAction.actionName + " to character: " + selectedCharacter.occupantName + " amount is " 
+                      + itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, newStartingKitAction.actionName).amount);
+        }
+        
+        menuActionsDisplay.DisplayActionsFor(selectedCharacter);
     }
 
-    public void OpenCharacterInfoPanel()
-    {
-        characterInfoPanelAnimator.Play(openCharInfoPanelAnimName);
-    }
-
-    public void CloseCharacterInfoPanel()
-    {
-        characterInfoPanelAnimator.Play(closeCharInfoPanelAnimName);
-    }
-
+    public void OpenCharacterInfoPanel() => characterInfoPanelTransform.DOMove(openCharInfoPanelPos.position, mainArtMoveDuration);
+    public void CloseCharacterInfoPanel() => characterInfoPanelTransform.DOMove(closeCharInfoPanelPos.position, mainArtMoveDuration);
 }
     
 #endregion ------------------------------------------------------------------

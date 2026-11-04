@@ -42,7 +42,6 @@ public class PlayerEvents : MonoBehaviour
             Debug.Log("Chose A Starter Character");
             characterInfoDisplay.ViewChoseStarterCharacterScreen();
             uiOrchestration.ShowExplorationUIState(ExplorationUIState.FirstStart);
-            SaverService.Instance.GetSaverAndData<ARPG_SavedDataSO>(out var saver, out var data);
             SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var charSaver, out var charData);
             charData.charactersData.ForEach(c =>
             {
@@ -50,8 +49,6 @@ public class PlayerEvents : MonoBehaviour
                 c.col = -1;
             });
             charSaver.Save();
-            data.returningPlayer = true;
-            saver.Save();
         }
     }
 

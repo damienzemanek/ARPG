@@ -270,8 +270,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             yield return new WaitForSeconds(1f); // finish attacking
         
         // Post Movements
-        HandleMovement(queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
-        HandleMovement(queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
+        if (moves) HandleMovement(queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
+        if (targetMoves) HandleMovement(queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);
         
         // delay for fade back in
         if (queuedAction.actionCtx.cfg.useActionAnim)

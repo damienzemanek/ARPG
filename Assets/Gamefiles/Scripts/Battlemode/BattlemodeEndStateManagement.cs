@@ -62,7 +62,7 @@ public class BattlemodeEndStateManagement : MonoBehaviour
         {
             yield return distributionDelay.Delay;
             var newItemHolder = Instantiate(itemHolderPrefab, itemHLG);
-            newItemHolder.Get<ItemHolder>().Init(reward.ProvideReward());
+            //newItemHolder.Get<ItemHolder>().Init(reward.ProvideReward());
             // play a sound
         }
         

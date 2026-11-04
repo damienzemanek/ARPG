@@ -58,3 +58,38 @@ public sealed class SE_DoubleJeopardy : BattlemodeEffectStrategyInstance
     }
     
 }
+
+
+[Serializable]
+public sealed class SE_Psiosis : BattlemodeEffectStrategyInstance
+{
+    public override string effectName => "Psiosis";
+    public override int priority => 1;
+    public override bool isSpecial => true;
+    
+    BattlemodeEffectStrategy_Decay NewDecayWithStacks(int turnStacks) => CreateInstance<BattlemodeEffectStrategy_Decay>
+        (turnStacks, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
+    
+    public override BattlemodeActionCtx ResolveEffectPreBeforeActing(
+        OccupantCtx occupantCtx, 
+        BattlemodeActionCtx actionCtx)
+    {
+        Debug.Log("[SP EFFECT] Psiosis: Resolving");
+        if (occupantCtx is not BattlerOccupantCtx battlerOccupantCtx)
+        {
+            Debug.LogError("Trying to apply Psiosis effect to non-battler occupant");
+            return actionCtx;
+        }
+        if (actionCtx.cfg.actionName != "Mind Rend") return actionCtx;
+        if (stacksTotal <= 0) return actionCtx;
+        
+        actionCtx.additionalEffectsToApplyToTarget ??= new List<BattlemodeEffectStrategyInstance>();
+        actionCtx.additionalEffectsToApplyToTarget.Add(NewDecayWithStacks(stacksTotal));
+        
+        RemoveAllStacksOnLastHit(actionCtx);
+        
+        Debug.Log("[SP EFFECT] Pisosis: Resolved after using action `Mind Rend`, Added Decay: " + stacksTotal + "");
+
+        return actionCtx;
+    }
+}

@@ -21,7 +21,7 @@ MonoBehaviour:
         description: Attacks do 50% more DMG
     - Key: SE_Deadeye
       Value:
-        icon: {fileID: 0}
+        icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
         name: Deadeye
         description: 'Deadeye: +100% DMG, +1 AP Cost per stack after 1 stack'
     - Key: BattlemodeEffectStrategy_Swift
@@ -69,11 +69,21 @@ MonoBehaviour:
         description: Certain attacks benefit from hitting a marked target.
     - Key: SE_DoubleJeopardy
       Value:
-        icon: {fileID: 0}
+        icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
         name: Double Jeopardy
         description: 'On Consume Mark: Mark +2'
     - Key: BattlemodeEffectStrategy_Bleed
       Value:
         icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
         name: Bleed
+        description: No description
+    - Key: BattlemodeEffectStrategy_Decay
+      Value:
+        icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+        name: Decay
+        description: No description
+    - Key: SE_Psiosis
+      Value:
+        icon: {fileID: 21300000, guid: b4ddf97f5abca7840b526c65f81c1846, type: 3}
+        name: Psiosis
         description: No description

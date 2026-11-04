@@ -25,7 +25,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [Required] public Transform actionsExhaustedDisplayParent;
     [Required] public GameObject displ_ActionInfo;
     [BoxGroup("Action Info Display")] [Required] public Transform parent_roleTargetInfo;
-    [FormerlySerializedAs("pr_hlg_targetingDetail")] [BoxGroup("Action Info Display")] [Required] public GameObject pr_hlg_infoDetail;
+    [BoxGroup("Action Info Display")] [Required] public GameObject pr_hlg_infoDetail;
     [BoxGroup("Action Info Display")] [Required] public GameObject pr_vlg_roleTargetInfo;
 
 
@@ -85,7 +85,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     // Future: Button For Disabling Attacks
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionIntentionsNum;
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyPredictedsNum;
-    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsVLG;
+    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_Equipment;
+    [FormerlySerializedAs("displ_IntentionsVLG")] [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_Intentions;
     [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsNumGO;
     [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_PredictedNumGO;
     [BoxGroup("BattleInfo: Enemy")] [Required] public EnemyIntentions enemyIntentions;
@@ -99,51 +100,56 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     void Awake()
     {
         // Status Effects Setup
-        effectDisplayPool = new(() => {
-                var ret = Instantiate(effectDisplayPrefab, effectDisplayParent).Get<BattlemodeEffect>();
-                ret.gameObject.SetActive(false);
-                return ret;
-            },
-            (effect) => effect.gameObject.SetActive(true),
-            effectDisplay => effectDisplay.Hide(),
-            12);
+        effectDisplayPool = new(
+            createFunc:    () => 
+                            {
+                                var ret = Instantiate(effectDisplayPrefab, effectDisplayParent).Get<BattlemodeEffect>();
+                                ret.gameObject.SetActive(false);
+                                return ret;
+                            },
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    12);
         effectDisplayPool.Prewarm(5);
         effectDisplayPool.ReleaseAll();
 
         // Special Effects Setup
-        specialEffectDisplayPool = new(() => {
+        specialEffectDisplayPool = new(
+            createFunc:    () => {
                 var ret = Instantiate(specialEffectDisplayPrefab, specialEffectDisplayParent)
                     .Get<BattlemodeSpecialEffect>();
                 ret.gameObject.SetActive(false);
                 return ret;
             },
-            (effect) => effect.gameObject.SetActive(true),
-            specialEffectDisplay => specialEffectDisplay.Hide(),
-            3);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    3);
         specialEffectDisplayPool.Prewarm(3);
         specialEffectDisplayPool.ReleaseAll();
         
         // Status Effect HP Bar Setup
-        statusEffectHPBarDisplayPool = new(() => {
-            var ret = Instantiate(statusEffectHPBarDisplayPrefab, statusEffectHPBarDisplayParent).Get<BattlemodeStatusEffectHPBar>();
-            ret.gameObject.SetActive(false);
-            return ret; 
+        statusEffectHPBarDisplayPool = new(
+            createFunc:    () => {
+                var ret = Instantiate(statusEffectHPBarDisplayPrefab, statusEffectHPBarDisplayParent).Get<BattlemodeStatusEffectHPBar>();
+                ret.gameObject.SetActive(false);
+                return ret; 
             },
-            (effect) => effect.gameObject.SetActive(true),
-            statusEffectHPBarDisplay => statusEffectHPBarDisplay.Hide(),
-            8);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    8);
         statusEffectHPBarDisplayPool.Prewarm(3);
         statusEffectHPBarDisplayPool.ReleaseAll();
         
         // Status Effect Current Display Setup
-        statusEffectCurrentDisplayPool = new(() => {
-            var ret = Instantiate(statusEffectCurrentDisplayPrefab, statusEffectCurrentDisplayParentTransform).Get<BattlemodeEffect>();
-            ret.gameObject.SetActive(false);
-            return ret; 
+        statusEffectCurrentDisplayPool = new(
+            createFunc:    () => {
+                var ret = Instantiate(statusEffectCurrentDisplayPrefab, statusEffectCurrentDisplayParentTransform).Get<BattlemodeEffect>();
+                ret.gameObject.SetActive(false);
+                return ret; 
             },
-            (effect) => effect.gameObject.SetActive(true),
-            statusEffectCurrentDisplay => statusEffectCurrentDisplay.Hide(),
-            8);
+            onGet:         (effect) => effect.gameObject.SetActive(true),
+            onRelease:     (effect) => effect.Hide(),
+            initialSize:    8);
         statusEffectCurrentDisplayPool.Prewarm(5);
         statusEffectCurrentDisplayPool.ReleaseAll();
         
@@ -257,7 +263,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             characterCtx.PreResolveBeforeActingEffectsPlayer(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(characterCtx);
             
-            displ_IntentionsVLG.SetActive(false);
+            displ_Equipment.gameObject.SetActive(true);
+            displ_Intentions.SetActive(false);
             displ_IntentionsNumGO.SetActive(false);
             displ_PredictedNumGO.SetActive(false);
             moveAction.gameObject.SetActive(true);
@@ -277,7 +284,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             enemyIntentions.HideUnpredictedIntentions(enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount, enemyOccupantCtx.currentPredicteds);
             txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount.ToString();
             txt_EnemyPredictedsNum.text = enemyOccupantCtx.currentPredicteds.ToString();
-            displ_IntentionsVLG.SetActive(true);
+            
+            displ_Equipment.gameObject.SetActive(false);
+            displ_Intentions.SetActive(true);
             displ_IntentionsNumGO.SetActive(true);
             displ_PredictedNumGO.SetActive(true);
             moveAction.gameObject.SetActive(false);
@@ -298,6 +307,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         // Recently Selected Action Setup
         if(firstAction != null && firstAction.actionCtx != null)
             ShowAction(tile, firstAction);
+        else
+            combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
     }
 
     void ClearExhuastedActionSlots()

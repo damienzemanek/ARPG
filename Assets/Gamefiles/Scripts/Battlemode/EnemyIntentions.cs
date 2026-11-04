@@ -1,34 +1,31 @@
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
 public class EnemyIntentions : MonoBehaviour
 {
-    public GameObject action1;
-    public GameObject action2;
-    public GameObject action3;
-    public GameObject bufferBtwx1and2;
-    public GameObject bufferBtwx2and3;
-
-    public TextMeshProUGUI txt_action1Intention;
-    public TextMeshProUGUI txt_action2Intention;
-    public TextMeshProUGUI txt_action3Intention;
+    public TextMeshProUGUI txt_intentions;
+    List<string> intentions = new();
 
     public void DisplayIntentions(List<BattleTracker.QueuedAction> queuedActions)
     {
-        var currentIndex = 0;
-        foreach (var queuedAction in queuedActions)
+        intentions.Clear();
+
+        for (int i = 0; i < queuedActions.Count && i < 3; i++)
         {
-            switch (currentIndex)
-            {
-                case 0: txt_action1Intention.text = queuedAction.actionCtx.cfg.name; break;
-                case 1: txt_action2Intention.text = queuedAction.actionCtx.cfg.name; break;
-                case 2: txt_action3Intention.text = queuedAction.actionCtx.cfg.name; break;
-            }
-            Debug.Log("Displaying Action: [" + queuedAction.actionCtx.cfg.actionName + "] Assetname: [" + queuedAction.actionCtx.cfg.name + "]");
-            currentIndex++;
+            var queuedAction = queuedActions[i];
+
+            intentions.Add(queuedAction.actionCtx.cfg.name);
+
+            Debug.Log(
+                $"Displaying Action: [{queuedAction.actionCtx.cfg.actionName}] " +
+                $"Assetname: [{queuedAction.actionCtx.cfg.name}]");
         }
+
+        RefreshDisplay();
     }
+
     public void HideUnpredictedIntentions(int intentions, int predicted)
     {
         if (intentions < 0 || intentions > 3)
@@ -45,15 +42,33 @@ public class EnemyIntentions : MonoBehaviour
             return;
         }
 
-        action1.SetActive(intentions >= 1);
-        action2.SetActive(intentions >= 2);
-        action3.SetActive(intentions >= 3);
+        for (int i = 0; i < intentions; i++)
+        {
+            if (i >= predicted)
+            {
+                if (i < this.intentions.Count)
+                    this.intentions[i] = "???";
+                else
+                    this.intentions.Add("???");
+            }
+        }
 
-        bufferBtwx1and2.SetActive(intentions >= 2);
-        bufferBtwx2and3.SetActive(intentions >= 3);
+        this.intentions.RemoveRange(
+            intentions,
+            Mathf.Max(0, this.intentions.Count - intentions));
 
-        if (intentions >= 1 && predicted < 1) txt_action1Intention.text = "???";
-        if (intentions >= 2 && predicted < 2) txt_action2Intention.text = "???";
-        if (intentions >= 3 && predicted < 3) txt_action3Intention.text = "???";
+        RefreshDisplay();
+    }
+
+    private void RefreshDisplay()
+    {
+        var sb = new StringBuilder();
+
+        for (int i = 0; i < intentions.Count; i++)
+        {
+            sb.AppendLine($"{i + 1}. {intentions[i]}");
+        }
+
+        txt_intentions.text = sb.ToString().TrimEnd();
     }
 }
