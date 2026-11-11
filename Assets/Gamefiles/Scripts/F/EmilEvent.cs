@@ -5,7 +5,9 @@ using System.Reflection;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Scripting;
 
+[Preserve]
 [Serializable]
 public abstract class EmilEventBase
 {
@@ -23,6 +25,8 @@ public abstract class EmilEventBase
     {
         [HideInInspector] public string name;
         [HideInInspector] public bool isAutoSupplied;
+        [ShowIf("isAutoSupplied")] public bool forceNotAutoSupplied;
+        [HideInInspector] public bool IsAutoSupplied => isAutoSupplied && !forceNotAutoSupplied;
         public abstract object GetValue();
 
         public static ParameterBase Create(string name, Type type, bool isAutoSupplied = false)
@@ -35,20 +39,22 @@ public abstract class EmilEventBase
         }
     }
 
+    [Preserve]
     [Serializable]
     public class TypedParameter<T> : ParameterBase
     {
-        [ReadOnly, ShowIf(nameof(isAutoSupplied))]
+        [ReadOnly, ShowIf(nameof(IsAutoSupplied))]
         [LabelText("@name + \" (Auto)\"")]
         public T autoValue;
 
-        [HideIf(nameof(isAutoSupplied))]
+        [HideIf(nameof(IsAutoSupplied))]
         [LabelText("@name")]
         public T value;
-
-        public override object GetValue() => isAutoSupplied ? autoValue : value;
+        
+        public override object GetValue() => (IsAutoSupplied) ? autoValue : value;
     }
 
+    [Preserve]
     [Serializable]
     public class VTableEntry
     {
@@ -63,8 +69,8 @@ public abstract class EmilEventBase
         [ListDrawerSettings(IsReadOnly = true, DraggableItems = false, HideAddButton = true, HideRemoveButton = true)]
         [SerializeReference, HideReferenceObjectPicker, InlineProperty]
         public ParameterBase[] parameters;
-
-        public Type[] suppliedTypes;
+        
+        public TypeSerializedCore[] suppliedTypes;
 
         [NonSerialized] private MethodInfo _cachedMethod;
 
@@ -109,7 +115,7 @@ public abstract class EmilEventBase
                 var p = methodParams[i];
                 bool isAuto = false;
 
-                if (suppliedTypes != null && suppliedIndex < suppliedTypes.Length && suppliedTypes[suppliedIndex].IsAssignableFrom(p.ParameterType))
+                if (suppliedTypes != null && suppliedIndex < suppliedTypes.Length && suppliedTypes[suppliedIndex].SystemType.IsAssignableFrom(p.ParameterType))
                 {
                     isAuto = true;
                     suppliedIndex++;
@@ -118,7 +124,7 @@ public abstract class EmilEventBase
                 var existing = parameters?.FirstOrDefault(
                         x => x != null 
                                          && x.name == p.Name 
-                                         && x.isAutoSupplied == isAuto 
+                                         && x.IsAutoSupplied == isAuto 
                                          && x.GetValue() != null 
                                          && p.ParameterType.IsAssignableFrom(x.GetValue().GetType()));
                 if (existing != null)
@@ -182,7 +188,7 @@ public abstract class EmilEventBase
                 // );
 
 
-                if (parameters[i].isAutoSupplied)
+                if (parameters[i].IsAutoSupplied)
                 {
                     if (suppliedArgs != null && suppliedIdx < suppliedArgs.Length)
                     {
@@ -244,6 +250,7 @@ public abstract class EmilEventBase
     }
 }
 
+[Preserve]
 [Serializable]
 public class EmilEvent : EmilEventBase
 {
@@ -286,18 +293,19 @@ public class EmilEvent : EmilEventBase
         {
             Debug.Log($"[EmilEvent] Calling VTable entry {entry.methodName}");
 
-            entry.suppliedTypes = new[] { typeof(GameObject) };
+            entry.suppliedTypes = new TypeSerializedCore[] { typeof(GameObject) };
             entry.Invoke(user);
         }
     }
 
     void AddVTableEntry()
     {
-        var entry = new VTableEntry { suppliedTypes = new[] { typeof(GameObject) } };
+        var entry = new VTableEntry { suppliedTypes = new TypeSerializedCore[] { typeof(GameObject) } };
         vTableEntries.Add(entry);
     }
 }
 
+[Preserve]
 [Serializable]
 public class EmilEvent<T> : EmilEventBase
 {
@@ -317,18 +325,19 @@ public class EmilEvent<T> : EmilEventBase
         if (!useVTable) return;
         foreach (var entry in vTableEntries)
         {
-            entry.suppliedTypes = new[] { typeof(T) };
+            entry.suppliedTypes = new TypeSerializedCore[] { typeof(T) };
             entry.Invoke(arg);
         }
     }
 
     void AddVTableEntry()
     {
-        var entry = new VTableEntry { suppliedTypes = new[] { typeof(T) } };
+        var entry = new VTableEntry { suppliedTypes = new TypeSerializedCore[] { typeof(T) } };
         vTableEntries.Add(entry);
     }
 }
 
+[Preserve]
 [Serializable]
 public class EmilEvent<T1, T2> : EmilEventBase
 {
@@ -348,18 +357,19 @@ public class EmilEvent<T1, T2> : EmilEventBase
         if (!useVTable) return;
         foreach (var entry in vTableEntries)
         {
-            entry.suppliedTypes = new[] { typeof(T1), typeof(T2) };
+            entry.suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2) };
             entry.Invoke(arg1, arg2);
         }
     }
 
     void AddVTableEntry()
     {
-        var entry = new VTableEntry { suppliedTypes = new[] { typeof(T1), typeof(T2) } };
+        var entry = new VTableEntry { suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2) } };
         vTableEntries.Add(entry);
     }
 }
 
+[Preserve]
 [Serializable]
 public class EmilEvent<T1, T2, T3> : EmilEventBase
 {
@@ -379,18 +389,19 @@ public class EmilEvent<T1, T2, T3> : EmilEventBase
         if (!useVTable) return;
         foreach (var entry in vTableEntries)
         {
-            entry.suppliedTypes = new[] { typeof(T1), typeof(T2), typeof(T3) };
+            entry.suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2), typeof(T3) };
             entry.Invoke(arg1, arg2, arg3);
         }
     }
 
     void AddVTableEntry()
     {
-        var entry = new VTableEntry { suppliedTypes = new[] { typeof(T1), typeof(T2), typeof(T3) } };
+        var entry = new VTableEntry { suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2), typeof(T3) } };
         vTableEntries.Add(entry);
     }
 }
 
+[Preserve]
 [Serializable]
 public class EmilEvent<T1, T2, T3, T4> : EmilEventBase
 {
@@ -410,14 +421,14 @@ public class EmilEvent<T1, T2, T3, T4> : EmilEventBase
         if (!useVTable) return;
         foreach (var entry in vTableEntries)
         {
-            entry.suppliedTypes = new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) };
+            entry.suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) };
             entry.Invoke(arg1, arg2, arg3, arg4);
         }
     }
 
     void AddVTableEntry()
     {
-        var entry = new VTableEntry { suppliedTypes = new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) } };
+        var entry = new VTableEntry { suppliedTypes = new TypeSerializedCore[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) } };
         vTableEntries.Add(entry);
     }
 }

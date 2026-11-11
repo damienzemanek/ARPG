@@ -42,7 +42,7 @@ public class ARPG_ScenePersistencySO : SavedDataSO
     
     public void PersistentMutate(PersistentMutation mutation, GameObject obj)
     {
-        Debug.Log("PERSISTENT MUTATION");
+        Debug.Log("PERSISTENT MUTATION On: "  + obj.name);
         Mutate(obj, mutation);
         var handle = obj.Get<PersistentMutationHandle>();
         ulong id = handle.id;

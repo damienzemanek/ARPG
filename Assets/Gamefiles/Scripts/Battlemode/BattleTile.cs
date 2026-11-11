@@ -307,7 +307,7 @@ public class BattleTile : MonoBehaviour
         {
             if (occupantCtx is CharacterOccupantCtx coc)
             {
-                lblTxt_ApOrIntention.text = "AP";
+                lblTxt_ApOrIntention.text = "CURRENT AP";
                 txt_AP.text = coc.currentAP.ToString();
             }
             RegenerateAndDisplayGrid(0);
@@ -315,7 +315,7 @@ public class BattleTile : MonoBehaviour
         }
         int amountOfActualActions = eoc.queuedActions.Count;
         RegenerateAndDisplayGrid(amountOfActualActions);
-        lblTxt_ApOrIntention.text = "IN";
+        lblTxt_ApOrIntention.text = "INTENTIONS";
         txt_AP.text = (eoc.queuedActions.Count - eoc.currentIntentUsageCtx.removedIntentions).ToString();
         
         // For each intention

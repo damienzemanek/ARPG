@@ -51,23 +51,12 @@ MonoBehaviour:
   - addOccurance: 2
     defaultEffectStrategyValues:
       rid: 3738701859942301857
-  - addOccurance: 2
-    defaultEffectStrategyValues:
-      rid: 7077291632181379182
   aoe: 0
   references:
     version: 2
     RefIds:
     - rid: 3738701859942301857
       type: {class: BattlemodeEffectStrategy_Swift, ns: , asm: Assembly-CSharp}
-      data:
-        ctx:
-          stackCtxs:
-          - instanceEffectTime: 0
-            stacks: 3
-            setStacksDirectly: 0
-    - rid: 7077291632181379182
-      type: {class: BattlemodeEffectStrategy_Bleed, ns: , asm: Assembly-CSharp}
       data:
         ctx:
           stackCtxs:
