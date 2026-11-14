@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Scripting;
 
+[Preserve]
 [CreateAssetMenu(fileName = "Characters Saved Data", menuName = "ARPG/SO/SavedData/Characters")]
 public class CharactersData_SavedDataSO : SavedDataSO
 {
@@ -24,6 +26,7 @@ public class CharactersData_SavedDataSO : SavedDataSO
         AddCharacterFromConfigurations(currentCharacterConfigurations);
     }
 
+    [Preserve]
     [Serializable]
     public class CharacterData
     {
