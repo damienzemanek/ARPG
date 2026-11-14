@@ -6607,7 +6607,7 @@ Transform:
   m_GameObject: {fileID: 34845902}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.9, y: 0, z: 32}
+  m_LocalPosition: {x: 53.9, y: 40, z: 32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7569,11 +7569,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8174628
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -590.47
+      value: 9.009644
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7581,7 +7585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 215.68816
+      value: 376.591
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7615,11 +7619,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &42218459 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 42218458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &42699958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21963,15 +21976,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.1943512
+      value: 2.1943514
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.y
@@ -21983,7 +22000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -443.81
+      value: 155.66962
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21991,7 +22008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 91.08
+      value: 251.98286
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22026,6 +22043,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &128038131 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 128038130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &128854068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7409280559059880667, guid: 68744c8e5d3e3904f97e8cf6d4941932, type: 3}
@@ -25346,23 +25368,39 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 4316945183198341268, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
       propertyPath: m_Name
       value: House01 (7) Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4316945183198341268, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.9514136
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 12.839255
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 22.33807
+      objectReference: {fileID: 0}
     - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -113.039665
+      value: 486.43994
       objectReference: {fileID: 0}
     - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.000007947903
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 134.0309
+      value: 294.93378
       objectReference: {fileID: 0}
     - target: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -25397,6 +25435,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+--- !u!4 &147440386 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7350598644334913983, guid: c681b1bd8f7e82142a8407bc5bc9357b, type: 3}
+  m_PrefabInstance: {fileID: 147440385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &147846376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35257,15 +35300,31 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.6338913
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.6338909
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.6338913
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -488.94
+      value: 110.53961
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35273,7 +35332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 154.13
+      value: 315.03287
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35308,6 +35367,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &199762853 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 199762852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &199846184
 GameObject:
   m_ObjectHideFlags: 0
@@ -38166,7 +38230,7 @@ Transform:
   m_GameObject: {fileID: 214404473}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.91, y: 0, z: 31.71}
+  m_LocalPosition: {x: 53.91, y: 40, z: 31.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46858,11 +46922,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 5211902959463768053, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.55
+      value: 624.0296
       objectReference: {fileID: 0}
     - target: {fileID: 5211902959463768053, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -46870,7 +46934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5211902959463768053, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 132.96
+      value: 293.86285
       objectReference: {fileID: 0}
     - target: {fileID: 5211902959463768053, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -46903,6 +46967,10 @@ PrefabInstance:
     - target: {fileID: 7701164273405503074, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
       propertyPath: m_Name
       value: MassPlaceRock02 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701164273405503074, guid: 7b58df43f9fd5c4479787f42e64f1de3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -48552,7 +48620,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.x
@@ -48564,11 +48632,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.3797853
+      value: 2.379785
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -520.36
+      value: 79.11963
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -48576,7 +48644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 132.5
+      value: 293.40286
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48609,6 +48677,10 @@ PrefabInstance:
     - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -48645,6 +48717,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &268475356 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 268475353}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &269321134
 GameObject:
   m_ObjectHideFlags: 0
@@ -61999,11 +62076,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.x
@@ -62011,7 +62092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.7184777
+      value: 2.7184775
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.z
@@ -62019,7 +62100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -494.14
+      value: 105.3396
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -62027,7 +62108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 148.98
+      value: 309.88287
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -62062,6 +62143,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &336648797 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 336648796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &336797711
 GameObject:
   m_ObjectHideFlags: 0
@@ -66233,11 +66319,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8174627
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.8174624
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -464.42
+      value: 135.0596
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -66245,7 +66339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 214.83
+      value: 375.73285
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66279,11 +66373,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &366561707 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 366561706}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &367403687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70935,19 +71038,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.419352
+      value: 627.899
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000007436375
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 118.25365
+      value: 279.1565
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -70959,7 +71062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
       propertyPath: m_LocalRotation.z
@@ -70981,11 +71084,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: AKennedy_Blockout_Tombstone_02
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 945de5fde2348de4393923ace94674c2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 945de5fde2348de4393923ace94674c2, type: 3}
+--- !u!4 &392027958 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 945de5fde2348de4393923ace94674c2, type: 3}
+  m_PrefabInstance: {fileID: 392027957}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &392751391
 GameObject:
   m_ObjectHideFlags: 0
@@ -76334,15 +76446,31 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.7185142
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.7185137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.7185137
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -583.08997
+      value: 16.389648
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -76350,7 +76478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 215.78416
+      value: 376.687
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -76385,6 +76513,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &423264922 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 423264921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &423272431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79278,38 +79411,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 463300245}
   m_SourcePrefab: {fileID: 100100000, guid: 1d17cc08fa77a8b4282e24715bf62011, type: 3}
---- !u!1 &438143812
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 438143813}
-  m_Layer: 0
-  m_Name: MassPlaceTerrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
-  m_IsActive: 1
---- !u!4 &438143813
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438143812}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1024147414}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &438461494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85010,15 +85111,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.6338913
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -501.46
+      value: 98.01962
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -85026,7 +85135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 154.27
+      value: 315.17285
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -85091,6 +85200,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &469543956 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 469543953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &469663180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89412,15 +89526,27 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.7185142
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.7185137
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -497.08
+      value: 102.39963
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -89428,7 +89554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 197.7
+      value: 358.60284
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -89463,6 +89589,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &498901791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 498901790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &499917169
 GameObject:
   m_ObjectHideFlags: 0
@@ -99865,7 +99996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 346938067277993520, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.74999887
+      value: 42.8
       objectReference: {fileID: 0}
     - target: {fileID: 346938067277993520, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -99903,6 +100034,30 @@ PrefabInstance:
       propertyPath: b
       value: 
       objectReference: {fileID: 886971966}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 7.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.025497
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.98785
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138965402884022208, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.4142
+      objectReference: {fileID: 0}
     - target: {fileID: 7925499537098173907, guid: 8244169c30bd334489d6aa98c274a23b, type: 3}
       propertyPath: m_Name
       value: BirdLocation
@@ -108486,15 +108641,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5618628
+      value: 1.5618627
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.y
@@ -108506,7 +108665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -496.63
+      value: 102.84961
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -108514,7 +108673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 160.17
+      value: 321.07288
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -108549,6 +108708,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &615578410 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 615578409}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &616097716
 GameObject:
   m_ObjectHideFlags: 0
@@ -114673,6 +114837,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1074333821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &660790921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 660790924}
+  - component: {fileID: 660790923}
+  - component: {fileID: 660790922}
+  m_Layer: 0
+  m_Name: Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &660790922
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660790921}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 413a83183acf0ca4282d8dbdb5b62f5b, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &660790923
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660790921}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: 413a83183acf0ca4282d8dbdb5b62f5b, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 0
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.0128
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_EnableHeightmapLODFrustumCulling: 1
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &660790924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660790921}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -446.4, y: 0, z: -364.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &662165960
 GameObject:
   m_ObjectHideFlags: 0
@@ -117912,15 +118170,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -449.18
+      value: 150.29962
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -117928,7 +118190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 219.09
+      value: 379.99286
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -117963,6 +118225,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &675050480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 675050479}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &675109111
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138252,11 +138519,11 @@ Transform:
   m_GameObject: {fileID: 780277875}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071067, y: -0, z: -0, w: -0.70710695}
-  m_LocalPosition: {x: 25.71, y: -0.009, z: 117.05772}
-  m_LocalScale: {x: 6.189081, y: 6.189081, z: 9.395045}
+  m_LocalPosition: {x: 625.18964, y: -0.009, z: 277.96057}
+  m_LocalScale: {x: 6.189081, y: 6.1890817, z: 9.395045}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1592375195}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &780684746
 GameObject:
@@ -157786,7 +158053,7 @@ Transform:
   m_GameObject: {fileID: 886971965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.41, y: -0.75, z: 79.04}
+  m_LocalPosition: {x: 17.41, y: 40, z: 79.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161090,7 +161357,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalScale.x
@@ -161098,15 +161365,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 25.719828
+      value: 25.71983
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 25.719828
+      value: 25.71983
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -420.82
+      value: 178.6596
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -161114,7 +161381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 183.89
+      value: 344.79285
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -161126,7 +161393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
       propertyPath: m_LocalRotation.z
@@ -161148,11 +161415,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: KCurtis_Blockout_Grave_BurialVault_Plain
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
+--- !u!4 &906530280 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3656b867c78b4d044b4912137e8cb96d, type: 3}
+  m_PrefabInstance: {fileID: 906530279}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &907569603
 GameObject:
   m_ObjectHideFlags: 0
@@ -166601,15 +166877,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalScale.x
-      value: 6.82244
+      value: 6.822441
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalScale.y
-      value: 6.82244
+      value: 6.8224406
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalScale.z
@@ -166617,7 +166893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -516.8
+      value: 82.67963
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.y
@@ -166625,7 +166901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 154.04
+      value: 314.94287
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalRotation.w
@@ -166658,6 +166934,10 @@ PrefabInstance:
     - target: {fileID: 1126033439335272933, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126033439335272933, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -166694,6 +166974,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &939354745 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+  m_PrefabInstance: {fileID: 939354742}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &940104285 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2577f50666bee7f4e849d5cae22244c3, type: 3}
@@ -169653,15 +169938,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -499.65
+      value: 99.82962
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -169669,7 +169958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 161.5
+      value: 322.40286
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -169734,6 +170023,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &958557752 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 958557749}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &959175193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180259,100 +180553,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7989789294803111821, guid: 1d17cc08fa77a8b4282e24715bf62011, type: 3}
---- !u!1 &1024147413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1024147414}
-  - component: {fileID: 1024147416}
-  - component: {fileID: 1024147415}
-  m_Layer: 0
-  m_Name: Terrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
-  m_IsActive: 1
---- !u!4 &1024147414
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024147413}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -652, y: 0, z: -186.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 438143813}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!154 &1024147415
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024147413}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: f8809dcb857db884a8041dc97113105c, type: 2}
-  m_EnableTreeColliders: 1
---- !u!218 &1024147416
-Terrain:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024147413}
-  m_Enabled: 1
-  serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: f8809dcb857db884a8041dc97113105c, type: 2}
-  m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 80
-  m_DetailObjectDensity: 1
-  m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
-  m_HeightmapMinimumLODSimplification: 0
-  m_HeightmapMaximumLOD: 0
-  m_ShadowCastingMode: 2
-  m_DrawHeightmap: 1
-  m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
-  m_StaticShadowCaster: 0
-  m_IgnoreQualitySettings: 0
-  m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
-  m_BakeLightProbesForTrees: 1
-  m_PreserveTreePrototypeLayers: 0
-  m_DeringLightProbesForTrees: 1
-  m_ReceiveGI: 1
-  m_ScaleInLightmap: 0.0256
-  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
-  m_GroupingID: 0
-  m_RenderingLayerMask: 1
-  m_AllowAutoConnect: 1
-  m_EnableHeightmapRayTracing: 1
-  m_EnableTreesAndDetailsRayTracing: 0
-  m_EnableHeightmapLODFrustumCulling: 1
-  m_TreeMotionVectorModeOverride: 3
 --- !u!1001 &1024170805
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181028,19 +181228,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.1789496
+      value: 2.1789498
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.1789496
+      value: 2.1789494
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
@@ -181048,7 +181252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -506.73
+      value: 92.7496
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -181056,7 +181260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 145.21
+      value: 306.11285
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -181121,6 +181325,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &1029491517 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1029491514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1030642107
 GameObject:
   m_ObjectHideFlags: 0
@@ -184632,11 +184841,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
@@ -184648,11 +184861,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6780576
+      value: 1.6780574
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -506.2
+      value: 93.2796
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -184660,7 +184873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 152.72
+      value: 313.62286
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -184725,6 +184938,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &1046792248 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1046792245}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1046929880
 GameObject:
   m_ObjectHideFlags: 0
@@ -187111,27 +187329,31 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5540837
+      value: 1.5540838
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5540837
+      value: 1.5540836
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5540837
+      value: 1.5540838
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -434.32
+      value: 165.1596
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -187139,7 +187361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 90.59
+      value: 251.49286
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -187174,6 +187396,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &1056471207 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1056471206}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1056682478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -191399,11 +191626,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
@@ -191415,11 +191646,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.0069482
+      value: 3.0069478
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -505.76
+      value: 93.719604
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -191427,7 +191658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 154.95
+      value: 315.85284
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -191492,6 +191723,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &1073270848 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1073270845}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1073595243
 GameObject:
   m_ObjectHideFlags: 0
@@ -218278,15 +218514,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6731501
+      value: 1.6731503
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.y
@@ -218294,11 +218534,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6731501
+      value: 1.6731503
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -506.64
+      value: 92.8396
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -218306,7 +218546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 147.69
+      value: 308.59286
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -218371,6 +218611,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &1202287791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1202287788}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1202892211
 GameObject:
   m_ObjectHideFlags: 0
@@ -232321,11 +232566,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.8174627
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8174627
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -491.25
+      value: 108.229614
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -232333,7 +232586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 146.33
+      value: 307.23285
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -232367,11 +232620,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &1271647927 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 1271647926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1272261151
 GameObject:
   m_ObjectHideFlags: 0
@@ -232901,11 +233163,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8174624
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.8174627
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8174624
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -486.68
+      value: 112.79962
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -232913,7 +233187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 145.71
+      value: 306.61285
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -232947,11 +233221,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &1276067771 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 1276067770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1276578695
 GameObject:
   m_ObjectHideFlags: 0
@@ -234501,141 +234784,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e51ae41596407a640aaacf2aee87c8e0, type: 3}
   m_PrefabInstance: {fileID: 1282677802}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1282747998
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1282748003}
-  - component: {fileID: 1282748002}
-  - component: {fileID: 1282748001}
-  - component: {fileID: 1282748000}
-  - component: {fileID: 1282747999}
-  m_Layer: 0
-  m_Name: Level_LayerOut_Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
-  m_IsActive: 1
---- !u!65 &1282747999
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282747998}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10, y: 2.220446e-16, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!64 &1282748000
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282747998}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1282748001
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282747998}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 55952e309ffdd5f48ba216a36264225d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1282748002
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282747998}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1282748003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282747998}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071069, z: -0, w: -0.7071067}
-  m_LocalPosition: {x: -273.75, y: -0.75, z: 153.49991}
-  m_LocalScale: {x: 68.02656, y: 67.1602, z: 76.97902}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -270, z: 0}
 --- !u!1001 &1283141465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -260324,23 +260472,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.6005847
+      value: 1.6005846
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.6005847
+      value: 1.6005845
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6005847
+      value: 1.6005846
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -479.38
+      value: 120.09961
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -260348,7 +260496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 214.47
+      value: 375.37286
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -260382,11 +260530,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &1446788153 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 1446788152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1447037304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -269501,11 +269658,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.7544203
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.7544193
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.7544193
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -564.3
+      value: 35.179626
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.y
@@ -269513,7 +269682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 215.2
+      value: 376.10284
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalRotation.w
@@ -269547,11 +269716,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1126033439335272933, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+--- !u!4 &1493114063 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+  m_PrefabInstance: {fileID: 1493114062}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1494585186
 GameObject:
   m_ObjectHideFlags: 0
@@ -286480,6 +286658,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 97706f65ac6552c45bb5eceba4fabfa4, type: 3}
   m_PrefabInstance: {fileID: 1590631451}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1592375194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1592375195}
+  m_Layer: 0
+  m_Name: a
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1592375195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592375194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -599.4796, y: 40, z: -160.90286}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7428602459046994675}
+  - {fileID: 6292122545134952765}
+  - {fileID: 1864853442}
+  - {fileID: 147440386}
+  - {fileID: 261676312}
+  - {fileID: 780277878}
+  - {fileID: 392027958}
+  - {fileID: 1654165154}
+  - {fileID: 1923503019}
+  - {fileID: 6568892631266142479}
+  - {fileID: 8962330804607000791}
+  - {fileID: 2684381471540672890}
+  - {fileID: 906530280}
+  - {fileID: 8790945205674591551}
+  - {fileID: 4653736554001890392}
+  - {fileID: 3192948970821923939}
+  - {fileID: 6059190923362777203}
+  - {fileID: 7138603226899741921}
+  - {fileID: 1933348235}
+  - {fileID: 128038131}
+  - {fileID: 1679110420}
+  - {fileID: 615578410}
+  - {fileID: 336648797}
+  - {fileID: 199762853}
+  - {fileID: 469543956}
+  - {fileID: 958557752}
+  - {fileID: 2059988629}
+  - {fileID: 6315402768135536214}
+  - {fileID: 423264922}
+  - {fileID: 498901791}
+  - {fileID: 675050480}
+  - {fileID: 1056471207}
+  - {fileID: 1648411922}
+  - {fileID: 1073270848}
+  - {fileID: 1046792248}
+  - {fileID: 2049872445}
+  - {fileID: 1029491517}
+  - {fileID: 1202287791}
+  - {fileID: 1701941882}
+  - {fileID: 4914883620248338137}
+  - {fileID: 42218459}
+  - {fileID: 1656575997}
+  - {fileID: 366561707}
+  - {fileID: 1446788153}
+  - {fileID: 1271647927}
+  - {fileID: 1276067771}
+  - {fileID: 2010836327}
+  - {fileID: 268475356}
+  - {fileID: 2073444496}
+  - {fileID: 6386571803907693069}
+  - {fileID: 1493114063}
+  - {fileID: 939354745}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1592383987
 GameObject:
   m_ObjectHideFlags: 0
@@ -293784,7 +294045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5654102610372052514, guid: f77762bf812e1164caae8815970f4483, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.14956254
+      value: 41.01
       objectReference: {fileID: 0}
     - target: {fileID: 5654102610372052514, guid: f77762bf812e1164caae8815970f4483, type: 3}
       propertyPath: m_LocalPosition.z
@@ -295763,11 +296024,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
@@ -295779,11 +296044,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.0577793
+      value: 2.0577796
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -501.39
+      value: 98.0896
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -295791,7 +296056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 146.04
+      value: 306.94287
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -295826,6 +296091,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &1648411922 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1648411921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1648572358
 GameObject:
   m_ObjectHideFlags: 0
@@ -297674,11 +297944,11 @@ Transform:
   m_GameObject: {fileID: 1654165151}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5000001, y: -0.50000006, z: 0.49999994, w: -0.4999999}
-  m_LocalPosition: {x: 30.52293, y: 0.00081687537, z: 116.68773}
+  m_LocalPosition: {x: 630.00256, y: 0.00081687537, z: 277.59058}
   m_LocalScale: {x: 1.768081, y: 2.228409, z: 4.923014}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1592375195}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1654167193
 PrefabInstance:
@@ -298208,7 +298478,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.x
@@ -298224,7 +298494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -370.65
+      value: 228.82962
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -298232,7 +298502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 140.96
+      value: 301.86285
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -298266,11 +298536,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &1656575997 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 1656575996}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1657042748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -303117,15 +303396,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.0278928
+      value: 2.027893
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.y
@@ -303137,7 +303420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -490.23
+      value: 109.2496
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -303145,7 +303428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 161.29
+      value: 322.19287
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -303180,6 +303463,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &1679110420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 1679110419}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1679941107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -307117,15 +307405,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.1538243
+      value: 2.1538246
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.y
@@ -307137,7 +307429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -511.43
+      value: 88.04962
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -307145,7 +307437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 155.37
+      value: 316.27286
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -307210,6 +307502,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &1701941882 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 1701941879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1702562841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -313843,7 +314140,7 @@ Transform:
   m_GameObject: {fileID: 1735306449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 40, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -316733,7 +317030,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4eb388488fd286d46b7aab028bdbc09f, type: 3}
       propertyPath: m_LocalScale.x
@@ -316790,6 +317087,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4eb388488fd286d46b7aab028bdbc09f, type: 3}
       propertyPath: m_Name
       value: Unity Grass02_FIx
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4eb388488fd286d46b7aab028bdbc09f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -338841,7 +339142,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 3130511395173325654, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_Mesh
@@ -338859,9 +339160,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacles
       objectReference: {fileID: 0}
+    - target: {fileID: 4799707666178444940, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 52.721832
+      value: 652.2014
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalPosition.y
@@ -338869,7 +339174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.196625
+      value: 191.09949
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalRotation.w
@@ -338877,15 +339182,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -338904,6 +339209,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
+--- !u!4 &1864853442 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5290250226507041742, guid: 939e79e90d4d9b04cb4857cf1d9c5b17, type: 3}
+  m_PrefabInstance: {fileID: 1864853441}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1865080991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351570,11 +351880,11 @@ Transform:
   m_GameObject: {fileID: 1923503016}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49999985, y: -0.50000006, z: 0.50000036, w: 0.49999976}
-  m_LocalPosition: {x: 34.084812, y: 0.24451289, z: 118.88985}
+  m_LocalPosition: {x: 633.56445, y: 0.24451289, z: 279.79272}
   m_LocalScale: {x: 1.768081, y: 2.228409, z: 4.923014}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1592375195}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: -270}
 --- !u!1001 &1924737640
 PrefabInstance:
@@ -352968,15 +353278,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.6338916
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -575.2
+      value: 24.279602
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -352984,7 +353302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 215.88118
+      value: 376.78406
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -353019,6 +353337,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &1933348235 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 1933348234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1933756841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -367416,7 +367739,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.x
@@ -367424,15 +367747,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.3797853
+      value: 2.379785
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.3797853
+      value: 2.3797855
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -516.42
+      value: 83.05963
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -367440,7 +367763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 145.82
+      value: 306.72287
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -367473,6 +367796,10 @@ PrefabInstance:
     - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -367509,6 +367836,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &2010836327 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 2010836324}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2011148011
 GameObject:
   m_ObjectHideFlags: 0
@@ -374660,27 +374992,31 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.9737227
+      value: 1.9737226
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.9737227
+      value: 1.9737228
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.9737227
+      value: 1.9737228
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -511.88
+      value: 87.59961
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -374688,7 +375024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 150.54
+      value: 311.44287
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -374753,6 +375089,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &2049872445 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 2049872442}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2051309137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -376474,11 +376815,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.x
@@ -376490,11 +376835,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.686354
+      value: 2.6863542
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -502.51
+      value: 96.969604
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -376502,7 +376847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 161.64
+      value: 322.54285
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -376567,6 +376912,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &2059988629 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 2059988626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2060153685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378993,11 +379343,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.7907884
+      value: 1.7907885
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalScale.y
@@ -379009,7 +379359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -520.95
+      value: 78.5296
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -379017,7 +379367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 134.21
+      value: 295.11285
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -379050,6 +379400,10 @@ PrefabInstance:
     - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -379086,6 +379440,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6412623515549900752, guid: 2af8e42439e2a8546a66566966a2e688, type: 3}
+--- !u!4 &2073444496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 2073444493}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2073569653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -394061,7 +394420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5125689693506605895, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.75898
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5125689693506605895, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -394118,11 +394477,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 245702151059976218, guid: 50b17cb89e2da24499a9339e3f19894e, type: 3}
       propertyPath: m_Name
       value: Unity Grass01_FIx 1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 245702151059976218, guid: 50b17cb89e2da24499a9339e3f19894e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 586374367375190688, guid: 50b17cb89e2da24499a9339e3f19894e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -394773,11 +395136,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 2832087695566167585, guid: 903232adf33af0045be1919dafc18b34, type: 3}
       propertyPath: m_Name
       value: Unity Grass01_FIx 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832087695566167585, guid: 903232adf33af0045be1919dafc18b34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3172302622938465435, guid: 903232adf33af0045be1919dafc18b34, type: 3}
       propertyPath: m_LocalPosition.x
@@ -394887,15 +395254,27 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1528945684633987203, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
       propertyPath: m_Name
       value: AKennedy_Log_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1528945684633987203, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.20095423
+      objectReference: {fileID: 0}
+    - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.17783557
+      objectReference: {fileID: 0}
     - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.7
+      value: 570.7796
       objectReference: {fileID: 0}
     - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
       propertyPath: m_LocalPosition.y
@@ -394903,7 +395282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -117
+      value: 43.902863
       objectReference: {fileID: 0}
     - target: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
       propertyPath: m_LocalRotation.w
@@ -394938,6 +395317,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
+--- !u!4 &2684381471540672890 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2196691549076189753, guid: 81c01c31be31e2849a4737ad1f834123, type: 3}
+  m_PrefabInstance: {fileID: 2684381471540672889}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2735417653747901869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395217,15 +395601,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 3565427295582483631, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Coffin_02
       objectReference: {fileID: 0}
+    - target: {fileID: 3565427295582483631, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4193169633556868629, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.85978
+      value: 571.6198
       objectReference: {fileID: 0}
     - target: {fileID: 4193169633556868629, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -395233,7 +395621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4193169633556868629, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -60.335377
+      value: 100.56749
       objectReference: {fileID: 0}
     - target: {fileID: 4193169633556868629, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -395268,6 +395656,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
+--- !u!4 &3192948970821923939 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4193169633556868629, guid: cae9a586558fbde40b5c512f29c9bdd5, type: 3}
+  m_PrefabInstance: {fileID: 3192948970821923938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3225569754072439195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395852,15 +396245,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6186602140502626963, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Coffin_03
       objectReference: {fileID: 0}
+    - target: {fileID: 6186602140502626963, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6814202916306733097, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24.809761
+      value: 574.66986
       objectReference: {fileID: 0}
     - target: {fileID: 6814202916306733097, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -395868,7 +396265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6814202916306733097, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -60.38538
+      value: 100.51749
       objectReference: {fileID: 0}
     - target: {fileID: 6814202916306733097, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -395903,6 +396300,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
+--- !u!4 &4653736554001890392 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6814202916306733097, guid: d7043832a04020d4cb2a420f473009b5, type: 3}
+  m_PrefabInstance: {fileID: 4653736554001890391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4665985925631178320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396028,7 +396430,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 4968592404799314783, guid: 21119ae1c41d55d46b68488f4e1808e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -396142,11 +396544,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8174628
+      objectReference: {fileID: 0}
+    - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -32.88678
+      value: 566.59283
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396154,7 +396560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -48.364017
+      value: 112.53885
       objectReference: {fileID: 0}
     - target: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -396188,11 +396594,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 634402277254433895, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+--- !u!4 &4914883620248338137 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 253900522548057821, guid: 5b233600b183c104dbc190b66285751a, type: 3}
+  m_PrefabInstance: {fileID: 4914883620248338136}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4925405847315135045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396642,15 +397057,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6193545195462484232, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Coffin_01
       objectReference: {fileID: 0}
+    - target: {fileID: 6193545195462484232, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6825262576338615218, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.419746
+      value: 578.0599
       objectReference: {fileID: 0}
     - target: {fileID: 6825262576338615218, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396658,7 +397077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6825262576338615218, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -60.615368
+      value: 100.28749
       objectReference: {fileID: 0}
     - target: {fileID: 6825262576338615218, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
       propertyPath: m_LocalRotation.w
@@ -396693,6 +397112,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
+--- !u!4 &6059190923362777203 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6825262576338615218, guid: 22d20a91ebb92db499c79b5fa0c3aa05, type: 3}
+  m_PrefabInstance: {fileID: 6059190923362777202}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6072944941118864213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396756,11 +397180,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 708284947127672285, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_Name
       value: Grass01
+      objectReference: {fileID: 0}
+    - target: {fileID: 708284947127672285, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 708284947127672285, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -396772,7 +397200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.053446
+      value: 625.5331
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396780,7 +397208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 119.06536
+      value: 279.96823
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalRotation.w
@@ -396788,15 +397216,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -396815,21 +397243,42 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
+--- !u!4 &6292122545134952765 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7401744081641651692, guid: 18ca7c9905abf6142adb148aa0c38719, type: 3}
+  m_PrefabInstance: {fileID: 6292122545134952764}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6315402768135536213
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6211340702517182096, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.7185142
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.7185137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.7185137
+      objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.506798
+      value: 573.97284
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396837,7 +397286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -48.268
+      value: 112.63486
       objectReference: {fileID: 0}
     - target: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -396872,17 +397321,34 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+--- !u!4 &6315402768135536214 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6735359575207601194, guid: b352a9aaa0435484fa46a77803b0ddcc, type: 3}
+  m_PrefabInstance: {fileID: 6315402768135536213}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6386571803907693068
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.7544203
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.7544193
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.7544193
+      objectReference: {fileID: 0}
+    - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.71682
+      value: 592.7628
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396890,7 +397356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -48.852177
+      value: 112.05069
       objectReference: {fileID: 0}
     - target: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
       propertyPath: m_LocalRotation.w
@@ -396924,11 +397390,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1126033439335272933, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+--- !u!4 &6386571803907693069 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 354563770627525471, guid: a0da30dc68b1d8a4e9a1f5e9ce591c38, type: 3}
+  m_PrefabInstance: {fileID: 6386571803907693068}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6434557569626672304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396992,11 +397467,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10.759596
+      objectReference: {fileID: 0}
+    - target: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -42.47091
+      value: 557.0087
       objectReference: {fileID: 0}
     - target: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
       propertyPath: m_LocalPosition.y
@@ -397004,7 +397483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -120.234955
+      value: 40.667908
       objectReference: {fileID: 0}
     - target: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
       propertyPath: m_LocalRotation.w
@@ -397038,11 +397517,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: AKennedy_Log_03
       objectReference: {fileID: 0}
+    - target: {fileID: 686092224434762571, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
+--- !u!4 &6568892631266142479 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 202289878575557105, guid: b8f39399a628b0e4ab6a6e56dfb64464, type: 3}
+  m_PrefabInstance: {fileID: 6568892631266142478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6580554889941803569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397257,15 +397745,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_Name
       value: BellaVallejo_Blockout_Spiderwebs
       objectReference: {fileID: 0}
+    - target: {fileID: 1467821051032482847, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.6338916
+      objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.616798
+      value: 581.8628
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.y
@@ -397273,7 +397769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -48.171
+      value: 112.73186
       objectReference: {fileID: 0}
     - target: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
       propertyPath: m_LocalRotation.w
@@ -397308,6 +397804,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+--- !u!4 &7138603226899741921 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239819348393979557, guid: dd730ab1d721260468b579fef1ada800, type: 3}
+  m_PrefabInstance: {fileID: 7138603226899741920}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7186244461713197288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397428,11 +397929,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 8649266247861152, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_Name
       value: Flower01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8649266247861152, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8649266247861152, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -397444,7 +397949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.738483
+      value: 625.2181
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -397452,7 +397957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 117.77972
+      value: 278.6826
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -397460,15 +397965,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -397487,6 +397992,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
+--- !u!4 &7428602459046994675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6961488950642299586, guid: 286fda06ff2bc5245ac308d18a1f38dc, type: 3}
+  m_PrefabInstance: {fileID: 7428602459046994674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7437593074947523756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397667,7 +398177,7 @@ Transform:
   m_GameObject: {fileID: 8420627811078912983}
   serializedVersion: 2
   m_LocalRotation: {x: 0.43318874, y: 0.000000025096409, z: -0.000000012061958, w: 0.90130323}
-  m_LocalPosition: {x: 52.86094, y: 30, z: 3.6937199}
+  m_LocalPosition: {x: 52.86094, y: 40, z: 3.6937199}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -398154,15 +398664,27 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 4877395542482548471, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
       propertyPath: m_Name
       value: KCurtis_Blockout_Grave_BurialVault_Plain (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4877395542482548471, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 25.71983
+      objectReference: {fileID: 0}
+    - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 25.71983
+      objectReference: {fileID: 0}
     - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.968178
+      value: 582.5114
       objectReference: {fileID: 0}
     - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
       propertyPath: m_LocalPosition.y
@@ -398170,7 +398692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -60.244236
+      value: 100.65863
       objectReference: {fileID: 0}
     - target: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
       propertyPath: m_LocalRotation.w
@@ -398205,6 +398727,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
+--- !u!4 &8790945205674591551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5252373415726066765, guid: bb575cf96be6e7f46a67ab78f64be501, type: 3}
+  m_PrefabInstance: {fileID: 8790945205674591550}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8948049269334035888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -398276,11 +398803,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1592375195}
     m_Modifications:
     - target: {fileID: 510002726557181839, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.960583
+      value: 563.51904
       objectReference: {fileID: 0}
     - target: {fileID: 510002726557181839, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -398288,7 +398815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 510002726557181839, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -119.169365
+      value: 41.733498
       objectReference: {fileID: 0}
     - target: {fileID: 510002726557181839, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -398322,11 +398849,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: AKennedy_Log_02
       objectReference: {fileID: 0}
+    - target: {fileID: 889518562926640437, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
+--- !u!4 &8962330804607000791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 510002726557181839, guid: 437627602fac1cc4195c2704f2b9f5d3, type: 3}
+  m_PrefabInstance: {fileID: 8962330804607000790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9114546205869986511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -398449,62 +398985,9 @@ SceneRoots:
   - {fileID: 1128471304961284109}
   - {fileID: 7670556840183303924}
   - {fileID: 34845903}
-  - {fileID: 1282748003}
-  - {fileID: 438143813}
   - {fileID: 214404474}
-  - {fileID: 7428602459046994674}
-  - {fileID: 6292122545134952764}
-  - {fileID: 1864853441}
-  - {fileID: 147440385}
-  - {fileID: 261676311}
-  - {fileID: 1746201002}
-  - {fileID: 392027957}
-  - {fileID: 2648565340287819557}
-  - {fileID: 1181521326906161291}
-  - {fileID: 4887704707483047312}
-  - {fileID: 6568892631266142478}
-  - {fileID: 8962330804607000790}
-  - {fileID: 2684381471540672889}
-  - {fileID: 906530279}
-  - {fileID: 8790945205674591550}
-  - {fileID: 4653736554001890391}
-  - {fileID: 3192948970821923938}
-  - {fileID: 6059190923362777202}
-  - {fileID: 7138603226899741920}
-  - {fileID: 1933348234}
-  - {fileID: 128038130}
-  - {fileID: 1679110419}
-  - {fileID: 615578409}
-  - {fileID: 336648796}
-  - {fileID: 199762852}
-  - {fileID: 469543953}
-  - {fileID: 958557749}
-  - {fileID: 2059988626}
-  - {fileID: 6315402768135536213}
-  - {fileID: 423264921}
-  - {fileID: 498901790}
-  - {fileID: 675050479}
-  - {fileID: 1056471206}
-  - {fileID: 1648411921}
-  - {fileID: 1073270845}
-  - {fileID: 1046792245}
-  - {fileID: 2049872442}
-  - {fileID: 1029491514}
-  - {fileID: 1202287788}
-  - {fileID: 1701941879}
-  - {fileID: 4914883620248338136}
-  - {fileID: 42218458}
-  - {fileID: 1656575996}
-  - {fileID: 366561706}
-  - {fileID: 1446788152}
-  - {fileID: 1271647926}
-  - {fileID: 1276067770}
-  - {fileID: 2010836324}
-  - {fileID: 268475353}
-  - {fileID: 2073444493}
-  - {fileID: 6386571803907693068}
-  - {fileID: 1493114062}
-  - {fileID: 939354742}
   - {fileID: 1638989952}
   - {fileID: 567444090}
   - {fileID: 886971966}
+  - {fileID: 1592375195}
+  - {fileID: 660790924}
