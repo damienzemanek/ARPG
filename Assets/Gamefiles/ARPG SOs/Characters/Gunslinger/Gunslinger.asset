@@ -21,8 +21,8 @@ MonoBehaviour:
   damage: 2
   _maxEquippableActions: 6
   equippedActions:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: a4002f287298e4a4f938d7a057ae41fb, type: 2}
+  - {fileID: 11400000, guid: 59184b743a7702341a01a83959313d66, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -83,7 +83,7 @@ MonoBehaviour:
   portraitArtSquareUnselected: {fileID: 0}
   portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
   mainArt: {fileID: 21300000, guid: f4ea13354adabdd4fa844d8e2794c051, type: 3}
-  specialEffectName: DEADEYE
+  specialEffectName: KILLSHOT
   desc_tactics: "Gunslinger pressures his enemies from the backline with high speed
     and high damage from his Deadeye. His Deadeye gets stronger after each use and
     doesn\u2019t Exhaust, but also consumes more AP. Using Quick Draw will help lower
