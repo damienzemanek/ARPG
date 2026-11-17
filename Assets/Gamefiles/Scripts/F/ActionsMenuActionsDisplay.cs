@@ -77,20 +77,20 @@ public class ActionsMenuActionsDisplay : MonoBehaviour
         for (int i = 0; i < inspectingCharacterActions.AllAvaliableActions.Count; i++)
         {
             actionBtns[i].gameObject.SetActive(true);
-            actionBtns[i].InjectAndSetup(inspectingCharacterActions.AllAvaliableActions[i]);
+            actionBtns[i].InjectAndSetup(inspectingCharacterActions.AllAvaliableActions[i].cfg);
             
-            var thisActionsName = inspectingCharacterActions.AllAvaliableActions[i].actionName;
+            var thisActionsName = inspectingCharacterActions.AllAvaliableActions[i].cfg.actionName;
             if (currEquippedActions.Contains(thisActionsName))
             {
                 this.Log("Equipping action: " + thisActionsName);
                 actionBtns[i].Equip();
-                TryEquipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
+                TryEquipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i].cfg, actionBtns[i]);
             }
             else
             {
                 this.Log("Dequipping action: " + thisActionsName);
                 actionBtns[i].Dequip();
-                DequipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i], actionBtns[i]);
+                DequipActionOnBtn(inspectingCharacterActions.AllAvaliableActions[i].cfg, actionBtns[i]);
             }
             
             var actionData = itemData.GetItemData(Items_SavedDataSO.ItemType.CharacterAction, thisActionsName);

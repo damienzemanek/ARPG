@@ -25,13 +25,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
   - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
-  - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
-  - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
-  - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
-  ForcedActions: []
+  allAvaliableActions: []
   specialEffects: []
+  allAvaliableActionNames: []
   attackOrder: 0
   primaryAttackPriorityWeight: 2
   secondaryAttackPriorityWeight: 1

@@ -1,3 +1,5 @@
+using AYellowpaper.SerializedCollections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class BattlerOccupantObject : MonoBehaviour
@@ -9,6 +11,7 @@ public class BattlerOccupantObject : MonoBehaviour
     }
     
     public SpriteRenderer spriteRenderer;
+    [DrawWithUnity] public SerializedDictionary<Sprite, SpriteRenderer> actionSprites = new();
     
     public Color regularColor;
     public Color fadedColor;
@@ -21,5 +24,11 @@ public class BattlerOccupantObject : MonoBehaviour
             case SpriteColorType.Regular: spriteRenderer.color = regularColor; break;
             case SpriteColorType.Faded: spriteRenderer.color = fadedColor; break;
         }
+    }
+
+    public void SetAllActionSpritesToFalse()
+    {
+        foreach (var pair in actionSprites)
+            pair.Value.gameObject.SetActive(false);
     }
 }

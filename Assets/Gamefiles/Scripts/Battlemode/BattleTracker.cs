@@ -209,9 +209,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         QueuedAction queuedAction, 
         bool leftIsActor)
     {
+
+        
         BattleTile actorTile = queuedAction.actorTile;
         BattleTile targetTile = queuedAction.targetTile;
-
+        
 
         if (boc is CharacterOccupantCtx coc)
         {
@@ -238,6 +240,12 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         bool moves = DoesPrepareMovement(actorTile, preventedSelfMovementSection, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
         bool targetMoves = DoesPrepareMovement(targetTile, preventedTargetMovementSection, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
+        // Movement Animation Setup 
+        BattlerConfig battlerCfg = boc.cfg as BattlerConfig;
+        var specificCfg = battlerCfg?.GetSpecificActionCfg(queuedAction.actionCtx.cfg);
+        actorTile.GetSpriteRenderers(specificCfg?.useActionSprite,
+            out var sprRenderer, out var idleSprite);
+        
         // Pre Movement Animations Location Destinations
         Vector3 actorFinalPos = boc.obj.transform.position;
         Vector3 targetFinalPos = targetTile.worldOccupantSpawnPos;
@@ -246,9 +254,13 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
         // Movement Animations
         if (queuedAction.actionCtx.cfg.useActionAnim)
+        {
+            sprRenderer.gameObject.SetActive(false);
+            idleSprite.gameObject.SetActive(true);
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
                 actionUserViewer.C_ZoomIn(boc.obj, targetOccupantCtx.obj, leftIsActor));
+        }
 
         // First Attack
         string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
@@ -275,9 +287,13 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
         // delay for fade back in
         if (queuedAction.actionCtx.cfg.useActionAnim)
+        {
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f),
                 actionUserViewer.C_ZoomOut(boc.obj, actorFinalPos, targetOccupantCtx.obj, targetFinalPos));
+            sprRenderer.gameObject.SetActive(true);
+            idleSprite.gameObject.SetActive(false);
+        }
         
         // delay for status effects to resolve, eventually also for status add anims
         if(queuedAction.actionCtx.cfg.useActionDelays)

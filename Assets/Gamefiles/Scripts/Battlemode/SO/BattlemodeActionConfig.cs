@@ -120,7 +120,7 @@ public class BattlemodeActionConfig : ItemSO
     [BoxGroup("Settings")] [InfoBox("This is the percentage of max hp of TARGET to be healed")] public int healPercentage = 0;
     [BoxGroup("Settings")] [InfoBox("This is the percentage of armor to be generated")] public int armorIncreasePercentage = 0;
     [BoxGroup("Settings")] [ShowIf("isIncreasingArmor")] public bool capArmorIncrease;
-
+    
     [BoxGroup("Cfgs")] public TargetingCfg targetingCfg;
     [BoxGroup("Cfgs")] public MovementCfg movementCfg;
     [BoxGroup("Cfgs")] public MovementCfg targetMovementCfg;

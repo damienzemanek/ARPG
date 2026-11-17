@@ -115,6 +115,22 @@ public class BattleTile : MonoBehaviour
 
         Spawn(occupantCfg);
         display_AP.SetActive(occupantCfg is BattlerConfig);
+        var boo = occupantCtx.obj.Get<BattlerOccupantObject>();
+        boo.SetAllActionSpritesToFalse();
+        boo.spriteRenderer.gameObject.SetActive(true);
+        
+    }
+
+    public void GetSpriteRenderers(Sprite action,
+        out SpriteRenderer idleSprRenderer, out SpriteRenderer actionSprRenderer)
+    {
+        idleSprRenderer = null;
+        actionSprRenderer = null;
+        if (action == null) return;
+        if (occupantCtx == null) return;
+        var boo = occupantCtx.obj.Get<BattlerOccupantObject>();
+        idleSprRenderer = boo.spriteRenderer;
+        actionSprRenderer = boo.actionSprites[action];
     }
 
     public void Clear()

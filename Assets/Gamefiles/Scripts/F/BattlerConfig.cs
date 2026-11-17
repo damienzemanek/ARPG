@@ -9,6 +9,20 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "BattlerConfig", menuName = "ARPG/SO/BattlerConfig")]
 public class BattlerConfig : OccupantCfg
 {
+
+
+    [Serializable]
+    public class BattlerSpecificActionConfig
+    {
+        [Required] public Sprite useActionSprite;
+        public bool useSelfVFX = false;
+        [ShowIf("useSelfVFX")] public Sprite useActionSpriteSelfVFX;
+        public bool projectileBased = false;
+        [ShowIf("projectileBased")] public int projectileCount = 1;
+        [ShowIf("projectileBased")] public Sprite projectileSprite;
+        [Required] public BattlemodeActionConfig cfg;
+    }
+    
     [BoxGroup("Stats")] public int currentLevel = 1;
     [BoxGroup("Stats")] public int maxHP;
     [BoxGroup("Stats")] public int maxArmor;
@@ -29,8 +43,8 @@ public class BattlerConfig : OccupantCfg
     }
 
     [ReadOnly] public BattlemodeActionConfig[] equippedActions = Array.Empty<BattlemodeActionConfig>();
-    [SerializeField, ShowInInspector] List<BattlemodeActionConfig> allAvaliableActions = new();
-    public List<BattlemodeActionConfig> AllAvaliableActions
+    [SerializeField, ShowInInspector] List<BattlerSpecificActionConfig> allAvaliableActions = new();
+    public List<BattlerSpecificActionConfig> AllAvaliableActions
     {
         get => allAvaliableActions;
         set
@@ -38,19 +52,25 @@ public class BattlerConfig : OccupantCfg
             allAvaliableActions = value;
             allAvaliableActionNames = new List<string>(allAvaliableActions.Count);
             foreach (var action in allAvaliableActions)
-                allAvaliableActionNames.Add(action.name);
+                allAvaliableActionNames.Add(action.cfg.name);
         }
     }
 
     public List<BattlemodeEffectConfigInstance> specialEffects = new();
     [ReadOnly] public List<string> allAvaliableActionNames = new();
-    
+
+    public BattlerSpecificActionConfig GetSpecificActionCfg(BattlemodeActionConfig actionCfg)
+    {
+         var ret = allAvaliableActions.FirstOrDefault(a => a.cfg == actionCfg);
+         return ret;
+    }
     
     [Button]
-    public void EquipAction(int slotIndex, BattlemodeActionConfig action)
+    public void EquipAction(int slotIndex, int availableActionIndex)
     {
-        if(slotIndex < 0 || slotIndex >= equippedActions.Length) return;
-        equippedActions[slotIndex] = action;
+        if (slotIndex < 0 || slotIndex >= equippedActions.Length) return;
+        if (availableActionIndex < 0 || availableActionIndex >= allAvaliableActions.Count) return;
+        equippedActions[slotIndex] = allAvaliableActions[availableActionIndex].cfg;
     }
 
     public bool TryEquipActionOnNextAvaliableSlot(BattlemodeActionConfig actionCfg)
