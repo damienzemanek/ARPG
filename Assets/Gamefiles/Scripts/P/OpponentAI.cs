@@ -231,7 +231,7 @@ public class OpponentAI : MonoBehaviour
             
             RefreshTile();
             CheckForIntentionsDelta();
-            if(altAction == AltAction.None) orderCtx.myTile.TryDisplayIntentions(true); // needs to happen after rmeovefirst
+            if(altAction == AltAction.None) orderCtx.myTile.TryDisplayIntentions(false); // needs to happen after rmeovefirst
             
 
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
@@ -247,7 +247,7 @@ public class OpponentAI : MonoBehaviour
                     eoc.hasFreeRequeue = false;
                     Debug.Log($"[OPP AI] Free Intent Used: Re-Queued A new move: {eoc.queuedActions.Last().actionCtx.cfg.actionName} for last action");
                     orderCtx.myTile.TryDisplayIntentions(true);
-                    yield return queuedAction.actorTile.tileAlerter.C_SendAlert("Requeueing Move, No Valid Targets");
+                    yield return queuedAction.actorTile.tileAlerter.C_SendAlert("Queueing Next Move, No Valid Targets");
                     QueueNewAction();
                 }
                 else

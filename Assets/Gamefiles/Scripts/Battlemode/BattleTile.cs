@@ -279,7 +279,7 @@ public class BattleTile : MonoBehaviour
         var rowPos = intentionsGrid.GetRow(0).rowPositions;
         if (intentionIndex < 0 || intentionIndex >= rowPos.Count) return;
         var spriteRenderer = rowPos[intentionIndex].created.Get<SpriteRenderer>();
-        spriteRenderer.sprite = actionIdentifier switch
+        var newSpr = actionIdentifier switch
         {
             ActionIdentifier.Move => actionIdentifier_Move,
             ActionIdentifier.Attack => actionIdentifier_Attack,
@@ -300,6 +300,7 @@ public class BattleTile : MonoBehaviour
             ActionIdentifier.ArmorMove => actionIdentifier_ArmorMove,
             _ => throw new NotImplementedException("ActionIdentifier not implemented")
         };
+        spriteRenderer.sprite = newSpr;
         if(animateTween) spriteRenderer.Get<WorldTweener>().PlaySequence();
     }
 
