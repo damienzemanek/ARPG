@@ -458,7 +458,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         grid.UpdateGrid();
 
         foreach (var point in calcMovement.savePath)
-            point.tile.TryDisplayIntentions();
+            point.tile.TryDisplayIntentions(false);
     }
         
     public void UnSelectAll()

@@ -64,7 +64,7 @@ public class OpponentAI : MonoBehaviour
                 Debug.Log("[OPP AI] Queued Intention : " + newQueuedAction.actionCtx.cfg.actionName);
             }
             
-            orderCtx.myTile.TryDisplayIntentions();
+            orderCtx.myTile.TryDisplayIntentions(true);
         }
     }
 //Intention Queue Now At: " + eoc.queuedActions.Count + " out of currentMaxIntentions: " + currentMaxIntentions
@@ -176,7 +176,7 @@ public class OpponentAI : MonoBehaviour
 
             // action attempts max reached
             if (eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt > queuedAction.actionCtx.cfg.maxEocTargetingAttempts)
-                { MoveOntoTryingNextAction(); continue; }
+                { yield return MoveOntoTryingNextAction(); continue; }
 
             // Usable Range Check
             RoleTarget selectedTarget = null;
@@ -212,7 +212,7 @@ public class OpponentAI : MonoBehaviour
             
             // If no target at all was found (nothing in range in any action), and were not already defending or moving
             if (selectedTarget == null)
-                { MoveOntoTryingNextAction(); continue; }
+            { yield return MoveOntoTryingNextAction(); continue; }
             
             var actingOccupantCtx = queuedAction.actingOccupantCtx;
             var targetOccupantCtx = (BattlerOccupantCtx)queuedAction.targetTile.occupantCtx; // can be null for empty tile
@@ -231,29 +231,33 @@ public class OpponentAI : MonoBehaviour
             
             RefreshTile();
             CheckForIntentionsDelta();
-            if(altAction == AltAction.None) orderCtx.myTile.TryDisplayIntentions(); // needs to happen after rmeovefirst
+            if(altAction == AltAction.None) orderCtx.myTile.TryDisplayIntentions(true); // needs to happen after rmeovefirst
             
 
             yield return new WaitForSeconds(proto_delayBetweenAttackFinishing + proto_delayBetweenAttacks);
 
             
-            void MoveOntoTryingNextAction()
+            IEnumerator MoveOntoTryingNextAction()
             {
                 eoc.currentIntentUsageCtx.currentIntentionIndexCurrentAttempt = 1; // resets to 1
+                eoc.queuedActions.RemoveFirst();
                 if (eoc.hasFreeRequeue) 
                 //if the enemy cannot target anything at all, it has 1 free re-queue, if it hasn't already repostioned once
                 {
-                    QueueNewAction();
                     eoc.hasFreeRequeue = false;
                     Debug.Log($"[OPP AI] Free Intent Used: Re-Queued A new move: {eoc.queuedActions.Last().actionCtx.cfg.actionName} for last action");
+                    orderCtx.myTile.TryDisplayIntentions(true);
+                    yield return queuedAction.actorTile.tileAlerter.C_SendAlert("Requeueing Move, No Valid Targets");
+                    QueueNewAction();
                 }
                 else
                 {
                     Debug.Log("[OPP AI] Removed an Intentions on action: " + queuedAction.actionCtx.cfg.actionName);
                     orderCtx.eoc.currentIntentUsageCtx.removedIntentions++;
+                    orderCtx.myTile.TryDisplayIntentions(true);
+                    yield return queuedAction.actorTile.tileAlerter.C_SendAlert("Skipping Move, No Valid Targets");
                 }
                 Debug.Log("[OPP AI] Moving on from " + queuedAction.actionCtx.cfg.actionName + " to next action");
-                eoc.queuedActions.RemoveFirst();
             }
 
             void RefreshTile()

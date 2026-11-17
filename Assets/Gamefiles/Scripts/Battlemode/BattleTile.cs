@@ -68,7 +68,8 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("References")] [Required] public GameObject hover;
     [BoxGroup("References")] [Required] public GameObject selected;
     [BoxGroup("References")] [Required] public GameObject inRange;
-
+    [BoxGroup("References")] [Required] public Alerter tileAlerter;
+    
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_Move;
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_Attack;
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_AttackBuff;
@@ -272,7 +273,7 @@ public class BattleTile : MonoBehaviour
         Debug.Log($"{occupantCtx.cfg.name}'s tile: Set intentions amount to " + intentions);
     }
     
-    public void DisplayIntentionToBattleTile(int intentionIndex, ActionIdentifier actionIdentifier)
+    public void DisplayIntentionToBattleTile(int intentionIndex, ActionIdentifier actionIdentifier, bool animateTween)
     {
         Debug.Log("[BattleTile: Opponent] Setting Intention: " + actionIdentifier + " at " + intentionIndex + " row size is [" + intentionsGrid.GetRow(0).rowPositions.Count + "]");
         var rowPos = intentionsGrid.GetRow(0).rowPositions;
@@ -297,11 +298,12 @@ public class BattleTile : MonoBehaviour
             ActionIdentifier.ArmorBuff => actionIdentifier_ArmorBuff,
             ActionIdentifier.ArmorDebuff => actionIdentifier_ArmorDebuff,
             ActionIdentifier.ArmorMove => actionIdentifier_ArmorMove,
-            _ => intentionsGrid.GetRow(0).rowPositions[intentionIndex].created.Get<SpriteRenderer>().sprite
+            _ => throw new NotImplementedException("ActionIdentifier not implemented")
         };
+        if(animateTween) spriteRenderer.Get<WorldTweener>().PlaySequence();
     }
 
-    public void TryDisplayIntentions()
+    public void TryDisplayIntentions(bool tweenAnimate)
     {
         if (occupantCtx is not EnemyOccupantCtx eoc)
         {
@@ -322,7 +324,7 @@ public class BattleTile : MonoBehaviour
         for (int intentionsIndex = 0; intentionsIndex < amountOfActualActions; intentionsIndex++)
         {
             var actionIdentifier = eoc.queuedActions.ElementAt(intentionsIndex).actionCtx.cfg.actionIdentifier;
-            DisplayIntentionToBattleTile(intentionsIndex, actionIdentifier);
+            DisplayIntentionToBattleTile(intentionsIndex, actionIdentifier, tweenAnimate);
         }
     }
     
@@ -422,7 +424,7 @@ public class BattleTile : MonoBehaviour
         display.SetActive(true);
         previousTile.ResetTileOccupancy(false);
         grid.UpdateGrid();
-        TryDisplayIntentions();
+        TryDisplayIntentions(false);
         if(occupantCtx != null && occupantCtx.cfg != null)
             Debug.Log($"Transferred occupant [{occupantCtx.cfg.occupantName}] from " + previousTile.col + ", " + previousTile.row + " to " + col + ", " + row);
     }
@@ -449,8 +451,8 @@ public class BattleTile : MonoBehaviour
         previousTile.Clear();
         grid.UpdateGrid();
         
-        previousTile.TryDisplayIntentions();
-        TryDisplayIntentions();
+        previousTile.TryDisplayIntentions(false);
+        TryDisplayIntentions(false);
 
         Debug.Log($"Swapped occupants between [{col}, {row}] and [{previousTile.col}, {previousTile.row}]");
     }
