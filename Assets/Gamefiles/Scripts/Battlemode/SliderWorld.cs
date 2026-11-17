@@ -16,10 +16,15 @@ public class SliderWorld : MonoBehaviour
         SetSlider(value);
     }
     
-    void SetSlider(float value)
+    public void SetSlider(float value)
     {
-        go_Slider.localScale = new Vector3(xScaleEmpty + (xScaleFull - xScaleEmpty) * value, 1, 1);
-        go_Slider.localPosition = new Vector3(xPosEmpty + (xPosFull - xPosEmpty) * value, 0, 0);
+        float scale = xScaleEmpty + (xScaleFull - xScaleEmpty) * value;
+
+        go_Slider.localScale = new Vector3(scale, go_Slider.transform.localScale.y, go_Slider.transform.localScale.z);
+        go_Slider.localPosition = new Vector3(
+            xPosEmpty + (xPosFull - xPosEmpty) * value
+                      + (scale - xScaleEmpty) * 0.5f,
+            go_Slider.transform.localPosition.y, go_Slider.transform.localPosition.z);
     }
     
     public bool IsFull => value >= 1;

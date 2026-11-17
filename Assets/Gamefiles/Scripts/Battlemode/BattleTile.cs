@@ -50,10 +50,8 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("Transient State")] [ShowInInspector] public OccupantCtx occupantCtx;
     
     [BoxGroup("Settings")] public Vector3 occupantSpawnOffset = new Vector3(3.5f, 0, -3.5f);
-    [BoxGroup("Settings")] public float maxHPBarScale = 3.5f;
 
     [BoxGroup("References")] [Required] public GameObject display;
-    [BoxGroup("References")] [Required] public GameObject hpBar;
     [BoxGroup("References")] [Required] public GameObject display_AP;
     [BoxGroup("References")] [Required] public GameObject display_Armor;
     [BoxGroup("References")] [Required] public TextMeshPro lblTxt_ApOrIntention;
@@ -69,6 +67,8 @@ public class BattleTile : MonoBehaviour
     [BoxGroup("References")] [Required] public GameObject selected;
     [BoxGroup("References")] [Required] public GameObject inRange;
     [BoxGroup("References")] [Required] public Alerter tileAlerter;
+    [BoxGroup("References")] [Required] public SliderWorld hpSlider;
+
     
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_Move;
     [BoxGroup("References")] [Required] public Sprite actionIdentifier_Attack;
@@ -230,16 +230,14 @@ public class BattleTile : MonoBehaviour
 
     public void SetHealth(int current, float max)
     {
-        var frac = (current / max);
-        Vector3 prev = hpBar.transform.localScale;
-        hpBar.transform.localScale = new Vector3(frac * maxHPBarScale, prev.y, prev.z);
+        var frac = max > 0 
+            ? Mathf.Clamp01(current / max) 
+            : 0;     
         txt_remainingHP.text = "" + current.ToString();
-        if (current <= 0)
-        {
-            hpBar.transform.localScale = new Vector3(0, prev.y, prev.z);
-            txt_remainingHP.text = "0";
-            TestKill();
-        }
+        hpSlider.SetSlider(frac);
+        if (current > 0) return;
+        txt_remainingHP.text = "0";
+        TestKill();
     }
 
     public void SetArmor(int current)
