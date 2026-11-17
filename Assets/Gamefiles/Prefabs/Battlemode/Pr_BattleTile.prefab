@@ -578,9 +578,7 @@ MonoBehaviour:
   alreadySelected: 0
   tileCanBeSelectedOveride: 0
   occupantSpawnOffset: {x: 3.5, y: 0, z: -3.5}
-  maxHPBarScale: 0.2286979
   display: {fileID: 6581894102413030855}
-  hpBar: {fileID: 3932555389431421451}
   display_AP: {fileID: 3003641778291861426}
   display_Armor: {fileID: 1904767003300000956}
   lblTxt_ApOrIntention: {fileID: 3015938471610769757}
@@ -664,8 +662,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.573, y: 0.943}
-  m_SizeDelta: {x: 28.3578, y: 5}
+  m_AnchoredPosition: {x: 1.573, y: 0.962}
+  m_SizeDelta: {x: 35.0155, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3042265416854285376
 MeshRenderer:
@@ -692,7 +690,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6144668520599837227, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
+  - {fileID: 6144668520599837227, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -738,8 +736,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: CURRENT AP
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
-  m_sharedMaterial: {fileID: 6144668520599837227, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
+  m_sharedMaterial: {fileID: 6144668520599837227, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -763,8 +761,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 42
+  m_fontSizeBase: 42
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1596,7 +1594,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6072140849739819401}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.42065275}
+  m_LocalPosition: {x: 0, y: 0, z: -0.421}
   m_LocalScale: {x: 0.04422, y: 0.04422, z: 0.04422}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1604,7 +1602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.696, y: 1.4876691}
+  m_AnchoredPosition: {x: 0.696, y: 1.507}
   m_SizeDelta: {x: 28.3578, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7743038685690744175
@@ -1632,7 +1630,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6144668520599837227, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
+  - {fileID: 6144668520599837227, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1678,8 +1676,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ARMOR
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
-  m_sharedMaterial: {fileID: 6144668520599837227, guid: c60e7599cace5344493f2dfd1cab09da, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
+  m_sharedMaterial: {fileID: 6144668520599837227, guid: a8b340b7dfdd3e1458f095417df388d4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1703,8 +1701,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 42
+  m_fontSizeBase: 42
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1910,7 +1908,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.505, y: 0.556}
+  m_AnchoredPosition: {x: 1.505, y: 0.57}
   m_SizeDelta: {x: 3.5663, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4853484581786549751
