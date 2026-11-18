@@ -267,6 +267,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         Debug.Log("Actor: " + boc.obj.name + ", Target: " + targetName);
         selectedTarget?.ActedUponBy(queuedAction, actorTile);
         
+        // target hit vfx
+        if(specificCfg != null && specificCfg.damagesTarg)
+            targetOccupantCtx?.obj.Get<VFXShower>().ShowHitVFX(specificCfg.enemyHitWithVFX, true);
+        
         // Actual hits (times) hit count
         for (int currentHitcount = 2; currentHitcount <= queuedAction.actionCtx.cfg.hitCount; currentHitcount++)
         {
@@ -280,6 +284,10 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         // Hit Delay 
         if(queuedAction.actionCtx.cfg.useActionDelays)
             yield return new WaitForSeconds(1f); // finish attacking
+        
+        if(specificCfg != null && specificCfg.damagesTarg)
+            targetOccupantCtx?.obj.Get<VFXShower>().StopShowingHitVFX();
+
         
         // Post Movements
         if (moves) HandleMovement(queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);

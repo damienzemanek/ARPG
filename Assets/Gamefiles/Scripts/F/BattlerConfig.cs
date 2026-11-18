@@ -15,11 +15,9 @@ public class BattlerConfig : OccupantCfg
     public class BattlerSpecificActionConfig
     {
         [Required] public Sprite useActionSprite;
-        public bool useSelfVFX = false;
-        [ShowIf("useSelfVFX")] public Sprite useActionSpriteSelfVFX;
-        public bool projectileBased = false;
-        [ShowIf("projectileBased")] public int projectileCount = 1;
-        [ShowIf("projectileBased")] public Sprite projectileSprite;
+        public bool damagesTarg = true;
+        [ShowIf("damagesTarg")] public bool useBloodVFX = true;
+        [ShowIf("damagesTarg")] public VFXShower.SelfHitVFX enemyHitWithVFX;
         [Required] public BattlemodeActionConfig cfg;
     }
     
