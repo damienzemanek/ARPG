@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Brutal Swing
     amount: 0
   description: Brutal Swing Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 17337b846b070c84e8caa37a5ff3f8f1, type: 3}
   apCost: 3
   roleTarget: 2
   moveToSelectedEmptyTile: 0

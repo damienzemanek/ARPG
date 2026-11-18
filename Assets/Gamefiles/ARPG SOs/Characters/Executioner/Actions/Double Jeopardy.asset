@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Double Jeopardy
     amount: 0
   description: Double Jeopardy Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 586aa99667002c04fbca4c4d6a1a7a55, type: 3}
   apCost: 2
   roleTarget: 1
   moveToSelectedEmptyTile: 0

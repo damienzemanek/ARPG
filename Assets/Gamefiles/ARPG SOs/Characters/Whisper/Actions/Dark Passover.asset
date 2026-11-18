@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Dark Passover
     amount: 0
   description: Dark Passover Description
-  icon: {fileID: 21300000, guid: 4e358b9f17200bd45bb5259af476fd09, type: 3}
+  icon: {fileID: 21300000, guid: 5588c365c6150a74c98a3e416ac5b04f, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0

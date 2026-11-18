@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Necrotic Eruption
     amount: 0
   description: Necrotic Eruption Description
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  icon: {fileID: 21300000, guid: def81adf0b1ef244b9d56723107f019e, type: 3}
   apCost: 3
   roleTarget: 2
   moveToSelectedEmptyTile: 0

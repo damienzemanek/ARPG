@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Sharpen Blade
     amount: 0
   description: Sharpen Blade Description
-  icon: {fileID: 21300000, guid: 4e2371ef4305f0744a79045ea68b7864, type: 3}
+  icon: {fileID: 21300000, guid: 35c1999c18cd0b2418fcbf1ffb0132db, type: 3}
   apCost: 1
   roleTarget: 1
   moveToSelectedEmptyTile: 0

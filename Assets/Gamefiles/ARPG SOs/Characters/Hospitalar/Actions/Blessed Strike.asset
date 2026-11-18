@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Blessed Strike
     amount: 0
   description: Blessed Strike Description
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  icon: {fileID: 21300000, guid: a444f33820d95b147bfc52b67a9dfa2d, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0

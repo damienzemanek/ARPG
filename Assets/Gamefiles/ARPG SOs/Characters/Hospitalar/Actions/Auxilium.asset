@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Auxilium
     amount: 0
   description: Auxilium Description
-  icon: {fileID: 21300000, guid: 2cd8263cfbcd7b0419c07c702d51e1be, type: 3}
+  icon: {fileID: 21300000, guid: fa94971fa61d7dd40899f3cdc037b448, type: 3}
   apCost: 5
   roleTarget: 3
   moveToSelectedEmptyTile: 0

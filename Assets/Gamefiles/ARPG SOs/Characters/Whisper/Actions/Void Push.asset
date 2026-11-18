@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Void Push
     amount: 0
   description: Void Push Description
-  icon: {fileID: 21300000, guid: 0d88f449bb516c144acaa6406fe50174, type: 3}
+  icon: {fileID: 21300000, guid: c28d328dae23aea49a9d5732e34b7021, type: 3}
   apCost: 2
   roleTarget: 2
   moveToSelectedEmptyTile: 0

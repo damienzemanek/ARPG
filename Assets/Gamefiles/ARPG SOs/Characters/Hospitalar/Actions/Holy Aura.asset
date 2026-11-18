@@ -16,7 +16,7 @@ MonoBehaviour:
     itemName: Holy Aura
     amount: 0
   description: Holy Aura Description
-  icon: {fileID: 21300000, guid: f757497b8a236864d883f6c5affc275c, type: 3}
+  icon: {fileID: 21300000, guid: d7556c7c87475d2438b101a888748e5c, type: 3}
   apCost: 3
   roleTarget: 4
   moveToSelectedEmptyTile: 0
