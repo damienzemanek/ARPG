@@ -17,29 +17,90 @@ MonoBehaviour:
   prefab: {fileID: 1493016372842288641, guid: 65488a59614fca048bc8385f66bfeb12, type: 3}
   currentLevel: 1
   maxHP: 10
-  maxArmor: 8
+  maxArmor: 5
   damage: 2
-  _maxEquippableActions: 3
+  _maxEquippableActions: 6
   equippedActions:
-  - {fileID: 11400000, guid: bd27536b08a340140af87d5ef1e54eb0, type: 2}
-  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  AllAvaliableActions:
-  - {fileID: 11400000, guid: 618276a262dcd0949894737a9e7fb973, type: 2}
-  - {fileID: 11400000, guid: 1b434529582f0704fa4aae88ea0b7da0, type: 2}
-  - {fileID: 11400000, guid: 86768059b9e4bad4ca66841b4a912691, type: 2}
-  - {fileID: 11400000, guid: bd27536b08a340140af87d5ef1e54eb0, type: 2}
-  ForcedActions: []
+  - {fileID: 11400000, guid: 82f1e18b7d4b5db40993decc894e53cc, type: 2}
+  - {fileID: 11400000, guid: 1f7c6f593d887f4448be43d111697093, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  allAvaliableActions:
+  - useActionSprite: {fileID: 21300000, guid: 0731f5e66c53c4d4a96a13fc47cca059, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 82f1e18b7d4b5db40993decc894e53cc, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: 48b5244366450a14ca9020bd2d56bfb6, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 1f7c6f593d887f4448be43d111697093, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: e4475b7014e989c46aa44b653ad37a9e, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 9f5296d7817a2d04782b6a4cc305f5ae, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: f124afc100bad0444b663fe1831e90f4, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: e19d46f0a16c01f4fab906de508de4e5, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: e4475b7014e989c46aa44b653ad37a9e, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 940c027ebb617334a97ef686f9bd1c48, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: 48b5244366450a14ca9020bd2d56bfb6, type: 3}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: ff26070bc9ac526499d7bf4d41f767bb, type: 2}
   specialEffects: []
-  maxAP: 666
+  allAvaliableActionNames: []
+  maxAP: 5
   maxHandSize: 6
   portraitArtSelected: {fileID: 21300000, guid: 7aca4f7ed91b801428676ad243d95084, type: 3}
   portraitArtUnselected: {fileID: 21300000, guid: 51c921c8282cc9d4988180591c8c0ed3, type: 3}
   portraitArtSquareSelected: {fileID: 0}
   portraitArtSquareUnselected: {fileID: 0}
   portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
-  mainArt: {fileID: 21300000, guid: 80d570c0b4d0dee47911d1eecf134ba5, type: 3}
-  specialEffectName: 
+  mainArt: {fileID: 21300000, guid: 29a27469da76d854fb46dad82bf2144a, type: 3}
+  specialEffectName: SOLEMNITY
+  desc_tactics: "Hospitalar supports her allies from the backline, keeping her team
+    alive as long as she stays breathing. She has trouble targeting enemies at the
+    front. Her Blessed Strike damages the enemy from a far and heals herself for
+    a small amount, as well as granting her a stack of Solemnity. Her signature Auxilium
+    heals an ally, grants Resilient as well as Critical Available to them. Auxilium
+    consumes all stacks of Solemnity, its healing amount is increased for each Solemnity
+    stack she had. Hospitalar has Holy Aura to heal her entire team based on her
+    attack damage, and Cleansing Reflect to cleanse an ally from Mark and Deep Wound.
+    I\u2019ll Take Your Place will have her take damage for an ally, while giving
+    herself Armor, Critical Available and Solemnity. Surgical Precision deals more
+    damage to Marked targets, as well as a chance to Stun them. Combo those two together
+    and she ensures to Stun an enemy, as Surgical Precision is guaranteed to Stun
+    while she is Guarding. Be careful not to overuse her Guard due to her low Max
+    HP. "
+  desc_about: 'Hospitalar About Hospitalar About Hospitalar About Hospitalar About
+    Hospitalar About '
+  startingKitActions:
+  - {fileID: 11400000, guid: 1f7c6f593d887f4448be43d111697093, type: 2}
+  - {fileID: 11400000, guid: 82f1e18b7d4b5db40993decc894e53cc, type: 2}
+  equippedEquipments: []
   references:
     version: 2
     RefIds: []

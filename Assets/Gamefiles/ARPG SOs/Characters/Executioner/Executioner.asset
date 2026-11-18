@@ -21,13 +21,55 @@ MonoBehaviour:
   damage: 3
   _maxEquippableActions: 6
   equippedActions:
-  - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
-  - {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
-  - {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
-  - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
-  - {fileID: 11400000, guid: 005fbd5c6da9e8548b23d0d0d819fded, type: 2}
-  - {fileID: 11400000, guid: 95a8a6e4f20d6c840ae9ba669d55d717, type: 2}
-  allAvaliableActions: []
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  allAvaliableActions:
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: b4c7a9cacd9637a4e86820f311af5135, type: 2}
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 95a8a6e4f20d6c840ae9ba669d55d717, type: 2}
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 005fbd5c6da9e8548b23d0d0d819fded, type: 2}
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
+  - useActionSprite: {fileID: 0}
+    useSelfVFX: 0
+    useActionSpriteSelfVFX: {fileID: 0}
+    projectileBased: 0
+    projectileCount: 1
+    projectileSprite: {fileID: 0}
+    cfg: {fileID: 11400000, guid: 3bc740eaffc824b4ba68e8c8f2d0e08b, type: 2}
   specialEffects:
   - addOccurance: 0
     defaultEffectStrategyValues:
@@ -42,11 +84,20 @@ MonoBehaviour:
   portraitArtLocked: {fileID: 21300000, guid: 8d87717dec6f53440809836762472a7b, type: 3}
   mainArt: {fileID: 21300000, guid: c32b5a832cd4b8c4da173bd273ddab39, type: 3}
   specialEffectName: DOUBLE JEOPARDY
-  desc_tactics: 
-  desc_about: 
+  desc_tactics: "Executioner, slow and tanky on the frontline, he punishes his Marked
+    enemy with relentless damage. He is most effective against enemies in the front.
+    Hook In let him pull enemies into his range and Mark them. Hitting a Marked enemy
+    while his signature Double Jeopardy is active will not consume the Mark.  Executioner
+    ignores enemy Armor with Sharpen Blade. His Brutal Swing does extra damage against
+    Marked targets. Combo Brutal Swing with Cleave Legs\u2019 Critical Exposed to
+    deal devastating damage to Marked enemies. He can even Bone Break his enemy if
+    he can manage to apply Body Compromised from Guilty Verdict before it. "
+  desc_about: 'Executioner About Executioner About Executioner About Executioner
+    About Executioner About '
   startingKitActions:
   - {fileID: 11400000, guid: dade7525862f933408adaf781c154c42, type: 2}
   - {fileID: 11400000, guid: ba082de7dac5db1439dfceeb5ce44163, type: 2}
+  equippedEquipments: []
   references:
     version: 2
     RefIds:
