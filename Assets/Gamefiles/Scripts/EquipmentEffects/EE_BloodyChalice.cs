@@ -32,9 +32,9 @@ public class EE_BloodyChalice : BattlemodeEffectStrategyInstance
             return actionCtx;
         }
 
-        if (battlerOccupantCtx.currentHp <= Mathf.FloorToInt(battlerOccupantCtx.currentHp * 0.2f + 0.5f) && !isTriggered)
+        if (battlerOccupantCtx.currentHp <= Mathf.FloorToInt(battlerOccupantCtx.maxHp * 0.2f + 0.5f) && !isTriggered)
         {
-            battlerOccupantCtx.currentHp = Mathf.FloorToInt(battlerOccupantCtx.currentHp + battlerOccupantCtx.maxHp * 0.5f + 0.5f);
+            battlerOccupantCtx.currentHp += Mathf.FloorToInt(battlerOccupantCtx.maxHp * 0.5f + 0.5f);
             isTriggered = true;
         }
         return actionCtx;

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class EE_BrandbearerCharm : BattlemodeEffectStrategyInstance
@@ -18,8 +19,10 @@ public class EE_BrandbearerCharm : BattlemodeEffectStrategyInstance
             return actionCtx;
         }
 
-        // if has Mark
-        actionCtx.dmg = actionCtx.dmg + 1;
+        if(battlerOccupantCtx.currentEffects.Any(effect => effect.effectName == "Mark"))
+        {
+            actionCtx.dmg = actionCtx.dmg + 1;
+        }
         return actionCtx;
     }
 }

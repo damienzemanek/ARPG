@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EE_ReapersSickle : BattlemodeEffectStrategyInstance
@@ -9,6 +10,8 @@ public class EE_ReapersSickle : BattlemodeEffectStrategyInstance
     public override bool isSpecial => false;
 
     // Gain +1 Critical Available after killing an enemy
+    BattlemodeEffectStrategy_CriticalAvaliable newCriticalAvailableEffect => CreateInstance<BattlemodeEffectStrategy_CriticalAvaliable>
+        (1, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
 
     public override BattlemodeActionCtx ResolveEffectAfterActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
     {
@@ -20,6 +23,8 @@ public class EE_ReapersSickle : BattlemodeEffectStrategyInstance
 
         // if attack action kills enemy
         // +1 crit available
+        actionCtx.additionalEffectsToApplyToActor ??= new List<BattlemodeEffectStrategyInstance>();
+        actionCtx.additionalEffectsToApplyToActor.Add(newCriticalAvailableEffect);
         return actionCtx;
     }
 }

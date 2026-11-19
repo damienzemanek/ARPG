@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EE_SerratedGreataxe : BattlemodeEffectStrategyInstance
@@ -10,6 +11,8 @@ public class EE_SerratedGreataxe : BattlemodeEffectStrategyInstance
 
     // If the first Action of the turn is an Attack that costs 3 AP or more, apply 1 stack of Vulnerable to the target
 
+    BattlemodeEffectStrategy_Vulnerable newVulnerableEffect => CreateInstance<BattlemodeEffectStrategy_Vulnerable>
+        (1, 0, 0, BattlemodeEffectConfigInstance.AddOccurance.AfterAction);
     bool hasTriggered = false;
 
     public override BattlemodeActionCtx ResolveEffectAfterActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
@@ -20,13 +23,17 @@ public class EE_SerratedGreataxe : BattlemodeEffectStrategyInstance
             return actionCtx;
         }
 
-        if (actionCtx.ap >= 3 && !hasTriggered)
+        if (actionCtx.dmg > 0 && actionCtx.ap >= 3 && !hasTriggered) 
         {
-            // +1 vulnerable to target
+            actionCtx.additionalEffectsToApplyToTarget ??= new List<BattlemodeEffectStrategyInstance>();
+            actionCtx.additionalEffectsToApplyToTarget.Add(newVulnerableEffect);
+            hasTriggered = true;
         }
         return actionCtx;
     }
 
-    // cant override end turn
-    // reset hasTriggered
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
+    {
+        hasTriggered = false;
+    }
 }
