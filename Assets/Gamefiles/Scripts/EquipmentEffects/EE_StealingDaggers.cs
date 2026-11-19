@@ -23,8 +23,12 @@ public class EE_StealingDaggers : BattlemodeEffectStrategyInstance
         
         if (battlerOccupantCtx.currentArmor <= 0 && timeTriggered < maxTriggered) 
         {
-            battlerOccupantCtx.currentArmor = Mathf.FloorToInt(battlerOccupantCtx.currentArmor + (actionCtx.dmg * 0.5f) + 0.5f);
-            timeTriggered++; //  Not sure if this is counting for only attack actions
+            if(actionCtx.dmg <= 0) // This prevents the effect from being wasted on a non-damaging attack.
+            {
+                return actionCtx;
+            }
+            battlerOccupantCtx.currentArmor += Mathf.FloorToInt(actionCtx.dmg * 0.5f + 0.5f);
+            timeTriggered++;
         }
         return actionCtx;
     }

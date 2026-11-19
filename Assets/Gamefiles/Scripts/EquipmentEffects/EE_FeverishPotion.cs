@@ -20,22 +20,32 @@ public class EE_FeverishPotion : BattlemodeEffectStrategyInstance
             Debug.LogError("Trying to apply EE_FeverishPotion effect to non-battler occupant");
             return actionCtx;
         }
+        if(battlerOccupantCtx is not CharacterOccupantCtx characterOccupantCtx)
+        {
+            Debug.LogError("Trying to apply EE_FeverishPotion effect to non-character battler occupant");
+            return actionCtx;
+        }
 
-        // battlerOccupantCtx.maxAP Theres no maxAP
+        characterOccupantCtx.maxAP += 2;
         return actionCtx;
     }
-    
-    // is this at turn start?
-    public override BattlemodeActionCtx ResolveEffectPreBeforeActing(OccupantCtx occupantCtx, BattlemodeActionCtx actionCtx)
+
+    public override void ResolveEffectAfterTurnEndsImplementation(OccupantCtx occupantCtx, BattleTile tile)
     {
         if (occupantCtx is not BattlerOccupantCtx battlerOccupantCtx)
         {
             Debug.LogError("Trying to apply EE_FeverishPotion effect to non-battler occupant");
-            return actionCtx;
+            return;
         }
-
-        // i couldnt find AP in battlerOccupantCtx
-
-        return actionCtx;
+        if(battlerOccupantCtx is not CharacterOccupantCtx characterOccupantCtx)
+        {
+            Debug.LogError("Trying to apply EE_FeverishPotion effect to non-character battler occupant");
+            return;
+        }
+        if (timeTriggered < maxAPdecrease)
+        {
+            characterOccupantCtx.maxAP -= 1;
+            timeTriggered++;
+        }
     }
 }

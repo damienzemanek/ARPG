@@ -20,10 +20,14 @@ public class EE_WardensGauntlet : BattlemodeEffectStrategyInstance
             return actionCtx;
         }
 
-        if (battlerOccupantCtx.maxArmor >= 5 && hasActivated == false) 
+        if (battlerOccupantCtx.maxArmor >= 5 && !hasActivated) 
         {
+            if(actionCtx.dmg <= 0) // This prevents the effect from being wasted on a non-damaging attack.
+            {
+                return actionCtx;
+            }
             actionCtx.dmg = actionCtx.dmg * 2;
-            hasActivated = true; //  Not sure if this is counting for only attack actions
+            hasActivated = true; 
         }
         return actionCtx;
     }
