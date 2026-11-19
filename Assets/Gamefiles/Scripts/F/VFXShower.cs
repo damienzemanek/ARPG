@@ -27,6 +27,11 @@ public class VFXShower : MonoBehaviour
     {
         public TEnum vfxEnum;
         public GameObject gameObject;
+        [Required] public Vector3 localStartPosPlayerActorLHS;
+        [Required] public Vector3 localStartPosEnemyActorRHS;
+        public WorldTweener.Tween endPlayerActorHitsLHS;
+        public WorldTweener.Tween endEnemyActorHitsRHS;
+        
     }
 
 
@@ -36,12 +41,17 @@ public class VFXShower : MonoBehaviour
     [Button]
     public void ShowHitVFX(SelfHitVFX selfHitVFX, bool fromPlayer)
     {
-        var go = selfHitVfxs.Find(vfx => vfx.vfxEnum == selfHitVFX).gameObject;
-        go.SetActive(fromPlayer);
-        var scale = go.transform.localScale;
-        go.transform.localScale = fromPlayer 
+        var vfx = selfHitVfxs.Find(vfx => vfx.vfxEnum == selfHitVFX);
+        vfx.gameObject.SetActive(fromPlayer);
+        vfx.gameObject.transform.position = fromPlayer 
+            ? vfx.localStartPosPlayerActorLHS 
+            : vfx.localStartPosEnemyActorRHS;
+        var scale = vfx.gameObject.transform.localScale;
+        vfx.gameObject.transform.localScale = fromPlayer 
             ? scale.With(x: -Mathf.Abs(scale.x))
             : scale.With(x: Mathf.Abs(scale.x));
+        vfx.gameObject.Get<WorldTweener>()
+            .TweenGivenTweens(fromPlayer ? vfx.endPlayerActorHitsLHS : vfx.endEnemyActorHitsRHS);
     }
 
     [Button]

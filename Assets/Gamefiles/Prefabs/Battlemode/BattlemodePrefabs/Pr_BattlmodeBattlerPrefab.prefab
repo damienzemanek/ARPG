@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7303381948947334999}
   - {fileID: 5714368496502085526}
   m_Father: {fileID: 5590074632125227538}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -373,7 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7712274291685147336}
   - component: {fileID: 4138261274581756083}
-  - component: {fileID: 3146302731285365730}
+  - component: {fileID: 2243437955023324929}
   m_Layer: 2
   m_Name: SlashDown
   m_TagString: Untagged
@@ -390,7 +391,7 @@ Transform:
   m_GameObject: {fileID: 5500429235568451220}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.42400002, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.07820708, y: 0.07820708, z: 0.07820708}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -456,28 +457,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!95 &3146302731285365730
-Animator:
-  serializedVersion: 7
+--- !u!114 &2243437955023324929
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5500429235568451220}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 11565ff6c39acb04da92eb42a4248f69, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f35e45672dd2245b4d328c2d0be888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldTweener
+  target: {fileID: 7712274291685147336}
+  origPos: {x: -13.54, y: 3.6224189, z: -12.13072}
+  sequence: []
 --- !u!1 &5546777397334153975
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,7 +622,6 @@ Transform:
   m_Children:
   - {fileID: 298925025783850313}
   - {fileID: 5643758078782071399}
-  - {fileID: 7303381948947334999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &-6406814503532991811
@@ -705,16 +698,172 @@ MonoBehaviour:
   selfHitVfxs:
   - vfxEnum: 0
     gameObject: {fileID: 2301959904761615125}
+    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
+    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
+    endPlayerActorHitsLHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   - vfxEnum: 1
     gameObject: {fileID: 7804941671072976590}
+    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
+    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
+    endPlayerActorHitsLHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   - vfxEnum: 2
     gameObject: {fileID: 2862348347993518531}
+    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
+    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
+    endPlayerActorHitsLHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   - vfxEnum: 3
     gameObject: {fileID: 2250950691914498267}
+    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
+    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
+    endPlayerActorHitsLHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   - vfxEnum: 4
     gameObject: {fileID: 5546777397334153975}
+    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
+    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
+    endPlayerActorHitsLHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 0
+      y: 0
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 0
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   - vfxEnum: 5
     gameObject: {fileID: 5500429235568451220}
+    localStartPosPlayerActorLHS: {x: -0.2, y: 0.5, z: 0}
+    localStartPosEnemyActorRHS: {x: 0.2, y: 0.5, z: 0}
+    endPlayerActorHitsLHS:
+      x: 1
+      y: 1
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 1
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    endEnemyActorHitsRHS:
+      x: 1
+      y: 1
+      z: 0
+      finalX: 0
+      finalY: 0
+      finalZ: 0
+      toEase: 0
+      duration: 1
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
   selfAttackingVfxs: []
 --- !u!1 &7804941671072976590
 GameObject:
@@ -924,8 +1073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8726128564925519782}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.883, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.88299996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -935,7 +1084,7 @@ Transform:
   - {fileID: 8833173187592957976}
   - {fileID: 1038961085146133185}
   - {fileID: 7712274291685147336}
-  m_Father: {fileID: 5590074632125227538}
+  m_Father: {fileID: 298925025783850313}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9108956329621933937
 GameObject:

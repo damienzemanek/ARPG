@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,10 +32,11 @@ public class WorldTweener : MonoBehaviour
     }
     
     [Button]
-    public void PlaySequence()
+    public void PlaySequence() => TweenGivenTweens(sequence.ToArray());
+    public void TweenGivenTweens(params Tween[] tweens)
     {
         Sequence seq = DOTween.Sequence();
-        foreach (var t in sequence)
+        foreach (var t in tweens)
         {
             Vector3 finalPos = new Vector3(
                 t.x ? t.finalX : target.transform.localPosition.x, 
@@ -48,4 +50,27 @@ public class WorldTweener : MonoBehaviour
         //seq.Append(transform.DOMove(origPos, 1f));
         seq.Play();
     }
+
+    public void TweenToOffsetTransform(params Tween[] offsetTween)
+    {
+        Sequence seq = DOTween.Sequence();
+
+        Vector3 transientPosition = transform.position;
+        
+        foreach (var t in offsetTween)
+        {
+            Vector3 offsetPos = new Vector3(
+                t.x ? transientPosition.x += t.finalX : target.transform.localPosition.x,
+                t.y ? transientPosition.y += t.finalY : target.transform.localPosition.y,
+                t.z ? transientPosition.z += t.finalZ : target.transform.localPosition.z);
+            
+            seq.Append(target.DOLocalMove(offsetPos, t.duration))
+                .SetEase(t.toEase)
+                .OnComplete(() => t.onTweenCompleteCb?.Invoke());
+        }
+        seq.Play();
+    }
+    
+    
+    
 }
