@@ -374,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7712274291685147336
 Transform:
   m_ObjectHideFlags: 0
@@ -383,8 +383,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5500429235568451220}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.204, y: 0, z: 0}
   m_LocalScale: {x: 0.07820708, y: 0.07820708, z: 0.07820708}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldTweener
   target: {fileID: 7712274291685147336}
-  origPos: {x: -13.54, y: 3.6224189, z: -12.13072}
+  origPos: {x: -14.376889, y: 3.6224189, z: -12.13072}
   sequence: []
 --- !u!1 &5546777397334153975
 GameObject:
@@ -482,7 +482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1038961085146133185
 Transform:
   m_ObjectHideFlags: 0
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldTweener
   target: {fileID: 1038961085146133185}
-  origPos: {x: -13.54, y: 3.6224189, z: -12.13072}
+  origPos: {x: -13.54, y: 4.4428988, z: -12.13072}
   sequence: []
 --- !u!1 &6444827278929016904
 GameObject:
@@ -687,181 +687,437 @@ MonoBehaviour:
   selfHitVfxs:
   - vfxEnum: 0
     gameObject: {fileID: 3879311586442299967}
-    localStartPosPlayerActorLHS: {x: -0.3, y: 0, z: 0}
-    localStartPosEnemyActorRHS: {x: 0.3, y: 0, z: 0}
-    endPlayerActorHitsLHS:
-      x: 1
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 18
-      duration: 0.4
-      postStayDuration: 0.6
+    postStayDuration: 0
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 1
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 18
-      duration: 0.4
-      postStayDuration: 0.6
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
   - vfxEnum: 1
     gameObject: {fileID: 7804941671072976590}
-    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
-    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
-    endPlayerActorHitsLHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 0
+    postStayDuration: 0
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
       duration: 0
-      postStayDuration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 0
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
       duration: 0
-      postStayDuration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
   - vfxEnum: 2
     gameObject: {fileID: 2862348347993518531}
-    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
-    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
-    endPlayerActorHitsLHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 0
+    postStayDuration: 0
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
       duration: 0
-      postStayDuration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 0
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
       duration: 0
-      postStayDuration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
   - vfxEnum: 3
     gameObject: {fileID: 2250950691914498267}
-    localStartPosPlayerActorLHS: {x: 0, y: 0, z: 0}
-    localStartPosEnemyActorRHS: {x: 0, y: 0, z: 0}
-    endPlayerActorHitsLHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
+    postStayDuration: 0
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
       toEase: 0
-      duration: 1
-      postStayDuration: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 0
-      y: 0
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
       toEase: 0
-      duration: 1
-      postStayDuration: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
   - vfxEnum: 4
     gameObject: {fileID: 5546777397334153975}
-    localStartPosPlayerActorLHS: {x: 0, y: 0.2, z: 0}
-    localStartPosEnemyActorRHS: {x: 0, y: 0.2, z: 0}
-    endPlayerActorHitsLHS:
-      x: 0
-      y: 1
-      z: 0
-      finalX: 0
-      finalY: 0.8
-      finalZ: 0
-      toEase: 18
-      duration: 0.4
-      postStayDuration: 0.6
+    postStayDuration: 0
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 0
-      y: 1
-      z: 0
-      finalX: 0
-      finalY: 0.8
-      finalZ: 0
-      toEase: 18
-      duration: 0.4
-      postStayDuration: 0.6
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 0
+      _rot: 0
+      _scale: 0
+      pos:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      rot:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0
+      toEase: 0
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
   - vfxEnum: 5
     gameObject: {fileID: 5500429235568451220}
-    localStartPosPlayerActorLHS: {x: -0.2, y: 0.5, z: 0}
-    localStartPosEnemyActorRHS: {x: 0.2, y: 0.5, z: 0}
-    endPlayerActorHitsLHS:
-      x: 1
-      y: 1
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
+    postStayDuration: 0.3
+    linearPoseProgressionEnemyActorHitsRHS:
+    - _pos: 1
+      _rot: 1
+      _scale: 0
+      pos:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: 0.111
+        tweenY: 0.889
+        tweenZ: 0
+      rot:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0
+        tweenY: -0
+        tweenZ: -25.74047
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0.3
       toEase: 18
-      duration: 0.4
-      postStayDuration: 0.6
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []
-    endEnemyActorHitsRHS:
-      x: 1
-      y: 1
-      z: 0
-      finalX: 0
-      finalY: 0
-      finalZ: 0
-      toEase: 18
+    - _pos: 1
+      _rot: 1
+      _scale: 0
+      pos:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0.155
+        tweenY: -0.121
+        tweenZ: 0
+      rot:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0
+        tweenY: -0
+        tweenZ: -5.557259
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
       duration: 0.4
-      postStayDuration: 0.6
+      toEase: 18
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    linearPoseProgressionPlayerActorHitsLHS:
+    - _pos: 1
+      _rot: 1
+      _scale: 0
+      pos:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0.111
+        tweenY: 0.889
+        tweenZ: 0
+      rot:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0
+        tweenY: -0
+        tweenZ: 25.740473
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0.3
+      toEase: 18
+      onTweenCompleteCb:
+        m_PersistentCalls:
+          m_Calls: []
+    - _pos: 1
+      _rot: 1
+      _scale: 0
+      pos:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: 0.155
+        tweenY: -0.121
+        tweenZ: 0
+      rot:
+        x: 1
+        y: 1
+        z: 1
+        tweenX: -0
+        tweenY: -0
+        tweenZ: 5.5572586
+      scale:
+        x: 0
+        y: 0
+        z: 0
+        tweenX: 0
+        tweenY: 0
+        tweenZ: 0
+      duration: 0.4
+      toEase: 18
       onTweenCompleteCb:
         m_PersistentCalls:
           m_Calls: []

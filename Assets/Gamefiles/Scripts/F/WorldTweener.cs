@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
+
+
 [ExecuteAlways]
 public class WorldTweener : MonoBehaviour
 {
@@ -16,22 +18,36 @@ public class WorldTweener : MonoBehaviour
     [Serializable]
     public class TweenPose
     {
-        public Tween pos;
-        public Tween rot;
-        public Tween scale;
+        [HorizontalGroup("Bool")] [GUIColor(1f, 0f, 0f)] [LabelWidth(15)] public bool _pos;
+        [HorizontalGroup("Bool")] [GUIColor(0f, 1f, 0f)] [LabelWidth(15)] public bool _rot;
+        [HorizontalGroup("Bool")] [GUIColor(0f, 1f, 1f)] [LabelWidth(15)] public bool _scale;
+        [HorizontalGroup("Vals")] [GUIColor(1f, 0f, 0f)] [LabelWidth(15)] [HideLabel] public Tween pos;
+        [HorizontalGroup("Vals")] [GUIColor(0f, 1f, 0f)] [LabelWidth(15)] [HideLabel] public Tween rot;
+        [HorizontalGroup("Vals")] [GUIColor(0f, 1f, 1f)] [LabelWidth(15)] [HideLabel] public Tween scale;
         public float duration;
-        public float postStayDuration = 0;
+        public Ease toEase;
         [FoldoutGroup("OnComplete")] public UnityEvent onTweenCompleteCb;
     }
     
     [Serializable]
     public class Tween
     {
-        public bool x, y, z;
-        [FormerlySerializedAs("finalX")] [ShowIf("x")] public float tweenX;
-        [FormerlySerializedAs("finalY")] [ShowIf("y")] public float tweenY;
-        [FormerlySerializedAs("finalZ")] [ShowIf("z")] public float tweenZ;
-        public Ease toEase;
+        [HorizontalGroup("Bool")] [LabelWidth(10)] public bool x;
+        [HorizontalGroup("Bool")] [LabelWidth(10)] public bool y;
+        [HorizontalGroup("Bool")] [LabelWidth(10)] public bool z;
+        [HorizontalGroup("Loc")] [HideLabel] [ShowIf("x")] public float tweenX;
+        [HorizontalGroup("Loc")] [HideLabel] [ShowIf("y")] public float tweenY;
+        [HorizontalGroup("Loc")] [HideLabel] [ShowIf("z")] public float tweenZ;
+
+        public void SetTweenXYZ(Vector3 v)
+        {
+            tweenX = v.x;
+            tweenY = v.y;
+            tweenZ = v.z;
+        }
+
+        public Vector3 AsVector3() => new(tweenX, tweenY, tweenZ);
+
     }
     
     public List<Tween> sequence;
@@ -51,7 +67,7 @@ public class WorldTweener : MonoBehaviour
                 t.x ? t.tweenX : target.transform.localPosition.x, 
                 t.y ? t.tweenY : target.transform.localPosition.y,
                 t.z ? t.tweenZ : target.transform.localPosition.z);
-            seq.Append(target.DOLocalMove(finalPos, duration).SetEase(t.toEase));
+            seq.Append(target.DOLocalMove(finalPos, duration).SetEase(Ease.OutSine));
         }
         //seq.Append(transform.DOMove(origPos, 1f));
         seq.Play();
@@ -61,54 +77,58 @@ public class WorldTweener : MonoBehaviour
     public Sequence GetTweenPositionSequence(Sequence seq, TweenPose tweenPose)
     {
         seq ??= DOTween.Sequence();
-        foreach (var t in sequence)
-        {
-            Vector3 finalPos = new Vector3(
-                t.x ? t.tweenX : target.transform.localPosition.x, 
-                t.y ? t.tweenY : target.transform.localPosition.y,
-                t.z ? t.tweenZ : target.transform.localPosition.z);
-            seq.Append(target.DOLocalMove(finalPos, tweenPose.duration).SetEase(t.toEase));
-        }
+
+        Vector3 current = target.localPosition;
+        Vector3 finalPos = new Vector3(
+            tweenPose.pos.x ? tweenPose.pos.tweenX : current.x,
+            tweenPose.pos.y ? tweenPose.pos.tweenY : current.y,
+            tweenPose.pos.z ? tweenPose.pos.tweenZ : current.z
+        );
+        seq.Join(target.DOLocalMove(finalPos, tweenPose.duration)
+            .SetEase(tweenPose.toEase));
         return seq;
     }
     public Sequence GetTweenRotationSequence(Sequence seq, TweenPose tweenPose)
     {
         seq ??= DOTween.Sequence();
-        foreach (var t in sequence)
-        {
-            Vector3 finalRot = new Vector3(
-                t.x ? t.tweenX : target.transform.localRotation.x, 
-                t.y ? t.tweenY : target.transform.localRotation.y,
-                t.z ? t.tweenZ : target.transform.localRotation.z);
-            seq.Append(target.DOLocalRotate(finalRot, tweenPose.duration).SetEase(t.toEase));
-        }
+        Vector3 current = target.localEulerAngles;
+        Vector3 finalPos = new Vector3(
+            tweenPose.rot.x ? tweenPose.rot.tweenX : current.x,
+            tweenPose.rot.y ? tweenPose.rot.tweenY : current.y,
+            tweenPose.rot.z ? tweenPose.rot.tweenZ : current.z
+        );
+
+        seq.Join(target.DOLocalRotate(finalPos, tweenPose.duration)
+            .SetEase(tweenPose.toEase));
         return seq;
     }
     public Sequence GetTweenScaleSequence(Sequence seq, TweenPose tweenPose)
     {
         seq ??= DOTween.Sequence();
-        foreach (var t in sequence)
-        {
-            Vector3 finalScale = new Vector3(
-                t.x ? t.tweenX : target.transform.localScale.x, 
-                t.y ? t.tweenY : target.transform.localScale.y,
-                t.z ? t.tweenZ : target.transform.localScale.z);
-            seq.Append(target.DOScale(finalScale, tweenPose.duration).SetEase(t.toEase));
-        }
+
+        Vector3 current = target.localScale;
+        Vector3 finalPos = new Vector3(
+            tweenPose.scale.x ? tweenPose.scale.tweenX : current.x,
+            tweenPose.scale.y ? tweenPose.scale.tweenY : current.y,
+            tweenPose.scale.z ? tweenPose.scale.tweenZ : current.z
+        );
+        seq.Join(target.DOScale(finalPos, tweenPose.duration)
+            .SetEase(tweenPose.toEase));
         return seq;
     }
     
-    public void TweenPosesLinearProgression(List<TweenPose> tweenPoses, Action onSequenceComplete = null)
+    public void TweenPosesLinearProgression(List<TweenPose> tweenPoses, float postStayDuration, Action onSequenceComplete = null)
     {
         Sequence seq = DOTween.Sequence();
         foreach (var tp in tweenPoses)
         {
-            GetTweenPositionSequence(seq, tp);
-            GetTweenRotationSequence(seq, tp);
-            GetTweenScaleSequence(seq, tp);
-            seq.AppendCallback(() => onSequenceComplete?.Invoke());
-            seq.AppendInterval(tp.postStayDuration);
+            if(tp._pos) GetTweenPositionSequence(seq, tp);
+            if(tp._rot) GetTweenRotationSequence(seq, tp);
+            if(tp._scale) GetTweenScaleSequence(seq, tp);
         }
+        seq.AppendInterval(postStayDuration);
+        seq.OnComplete(() => onSequenceComplete?.Invoke());
+        Debug.Log("Playing Sequence");
         seq.Play();
     }
     
