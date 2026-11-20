@@ -21,6 +21,7 @@ public class ActionUserViewer : MonoBehaviour
     {
         Transform actorLoc = leftLoc;
         Transform targetLoc = rightLoc;
+        
         if(!leftIsActor) 
         {
             actorLoc = rightLoc;
@@ -34,6 +35,7 @@ public class ActionUserViewer : MonoBehaviour
         }
         
         Sequence sequence = DOTween.Sequence();
+        
 
         if (actor == target)
         {
@@ -57,6 +59,8 @@ public class ActionUserViewer : MonoBehaviour
                     else RightAttacksLeft(actor.transform, target.transform);
                 });
         }
+        
+        
 
         yield return sequence.WaitForCompletion();
     }

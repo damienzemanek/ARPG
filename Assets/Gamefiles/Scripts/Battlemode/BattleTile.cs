@@ -115,7 +115,7 @@ public class BattleTile : MonoBehaviour
 
         Spawn(occupantCfg);
         display_AP.SetActive(occupantCfg is BattlerConfig);
-        var boo = occupantCtx.obj.Get<BattlerOccupantObject>();
+        var boo = occupantCtx.occObject.Get<BattlerOccupantObject>();
         boo.SetAllActionSpritesToFalse();
         boo.spriteRenderer.gameObject.SetActive(true);
         
@@ -128,7 +128,7 @@ public class BattleTile : MonoBehaviour
         actionSprRenderer = null;
         if (action == null) return;
         if (occupantCtx == null) return;
-        var boo = occupantCtx.obj.Get<BattlerOccupantObject>();
+        var boo = occupantCtx.occObject.Get<BattlerOccupantObject>();
         idleSprRenderer = boo.spriteRenderer;
         actionSprRenderer = boo.actionSprites[action];
     }
@@ -144,7 +144,7 @@ public class BattleTile : MonoBehaviour
         alreadySelected = false;
         tileCanBeSelectedOveride = false;
         display.SetActive(occupantCtx != null);
-        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Regular);
+        occupantCtx?.occObject.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Regular);
     }
     
     public void HideDisplay() => display.SetActive(false);
@@ -155,7 +155,7 @@ public class BattleTile : MonoBehaviour
         DefaultOrContestedSetActive(false);
         contested.SetActive(false);
         unselectable = true;
-        occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Faded);
+        occupantCtx?.occObject.Get<BattlerOccupantObject>().SetSpriteColor(SpriteColorType.Faded);
     }
     
     public void SetUnselectable(bool v) => unselectable = v;
@@ -315,7 +315,7 @@ public class BattleTile : MonoBehaviour
             _ => throw new NotImplementedException("ActionIdentifier not implemented")
         };
         spriteRenderer.sprite = newSpr;
-        if(animateTween) spriteRenderer.Get<WorldTweener>().PlaySequence();
+        if(animateTween) spriteRenderer.Get<WorldTweener>().PlaySequence(0.5f);
     }
 
     public void TryDisplayIntentions(bool tweenAnimate)
@@ -356,11 +356,10 @@ public class BattleTile : MonoBehaviour
             return;
         }
 
-        occupantCtx.obj = Instantiate(
-            config.prefab,
-            transform.position + occupantSpawnOffset,
-            Quaternion.identity);
-        occupantCtx.obj.name = config.name;
+        occupantCtx.occObject = Instantiate(
+            config.prefab, transform.position + occupantSpawnOffset, Quaternion.identity)
+            .Get<OccupantObject>();
+        occupantCtx.occObject.name = config.name;
         display.SetActive(true);
         UpdateTransientStats();
         Debug.Log("Spawned " + config.name + " at [" + col + ", " + row + "]");
@@ -413,10 +412,10 @@ public class BattleTile : MonoBehaviour
     public void ResetTileOccupancy(bool destroy)
     {
         display.SetActive(false);
-        if (occupantCtx.obj != null)
+        if (occupantCtx.occObject != null)
         {
-            if (destroy && Application.isPlaying) Destroy(occupantCtx.obj);
-            else if (destroy) DestroyImmediate(occupantCtx.obj);
+            if (destroy && Application.isPlaying) Destroy(occupantCtx.occObject);
+            else if (destroy) DestroyImmediate(occupantCtx.occObject);
         }
         occupantCtx = null;
         Debug.Assert(occupantCtx == null, "OccupantCtx should be null after destroying");
@@ -434,7 +433,7 @@ public class BattleTile : MonoBehaviour
             { Debug.LogError($"Previous tile [{previousTile.col} , {previousTile.row}] does not have an occupant"); return; }
         occupantCtx = previousTile.occupantCtx;
         occupantCtx.newTilePosition = this;
-        previousTile.occupantCtx.obj.transform.position = transform.position + occupantSpawnOffset;
+        previousTile.occupantCtx.occObject.transform.position = transform.position + occupantSpawnOffset;
         Clear();
         display.SetActive(true);
         previousTile.ResetTileOccupancy(false);
@@ -459,8 +458,8 @@ public class BattleTile : MonoBehaviour
         occupantCtx.newTilePosition = this;
         previousTile.occupantCtx.newTilePosition = previousTile;
 
-        occupantCtx.obj.transform.position = transform.position + occupantSpawnOffset;
-        previousTile.occupantCtx.obj.transform.position = previousTile.transform.position + previousTile.occupantSpawnOffset;
+        occupantCtx.occObject.transform.position = transform.position + occupantSpawnOffset;
+        previousTile.occupantCtx.occObject.transform.position = previousTile.transform.position + previousTile.occupantSpawnOffset;
         
         Clear();
         previousTile.Clear();

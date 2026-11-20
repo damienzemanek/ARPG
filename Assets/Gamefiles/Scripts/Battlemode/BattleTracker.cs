@@ -240,18 +240,21 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         bool moves = DoesPrepareMovement(actorTile, preventedSelfMovementSection, queuedAction.actionCtx.movementCfgInstanced, ref calcMovement);
         bool targetMoves = DoesPrepareMovement(targetTile, preventedTargetMovementSection, queuedAction.actionCtx.targetMovementCfgInstanced, ref targetCalcMovement);   
 
+        
         // Movement Animation Setup 
         BattlerConfig battlerCfg = boc.cfg as BattlerConfig;
         var specificCfg = battlerCfg?.GetSpecificActionCfg(queuedAction.actionCtx.cfg);
         actorTile.GetSpriteRenderers(specificCfg?.useActionSprite,
             out var sprRenderer, out var idleSprite);
         
+        
         // Pre Movement Animations Location Destinations
-        Vector3 actorFinalPos = boc.obj.transform.position;
+        Vector3 actorFinalPos = boc.occObject.transform.position;
         Vector3 targetFinalPos = targetTile.worldOccupantSpawnPos;
         if (moves) actorFinalPos = calcMovement.newPath[^1].tile.worldOccupantSpawnPos;
         if (targetMoves) targetFinalPos = targetCalcMovement.newPath[^1].tile.worldOccupantSpawnPos;
 
+        
         // Movement Animations
         if (queuedAction.actionCtx.cfg.useActionAnim)
         {
@@ -259,17 +262,20 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             idleSprite.gameObject.SetActive(true);
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, usingActionFadeAlpha),
-                actionUserViewer.C_ZoomIn(boc.obj, targetOccupantCtx.obj, leftIsActor));
+                actionUserViewer.C_ZoomIn(boc.occObject.gameObject, targetOccupantCtx.occObject.gameObject, leftIsActor));
         }
+        
+        
 
+        
         // First Attack
         string targetName = targetOccupantCtx?.cfg.name ?? "Empty";
-        Debug.Log("Actor: " + boc.obj.name + ", Target: " + targetName);
+        Debug.Log("Actor: " + boc.occObject.name + ", Target: " + targetName);
         selectedTarget?.ActedUponBy(queuedAction, actorTile);
         
         // target hit vfx
         if(specificCfg != null && specificCfg.damagesTarg)
-            targetOccupantCtx?.obj.Get<VFXShower>().ShowHitVFX(specificCfg.enemyHitWithVFX, true);
+            targetOccupantCtx?.occObject.Get<VFXShower>().ShowHitVFX(specificCfg.enemyHitWithVFX, true);
         
         // Actual hits (times) hit count
         for (int currentHitcount = 2; currentHitcount <= queuedAction.actionCtx.cfg.hitCount; currentHitcount++)
@@ -286,7 +292,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
             yield return new WaitForSeconds(1f); // finish attacking
         
         if(specificCfg != null && specificCfg.damagesTarg)
-            targetOccupantCtx?.obj.Get<VFXShower>().StopShowingHitVFX();
+            targetOccupantCtx?.occObject.Get<VFXShower>().StopShowingHitVFX();
 
         
         // Post Movements
@@ -298,7 +304,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         {
             yield return CoroutineRunner.Instance.RunAllMethodsAtOnce(
                 FadeEX.C_FadeToAlphaValueOf(usingActionFadeSettings, usingActionFadeTarg, 0f),
-                actionUserViewer.C_ZoomOut(boc.obj, actorFinalPos, targetOccupantCtx.obj, targetFinalPos));
+                actionUserViewer.C_ZoomOut(boc.occObject.gameObject, actorFinalPos, targetOccupantCtx.occObject.gameObject, targetFinalPos));
             sprRenderer.gameObject.SetActive(true);
             idleSprite.gameObject.SetActive(false);
         }
@@ -473,7 +479,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
 
             point.tile.occupantCtx = point.occupantCtx;
             point.occupantCtx.newTilePosition = point.tile;
-            point.occupantCtx.obj.transform.position =
+            point.occupantCtx.occObject.transform.position =
                 point.tile.transform.position + point.tile.occupantSpawnOffset;
 
             point.tile.display.SetActive(true);

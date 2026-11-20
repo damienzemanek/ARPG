@@ -2,7 +2,8 @@ using AYellowpaper.SerializedCollections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class BattlerOccupantObject : MonoBehaviour
+
+public class BattlerOccupantObject : OccupantObject
 {
     public enum SpriteColorType
     {

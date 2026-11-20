@@ -13279,8 +13279,7 @@ MonoBehaviour:
   - {fileID: 1828811771}
   txt_EnemyActionIntentionsNum: {fileID: 534236277}
   txt_EnemyPredictedsNum: {fileID: 1188702363}
-  displ_Equipment: {fileID: 8713682783910878072}
-  displ_Intentions: {fileID: 8713682783910878071}
+  displ_IntentionsVLG: {fileID: 0}
   displ_IntentionsNumGO: {fileID: 500380938}
   displ_PredictedNumGO: {fileID: 780173688}
   enemyIntentions: {fileID: 451158996}
@@ -64564,16 +64563,6 @@ PrefabInstance:
       addedObject: {fileID: 111683256}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c15945ec270e87d4481949a3bc484591, type: 3}
---- !u!1 &8713682783910878071 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 751746191611533191, guid: c15945ec270e87d4481949a3bc484591, type: 3}
-  m_PrefabInstance: {fileID: 8713682783910878070}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8713682783910878072 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 431866756879128698, guid: c15945ec270e87d4481949a3bc484591, type: 3}
-  m_PrefabInstance: {fileID: 8713682783910878070}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8713682783910878073 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7340513499824374252, guid: c15945ec270e87d4481949a3bc484591, type: 3}

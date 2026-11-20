@@ -27,14 +27,14 @@ public class VFXShower : MonoBehaviour
     {
         public TEnum vfxEnum;
         public GameObject gameObject;
-        [Required] public Vector3 localStartPosPlayerActorLHS;
-        [Required] public Vector3 localStartPosEnemyActorRHS;
-        public WorldTweener.Tween endPlayerActorHitsLHS;
-        public WorldTweener.Tween endEnemyActorHitsRHS;
+        public Vector3 localStartPosPlayerActorLHS;
+        public Vector3 localStartPosEnemyActorRHS;
+        public List<WorldTweener.TweenPose> linearPoseProgressionEnemyActorHitsRHS = new() { new WorldTweener.TweenPose()}; // end at least
+        public List<WorldTweener.TweenPose> linearPoseProgressionPlayerActorHitsLHS = new() { new WorldTweener.TweenPose() }; // end end at least
         
     }
 
-
+    [Required] public Transform vfxParent;
     public List<VFXGO<SelfHitVFX>> selfHitVfxs = new();
     public List<VFXGO<SelfAttackingVFX>> selfAttackingVfxs = new();
 
@@ -42,8 +42,8 @@ public class VFXShower : MonoBehaviour
     public void ShowHitVFX(SelfHitVFX selfHitVFX, bool fromPlayer)
     {
         var vfx = selfHitVfxs.Find(vfx => vfx.vfxEnum == selfHitVFX);
-        vfx.gameObject.SetActive(fromPlayer);
-        vfx.gameObject.transform.position = fromPlayer 
+        vfx.gameObject.SetActive(true);
+        vfx.gameObject.transform.localPosition = fromPlayer 
             ? vfx.localStartPosPlayerActorLHS 
             : vfx.localStartPosEnemyActorRHS;
         var scale = vfx.gameObject.transform.localScale;
@@ -51,7 +51,9 @@ public class VFXShower : MonoBehaviour
             ? scale.With(x: -Mathf.Abs(scale.x))
             : scale.With(x: Mathf.Abs(scale.x));
         vfx.gameObject.Get<WorldTweener>()
-            .TweenGivenTweens(fromPlayer ? vfx.endPlayerActorHitsLHS : vfx.endEnemyActorHitsRHS);
+            .TweenPosesLinearProgression(
+                fromPlayer ? vfx.linearPoseProgressionPlayerActorHitsLHS : vfx.linearPoseProgressionEnemyActorHitsRHS, 
+                () => vfx.gameObject.SetActive(false));
     }
 
     [Button]

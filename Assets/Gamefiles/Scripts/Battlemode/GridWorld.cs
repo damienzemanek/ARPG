@@ -304,7 +304,7 @@ public class GridWorld : MonoBehaviour
         foreach (var t in allTiles)
             t.HideAndMakeUnSelectable();
         
-        actingTile.occupantCtx?.obj.Get<BattlerOccupantObject>().SetSpriteColor(BattlerOccupantObject.SpriteColorType.Regular);
+        actingTile.occupantCtx?.occObject.Get<BattlerOccupantObject>().SetSpriteColor(BattlerOccupantObject.SpriteColorType.Regular);
         
         if (targetingCfgInstance.usableInRowRanks.HasFlag(actingTile.rowRank) || requireUsableCheck == false)
         {
