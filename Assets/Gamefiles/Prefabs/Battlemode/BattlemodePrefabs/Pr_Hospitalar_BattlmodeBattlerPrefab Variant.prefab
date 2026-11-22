@@ -1462,6 +1462,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1516849567182463957, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: origPos.x
+      value: -0.94355196
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516849567182463957, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: origPos.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333175290504933116, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4703827407588315401, guid: 05763b263b74201498309a677f39a4f2, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1509,6 +1521,18 @@ PrefabInstance:
     - target: {fileID: 6444827278929016904, guid: 05763b263b74201498309a677f39a4f2, type: 3}
       propertyPath: m_Name
       value: Pr_Hospitalar_BattlmodeBattlerPrefab Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770936720519080131, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770936720519080131, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804941671072976590, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8047069488186251604, guid: 05763b263b74201498309a677f39a4f2, type: 3}
       propertyPath: m_IsActive

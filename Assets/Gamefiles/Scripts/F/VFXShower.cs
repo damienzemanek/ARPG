@@ -17,9 +17,8 @@ public class VFXShower : MonoBehaviour
         Knife,
         Mind,
         Bullet,
-        DblBullet,
-        Slash1,
-        Slash2,
+        SlashUp,
+        SlashDown,
     }
 
     [Serializable]
@@ -31,11 +30,13 @@ public class VFXShower : MonoBehaviour
             Rot,
             Scale
         }
+        
         public TEnum vfxEnum;
-        public GameObject gameObject;
-        public float postStayDuration = 0;
-        public List<WorldTweener.TweenPose> linearPoseProgressionEnemyActorHitsRHS = new() { new WorldTweener.TweenPose()}; // end at least
-        public List<WorldTweener.TweenPose> linearPoseProgressionPlayerActorHitsLHS = new() { new WorldTweener.TweenPose() }; // end end at least
+        [FoldoutGroup("Settings")] public GameObject gameObject;
+        [FoldoutGroup("Settings")] public float postStayDuration = 0;
+        [FoldoutGroup("Settings")] public float finalFadeDuration = 0.2f;
+        [FoldoutGroup("Settings")] public List<WorldTweener.TweenPose> linearPoseProgressionEnemyActorHitsRHS = new() { new WorldTweener.TweenPose()}; // end at least
+        [FoldoutGroup("Settings")] public List<WorldTweener.TweenPose> linearPoseProgressionPlayerActorHitsLHS = new() { new WorldTweener.TweenPose() }; // end end at least
 
         [Button]
         public void Take(PoseType poseType, int index, bool fromPlayer)
@@ -96,6 +97,7 @@ public class VFXShower : MonoBehaviour
             .TweenPosesLinearProgression(
                 fromPlayer ? vfx.linearPoseProgressionPlayerActorHitsLHS : vfx.linearPoseProgressionEnemyActorHitsRHS, 
                 vfx.postStayDuration,
+                vfx.finalFadeDuration,
                 () =>
                 {
                     Debug.Log("VFX sequence completed - disabling VFX");

@@ -13,6 +13,7 @@ using UnityEngine.Serialization;
 public class WorldTweener : MonoBehaviour
 {
     public Transform target;
+    public SpriteRenderer targSPR;
     [ReadOnly] public Vector3 origPos;
 
     [Serializable]
@@ -24,6 +25,7 @@ public class WorldTweener : MonoBehaviour
         [HorizontalGroup("Vals")] [GUIColor(1f, 0f, 0f)] [LabelWidth(15)] [HideLabel] public Tween pos;
         [HorizontalGroup("Vals")] [GUIColor(0f, 1f, 0f)] [LabelWidth(15)] [HideLabel] public Tween rot;
         [HorizontalGroup("Vals")] [GUIColor(0f, 1f, 1f)] [LabelWidth(15)] [HideLabel] public Tween scale;
+        public float opacity = 1f;
         public float duration;
         public Ease toEase;
         [FoldoutGroup("OnComplete")] public UnityEvent onTweenCompleteCb;
@@ -117,16 +119,28 @@ public class WorldTweener : MonoBehaviour
         return seq;
     }
     
-    public void TweenPosesLinearProgression(List<TweenPose> tweenPoses, float postStayDuration, Action onSequenceComplete = null)
+    public void TweenPosesLinearProgression(List<TweenPose> tweenPoses,
+        float postStayDuration, 
+        float finalFadeDuration,
+        Action onSequenceComplete = null)
     {
         Sequence seq = DOTween.Sequence();
         foreach (var tp in tweenPoses)
         {
-            if(tp._pos) GetTweenPositionSequence(seq, tp);
-            if(tp._rot) GetTweenRotationSequence(seq, tp);
-            if(tp._scale) GetTweenScaleSequence(seq, tp);
+            Sequence posSeq = DOTween.Sequence();
+
+            if(tp._pos) GetTweenPositionSequence(posSeq, tp);
+            if(tp._rot) GetTweenRotationSequence(posSeq, tp);
+            if(tp._scale) GetTweenScaleSequence(posSeq, tp);
+            
+            posSeq.Join(targSPR.DOFade(tp.opacity, tp.duration)
+                .SetEase(tp.toEase));
+            
+            seq.Append(posSeq);
         }
+
         seq.AppendInterval(postStayDuration);
+        seq.Append(targSPR.DOFade(0f, finalFadeDuration));
         seq.OnComplete(() => onSequenceComplete?.Invoke());
         Debug.Log("Playing Sequence");
         seq.Play();
