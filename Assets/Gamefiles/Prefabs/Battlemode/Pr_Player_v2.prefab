@@ -9397,6 +9397,7 @@ MonoBehaviour:
   overviewMainArtPos: {fileID: 7633146505665403938}
   actionsOrEquipmentMainArtPos: {fileID: 5796494415315348574}
   characterSelectMainArtPos: {fileID: 3519481760424468179}
+  upgradeLevelMainArtPos: {fileID: 0}
   txt_descTactics: {fileID: 6968413818065784959}
   txt_descAbout: {fileID: 1260318736765833271}
   characterSelectPortraits: []

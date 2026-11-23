@@ -44,6 +44,8 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Main Art")] [Required] public Transform overviewMainArtPos;
     [BoxGroup("Main Art")] [Required] public Transform actionsOrEquipmentMainArtPos;
     [BoxGroup("Main Art")] [Required] public Transform characterSelectMainArtPos;
+    [BoxGroup("Main Art")] [Required] public Transform upgradeLevelMainArtPos;
+
 
 
 
@@ -82,6 +84,7 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ViewCharacterScreen()
     {
+        menuBarDetails.gameObject.SetActive(true);
         teamGrid.ResetState();
         characterSelectPortraits.Clear();
         characterSelectPortraits.AddRange(glgCharacterSelectPortraits);
@@ -97,6 +100,14 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
         
         mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
+    }
+
+    public void ViewUpgradeLevelScreen()
+    {
+        menuBarDetails.gameObject.SetActive(false);
+        uiOrchestration.currentCharacterUIState = CharacterUIState.Upgrading;
+        txt_buttonLabel.text = "LEVEL UP";
+        mainArtTransform.DOMove(upgradeLevelMainArtPos.position, mainArtMoveDuration);
     }
     
     public void ViewManageTeamScreen()
@@ -123,7 +134,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void ViewOverviewScreen()
     {
         Debug.Log("OVERVIEW SCREEN");
-
+        menuBarDetails.gameObject.SetActive(true);
         // If already had started to inspect this character
         CloseCharacterInfoPanel();
         mainArtTransform.DOMove(overviewMainArtPos.position, mainArtMoveDuration);
@@ -145,7 +156,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void ViewActionsOrEquipmentScreen()
     {
         Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
-        
+        menuBarDetails.gameObject.SetActive(true);
         CloseCharacterInfoPanel();
         mainArtTransform.DOMove(actionsOrEquipmentMainArtPos.position, mainArtMoveDuration);
         
@@ -166,6 +177,7 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void MainButtonPressed()
     {
+        // Insppect character
         switch (uiOrchestration.currentMainUIState)
         {
             case MainUIState.Characters:
@@ -174,9 +186,16 @@ public class CharacterInfoDisplay : MonoBehaviour
                 return;
         }
         
+        // chose start character
         switch (uiOrchestration.currentExplorationUIState)
         {
             case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
+        }
+
+        // Level up button
+        switch (uiOrchestration.currentCharacterUIState)
+        {
+            case CharacterUIState.Overview: ViewUpgradeLevelScreen(); return;
         }
         
     }

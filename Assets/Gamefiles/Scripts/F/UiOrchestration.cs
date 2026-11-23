@@ -37,7 +37,8 @@ public class UiOrchestration : MonoBehaviour
         None,
         Overview,
         Actions,
-        Equipment
+        Equipment,
+        Upgrading,
     }
     
     [Required] public Animator alertAnimator;
