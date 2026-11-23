@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e380c9257f46cdb01d302d1af37c27, type: 3}
+  m_Name: BattleConfiguererData
+  m_EditorClassIdentifier: Assembly-CSharp::BattleConfiguererData
+  battleConfigs:
+  - {fileID: 11400000, guid: b947f36e6c871c44cb54c2e0054b7596, type: 2}
+  - {fileID: 11400000, guid: 9d811f696da008f4883c04cdb83f2e5e, type: 2}
+  - {fileID: 11400000, guid: c6ff4f712096be64480fcdd075292682, type: 2}
+  - {fileID: 11400000, guid: e526d770faa67284da0427ec32f975c7, type: 2}
+  - {fileID: 11400000, guid: 1cbe1f3e72185b74f89aff8dec2782a0, type: 2}
+  - {fileID: 11400000, guid: 9d20f5eace7f1854b88cabd0633317a0, type: 2}
+  enemyCountExpGainScalarAdditive: 1.5
+  levelExpGainCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 1.5
+      inSlope: 2.6244814
+      outSlope: 2.6244814
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.30948067
+    - serializedVersion: 3
+      time: 0.5
+      value: 2.2
+      inSlope: 3.5284665
+      outSlope: 3.5284665
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.25619447
+      outWeight: 0.13533294
+    - serializedVersion: 3
+      time: 0.75
+      value: 3.2
+      inSlope: 6.1357546
+      outSlope: 6.1357546
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 4.7
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

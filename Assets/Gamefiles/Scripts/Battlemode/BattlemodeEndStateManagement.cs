@@ -53,21 +53,27 @@ public class BattlemodeEndStateManagement : MonoBehaviour
 
     IEnumerator C_DistributeRewards()
     {
-        var rewards = SessionData.Instance.currentBattlemodePotentialRewards != null
-            ? SessionData.Instance.currentBattlemodePotentialRewards.rewards
-            : SessionData.Instance.defaultRewards.rewards;
+        var rewards = SessionData.Instance.currentBattlemodePotentialRewards;
         
         
         foreach (var reward in rewards)
         {
             yield return distributionDelay.Delay;
-            var newItemHolder = Instantiate(itemHolderPrefab, itemHLG);
-            //newItemHolder.Get<ItemHolder>().Init(reward.ProvideReward());
-            // play a sound
+            var newItemHolder = Instantiate(itemHolderPrefab, itemHLG).Get<ItemHolder>();
+            newItemHolder.Init(reward.item, reward.amount);
+            ProvideReward(reward);
+            // TODO: SOUND
         }
         
         yield return distributionDelay.Delay;
         continueButton.gameObject.SetActive(true);
+    }
+
+    public void ProvideReward(RewardConfigData reward)
+    {
+        SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var saver, out var data);
+        data.AddItemData(reward.item.itemData.itemName, reward.item.itemType, reward.amount);
+        saver.Save();
     }
 
     void Lose()

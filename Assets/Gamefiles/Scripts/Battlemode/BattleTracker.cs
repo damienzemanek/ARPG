@@ -209,11 +209,8 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         QueuedAction queuedAction, 
         bool leftIsActor)
     {
-
-        
         BattleTile actorTile = queuedAction.actorTile;
         BattleTile targetTile = queuedAction.targetTile;
-
         bool actorIsPlayer = false;
         if (boc is CharacterOccupantCtx coc)
         {

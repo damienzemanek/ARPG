@@ -1,14 +1,17 @@
-﻿using EMILtools.Extensions;
+﻿using System.Collections.Generic;
+using EMILtools.Extensions;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Battle MethodVTable", menuName = "ARPG/SO/MethodVTables/Battle")]
 public class BattleSO_MethodVTable : SO_MethodVTable
 {
+    
     public int loaderIndex;
     public string startBattlemodeEncounterAnimName;
     public string camZoomAnimName;
+    public List<RewardConfigData> rewards = new();
     
-    public void LoadBattle(GameObject playerObj, GameObject triggerObj, BattleConfig battleConfig, ItemRewards rewards)
+    public void LoadBattle(GameObject playerObj, GameObject triggerObj, BattleConfig battleConfig, List<RewardConfigData> rewards)
     {
         if (!playerObj.Has(out PlayerInstance playerInstance)) return;
         var fade = PlayerScreenFade.Instance.fadeTarg;

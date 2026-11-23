@@ -8,4 +8,5 @@ public class PersistentConfigurationDataHolder : PersistantReplacerSingleton<Per
     [Required] public Load load;
     [Required] public CharacterConfigurations characterConfigs;
     [Required] public EffectDict effectDict;
+    [Required] public BattleConfiguererData battleConfiguererData;
 }

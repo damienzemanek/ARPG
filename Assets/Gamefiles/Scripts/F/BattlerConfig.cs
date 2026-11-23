@@ -21,7 +21,6 @@ public class BattlerConfig : OccupantCfg
         [Required] public BattlemodeActionConfig cfg;
     }
     
-    [BoxGroup("Stats")] public int currentLevel = 1;
     [BoxGroup("Stats")] public int maxHP;
     [BoxGroup("Stats")] public int maxArmor;
     [BoxGroup("Stats")] public int damage;

@@ -11,6 +11,7 @@ using static UiOrchestration;
 
 public class CharacterInfoDisplay : MonoBehaviour
 {
+    const string k_LevelFormat = "Lvl {0}/60";
     static readonly Type charSaverType = typeof(CharactersData_SavedDataSO);
     
     [BoxGroup("Dependencies")] [Required] public UiOrchestration uiOrchestration;
@@ -18,6 +19,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Dependencies")] [Required] public ActionsMenuActionsDisplay menuActionsDisplay;
     
     [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_Name;
+    [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_lvl;
     [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_altName;
     [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_spEffect;
     [BoxGroup("Character Info")] [Required] public TextMeshProUGUI txt_healthNum;
@@ -67,6 +69,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_buttonLabel.text = "Select Character";
         txt_altName.text = "";
         txt_Name.text = "";
+        txt_lvl.text = "";
         txt_spEffect.text = "";
         txt_healthNum.text = "";
         txt_apNum.text = "";
@@ -203,6 +206,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_Name.text = character.occupantName;
         txt_altName.text = character.occupantName;
         txt_spEffect.text = character.specialEffectName;
+        txt_lvl.text = string.Format(k_LevelFormat, SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _).GetCharacterData(character.occupantName).level);
         txt_healthNum.text = character.maxHP.ToString();
         txt_apNum.text = character.maxAP.ToString();
         txt_dmgNum.text = character.damage.ToString();
@@ -233,6 +237,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         charData.hasCharacter = true;
         charData.row = 1;
         charData.col = 1;
+        charData.level = 1;
         charData.equipped = true;
         
         SaverService.Instance.GetSaverAndData<Items_SavedDataSO>(out var itemSaver, out var itemData);

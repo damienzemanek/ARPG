@@ -56,4 +56,6 @@ public class SaverService : Servicer<Type, Saver, SaverService>
         saver = services[typeof(T)];
         data = (T)saver.currentData;
     }
+    
+    public T GetData<T>(out T data) where T : SavedDataSO => data = (T)services[typeof(T)].currentData;
 }

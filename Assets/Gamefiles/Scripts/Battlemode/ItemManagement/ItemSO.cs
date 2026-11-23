@@ -7,8 +7,11 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 { 
     public Items_SavedDataSO.ItemData itemData;
+    public Items_SavedDataSO.ItemType itemType;
     [BoxGroup("Settings")] public string description;
     [BoxGroup("Settings")] public Sprite icon;
+    [BoxGroup("Settings")] public Sprite squareIcon;
+
     
     public virtual ItemSO Clone()
     {
@@ -18,6 +21,7 @@ public class ItemSO : ScriptableObject
         clone.itemData.amount = itemData.amount;
         
         clone.icon = icon;
+        clone.squareIcon = squareIcon;
         clone.description = description;
         
         return clone;    
@@ -29,4 +33,12 @@ public class ItemSO : ScriptableObject
         if(amount > 0) clone.itemData.amount = amount;
         return clone;
     }
+}
+
+
+[Serializable]
+public class RewardConfigData
+{
+    public int amount = 1;
+    public ItemSO item;
 }

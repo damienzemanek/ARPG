@@ -31069,6 +31069,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 204955387332401540, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
+      propertyPath: battleConfiguererData
+      value: 
+      objectReference: {fileID: 11400000, guid: d8a01d8eb1c0b784daf3d4d402fe1ab8, type: 2}
     - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
@@ -37320,8 +37324,6 @@ MonoBehaviour:
     hash: D6A35E4A4FF50834809E45CDDFD1D87B1A5B97B0F2BC35CE7F6A794A86B799D6
     version: 0
   returningPlayer: 0
-  goldAmount: 0
-  crystalAmount: 0
   currentCharacterWorldLocation:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
@@ -63122,12 +63124,16 @@ PrefabInstance:
       value: 472
       objectReference: {fileID: 0}
     - target: {fileID: 2625831735893100274, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625831735893100274, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 236
       objectReference: {fileID: 0}
     - target: {fileID: 2625831735893100274, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -486.74
+      value: -429.18
       objectReference: {fileID: 0}
     - target: {fileID: 2818868711430280205, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -63384,6 +63390,10 @@ PrefabInstance:
     - target: {fileID: 4616341262358736672, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -18.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618289979353449991, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 4725941031608276000, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -63697,6 +63707,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -12.195
       objectReference: {fileID: 0}
+    - target: {fileID: 7494624224535388486, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 7618410839996291175, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_Name
       value: SCRL Action Info
@@ -63959,10 +63973,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9000184186444288182, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 399.31537
+      value: 399.31543
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3215042707826018507, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+    - {fileID: 2511685578056795894, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+    - {fileID: 5784099739919900846, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
+    - {fileID: 6449223436462420069, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b2a97c792401d4b88ac5ba6863034c, type: 3}

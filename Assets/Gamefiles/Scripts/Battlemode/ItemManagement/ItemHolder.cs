@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,14 @@ public interface ISingleInspectingUI
 
 public class ItemHolder : MonoBehaviour, ISingleInspectingUI
 {
-    [ShowInInspector] public ItemSO heldItem;
+    [Required] public GameObject dispInspectItem;
+    [Required] public TextMeshProUGUI txt_amountText;
     public bool useImage = true;
     [ShowIf("useImage")] public Image img;
-    public bool showingInspectDisplay = false;
-    public GameObject dispInspectItem;
+    
+    [ShowInInspector, ReadOnly] public ItemSO heldItem;
+    [ReadOnly] public int amount = 0;
+    [ReadOnly] public bool showingInspectDisplay = false;
 
     public void Hide()
     {
@@ -22,12 +26,22 @@ public class ItemHolder : MonoBehaviour, ISingleInspectingUI
         gameObject.SetActive(false);
     }
 
-    public void Init(ItemSO item)
+    public void Init(ItemSO item, int amount)
     {
         heldItem = item;
         dispInspectItem.gameObject.SetActive(false);
+        
+        // Amount display, TODO: Countup anim
+        if (amount > 0)
+        {
+            txt_amountText.gameObject.SetActive(true);
+            txt_amountText.text = amount.ToString();
+        }
+        else txt_amountText.gameObject.SetActive(false);
+
+        // Not all item holders will have an image (?)
         if (!useImage) return;
-        img.sprite = item.icon;
+        img.sprite = item.squareIcon;
     }
 
     public void Hover()

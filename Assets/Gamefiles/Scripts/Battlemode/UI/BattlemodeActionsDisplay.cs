@@ -244,7 +244,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
         // Info
         txt_CharacterName.text = battlerConfig.occupantName;
-        txt_CharacterLevel.text = string.Format(k_LevelFormat, battlerConfig.currentLevel);
+        txt_CharacterLevel.text = battlerConfig is EnemyConfig
+            ? string.Format(k_LevelFormat, SessionData.Instance.currentBattleConfig.GetLevelOfEnemy(battlerConfig.occupantName))
+            : string.Format(k_LevelFormat, SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _).GetCharacterData(battlerConfig.occupantName).level);
         txt_CharacterDmgNum.text = battlerConfig.damage.ToString();
         if (tile.occupantCtx is CharacterOccupantCtx characterCtx)
         {
@@ -304,6 +306,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             ShowAction(tile, firstAction);
         
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+        
     }
 
     void ClearExhuastedActionSlots()
@@ -315,6 +318,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
 
     public void ShowAction(BattleTile tile, BattlemodeAction actionSlot)
     {
+
         var actionCtx = actionSlot.actionCtx;
         if (actionCtx == null) { Debug.Log("No action context provided"); return; }
         
@@ -358,6 +362,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         }
         
         combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+ 
+
+        //actionInfoRect.RefreshLayoutGroupsImmediateAndRecursive();
 
         void CreateRoleTargetInfoAndDetails()
         {
@@ -381,6 +388,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             }
             newSelfInfo.Get<BattlemodeRoleTargetInfo>().SetRoleName("Self:");
             
+            combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
         }
     }
 
@@ -427,6 +435,9 @@ public class BattlemodeActionsDisplay : MonoBehaviour
         
         for (int i = 0; i < actionConfig.effectsToApplyToSelf.Count; i++)
             effectDisplayPool.Get().PopulateEffect(actionConfig.effectsToApplyToSelf[i].CreateNewEffectInstance());
+        
+        combatDisplayRect.RefreshLayoutGroupsImmediateAndRecursive();
+
     }
 
     public void ShowCurrentStatusEffectsFromOccupantCtx(BattlerOccupantCtx battlerOccupantCtx)

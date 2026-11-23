@@ -18,7 +18,5 @@ public class ARPG_SavedDataSO : SavedDataSO
     public override void ResetDataOptionalInternal() { } // No op
 
     public bool returningPlayer;
-    public int goldAmount;
-    public int crystalAmount;
     public Pose currentCharacterWorldLocation;
 }

@@ -91,6 +91,129 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1819e7f244b628648b08d1dd0e8f5a06, type: 2}
   - {fileID: 11400000, guid: a79492a83d9b8bc4b94ba5ae8687f57b, type: 2}
   equippedEquipments: []
+  levelRewards:
+  - experienceToLevelUp: 0
+    Rewards: []
+  - experienceToLevelUp: 0
+    Rewards: []
+  - experienceToLevelUp: 1
+    Rewards: []
+  - experienceToLevelUp: 2
+    Rewards: []
+  - experienceToLevelUp: 3
+    Rewards: []
+  - experienceToLevelUp: 5
+    Rewards: []
+  - experienceToLevelUp: 6
+    Rewards: []
+  - experienceToLevelUp: 9
+    Rewards: []
+  - experienceToLevelUp: 11
+    Rewards: []
+  - experienceToLevelUp: 14
+    Rewards: []
+  - experienceToLevelUp: 18
+    Rewards: []
+  - experienceToLevelUp: 21
+    Rewards: []
+  - experienceToLevelUp: 25
+    Rewards: []
+  - experienceToLevelUp: 29
+    Rewards: []
+  - experienceToLevelUp: 34
+    Rewards: []
+  - experienceToLevelUp: 38
+    Rewards: []
+  - experienceToLevelUp: 43
+    Rewards: []
+  - experienceToLevelUp: 49
+    Rewards: []
+  - experienceToLevelUp: 54
+    Rewards: []
+  - experienceToLevelUp: 60
+    Rewards: []
+  - experienceToLevelUp: 66
+    Rewards: []
+  - experienceToLevelUp: 73
+    Rewards: []
+  - experienceToLevelUp: 79
+    Rewards: []
+  - experienceToLevelUp: 86
+    Rewards: []
+  - experienceToLevelUp: 93
+    Rewards: []
+  - experienceToLevelUp: 101
+    Rewards: []
+  - experienceToLevelUp: 108
+    Rewards: []
+  - experienceToLevelUp: 116
+    Rewards: []
+  - experienceToLevelUp: 124
+    Rewards: []
+  - experienceToLevelUp: 132
+    Rewards: []
+  - experienceToLevelUp: 140
+    Rewards: []
+  - experienceToLevelUp: 149
+    Rewards: []
+  - experienceToLevelUp: 158
+    Rewards: []
+  - experienceToLevelUp: 167
+    Rewards: []
+  - experienceToLevelUp: 176
+    Rewards: []
+  - experienceToLevelUp: 185
+    Rewards: []
+  - experienceToLevelUp: 195
+    Rewards: []
+  - experienceToLevelUp: 204
+    Rewards: []
+  - experienceToLevelUp: 214
+    Rewards: []
+  - experienceToLevelUp: 224
+    Rewards: []
+  - experienceToLevelUp: 234
+    Rewards: []
+  - experienceToLevelUp: 245
+    Rewards: []
+  - experienceToLevelUp: 256
+    Rewards: []
+  - experienceToLevelUp: 267
+    Rewards: []
+  - experienceToLevelUp: 278
+    Rewards: []
+  - experienceToLevelUp: 289
+    Rewards: []
+  - experienceToLevelUp: 301
+    Rewards: []
+  - experienceToLevelUp: 313
+    Rewards: []
+  - experienceToLevelUp: 326
+    Rewards: []
+  - experienceToLevelUp: 339
+    Rewards: []
+  - experienceToLevelUp: 352
+    Rewards: []
+  - experienceToLevelUp: 365
+    Rewards: []
+  - experienceToLevelUp: 378
+    Rewards: []
+  - experienceToLevelUp: 392
+    Rewards: []
+  - experienceToLevelUp: 407
+    Rewards: []
+  - experienceToLevelUp: 421
+    Rewards: []
+  - experienceToLevelUp: 436
+    Rewards: []
+  - experienceToLevelUp: 452
+    Rewards: []
+  - experienceToLevelUp: 467
+    Rewards: []
+  - experienceToLevelUp: 484
+    Rewards: []
+  - experienceToLevelUp: 500
+    Rewards: []
   references:
     version: 2
     RefIds:

@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+
 // Singleton In name only for now
 [CreateAssetMenu(fileName = "EffectIconDict", menuName = "ARPG/SO/EffectIconDict")]
 public class EffectDict : ScriptableObject
