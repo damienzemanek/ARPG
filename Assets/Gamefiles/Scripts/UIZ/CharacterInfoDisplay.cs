@@ -47,7 +47,8 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Main Art")] [Required] public Transform upgradeLevelMainArtPos;
 
 
-
+    [BoxGroup("Main Art")] [Required] public Transform hlg_materialsBtnParent;
+    [BoxGroup("Main Art")] [Required] public GameObject pr_materialBtn;
 
     [Required] public TextMeshProUGUI txt_descTactics;
     [Required] public TextMeshProUGUI txt_descAbout;

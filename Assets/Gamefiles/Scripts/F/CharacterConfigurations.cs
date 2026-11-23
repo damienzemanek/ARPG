@@ -11,4 +11,7 @@ public class CharacterConfigurations : ScriptableObject
     
     public float experienceScalar = 500f;
     public AnimationCurve experienceIncreaseCurve = AnimationCurve.Linear(0, 1, 1, 1);
+    
+    
+    
 }
