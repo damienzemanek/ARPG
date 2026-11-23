@@ -70,7 +70,7 @@ public abstract class EmilEventBase
         [SerializeReference, HideReferenceObjectPicker, InlineProperty]
         public ParameterBase[] parameters;
         
-        public TypeSerializedCore[] suppliedTypes;
+        [HideInInspector] public TypeSerializedCore[] suppliedTypes;
 
         [NonSerialized] private MethodInfo _cachedMethod;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 [Serializable]
 [InlineEditor]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "ARPG/SO/ItemSO")]
 public class ItemSO : ScriptableObject
 { 
     public Items_SavedDataSO.ItemData itemData;

@@ -56,6 +56,7 @@ public class BattlemodeEndStateManagement : MonoBehaviour
         var rewards = SessionData.Instance.currentBattlemodePotentialRewards;
         
         
+        
         foreach (var reward in rewards)
         {
             yield return distributionDelay.Delay;

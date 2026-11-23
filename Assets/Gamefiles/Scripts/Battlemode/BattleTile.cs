@@ -333,7 +333,9 @@ public class BattleTile : MonoBehaviour
         int amountOfActualActions = eoc.queuedActions.Count;
         RegenerateAndDisplayGrid(amountOfActualActions);
         lblTxt_ApOrIntention.text = "INTENTIONS";
-        txt_AP.text = (eoc.queuedActions.Count - eoc.currentIntentUsageCtx.removedIntentions).ToString();
+        var intentionsAmount = (eoc.queuedActions.Count - eoc.currentIntentUsageCtx.removedIntentions);
+        if (intentionsAmount < 0) intentionsAmount = 0;
+        txt_AP.text = intentionsAmount.ToString();
         
         // For each intention
         for (int intentionsIndex = 0; intentionsIndex < amountOfActualActions; intentionsIndex++)

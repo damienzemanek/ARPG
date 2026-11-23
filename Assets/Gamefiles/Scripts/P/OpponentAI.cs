@@ -254,10 +254,10 @@ public class OpponentAI : MonoBehaviour
                 //if the enemy cannot target anything at all, it has 1 free re-queue, if it hasn't already repostioned once
                 {
                     eoc.hasFreeRequeue = false;
-                    Debug.Log($"[OPP AI] Free Intent Used: Re-Queued A new move: {eoc.queuedActions.Last().actionCtx.cfg.actionName} for last action");
                     orderCtx.myTile.TryDisplayIntentions(true);
                     yield return queuedAction.actorTile.tileAlerter.C_SendAlert("Queueing Next Move, No Valid Targets");
                     QueueNewAction();
+                    Debug.Log($"[OPP AI] Free Intent Used: Re-Queued A new move: {eoc.queuedActions.Last().actionCtx.cfg.actionName} for last action");
                 }
                 else
                 {
