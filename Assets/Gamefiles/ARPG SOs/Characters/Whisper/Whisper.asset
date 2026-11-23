@@ -29,46 +29,34 @@ MonoBehaviour:
   - {fileID: 0}
   allAvaliableActions:
   - useActionSprite: {fileID: 21300000, guid: a3f6238dcbed5bb43867c70c11bc33db, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 0
+    useBloodVFX: 1
+    enemyHitWithVFX: 0
     cfg: {fileID: 11400000, guid: 126667b918aa30f42b0d9a33230bb8e3, type: 2}
   - useActionSprite: {fileID: 21300000, guid: 2ed4c0025c320ca45a0aa609f4e6008f, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 1
+    useBloodVFX: 0
+    enemyHitWithVFX: 1
     cfg: {fileID: 11400000, guid: 1819e7f244b628648b08d1dd0e8f5a06, type: 2}
   - useActionSprite: {fileID: 21300000, guid: 2ed4c0025c320ca45a0aa609f4e6008f, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 1
     cfg: {fileID: 11400000, guid: 411ca56112615084aa3046e194cb75d8, type: 2}
   - useActionSprite: {fileID: 21300000, guid: 5aeb993c471b23443ba59b67206bc5ba, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 1
     cfg: {fileID: 11400000, guid: d37294b43317c234b9434193c9643bbf, type: 2}
   - useActionSprite: {fileID: 21300000, guid: f06d9a34fe8b239439b6b109d86e4796, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 0
     cfg: {fileID: 11400000, guid: a79492a83d9b8bc4b94ba5ae8687f57b, type: 2}
   - useActionSprite: {fileID: 21300000, guid: a621b3b5c8143154581be2d22041f752, type: 3}
-    useSelfVFX: 0
-    useActionSpriteSelfVFX: {fileID: 0}
-    projectileBased: 0
-    projectileCount: 1
-    projectileSprite: {fileID: 0}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 1
     cfg: {fileID: 11400000, guid: ca325b337537bcd4aa6d427d7b89b2fe, type: 2}
   specialEffects:
   - addOccurance: 0

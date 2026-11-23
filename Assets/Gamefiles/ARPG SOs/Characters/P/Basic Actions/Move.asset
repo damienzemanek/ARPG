@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9e6a6a9e35fa345a34e9c8389a12b7, type: 3}
   m_Name: Move
   m_EditorClassIdentifier: Assembly-CSharp::BattlemodeActionConfig
-  itemName: Move
+  itemData:
+    itemName: Move
+    amount: 1
   description: Move your character into a different location
   icon: {fileID: 21300000, guid: abd942fa8d2b22b46a08bfbcb57c0cf2, type: 3}
   apCost: 1

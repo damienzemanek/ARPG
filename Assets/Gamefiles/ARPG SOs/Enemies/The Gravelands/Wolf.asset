@@ -25,7 +25,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
   - {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
   - {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
-  allAvaliableActions: []
+  allAvaliableActions:
+  - useActionSprite: {fileID: 21300000, guid: 51f1093697654194b9feeabb4eadec34, type: 3}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 4
+    cfg: {fileID: 11400000, guid: 5a53c4ae2d4bcff4f869c7fe696bf427, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: 51f1093697654194b9feeabb4eadec34, type: 3}
+    damagesTarg: 0
+    useBloodVFX: 1
+    enemyHitWithVFX: 0
+    cfg: {fileID: 11400000, guid: cbdfa5c151841744798a5361317c39ad, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: 51f1093697654194b9feeabb4eadec34, type: 3}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 3
+    cfg: {fileID: 11400000, guid: b4e4bfacbb8bf4e4fae88fe8556d45b6, type: 2}
+  - useActionSprite: {fileID: 21300000, guid: 51f1093697654194b9feeabb4eadec34, type: 3}
+    damagesTarg: 1
+    useBloodVFX: 1
+    enemyHitWithVFX: 4
+    cfg: {fileID: 11400000, guid: 485721b751236fb458555298416fad34, type: 2}
   specialEffects: []
   allAvaliableActionNames: []
   attackOrder: 0

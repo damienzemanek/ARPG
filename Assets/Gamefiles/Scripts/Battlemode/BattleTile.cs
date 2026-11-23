@@ -414,8 +414,8 @@ public class BattleTile : MonoBehaviour
         display.SetActive(false);
         if (occupantCtx.occObject != null)
         {
-            if (destroy && Application.isPlaying) Destroy(occupantCtx.occObject);
-            else if (destroy) DestroyImmediate(occupantCtx.occObject);
+            if (destroy && Application.isPlaying) Destroy(occupantCtx.occObject.gameObject);
+            else if (destroy) DestroyImmediate(occupantCtx.occObject.gameObject);
         }
         occupantCtx = null;
         Debug.Assert(occupantCtx == null, "OccupantCtx should be null after destroying");

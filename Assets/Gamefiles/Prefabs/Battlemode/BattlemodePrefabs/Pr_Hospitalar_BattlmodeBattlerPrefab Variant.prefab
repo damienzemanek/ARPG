@@ -1470,6 +1470,14 @@ PrefabInstance:
       propertyPath: origPos.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2369629297911136161, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: sprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369629297911136161, guid: 05763b263b74201498309a677f39a4f2, type: 3}
+      propertyPath: 'sprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2048633366172006903}
     - target: {fileID: 3333175290504933116, guid: 05763b263b74201498309a677f39a4f2, type: 3}
       propertyPath: m_SortingOrder
       value: 0

@@ -76,6 +76,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterArmorNum;
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterMaxArmorNum;
     [BoxGroup("BattleInfo: Info")] [Required] public TextMeshProUGUI txt_CharacterDmgNum;
+    [BoxGroup("BattleInfo: Info")] [Required] public GameObject displ_Equipment;
+
     
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_ActionName;
     [BoxGroup("BattleInfo: Action")] [Required] public TextMeshProUGUI txt_PlayerAPnum;
@@ -85,7 +87,7 @@ public class BattlemodeActionsDisplay : MonoBehaviour
     // Future: Button For Disabling Attacks
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyActionIntentionsNum;
     [BoxGroup("BattleInfo: Enemy")] [Required] public TextMeshProUGUI txt_EnemyPredictedsNum;
-    [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsVLG;
+    [FormerlySerializedAs("displ_IntentionsVLG")] [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_Intentions;
     [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_IntentionsNumGO;
     [BoxGroup("BattleInfo: Enemy")] [Required] public GameObject displ_PredictedNumGO;
     [BoxGroup("BattleInfo: Enemy")] [Required] public EnemyIntentions enemyIntentions;
@@ -257,7 +259,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             characterCtx.PreResolveBeforeActingEffectsPlayer(actionSlots);
             ShowCurrentStatusEffectsFromOccupantCtx(characterCtx);
             
-            displ_IntentionsVLG.SetActive(false);
+            displ_Intentions.SetActive(false);
+            displ_Equipment.SetActive(true);
             displ_IntentionsNumGO.SetActive(false);
             displ_PredictedNumGO.SetActive(false);
             moveAction.gameObject.SetActive(true);
@@ -277,7 +280,8 @@ public class BattlemodeActionsDisplay : MonoBehaviour
             enemyIntentions.HideUnpredictedIntentions(enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount, enemyOccupantCtx.currentPredicteds);
             txt_EnemyActionIntentionsNum.text = enemyOccupantCtx.currentIntentUsageCtx.intentionsAmount.ToString();
             txt_EnemyPredictedsNum.text = enemyOccupantCtx.currentPredicteds.ToString();
-            displ_IntentionsVLG.SetActive(true);
+            displ_Intentions.SetActive(true);
+            displ_Equipment.SetActive(false);
             displ_IntentionsNumGO.SetActive(true);
             displ_PredictedNumGO.SetActive(true);
             moveAction.gameObject.SetActive(false);

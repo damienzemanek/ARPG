@@ -213,10 +213,11 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
         BattleTile actorTile = queuedAction.actorTile;
         BattleTile targetTile = queuedAction.targetTile;
-        
 
+        bool actorIsPlayer = false;
         if (boc is CharacterOccupantCtx coc)
         {
+            actorIsPlayer = true;
             bool free = false;
             if (queuedAction.actionCtx.cfg.actionName == "Move")
             {
@@ -275,7 +276,7 @@ public class BattleTracker : DesignPatterns.CreationalPatterns.Singleton<BattleT
         
         // target hit vfx
         if(specificCfg != null && specificCfg.damagesTarg)
-            targetOccupantCtx?.occObject.Get<VFXShower>().ShowHitVFX(specificCfg.enemyHitWithVFX, true);
+            targetOccupantCtx?.occObject.Get<VFXShower>().ShowHitVFX(specificCfg.enemyHitWithVFX, actorIsPlayer);
         
         // Actual hits (times) hit count
         for (int currentHitcount = 2; currentHitcount <= queuedAction.actionCtx.cfg.hitCount; currentHitcount++)

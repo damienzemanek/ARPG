@@ -125,6 +125,12 @@ public class OpponentAI : MonoBehaviour
         return actionCfg;
     }
     
+    BattleTile FindCurrentTile(GridWorld grid, EnemyOccupantCtx eoc)
+    {
+        grid.GetBattlerTiles(out var opponentTiles, out _);
+        return opponentTiles.FirstOrDefault(t => t.occupantCtx == eoc);
+    }
+    
     public void AttackAll(GridWorld grid, Action onAttackComplete)
     {
         if(battlerAttackOrder == null || battlerAttackOrder.Count == 0) Debug.LogError("Opponent Attack Order is empty");
@@ -135,6 +141,9 @@ public class OpponentAI : MonoBehaviour
     {
         foreach (var orderCtx in attackOrder)
         {
+            // accounts for enemies that move or die
+            orderCtx.myTile = FindCurrentTile(grid, orderCtx.eoc);
+
             if (orderCtx.myTile.occupantCtx == null)
             {
                 Debug.Log($"[OPP AI] Tile {orderCtx.myTile.row}, {orderCtx.myTile.col} has no OccupantCtx");
