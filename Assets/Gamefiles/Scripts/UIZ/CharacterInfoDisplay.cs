@@ -84,7 +84,6 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ViewCharacterScreen()
     {
-        menuBarDetails.gameObject.SetActive(true);
         teamGrid.ResetState();
         characterSelectPortraits.Clear();
         characterSelectPortraits.AddRange(glgCharacterSelectPortraits);
@@ -104,7 +103,7 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void ViewUpgradeLevelScreen()
     {
-        menuBarDetails.gameObject.SetActive(false);
+        Debug.Log("UPGRADE LEVEL SCREEN");
         uiOrchestration.currentCharacterUIState = CharacterUIState.Upgrading;
         txt_buttonLabel.text = "LEVEL UP";
         mainArtTransform.DOMove(upgradeLevelMainArtPos.position, mainArtMoveDuration);
@@ -134,7 +133,6 @@ public class CharacterInfoDisplay : MonoBehaviour
     public void ViewOverviewScreen()
     {
         Debug.Log("OVERVIEW SCREEN");
-        menuBarDetails.gameObject.SetActive(true);
         // If already had started to inspect this character
         CloseCharacterInfoPanel();
         mainArtTransform.DOMove(overviewMainArtPos.position, mainArtMoveDuration);
@@ -150,13 +148,15 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_descAbout.text = selectedCharacter.desc_about;
         onOverviewScreen = true;
         characterInfoPanelTransform.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
+        
+        txt_buttonLabel.text = "LEVEL UP";
+
     }
     
     
     public void ViewActionsOrEquipmentScreen()
     {
         Debug.Log("ACTIONS OR EQUIPMENT SCREEN");
-        menuBarDetails.gameObject.SetActive(true);
         CloseCharacterInfoPanel();
         mainArtTransform.DOMove(actionsOrEquipmentMainArtPos.position, mainArtMoveDuration);
         
@@ -177,26 +177,42 @@ public class CharacterInfoDisplay : MonoBehaviour
 
     public void MainButtonPressed()
     {
-        // Insppect character
-        switch (uiOrchestration.currentMainUIState)
+        if (uiOrchestration.currentUIState == UIState.Main)
         {
-            case MainUIState.Characters:
-                ResetDetailsMenus();
-                menuBarDetails.SelectOption("Overview");
-                return;
+            // Insppect character
+            switch (uiOrchestration.currentMainUIState)
+            {
+                case MainUIState.Characters: 
+                    ResetDetailsMenus();
+                    menuBarDetails.SelectOption("Overview");
+                    Debug.Log("Overview Selected");
+                    return;
+
+            }
+        }
+        else if (uiOrchestration.currentUIState == UIState.Exploration)
+        {
+            // chose start character
+            switch (uiOrchestration.currentExplorationUIState)
+            {
+                case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
+            }
+        }
+        else if (uiOrchestration.currentUIState == UIState.Character)
+        {
+            
+            Debug.Log("ON CHAR");
+            // Level up button
+            switch (uiOrchestration.currentCharacterUIState)
+            {
+                case CharacterUIState.Overview: 
+                    uiOrchestration.ShowCharacterUIState(CharacterUIState.Upgrading);
+                    return;
+            }
         }
         
-        // chose start character
-        switch (uiOrchestration.currentExplorationUIState)
-        {
-            case ExplorationUIState.FirstStart: ChoseStarterCharacter(); return;
-        }
-
-        // Level up button
-        switch (uiOrchestration.currentCharacterUIState)
-        {
-            case CharacterUIState.Overview: ViewUpgradeLevelScreen(); return;
-        }
+        
+        
         
     }
     
