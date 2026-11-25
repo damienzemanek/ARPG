@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
@@ -34,6 +35,8 @@ public class CharacterInfoDisplay : MonoBehaviour
     [Required] public PlayerEvents playerEvents;
     [Required] public Button selectBtn;
     [Required] public TeamGrid teamGrid;
+    public Color mainBtnTxtColorRegular = new Color(1, 1, 1, 1);
+    public Color mainBtnTxtColorDisabled = new Color(0.5f, 0.5f, 0.5f, 1);
 
     [BoxGroup("Character Info Panel")] [Required] public Transform characterInfoPanelTransform;
     [BoxGroup("Character Info Panel")] [Required] public Transform openCharInfoPanelPos;
@@ -47,8 +50,15 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Main Art")] [Required] public Transform upgradeLevelMainArtPos;
 
 
-    [BoxGroup("Main Art")] [Required] public Transform hlg_materialsBtnParent;
-    [BoxGroup("Main Art")] [Required] public GameObject pr_materialBtn;
+    [BoxGroup("Upgrade Screen")] [Required] public Transform hlg_materialsBtnParent;
+    [BoxGroup("Upgrade Screen")] [Required] public GameObject pr_materialBtn;
+    [BoxGroup("Upgrade Screen")] [Required] public Button btn_autoAdd;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_autoAdd;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_currLevl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_nxtLevel;
+    [BoxGroup("Upgrade Screen")] [Required] public GameObject go_lvlArrowDisp;
+
+    
 
     [Required] public TextMeshProUGUI txt_descTactics;
     [Required] public TextMeshProUGUI txt_descAbout;
@@ -62,6 +72,12 @@ public class CharacterInfoDisplay : MonoBehaviour
         selectedCharacter = null;
     }
     
+    void SetMainBtnTxtColor(string txt, Color color)
+    {
+        txt_buttonLabel.text = txt;
+        txt_buttonLabel.color = color;
+    }
+    
     
     #region ---------------------- Chose Starter Character ----------------------
 
@@ -69,7 +85,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         selectBtn.interactable = false;
         selectedCharacter = initiallySelectedPortrait.characterCfg;
-        txt_buttonLabel.text = "Select Character";
+        SetMainBtnTxtColor("Select Character", mainBtnTxtColorRegular);
         txt_altName.text = "";
         txt_Name.text = "";
         txt_lvl.text = "";
@@ -88,7 +104,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         teamGrid.ResetState();
         characterSelectPortraits.Clear();
         characterSelectPortraits.AddRange(glgCharacterSelectPortraits);
-        txt_buttonLabel.text = "DETAILS";
+        SetMainBtnTxtColor("DETAILS", mainBtnTxtColorRegular);
         characterSelectPortraits.ForEach(p =>
         {
             p.portraitType = PortraitType.InfoDisplay;
@@ -102,13 +118,100 @@ public class CharacterInfoDisplay : MonoBehaviour
         mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
     }
 
+    List<MaterialBtn> materialButtonBuffer = new List<MaterialBtn>();
     public void ViewUpgradeLevelScreen()
     {
         Debug.Log("UPGRADE LEVEL SCREEN");
+        // transition & setup
         uiOrchestration.currentCharacterUIState = CharacterUIState.Upgrading;
-        txt_buttonLabel.text = "LEVEL UP";
+        SetMainBtnTxtColor("LEVEL UP", mainBtnTxtColorDisabled);
         mainArtTransform.DOMove(upgradeLevelMainArtPos.position, mainArtMoveDuration);
+        txt_autoAdd.text = "AUTO ADD";
+
+        // vars
+        var charData = SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _)
+            .GetCharacterData(selectedCharacter.occupantName);
+        var charLevel = charData.level;
+        var nxtLevel = charLevel + 1;
+        bool reachedMaxLvl = charLevel >= PersistentConfigurationDataHolder.Instance.characterConfigs.maxLevel;
+        
+        // levl bar
+        txt_currLevl.text = "Lvl. " + charLevel;
+        txt_nxtLevel.text = reachedMaxLvl ? "MAX" : "Lvl. " + nxtLevel;
+        go_lvlArrowDisp.SetActive(!reachedMaxLvl);
+        
+        // show materials
+        hlg_materialsBtnParent.transform.Children().DestroyAll();
+        materialButtonBuffer.Clear();
+        btn_autoAdd.interactable = !reachedMaxLvl;
+        if (reachedMaxLvl) return;
+        
+        var nxtLvlData = selectedCharacter.levelData[nxtLevel];
+        foreach (var materialReq in nxtLvlData.MaterialRequirements)
+        {
+            var item = materialReq.item;
+            var requiredAmount = materialReq.amount;
+            var hasAmount = SaverService.Instance.GetData<Items_SavedDataSO>(out _)
+                .GetItemData(item).amount;
+            var materialBtn = Instantiate(pr_materialBtn, hlg_materialsBtnParent).Get<MaterialBtn>();
+            materialBtn.Init(item, requiredAmount, hasAmount, TestForSatisfied);
+            materialButtonBuffer.Add(materialBtn);
+        }
+
+        selectBtn.interactable = false;
     }
+
+    bool autoAddButtonAnyAdded = false;
+    // doesnt need max lvl checks cause interactability is setup in the show screen
+    public void PressedAutoAdd()
+    {
+        // for auto add all
+        if (autoAddButtonAnyAdded == false)
+        {
+            bool addedAny = false;
+            var charData = SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _)
+                .GetCharacterData(selectedCharacter.occupantName);
+            var nxtLevel = charData.level + 1;
+        
+            var nxtLevelData = selectedCharacter.levelData[nxtLevel];
+            var requirementsAmount = nxtLevelData.MaterialRequirements.Count;
+            for (var i = 0; i < requirementsAmount; i++)
+            {
+                var materialReq = nxtLevelData.MaterialRequirements[i];
+                var item = materialReq.item;
+                var hasAmount = SaverService.Instance.GetData<Items_SavedDataSO>(out _)
+                    .GetItemData(item).amount;
+                if (hasAmount > 0) addedAny = true;
+
+                materialButtonBuffer[i].AutoCommitAsMuchAsPossible();
+                var satisfied = materialButtonBuffer[i].satisfied;
+            }
+
+            if (addedAny)
+            {
+                txt_autoAdd.text = "REMOVE ALL";
+                autoAddButtonAnyAdded = true;
+            }
+            TestForSatisfied();
+        }
+
+        // for remove all
+        else
+        {
+            materialButtonBuffer.ForEach(mb => mb.UnCommitAsMuchAsPossible());
+            autoAddButtonAnyAdded = false;
+            txt_autoAdd.text = "AUTO ADD";
+        }
+    }
+
+    public void TestForSatisfied()
+    {
+        bool allSatisfied = materialButtonBuffer.All(b => b.satisfied);
+        selectBtn.interactable = allSatisfied;
+        Color color = allSatisfied ? mainBtnTxtColorRegular : mainBtnTxtColorDisabled;
+        SetMainBtnTxtColor("LEVEL UP", color);
+    }
+    
     
     public void ViewManageTeamScreen()
     {
@@ -150,8 +253,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         onOverviewScreen = true;
         characterInfoPanelTransform.gameObject.Get<RectTransform>().RefreshLayoutGroupsImmediateAndRecursive();
         
-        txt_buttonLabel.text = "LEVEL UP";
-
+        SetMainBtnTxtColor("LEVEL UP", mainBtnTxtColorRegular);
     }
     
     

@@ -20,6 +20,7 @@ public class ItemSO : ScriptableObject
         clone.itemData = new Items_SavedDataSO.ItemData();
         clone.itemData.itemName = itemData.itemName;
         clone.itemData.amount = itemData.amount;
+        clone.itemType = itemType;
         
         clone.icon = icon;
         clone.squareIcon = squareIcon;

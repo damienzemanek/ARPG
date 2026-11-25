@@ -15,7 +15,6 @@ MonoBehaviour:
   occupantName: Hospitalar
   icon: {fileID: 21300000, guid: 80d570c0b4d0dee47911d1eecf134ba5, type: 3}
   prefab: {fileID: 1493016372842288641, guid: 65488a59614fca048bc8385f66bfeb12, type: 3}
-  currentLevel: 1
   maxHP: 10
   maxArmor: 5
   damage: 2
@@ -89,130 +88,273 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f7c6f593d887f4448be43d111697093, type: 2}
   - {fileID: 11400000, guid: 82f1e18b7d4b5db40993decc894e53cc, type: 2}
   equippedEquipments: []
-  levelRewards:
-  - experienceToLevelUp: 0
-    Rewards: []
-  - experienceToLevelUp: 0
-    Rewards: []
-  - experienceToLevelUp: 1
-    Rewards:
-    - {fileID: 11400000, guid: ff26070bc9ac526499d7bf4d41f767bb, type: 2}
-  - experienceToLevelUp: 2
-    Rewards: []
-  - experienceToLevelUp: 3
-    Rewards: []
-  - experienceToLevelUp: 5
-    Rewards: []
-  - experienceToLevelUp: 6
-    Rewards: []
-  - experienceToLevelUp: 9
-    Rewards: []
-  - experienceToLevelUp: 11
-    Rewards: []
-  - experienceToLevelUp: 14
-    Rewards: []
-  - experienceToLevelUp: 18
-    Rewards: []
-  - experienceToLevelUp: 21
-    Rewards: []
-  - experienceToLevelUp: 25
-    Rewards: []
-  - experienceToLevelUp: 29
-    Rewards: []
-  - experienceToLevelUp: 34
-    Rewards: []
-  - experienceToLevelUp: 38
-    Rewards: []
-  - experienceToLevelUp: 43
-    Rewards: []
-  - experienceToLevelUp: 49
-    Rewards: []
-  - experienceToLevelUp: 54
-    Rewards: []
-  - experienceToLevelUp: 60
-    Rewards: []
-  - experienceToLevelUp: 66
-    Rewards: []
-  - experienceToLevelUp: 73
-    Rewards: []
-  - experienceToLevelUp: 79
-    Rewards: []
-  - experienceToLevelUp: 86
-    Rewards: []
-  - experienceToLevelUp: 93
-    Rewards: []
-  - experienceToLevelUp: 101
-    Rewards: []
-  - experienceToLevelUp: 108
-    Rewards: []
-  - experienceToLevelUp: 116
-    Rewards: []
-  - experienceToLevelUp: 124
-    Rewards: []
-  - experienceToLevelUp: 132
-    Rewards: []
-  - experienceToLevelUp: 140
-    Rewards: []
-  - experienceToLevelUp: 149
-    Rewards: []
-  - experienceToLevelUp: 158
-    Rewards: []
-  - experienceToLevelUp: 167
-    Rewards: []
-  - experienceToLevelUp: 176
-    Rewards: []
-  - experienceToLevelUp: 185
-    Rewards: []
-  - experienceToLevelUp: 195
-    Rewards: []
-  - experienceToLevelUp: 204
-    Rewards: []
-  - experienceToLevelUp: 214
-    Rewards: []
-  - experienceToLevelUp: 224
-    Rewards: []
-  - experienceToLevelUp: 234
-    Rewards: []
-  - experienceToLevelUp: 245
-    Rewards: []
-  - experienceToLevelUp: 256
-    Rewards: []
-  - experienceToLevelUp: 267
-    Rewards: []
-  - experienceToLevelUp: 278
-    Rewards: []
-  - experienceToLevelUp: 289
-    Rewards: []
-  - experienceToLevelUp: 301
-    Rewards: []
-  - experienceToLevelUp: 313
-    Rewards: []
-  - experienceToLevelUp: 326
-    Rewards: []
-  - experienceToLevelUp: 339
-    Rewards: []
-  - experienceToLevelUp: 352
-    Rewards: []
-  - experienceToLevelUp: 365
-    Rewards: []
-  - experienceToLevelUp: 378
-    Rewards: []
-  - experienceToLevelUp: 392
-    Rewards: []
-  - experienceToLevelUp: 407
-    Rewards: []
-  - experienceToLevelUp: 421
-    Rewards: []
-  - experienceToLevelUp: 436
-    Rewards: []
-  - experienceToLevelUp: 452
-    Rewards: []
-  - experienceToLevelUp: 467
-    Rewards: []
-  - experienceToLevelUp: 484
-    Rewards: []
-  - experienceToLevelUp: 500
-    Rewards: []
+  levelData:
+  - Rewards: []
+    MaterialRequirements: []
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 4
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 7
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 11
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 17
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 26
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 5
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 36
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 48
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 62
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 78
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 96
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 9
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 116
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 138
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 162
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 188
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 217
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 12
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 247
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 280
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 315
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 352
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 392
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 17
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 433
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 477
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 524
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 572
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 624
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 21
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 677
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 733
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 792
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 852
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 916
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 25
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 978
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1036
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1089
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1139
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1184
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 29
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1225
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1263
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1297
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1327
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1355
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 33
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1379
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1401
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1420
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1436
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1450
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 38
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1462
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1472
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1480
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1487
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1492
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 42
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1496
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1498
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1500
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1501
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1501
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 46
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1501
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1501
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1500
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1500
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - Rewards: []
+    MaterialRequirements:
+    - amount: 1500
+      item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - amount: 50
+      item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
   references:
     version: 2
     RefIds: []

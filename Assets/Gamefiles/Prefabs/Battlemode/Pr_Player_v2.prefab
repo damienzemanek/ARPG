@@ -8619,7 +8619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -373, y: -176.59}
+  m_AnchoredPosition: {x: -254, y: -176.59}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4733596345094157267
@@ -9371,6 +9371,7 @@ GameObject:
   - component: {fileID: 7025765271005620863}
   - component: {fileID: 7769562768077357162}
   - component: {fileID: 6232168878714967857}
+  - component: {fileID: 1026213747848897120}
   m_Layer: 5
   m_Name: Btn_materialsDelta
   m_TagString: Untagged
@@ -9426,7 +9427,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 54a64973b5e60b74d999ed1f38f224c2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: db8380cc7aeccd44fafa7b716cd28638, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9436,6 +9437,62 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1026213747848897120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003783842030322808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 2
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 21300000, guid: 35762324670959c4fa4cd5ff5d1fde7a, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: a99b53effa241b446bead19af9b4fb13, type: 3}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 795b0fc2c486e304dad17ef83f3f925c, type: 3}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 6232168878714967857}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2731519721788370793}
+        m_TargetAssemblyTypeName: CharacterInfoDisplay, Assembly-CSharp
+        m_MethodName: PressedAutoAdd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6097995457155789936
 GameObject:
   m_ObjectHideFlags: 0
@@ -9960,6 +10017,7 @@ MonoBehaviour:
         - {fileID: 430606451866156235}
         - {fileID: 1757679519199840393}
         - {fileID: 8464283754829315526}
+        - {fileID: 5873647421220437867}
         onDisplay:
           m_PersistentCalls:
             m_Calls:
@@ -10088,6 +10146,8 @@ MonoBehaviour:
   playerEvents: {fileID: 8983609545408964389}
   selectBtn: {fileID: 4874865022094567793}
   teamGrid: {fileID: 4406794081594699089}
+  mainBtnTxtColorRegular: {r: 1, g: 1, b: 1, a: 1}
+  mainBtnTxtColorDisabled: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   characterInfoPanelTransform: {fileID: 2260550384863906500}
   openCharInfoPanelPos: {fileID: 2121751326649047816}
   closeCharInfoPanelPos: {fileID: 7202017056643861047}
@@ -10099,6 +10159,11 @@ MonoBehaviour:
   upgradeLevelMainArtPos: {fileID: 8067106951661023840}
   hlg_materialsBtnParent: {fileID: 6785946699293683860}
   pr_materialBtn: {fileID: 20142531072026960, guid: 36993a61065032942a7ab2bf10afc082, type: 3}
+  btn_autoAdd: {fileID: 1026213747848897120}
+  txt_autoAdd: {fileID: 461471407270014055}
+  txt_currLevl: {fileID: 6357323480882435103}
+  txt_nxtLevel: {fileID: 2197247561977417612}
+  go_lvlArrowDisp: {fileID: 5592336022204755266}
   txt_descTactics: {fileID: 6968413818065784959}
   txt_descAbout: {fileID: 1260318736765833271}
   characterSelectPortraits: []
@@ -23664,7 +23729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1200986749017388573, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1871404643163592031, guid: 0b74499feb5cd8f40b7757cd000b9990, type: 3}
       propertyPath: m_SizeDelta.y

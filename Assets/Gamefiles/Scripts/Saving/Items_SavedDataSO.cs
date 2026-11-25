@@ -85,4 +85,5 @@ public class Items_SavedDataSO : SavedDataSO
     }
 
     public ItemData GetItemData(ItemType itemType, ItemData itemData) => GetItemData(itemType, itemData.itemName);
+    public ItemData GetItemData(ItemSO item) => GetItemData(item.itemType, item.itemData);
 }

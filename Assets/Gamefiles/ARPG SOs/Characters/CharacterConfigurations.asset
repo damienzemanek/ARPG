@@ -22,13 +22,15 @@ MonoBehaviour:
       Value: {fileID: 11400000, guid: 3e02d539a7785d141b6b841b572735cc, type: 2}
     - Key: Whisper
       Value: {fileID: 11400000, guid: de38cdb2c11434549ab949704348be94, type: 2}
-  experienceScalar: 500
-  experienceIncreaseCurve:
+  maxLevel: 60
+  goldScalar: 3
+  crystalScalar: 1
+  goldMaterialIncreaseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -36,17 +38,17 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.6078052
-      value: 0.39816344
-      inSlope: 1.1525275
-      outSlope: 1.1525275
+      time: 0.5
+      value: 305.30075
+      inSlope: 1294.3916
+      outSlope: 1294.3916
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.106625795
-      outWeight: 0.19423303
+      outWeight: 0.05818677
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 500
       inSlope: 2
       outSlope: 2
       tangentMode: 0
@@ -56,3 +58,52 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  crystalMaterialIncreaseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 43.15656
+      outSlope: 43.15656
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.067659
+    - serializedVersion: 3
+      time: 1
+      value: 50
+      inSlope: 47.912144
+      outSlope: 47.912144
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.051420867
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  coinItemSO: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  crystalItemSO: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  materialRequirementsPer10Levels:
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+  - items:
+    - {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    - {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}

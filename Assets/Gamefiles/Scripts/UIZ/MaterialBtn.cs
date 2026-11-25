@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ public class MaterialBtn : MonoBehaviour
     [ReadOnly] public int commitedAmount = 0;
     [ReadOnly] public int haveAmountTemp = 0;
 
+    public Action TestForSatisfied;
+
     public void Hide()
     {
         heldItem = null;
@@ -26,7 +29,7 @@ public class MaterialBtn : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Init(ItemSO item, int requiredAmount, int haveAmount)
+    public void Init(ItemSO item, int requiredAmount, int haveAmount, Action tstForSatisfied)
     {
         heldItem = item;
         this.requiredAmount = requiredAmount;
@@ -39,42 +42,67 @@ public class MaterialBtn : MonoBehaviour
 
         // Not all item holders will have an image (?)
         img.sprite = item.squareIcon;
+        
+        satisfied = false;
+        unCommiteBtn.SetActive(false);
+        
+        TestForSatisfied = tstForSatisfied;
     }
 
-    public void TryCommitOne()
+    public void TryCommitOneVoid()
     {
-        if (haveAmountTemp <= 0) return;
-        if (commitedAmount >= requiredAmount)
+        TryCommitOne();
+        TestForSatisfied?.Invoke();
+    }
+
+    public void UnCommitOneVoid()
+    {
+        UnCommitOne();
+        TestForSatisfied?.Invoke();
+    }
+    
+
+    public bool TryCommitOne()
+    {
+        if (haveAmountTemp <= 0) return false; // ran out of `hasAmount`
+        if (commitedAmount >= requiredAmount) // already satisifed
         {
             if(!satisfied) Satisfied();
-            return;
+            return false;
         }
         commitedAmount++;
         haveAmountTemp--;
         txt_commitedSlashRequired.text = string.Format(k_commitedSlashRequiredFormat, commitedAmount, requiredAmount);
         if(commitedAmount >= 1) unCommiteBtn.SetActive(true);
+        if (commitedAmount >= requiredAmount) Satisfied();
+        return true;
     }
 
-    public void UnCommitOne()
+    public bool UnCommitOne()
     {
         if (commitedAmount <= 0)
         {
             unCommiteBtn.SetActive(false);
-            return;
+            return false;
         }
         commitedAmount--;
         haveAmountTemp++;
+        satisfied = false;
+        if (commitedAmount <= 0) unCommiteBtn.SetActive(false);
         txt_commitedSlashRequired.text = string.Format(k_commitedSlashRequiredFormat, commitedAmount, requiredAmount);
+        return true;
     }
 
     public void AutoCommitAsMuchAsPossible()
     {
-        for(int i = 0; i < haveAmountTemp; i++) TryCommitOne();
+        while (TryCommitOne()) { }
+        TestForSatisfied?.Invoke();
     }
 
     public void UnCommitAsMuchAsPossible()
     {
-        for(int i = 0; i < commitedAmount; i++) UnCommitOne();
+        while (commitedAmount > 0) UnCommitOne();
+        TestForSatisfied?.Invoke();
     }
 
     public void Satisfied()
@@ -82,6 +110,7 @@ public class MaterialBtn : MonoBehaviour
         satisfied = true;
     }
 
+    
     public void Hover()
     {
         
