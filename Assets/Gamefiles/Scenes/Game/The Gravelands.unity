@@ -38672,6 +38672,25 @@ Transform:
   - {fileID: 1059249920}
   m_Father: {fileID: 2098110701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &302891308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc511a748f4a6440b48c946866bd597, type: 3}
+  m_Name: DefaultItems Saved Data(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::Items_SavedDataSO
+  schemaInfo:
+    hash: F65F63558F469DCA31C4546C8623B059CC186A54FFCFB1528CACCAC71FFE465D
+    version: 0
+  currentCharacterConfigurations: {fileID: 0}
+  characterActionsData: []
+  equipmentData: []
+  currencyData: []
 --- !u!1001 &303649144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66909,26 +66928,6 @@ Transform:
   - {fileID: 427900242}
   m_Father: {fileID: 2098110701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &528322140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
-  schemaInfo:
-    hash: AB4638C8100AC6EB90FB162BAFFDEB522889D3621951C4C5C7F30F64D1402028
-    version: 0
-  returningPlayer: 0
-  currentCharacterWorldLocation:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
 --- !u!1001 &528455916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -134591,6 +134590,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6918630627893317177, guid: 1d17cc08fa77a8b4282e24715bf62011, type: 3}
+--- !u!114 &1082583842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
+  schemaInfo:
+    hash: 4BBD8B8397B07DD8189AF3093E4D10DF008F3191B52C2D47E7976BB2B2C0A6AA
+    version: 0
+  persistencies: []
+  something: 0
 --- !u!1 &1085394713
 GameObject:
   m_ObjectHideFlags: 0
@@ -149462,6 +149478,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1909199744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1205146393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ed940fe3b45bf80b3bbb9197518fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARPG_SavedDataSO
+  schemaInfo:
+    hash: AB4638C8100AC6EB90FB162BAFFDEB522889D3621951C4C5C7F30F64D1402028
+    version: 0
+  returningPlayer: 0
+  currentCharacterWorldLocation:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 0, y: 0, z: 0}
 --- !u!1001 &1205344553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190803,23 +190839,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3813936952510625668, guid: a2c762f041093be43b2b80662d1ac302, type: 3}
   m_PrefabInstance: {fileID: 1551165316}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1551243389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6de99956d36448138c7bebeac071a1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARPG_ScenePersistencySO
-  schemaInfo:
-    hash: 4BBD8B8397B07DD8189AF3093E4D10DF008F3191B52C2D47E7976BB2B2C0A6AA
-    version: 0
-  persistencies: []
-  something: 0
 --- !u!1 &1551998684
 GameObject:
   m_ObjectHideFlags: 0
@@ -211955,55 +211974,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6918630627893317177, guid: 1d17cc08fa77a8b4282e24715bf62011, type: 3}
---- !u!114 &1720459007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
-  m_Name: DefaultCharactersData(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
-  schemaInfo:
-    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
-    version: 0
-  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
-  charactersData:
-  - characterConfigName: Executioner
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    equippedActions: []
-    equippedEquipment: []
-    col: 0
-    row: 0
-  - characterConfigName: Gunslinger
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    equippedActions: []
-    equippedEquipment: []
-    col: 0
-    row: 0
-  - characterConfigName: Hospitalar
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    equippedActions: []
-    equippedEquipment: []
-    col: 0
-    row: 0
-  - characterConfigName: Whisper
-    hasCharacter: 0
-    level: 1
-    equipped: 0
-    equippedActions: []
-    equippedEquipment: []
-    col: 0
-    row: 0
 --- !u!1001 &1720656961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233619,25 +233589,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6918630627893317177, guid: 1d17cc08fa77a8b4282e24715bf62011, type: 3}
---- !u!114 &1877684761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc511a748f4a6440b48c946866bd597, type: 3}
-  m_Name: DefaultItems Saved Data(Clone)
-  m_EditorClassIdentifier: Assembly-CSharp::Items_SavedDataSO
-  schemaInfo:
-    hash: F65F63558F469DCA31C4546C8623B059CC186A54FFCFB1528CACCAC71FFE465D
-    version: 0
-  currentCharacterConfigurations: {fileID: 0}
-  characterActionsData: []
-  equipmentData: []
-  currencyData: []
 --- !u!1001 &1878062881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -247424,6 +247375,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3813936952510625668, guid: a2c762f041093be43b2b80662d1ac302, type: 3}
   m_PrefabInstance: {fileID: 1987212057}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1989352776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ce93f390e443b7a45d0d5031db7140, type: 3}
+  m_Name: DefaultCharactersData(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersData_SavedDataSO
+  schemaInfo:
+    hash: B7DBA4E3C93823B6BE61910BC7D8E681B40174851D41F7B0205CEE5A78442D16
+    version: 0
+  currentCharacterConfigurations: {fileID: 11400000, guid: 2724e565db8825849946599660cf303e, type: 2}
+  charactersData:
+  - characterConfigName: Executioner
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    equippedActions: []
+    equippedEquipment: []
+    col: 0
+    row: 0
+  - characterConfigName: Gunslinger
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    equippedActions: []
+    equippedEquipment: []
+    col: 0
+    row: 0
+  - characterConfigName: Hospitalar
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    equippedActions: []
+    equippedEquipment: []
+    col: 0
+    row: 0
+  - characterConfigName: Whisper
+    hasCharacter: 0
+    level: 1
+    equipped: 0
+    equippedActions: []
+    equippedEquipment: []
+    col: 0
+    row: 0
 --- !u!1 &1989459944
 GameObject:
   m_ObjectHideFlags: 0
@@ -267453,7 +267453,7 @@ PrefabInstance:
     - target: {fileID: 975193510930968958, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1551243389}
+      objectReference: {fileID: 1082583842}
     - target: {fileID: 2019036631639061851, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: m_Name
       value: Required
@@ -267501,15 +267501,15 @@ PrefabInstance:
     - target: {fileID: 7325532966869568469, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 528322140}
+      objectReference: {fileID: 1205146393}
     - target: {fileID: 8543933820624678361, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1720459007}
+      objectReference: {fileID: 1989352776}
     - target: {fileID: 8933576605580651655, guid: 337ab958831e1af4fac77e62dab5f8f6, type: 3}
       propertyPath: currentData
       value: 
-      objectReference: {fileID: 1877684761}
+      objectReference: {fileID: 302891308}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
