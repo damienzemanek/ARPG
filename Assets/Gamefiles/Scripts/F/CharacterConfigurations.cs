@@ -36,6 +36,6 @@ public class CharacterConfigurations : ScriptableObject
         foreach (var characterConfig in characterConfigs.Values)
             characterConfig.InitRewards();
     }
-
+    
 
 }

@@ -91,270 +91,758 @@ MonoBehaviour:
   levelData:
   - Rewards: []
     MaterialRequirements: []
+    statDeltas:
+      level: 0
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 4
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 1
+      deltas:
+        health: 0
+        ap: 0
+        damage: 1
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 7
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 2
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 1
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 11
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 3
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 17
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 4
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 1
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 26
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 5
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 5
+      deltas:
+        health: 1
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 36
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 6
+      deltas:
+        health: 1
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 48
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 7
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 62
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 8
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 1
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 78
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 9
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 96
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 9
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 10
+      deltas:
+        health: 0
+        ap: 0
+        damage: 1
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 116
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 11
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 138
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 12
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 162
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 13
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 188
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 14
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 217
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 12
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 15
+      deltas:
+        health: 1
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 247
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 16
+      deltas:
+        health: 0
+        ap: 0
+        damage: 1
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 280
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 17
+      deltas:
+        health: 1
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 315
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 18
+      deltas:
+        health: 0
+        ap: 0
+        damage: 1
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 352
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 19
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 392
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 17
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 20
+      deltas:
+        health: 1
+        ap: 0
+        damage: 0
+        armor: 1
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 433
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 21
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 477
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 22
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 524
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 23
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 572
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 24
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 624
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 21
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 25
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 677
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 26
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 733
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 27
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 792
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 28
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 852
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 29
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 916
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 25
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 30
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 978
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 31
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1036
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 32
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1089
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 33
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1139
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 34
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1184
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 29
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 35
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1225
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 36
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1263
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 37
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1297
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 38
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1327
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 39
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1355
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 33
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 40
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1379
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 41
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1401
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 42
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1420
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 43
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1436
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 44
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1450
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 38
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 45
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1462
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 46
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1472
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 47
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1480
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 48
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1487
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 49
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1492
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 42
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 50
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1496
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 51
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1498
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 52
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1500
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 53
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1501
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 54
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1501
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 46
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 55
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1501
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 56
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1501
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 57
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1500
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 58
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1500
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
+    statDeltas:
+      level: 59
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   - Rewards: []
     MaterialRequirements:
     - amount: 1500
       item: {fileID: 11400000, guid: fc4121384427b0a4a884036676f2b0d0, type: 2}
     - amount: 50
       item: {fileID: 11400000, guid: 1f2c97ce89752bf4bab794fdcfa4d9c2, type: 2}
+    statDeltas:
+      level: 60
+      deltas:
+        health: 0
+        ap: 0
+        damage: 0
+        armor: 0
+        handSize: 0
   references:
     version: 2
     RefIds: []

@@ -35,6 +35,7 @@ public class CharacterConfig : BattlerConfig
         public List<RewardConfigData> Rewards = new();
         [ListDrawerSettings(DefaultExpandedState = true)]
         public List<MaterialConfigData> MaterialRequirements = new();
+        public StatDeltasConfig statDeltas;
 
         [Serializable]
         public class MaterialConfigData
@@ -53,6 +54,7 @@ public class CharacterConfig : BattlerConfig
         {
             var rewardData = new LevelData();
             levelData.Add(rewardData);
+            rewardData.statDeltas = new StatDeltasConfig() { level = i };
             if (i == 0) continue; // index buffered offset
             var indexMod10 = (i - 1) % 10;
             float percOfMaxLevel = (float)i / cfg.maxLevel;
@@ -73,6 +75,38 @@ public class CharacterConfig : BattlerConfig
             rewardData.Rewards = new List<RewardConfigData>();
         }
     }
+
+    [Serializable]
+    public class StatDeltasConfig
+    {
+        public int level;
+        // future: for removal and addition operations for deltas for easier time
+        // on differnet build paths with differnt deltas
+        public CharacterStatDeltas deltas;
+    }
+
+    [Serializable]
+    public class CharacterStatDeltas
+    {
+        public int health;
+        public int ap;
+        public int damage;
+        public int armor;
+        public int handSize;
+    }
+    
+    // [Button]
+    // [PropertyOrder(-1)]
+    // private void ValidateStatDeltas()
+    // {
+    //     var duplicates = statDeltas
+    //         .GroupBy(x => x.level)
+    //         .Where(g => g.Count() > 1);
+    //
+    //     foreach (var group in duplicates)
+    //         Debug.LogWarning($"Duplicate stat delta at level {group.Key}", this);
+    // }
+    
 }
 
 

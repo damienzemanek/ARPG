@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using EMILtools;
 using EMILtools.Extensions;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -57,8 +58,16 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_currLevl;
     [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_nxtLevel;
     [BoxGroup("Upgrade Screen")] [Required] public GameObject go_lvlArrowDisp;
-
-    
+    [BoxGroup("Upgrade Screen")] [Required] public SliderUI slider_lvlBar;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_healthNumLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_healthDeltaLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_apNumLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_apDeltaLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_dmgNumLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_dmgDeltaLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_armorNumLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_armorDeltaLvl;
+    [BoxGroup("Upgrade Screen")] [Required] public RectTransform rect_lvlUpDisp;
 
     [Required] public TextMeshProUGUI txt_descTactics;
     [Required] public TextMeshProUGUI txt_descAbout;
@@ -139,6 +148,20 @@ public class CharacterInfoDisplay : MonoBehaviour
         txt_currLevl.text = "Lvl. " + charLevel;
         txt_nxtLevel.text = reachedMaxLvl ? "MAX" : "Lvl. " + nxtLevel;
         go_lvlArrowDisp.SetActive(!reachedMaxLvl);
+        slider_lvlBar.SetValue01(reachedMaxLvl ? 1 : 0);
+        
+        // stats
+        var charCfg = PersistentConfigurationDataHolder.Instance.characterConfigs.characterConfigs[selectedCharacter.occupantName];
+        txt_healthNumLvl.text = charCfg.maxAP.ToString();
+        txt_apNumLvl.text = charCfg.maxAP.ToString();
+        txt_dmgNumLvl.text = charCfg.damage.ToString();
+        txt_armorNumLvl.text = charCfg.maxArmor.ToString();
+
+        txt_healthDeltaLvl.text = "";
+        txt_apDeltaLvl.text = "";
+        txt_dmgDeltaLvl.text = "";
+        txt_armorDeltaLvl.text = "";
+        rect_lvlUpDisp.RefreshLayoutGroupsImmediateAndRecursive();
         
         // show materials
         hlg_materialsBtnParent.transform.Children().DestroyAll();
@@ -184,7 +207,6 @@ public class CharacterInfoDisplay : MonoBehaviour
                 if (hasAmount > 0) addedAny = true;
 
                 materialButtonBuffer[i].AutoCommitAsMuchAsPossible();
-                var satisfied = materialButtonBuffer[i].satisfied;
             }
 
             if (addedAny)
@@ -210,6 +232,34 @@ public class CharacterInfoDisplay : MonoBehaviour
         selectBtn.interactable = allSatisfied;
         Color color = allSatisfied ? mainBtnTxtColorRegular : mainBtnTxtColorDisabled;
         SetMainBtnTxtColor("LEVEL UP", color);
+
+        if (allSatisfied)
+        {
+            autoAddButtonAnyAdded = true;
+            txt_autoAdd.text = "REMOVE ALL";
+        }
+        else
+        {
+            autoAddButtonAnyAdded = false;
+            txt_autoAdd.text = "AUTO ADD";
+        }
+        
+        // lvl bar
+        float allNeeded = materialButtonBuffer.Sum(b => b.requiredAmount);
+        float allCommitted = materialButtonBuffer.Sum(b => b.commitedAmount);
+        slider_lvlBar.SetValue(allCommitted, 0, allNeeded);
+        
+        // added stats
+        var charData = SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _)
+            .GetCharacterData(selectedCharacter.occupantName);
+        var charCfg = PersistentConfigurationDataHolder.Instance.characterConfigs.characterConfigs[selectedCharacter.occupantName];
+        var nxtLevelDeltas = charCfg.levelData[charData.level + 1].statDeltas;
+        txt_healthDeltaLvl.text = nxtLevelDeltas.deltas.health > 0 && allCommitted > 0 ? "+" + nxtLevelDeltas.deltas.health.ToString() : "";
+        txt_apDeltaLvl.text = nxtLevelDeltas.deltas.ap > 0 && allCommitted > 0 ? "+" + nxtLevelDeltas.deltas.ap.ToString() : "";
+        txt_dmgDeltaLvl.text = nxtLevelDeltas.deltas.damage > 0 && allCommitted > 0 ? "+" + nxtLevelDeltas.deltas.damage.ToString() : "";
+        txt_armorDeltaLvl.text = nxtLevelDeltas.deltas.armor > 0 && allCommitted > 0 ? "+" + nxtLevelDeltas.deltas.armor.ToString() : "";
+        
+        rect_lvlUpDisp.RefreshLayoutGroupsImmediateAndRecursive();
     }
     
     
