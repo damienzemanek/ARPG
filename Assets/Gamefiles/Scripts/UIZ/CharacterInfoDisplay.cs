@@ -289,6 +289,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     {
         go_upgrader.gameObject.SetActive(false);
         go_frontalDarken.gameObject.SetActive(false);
+        autoAddButtonAnyAdded = false;
         ViewUpgradeLevelScreen();
     }
     

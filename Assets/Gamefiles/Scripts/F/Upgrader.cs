@@ -26,9 +26,11 @@ public class Upgrader : MonoBehaviour
     
     public void Upgrade(int newLvl, CharacterConfig.CharacterStatDeltas currStats, CharacterConfig.CharacterStatDeltas deltaStats)
     {
+        rect_stats.RefreshLayoutGroupsImmediateAndRecursive();
+
         go_cont_btn.gameObject.SetActive(false);
         go_stats.SetActive(false);
-        txt_newLvl.text = newLvl.ToString();
+        txt_newLvl.text = "New Level! Lvl: " + newLvl;
         txt_ap.text = currStats.ap.ToString();
         txt_dmg.text = currStats.damage.ToString();
         txt_armor.text = currStats.armor.ToString();
@@ -53,17 +55,33 @@ public class Upgrader : MonoBehaviour
     {
         go_stats.SetActive(true);
         yield return new WaitForSeconds(mutateStatsDelay);
+
+        if (deltaStats.ap > 0)
+        {
+            txt_ap.color = Color.green;
+            txt_ap.text = (currStats.ap + deltaStats.ap).ToString();
+
+        }
+
+        if (deltaStats.damage > 0)
+        {
+            txt_dmg.color = Color.green;
+            txt_dmg.text = (currStats.damage + deltaStats.damage).ToString();
+
+        }
+
+        if (deltaStats.armor > 0)
+        {
+            txt_armor.color = Color.green;
+            txt_armor.text = (currStats.armor + deltaStats.armor).ToString();
+        }
+
+        if (deltaStats.health > 0)
+        {
+            txt_health.color = Color.green;
+            txt_health.text = (currStats.health + deltaStats.health).ToString();
+        }
         
-        if(deltaStats.ap > 0) txt_ap.color = Color.green;
-        if(deltaStats.damage > 0) txt_dmg.color = Color.green;
-        if(deltaStats.armor > 0) txt_armor.color = Color.green;
-        if(deltaStats.health > 0) txt_health.color = Color.green;
-
-        txt_ap.text = (currStats.ap + deltaStats.ap).ToString();
-        txt_dmg.text = (currStats.damage + deltaStats.damage).ToString();
-        txt_armor.text = (currStats.armor + deltaStats.armor).ToString();
-        txt_health.text = (currStats.health + deltaStats.health).ToString();
-
         txt_delta_ap.text = "";
         txt_delta_dmg.text = "";
         txt_delta_armor.text = "";
@@ -71,7 +89,7 @@ public class Upgrader : MonoBehaviour
         
         rect_stats.RefreshLayoutGroupsImmediateAndRecursive();
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
 
         go_cont_btn.gameObject.SetActive(true);
         
