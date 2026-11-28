@@ -68,9 +68,14 @@ public class CharacterInfoDisplay : MonoBehaviour
     [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_armorNumLvl;
     [BoxGroup("Upgrade Screen")] [Required] public TextMeshProUGUI txt_armorDeltaLvl;
     [BoxGroup("Upgrade Screen")] [Required] public RectTransform rect_lvlUpDisp;
+    [BoxGroup("Upgrade Screen")] [Required] public Upgrader upgrader;
+    [BoxGroup("Upgrade Screen")] [Required] public GameObject go_upgrader;
+
 
     [Required] public TextMeshProUGUI txt_descTactics;
     [Required] public TextMeshProUGUI txt_descAbout;
+    [Required] public GameObject go_frontalDarken;
+
 
 
     [ReadOnly] public List<CharacterSelectPortrait> characterSelectPortraits = new();
@@ -132,6 +137,7 @@ public class CharacterInfoDisplay : MonoBehaviour
     List<MaterialBtn> materialButtonBuffer = new List<MaterialBtn>();
     public void ViewUpgradeLevelScreen()
     {
+        go_upgrader.gameObject.SetActive(false);
         Debug.Log("UPGRADE LEVEL SCREEN");
         // transition & setup
         uiOrchestration.currentCharacterUIState = CharacterUIState.Upgrading;
@@ -258,6 +264,33 @@ public class CharacterInfoDisplay : MonoBehaviour
         
         rect_lvlUpDisp.RefreshLayoutGroupsImmediateAndRecursive();
     }
+
+    public void UseUpgrader()
+    {
+        go_upgrader.gameObject.SetActive(true);
+        
+        // vars
+        SaverService.Instance.GetSaverAndData<CharactersData_SavedDataSO>(out var saver, out var data);
+        var charData = data.GetCharacterData(selectedCharacter.occupantName);
+        var newLvl = charData.level + 1;
+        
+        var charCfg = PersistentConfigurationDataHolder.Instance.characterConfigs.characterConfigs[selectedCharacter.occupantName];
+        charCfg.GetStats(charData.level, out var stats);
+        
+        upgrader.Upgrade(newLvl, stats, charCfg.levelData[newLvl].statDeltas.deltas);
+
+        charData.level++;
+        saver.Save();
+        
+        go_frontalDarken.gameObject.SetActive(true);
+    }
+
+    public void ContinueUpgrader()
+    {
+        go_upgrader.gameObject.SetActive(false);
+        go_frontalDarken.gameObject.SetActive(false);
+        ViewUpgradeLevelScreen();
+    }
     
     
     public void ViewManageTeamScreen()
@@ -359,7 +392,7 @@ public class CharacterInfoDisplay : MonoBehaviour
                     uiOrchestration.ShowCharacterUIState(CharacterUIState.Upgrading);
                     return;
                 case CharacterUIState.Upgrading:
-
+                    UseUpgrader();
                     return;
             }
         }
