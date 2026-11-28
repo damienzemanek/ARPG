@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static CharacterConfig.LevelData;
 
 [CreateAssetMenu(fileName = "Character", menuName = "ARPG/SO/Character")]
@@ -93,7 +94,31 @@ public class CharacterConfig : BattlerConfig
         public int damage;
         public int armor;
         public int handSize;
+
+        public void MutateDeltas(CharacterStatDeltas other)
+        {
+            health += other.health;
+            ap += other.ap;
+            damage += other.damage;
+            armor += other.armor;
+            handSize += other.handSize;
+        }
     }
+
+
+    public void GetStats(int curLvl, out CharacterStatDeltas s)
+    {
+        s = new CharacterStatDeltas();
+        s.health = maxHP;
+        s.ap = maxAP;
+        s.damage = damage;
+        s.armor = maxArmor;
+        s.handSize = maxHandSize;
+        
+        for(int i = 1; i < curLvl; i++)
+            s.MutateDeltas(levelData[i].statDeltas.deltas);
+    }
+    
     
     // [Button]
     // [PropertyOrder(-1)]

@@ -125,6 +125,8 @@ public class CharacterInfoDisplay : MonoBehaviour
         characterSelectPortraits.Find(c => c.characterCfg.occupantName == firstUnlockedChar).SelectNewCharacter();
         
         mainArtTransform.DOMove(characterSelectMainArtPos.position, mainArtMoveDuration);
+        
+        UpdateCharacterInfoDisplayStats();
     }
 
     List<MaterialBtn> materialButtonBuffer = new List<MaterialBtn>();
@@ -150,12 +152,7 @@ public class CharacterInfoDisplay : MonoBehaviour
         go_lvlArrowDisp.SetActive(!reachedMaxLvl);
         slider_lvlBar.SetValue01(reachedMaxLvl ? 1 : 0);
         
-        // stats
-        var charCfg = PersistentConfigurationDataHolder.Instance.characterConfigs.characterConfigs[selectedCharacter.occupantName];
-        txt_healthNumLvl.text = charCfg.maxAP.ToString();
-        txt_apNumLvl.text = charCfg.maxAP.ToString();
-        txt_dmgNumLvl.text = charCfg.damage.ToString();
-        txt_armorNumLvl.text = charCfg.maxArmor.ToString();
+        UpdateCharacterInfoDisplayStats();
 
         txt_healthDeltaLvl.text = "";
         txt_apDeltaLvl.text = "";
@@ -361,6 +358,9 @@ public class CharacterInfoDisplay : MonoBehaviour
                 case CharacterUIState.Overview: 
                     uiOrchestration.ShowCharacterUIState(CharacterUIState.Upgrading);
                     return;
+                case CharacterUIState.Upgrading:
+
+                    return;
             }
         }
         
@@ -403,6 +403,21 @@ public class CharacterInfoDisplay : MonoBehaviour
         img_mainArt.gameObject.SetActive(true);
         selectBtn.interactable = true;
         Debug.Log("Successfully selected character: " + character.occupantName);
+    }
+
+    public void UpdateCharacterInfoDisplayStats()
+    {
+        var charData = SaverService.Instance.GetData<CharactersData_SavedDataSO>(out _)
+        .GetCharacterData(selectedCharacter.occupantName);
+        var charLevel = charData.level;
+        
+        // stats
+        var charCfg = PersistentConfigurationDataHolder.Instance.characterConfigs.characterConfigs[selectedCharacter.occupantName];
+        charCfg.GetStats(charLevel, out var stats);
+        txt_healthNumLvl.text = stats.health.ToString();
+        txt_apNumLvl.text = stats.ap.ToString();
+        txt_dmgNumLvl.text = stats.damage.ToString();
+        txt_armorNumLvl.text = stats.armor.ToString();
     }
     
     public void ChoseStarterCharacter()
